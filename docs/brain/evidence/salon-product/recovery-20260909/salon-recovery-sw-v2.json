@@ -1,0 +1,16 @@
+{
+  "upgraded": {
+    "keys": [
+      "salon-shell-production-f26bb2e4045d",
+      "salon-shell-production-b2590b25a21f"
+    ],
+    "offline_sha256": "354175df4446f2db76e80c7fe74275fbce8434b38e4d69e1c70643874965613b",
+    "recovery_markup": true
+  },
+  "fallback": {
+    "url": "/dashboard.html?fixture=sw_upgrade#documents",
+    "recovery": "offline",
+    "resume": "/dashboard.html?fixture=sw_upgrade#documents",
+    "private_cached": []
+  }
+}

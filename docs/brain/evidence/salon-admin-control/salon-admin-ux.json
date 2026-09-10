@@ -1,0 +1,76 @@
+{
+  "status": "GO for bounded synthetic UI/UX",
+  "scope": "Synthetic localhost8774 browser UX only; no production API",
+  "fixture": "/tmp/salon-admin-fixture.js",
+  "matrix": "/tmp/salon-admin-ux-matrix.json",
+  "states": 40,
+  "drawer_states": 16,
+  "real_mutations": 0,
+  "mock_posts": 0,
+  "findings": [
+    {
+      "id": "P1-drawer-shrink",
+      "status": "resolved retest",
+      "evidence": "/tmp/admin-review-final-drawer-feed-390-light.png"
+    },
+    {
+      "id": "P1-menu-short-shrink",
+      "status": "resolved retest",
+      "repro": "390x420 menu -> Settings successful nonforced click"
+    },
+    {
+      "id": "P2-select-repeat",
+      "status": "resolved retest",
+      "detail": "Current CSS background-image none / native one chevron"
+    },
+    {
+      "id": "P1-drawer-short",
+      "status": "resolved retest",
+      "repro": "390x420 Orders -> first order. intro332 + bar65 + tabs56 clips workspace below viewport y469.",
+      "evidence": "/tmp/admin-review-drawer390short.png"
+    },
+    {
+      "id": "P2-price-labels",
+      "status": "resolved retest",
+      "detail": "agPrice/agPrepay/agPlanSel no persistent labels or aria"
+    },
+    {
+      "id": "P2-small-close",
+      "status": "resolved retest",
+      "detail": "drawer close36px"
+    }
+  ],
+  "passes": [
+    "10 inline modules x 2 widths x 2 themes zero horizontal overflow",
+    "Analytics navigates to separate admin-analytics.html",
+    "4 drawer panels retain typed draft through16 combinations",
+    "Escape restores selected order button focus",
+    "Bonus confirmation includes client, amount, reason; no POST before confirmation",
+    "Client card opens and back restores directory",
+    "Short390x420 drawer full scroll: composer/send and price fields reachable; sticky close44",
+    "Persistent labels for price/prepay/payment plan",
+    "Summary handoff shortcut opens exact order9701 and handoff panel",
+    "Signed-out login320/390/1440 light/dark: zero overflow, site44px and Telegram48px, no auth POST"
+  ],
+  "hashes": {
+    "admin.html": "6281c3f05974411d3aa33c5423d7a8f29a9f658a6efaf76132baa967d8cf5d3f",
+    "assets/js/admin.js": "e3136c3e9af94094c7f0c9aa622f2dabfa11d90c38e89eb8c01240972d3c8619",
+    "assets/css/salon-admin.css": "f18eff178acb1d831927ce5c3592435364e9dbca9a2ff151280b909afa4e6f51"
+  },
+  "limitations": [
+    "Backend authorization, financial state transitions and analytics payload are outside synthetic UX proof",
+    "Initial browser SW served stale CSS; unregistered within own isolated session and disabled registration, final matrix uses current source"
+  ],
+  "browser_closed": true,
+  "final_delta": "/tmp/admin-review-final-delta.txt",
+  "login_matrix": "/tmp/admin-review-login-output.txt",
+  "screenshots": [
+    "/tmp/admin-review-final-short-price390.png",
+    "/tmp/admin-review-final-short-chat390.png",
+    "/tmp/admin-review-final-login-320-light.png",
+    "/tmp/admin-review-final-login-1440-dark.png",
+    "/tmp/admin-review-final-drawer-feed-1440-dark.png",
+    "/tmp/admin-review-final-drawer-plan-390-dark.png"
+  ],
+  "fixture_sha256": "45619102a851fb37c6bbf156ddb775d79697eb265a50906adb6f622d1c1db1d9"
+}

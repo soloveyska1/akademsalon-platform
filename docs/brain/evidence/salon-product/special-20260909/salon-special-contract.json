@@ -1,0 +1,579 @@
+{
+  "decision": "GO",
+  "head": "2f5b4094a512f9aba263f113153f6cfd68978320",
+  "sha256": {
+    "normokontrol-vkr.html": "0011eb80fff2416dd0ca3af1dccc66f824166e50ae29b6a4ebf5fd055538fa8a",
+    "plan.html": "d06e7d4de91e8bcd7fc3f4f7ace1c8bb7cb9f49fb25b4b56771807428141cd25",
+    "redaktura-posle-ii.html": "8e6c62f250b93223c2443975c8f7f7685f6cb4805ff45a0829e57c5cfca5cd49",
+    "razbor-zamechaniy-nauchruka.html": "4ceb52a898545a92bfeee9174c9a11eb6f8290b67acff1dbed53e8dac91205e1",
+    "dorabotka-otcheta-po-praktike.html": "19d48f9fb41edf507b91c681c000bfb4121165cea1768afcf23cedb538fbd598",
+    "assets/js/salon-experience.js": "987c0fa6d5a080249b23c5b818e6396f4d7daec74a66594b64f89b94aba71930",
+    "assets/css/salon-experience.css": "58235791f6d587f36aa3f9c9655b0b6855dba772c01fc93346d67c228e1dd24a"
+  },
+  "browser": {
+    "tests": [
+      {
+        "id": "normokontrol-vkr.html tab-end",
+        "pass": true
+      },
+      {
+        "id": "normokontrol-vkr.html tab-click",
+        "pass": true
+      },
+      {
+        "id": "normokontrol-vkr.html checklist",
+        "pass": true
+      },
+      {
+        "id": "normokontrol-vkr.html widgets-no-storage-or-requests",
+        "pass": true,
+        "beforeCalls": 27,
+        "afterCalls": 27
+      },
+      {
+        "id": "normokontrol-vkr.html actual-primary-cta",
+        "pass": true,
+        "href": "configurator.html?service=nm",
+        "form": {
+          "product": "service:norm",
+          "scope": "whole",
+          "disabled": true,
+          "price": "5000",
+          "questions": [
+            {
+              "id": "service-guide",
+              "required": false
+            },
+            {
+              "id": "",
+              "required": false
+            },
+            {
+              "id": "service-vol",
+              "required": false
+            }
+          ],
+          "visibleName": "Оформление по методичке · нормоконтроль"
+        }
+      },
+      {
+        "id": "plan.html tab-end",
+        "pass": true
+      },
+      {
+        "id": "plan.html tab-click",
+        "pass": true
+      },
+      {
+        "id": "plan.html checklist",
+        "pass": true
+      },
+      {
+        "id": "plan.html widgets-no-storage-or-requests",
+        "pass": true,
+        "beforeCalls": 87,
+        "afterCalls": 87
+      },
+      {
+        "id": "plan.html actual-primary-cta",
+        "pass": true,
+        "href": "configurator.html?service=pl",
+        "form": {
+          "product": "service:plan",
+          "scope": "whole",
+          "disabled": true,
+          "price": "3000",
+          "questions": [
+            {
+              "id": "service-work",
+              "required": true
+            },
+            {
+              "id": "",
+              "required": false
+            },
+            {
+              "id": "service-disc",
+              "required": false
+            },
+            {
+              "id": "",
+              "required": false
+            },
+            {
+              "id": "service-req",
+              "required": false
+            }
+          ],
+          "visibleName": "Разбор задачи и плана"
+        }
+      },
+      {
+        "id": "plan-master-price",
+        "pass": true
+      },
+      {
+        "id": "redaktura-posle-ii.html tab-end",
+        "pass": true
+      },
+      {
+        "id": "redaktura-posle-ii.html tab-click",
+        "pass": true
+      },
+      {
+        "id": "redaktura-posle-ii.html checklist",
+        "pass": true
+      },
+      {
+        "id": "redaktura-posle-ii.html widgets-no-storage-or-requests",
+        "pass": true,
+        "beforeCalls": 148,
+        "afterCalls": 148
+      },
+      {
+        "id": "redaktura-posle-ii.html actual-primary-cta",
+        "pass": true,
+        "href": "configurator.html?service=ai",
+        "form": {
+          "product": "service:ai",
+          "scope": "whole",
+          "disabled": true,
+          "price": "2500",
+          "questions": [
+            {
+              "id": "service-vol",
+              "required": true
+            },
+            {
+              "id": "",
+              "required": false
+            },
+            {
+              "id": "service-prompt",
+              "required": true
+            },
+            {
+              "id": "service-sources",
+              "required": true
+            }
+          ],
+          "visibleName": "Проверка и редактура текста после ИИ"
+        }
+      },
+      {
+        "id": "razbor-zamechaniy-nauchruka.html tab-end",
+        "pass": true
+      },
+      {
+        "id": "razbor-zamechaniy-nauchruka.html tab-click",
+        "pass": true
+      },
+      {
+        "id": "razbor-zamechaniy-nauchruka.html checklist",
+        "pass": true
+      },
+      {
+        "id": "razbor-zamechaniy-nauchruka.html widgets-no-storage-or-requests",
+        "pass": true,
+        "beforeCalls": 208,
+        "afterCalls": 208
+      },
+      {
+        "id": "razbor-zamechaniy-nauchruka.html actual-primary-cta",
+        "pass": true,
+        "href": "configurator.html?service=rv",
+        "form": {
+          "product": "service:review",
+          "scope": "whole",
+          "disabled": true,
+          "price": "2500",
+          "questions": [
+            {
+              "id": "service-work",
+              "required": false
+            },
+            {
+              "id": "",
+              "required": false
+            },
+            {
+              "id": "service-when",
+              "required": false
+            }
+          ],
+          "visibleName": "Полный разбор черновика"
+        }
+      },
+      {
+        "id": "dorabotka-otcheta-po-praktike.html tab-end",
+        "pass": true
+      },
+      {
+        "id": "dorabotka-otcheta-po-praktike.html tab-click",
+        "pass": true
+      },
+      {
+        "id": "dorabotka-otcheta-po-praktike.html checklist",
+        "pass": true
+      },
+      {
+        "id": "dorabotka-otcheta-po-praktike.html widgets-no-storage-or-requests",
+        "pass": true,
+        "beforeCalls": 268,
+        "afterCalls": 268
+      },
+      {
+        "id": "dorabotka-otcheta-po-praktike.html actual-primary-cta",
+        "pass": true,
+        "href": "configurator.html?work=practice&result=editing",
+        "form": {
+          "product": "practice",
+          "scope": "editing",
+          "disabled": false,
+          "price": "8000",
+          "questions": [],
+          "visibleName": "Отчёт по практике"
+        }
+      },
+      {
+        "id": "practice-diagnostic-cta",
+        "pass": true
+      },
+      {
+        "id": "normokontrol-vkr.html no-js-native-links-panels",
+        "pass": true
+      },
+      {
+        "id": "plan.html no-js-native-links-panels",
+        "pass": true
+      },
+      {
+        "id": "redaktura-posle-ii.html no-js-native-links-panels",
+        "pass": true
+      },
+      {
+        "id": "razbor-zamechaniy-nauchruka.html no-js-native-links-panels",
+        "pass": true
+      },
+      {
+        "id": "dorabotka-otcheta-po-praktike.html no-js-native-links-panels",
+        "pass": true
+      }
+    ],
+    "errors": [],
+    "nonReadRequests": [],
+    "externalMutations": false
+  },
+  "faq_parity": [
+    {
+      "file": "normokontrol-vkr.html",
+      "FAQ_equal": true,
+      "visible": [
+        [
+          "Это повторная плата за оформление?",
+          "Нет. Оформление по согласованной методичке входит в заказ работы. Новые требования и отдельная техническая переработка сначала оцениваются и согласуются."
+        ],
+        [
+          "Методички нет. Можно начать?",
+          "Да, можно обсудить оформление по согласованному стандарту. Если у кафедры есть собственные правила, их нужно передать до финальной сверки."
+        ],
+        [
+          "Исправите и содержание?",
+          "Нормоконтроль касается оформления. Переработку содержания, расчётов или структуры согласуем отдельно, если она нужна."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ],
+      "schema": [
+        [
+          "Это повторная плата за оформление?",
+          "Нет. Оформление по согласованной методичке входит в заказ работы. Новые требования и отдельная техническая переработка сначала оцениваются и согласуются."
+        ],
+        [
+          "Методички нет. Можно начать?",
+          "Да, можно обсудить оформление по согласованному стандарту. Если у кафедры есть собственные правила, их нужно передать до финальной сверки."
+        ],
+        [
+          "Исправите и содержание?",
+          "Нормоконтроль касается оформления. Переработку содержания, расчётов или структуры согласуем отдельно, если она нужна."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ]
+    },
+    {
+      "file": "plan.html",
+      "FAQ_equal": true,
+      "visible": [
+        [
+          "Можно прийти без готовой темы?",
+          "Да. Передай направление, интересующую область и требования. В разборе определим, что уже можно сформулировать, а что стоит уточнить."
+        ],
+        [
+          "Нужно ли сначала покупать разбор для заказа работы?",
+          "Нет. Это самостоятельная услуга для тех, кому сейчас нужен именно план. Целую работу можно заказать сразу."
+        ],
+        [
+          "Кто утверждает тему и план?",
+          "Научный руководитель или кафедра. Наш результат помогает предметно обсудить структуру; утверждение не обещаем."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ],
+      "schema": [
+        [
+          "Можно прийти без готовой темы?",
+          "Да. Передай направление, интересующую область и требования. В разборе определим, что уже можно сформулировать, а что стоит уточнить."
+        ],
+        [
+          "Нужно ли сначала покупать разбор для заказа работы?",
+          "Нет. Это самостоятельная услуга для тех, кому сейчас нужен именно план. Целую работу можно заказать сразу."
+        ],
+        [
+          "Кто утверждает тему и план?",
+          "Научный руководитель или кафедра. Наш результат помогает предметно обсудить структуру; утверждение не обещаем."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ]
+    },
+    {
+      "file": "redaktura-posle-ii.html",
+      "FAQ_equal": true,
+      "visible": [
+        [
+          "Если исходный запрос не сохранился?",
+          "Укажи это в заявке. Важно честно описать, откуда появился текст и какие источники доступны, чтобы определить границы проверки."
+        ],
+        [
+          "Будет видно, что поменялось?",
+          "Да, формат передачи согласуем заранее: редакторская версия, режим исправлений или комментарии к спорным местам."
+        ],
+        [
+          "Вы гарантируете прохождение детектора?",
+          "Нет. Такие оценки нестабильны. Работаем с фактами, источниками, логикой и качеством текста."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ],
+      "schema": [
+        [
+          "Если исходный запрос не сохранился?",
+          "Укажи это в заявке. Важно честно описать, откуда появился текст и какие источники доступны, чтобы определить границы проверки."
+        ],
+        [
+          "Будет видно, что поменялось?",
+          "Да, формат передачи согласуем заранее: редакторская версия, режим исправлений или комментарии к спорным местам."
+        ],
+        [
+          "Вы гарантируете прохождение детектора?",
+          "Нет. Такие оценки нестабильны. Работаем с фактами, источниками, логикой и качеством текста."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ]
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "FAQ_equal": true,
+      "visible": [
+        [
+          "Вы сразу внесёте все правки?",
+          "Письменный разбор объясняет задачи и их порядок. Выполнение правок можно заказать отдельно; состав и цену подтвердим до оплаты."
+        ],
+        [
+          "Можно заказать доработку сразу?",
+          "Да. Выбери доработку готового текста в заявке и приложи замечания. Покупать отдельный разбор предварительно не обязательно."
+        ],
+        [
+          "Замечания противоречат друг другу?",
+          "Отметим противоречие и сформулируем вопросы для уточнения. Не будем выдавать догадку за требование руководителя."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ],
+      "schema": [
+        [
+          "Вы сразу внесёте все правки?",
+          "Письменный разбор объясняет задачи и их порядок. Выполнение правок можно заказать отдельно; состав и цену подтвердим до оплаты."
+        ],
+        [
+          "Можно заказать доработку сразу?",
+          "Да. Выбери доработку готового текста в заявке и приложи замечания. Покупать отдельный разбор предварительно не обязательно."
+        ],
+        [
+          "Замечания противоречат друг другу?",
+          "Отметим противоречие и сформулируем вопросы для уточнения. Не будем выдавать догадку за требование руководителя."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ]
+    },
+    {
+      "file": "dorabotka-otcheta-po-praktike.html",
+      "FAQ_equal": true,
+      "visible": [
+        [
+          "Можно исправить только дневник или часть отчёта?",
+          "Да. Укажи нужные документы и конкретные пункты. Объём доработки и окончательную цену согласуем после просмотра."
+        ],
+        [
+          "Обязательно сначала заказывать разбор?",
+          "Нет. Кнопка «Заказать доработку» сразу открывает этот сценарий. Разбор можно выбрать отдельно, если пока нужен только план исправлений."
+        ],
+        [
+          "Материалов практики не хватает?",
+          "Отметим, каких фактов или документов не хватает. Их нужно предоставить или получить на базе практики; подменять их вымышленными нельзя."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ],
+      "schema": [
+        [
+          "Можно исправить только дневник или часть отчёта?",
+          "Да. Укажи нужные документы и конкретные пункты. Объём доработки и окончательную цену согласуем после просмотра."
+        ],
+        [
+          "Обязательно сначала заказывать разбор?",
+          "Нет. Кнопка «Заказать доработку» сразу открывает этот сценарий. Разбор можно выбрать отдельно, если пока нужен только план исправлений."
+        ],
+        [
+          "Материалов практики не хватает?",
+          "Отметим, каких фактов или документов не хватает. Их нужно предоставить или получить на базе практики; подменять их вымышленными нельзя."
+        ],
+        [
+          "Нужно срочно. Как указать срок?",
+          "Укажи дату сдачи в заявке, а если важно время — добавь его в описание. Возможность экспресса и стоимость подтвердим после просмотра материалов, до оплаты."
+        ]
+      ]
+    }
+  ],
+  "contracts": [
+    "nm5000/pl3000(master/candidate5000)/ai2500/rv2500 preserved",
+    "practice editing8000 and diagnostic2500 differentnativequerypaths andJSONLDoffers",
+    "review is planofcorrections,notallcorrections",
+    "sourcefacts,methodicalinstructions andprepaymentagreementpreserved",
+    "demo explicitly schematic,noinput,nohandoff",
+    "onlyHTML/CSS/widgetJS changed; nofinancialformbackendchanges"
+  ],
+  "reproducer": "/tmp/salon-special-candidate-browser.js",
+  "external_mutations": false,
+  "sources_modified": false,
+  "browser_closed": true,
+  "blockers": [],
+  "launcher_delta": {
+    "tests": [
+      {
+        "id": "mobile-order-link",
+        "pass": true,
+        "d": {
+          "mobile": true,
+          "visibleLinks": 1,
+          "flag": true,
+          "launcher": {
+            "w": 60,
+            "h": 60,
+            "visibility": "hidden",
+            "pointerEvents": "none"
+          }
+        }
+      },
+      {
+        "id": "mobile-materials",
+        "pass": true,
+        "d": {
+          "mobile": true,
+          "visibleLinks": 0,
+          "flag": false,
+          "launcher": {
+            "w": 60,
+            "h": 60,
+            "visibility": "visible",
+            "pointerEvents": "auto"
+          }
+        }
+      },
+      {
+        "id": "resize-desktop",
+        "pass": true,
+        "d": {
+          "mobile": false,
+          "visibleLinks": 2,
+          "flag": false,
+          "launcher": {
+            "w": 219.953125,
+            "h": 64,
+            "visibility": "visible",
+            "pointerEvents": "auto"
+          }
+        }
+      },
+      {
+        "id": "resize-mobile760",
+        "pass": true,
+        "d": {
+          "mobile": true,
+          "visibleLinks": 0,
+          "flag": false,
+          "launcher": {
+            "w": 60,
+            "h": 60,
+            "visibility": "visible",
+            "pointerEvents": "auto"
+          }
+        }
+      },
+      {
+        "id": "resize-desktop761",
+        "pass": true,
+        "d": {
+          "mobile": false,
+          "visibleLinks": 1,
+          "flag": false,
+          "launcher": {
+            "w": 210.234375,
+            "h": 58,
+            "visibility": "visible",
+            "pointerEvents": "auto"
+          }
+        }
+      },
+      {
+        "id": "non-special-unaffected",
+        "pass": true,
+        "d": {
+          "flag": false,
+          "width": 169.234375
+        }
+      }
+    ],
+    "errors": [],
+    "externalMutations": false
+  },
+  "launcher_reproducer": "/tmp/salon-special-launcher-delta.js",
+  "launcher_delta_review": "GO:6/6 mobile visibility,60px,desktop/media and nonspecial isolation; no pageerrors",
+  "trail_guard_delta": {
+    "decision": "GO",
+    "review": "updateTrail early return extends salon-learning exclusion to [data-special-service]; suppresses unrelated previous-choice strip; no storage write or CTA mapping change",
+    "method": "read-only source inspection; UX reviewer independently verifies navigation",
+    "browser_rerun": false
+  }
+}

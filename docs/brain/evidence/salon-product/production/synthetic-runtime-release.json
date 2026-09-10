@@ -1,0 +1,45 @@
+{
+  "source": "e853f52d",
+  "backup": "/root/salon_bot/backups/out001-runtime-e853f52d",
+  "before_sha256": "cba09cf5db96d632d3f07ff45713b9518841b4a6654217bec3ef9f9fa87844a5",
+  "after_sha256": "80b3a55372cf81d3b2300e4b8a27c4e6ce19b43b8db5cd81699bd5f7315106bb",
+  "steps": [
+    {
+      "action": "apply",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      }
+    },
+    {
+      "action": "rollback",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      }
+    },
+    {
+      "action": "forward",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      }
+    }
+  ],
+  "database_restored": false
+}

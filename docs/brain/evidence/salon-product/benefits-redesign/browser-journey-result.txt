@@ -1,0 +1,2 @@
+### Result
+{"checks":["legacy compare alias","mobile estimate starts collapsed","best initially selected","manual plan retained","opened features retained","input focus retained","pro total 40490","plus saving1101","loss940 visible","loss explicit","invalid hides stale offers","invalid summary actionable","tie copy truthful","offer choice does not set purchased membership","bonus default payable13000","deposit differential600","no double cash back","real gift shelf destination","values preserved across sections","keyboard selection"],"passed":20}

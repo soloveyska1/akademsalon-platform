@@ -1,0 +1,12 @@
+### Result
+{"calls":1,"busy":true,"status":"Пока не удалось получить ответ. Проверь соединение и попробуй позже. Если вопрос срочный, напиши в Telegram.","enabled":true,"resume":false,"about":{"cta":{"x":18,"y":571.625,"width":284,"height":54},"helper":{"visibility":"hidden","x":245,"y":742,"width":60,"height":60,"top":742,"right":305,"bottom":802,"left":245}}}
+### Ran Playwright code
+```js
+await (async(page)=>{let calls=0;await page.route("**/api/health",()=>{calls++});await page.goto("http://127.0.0.1:8771/maintenance.html");await page.locator("[data-retry]").click();await page.locator("[data-retry]").evaluate(e=>e.dispatchEvent(new Event("click")));const busy=await page.locator("[data-retry]").isDisabled();await page.waitForTimeout(8250);const result={calls,busy,status:await page.locator("[data-recovery-status]").innerText(),enabled:await page.locator("[data-retry]").isEnabled(),resume:await page.locator("[data-resume]").isVisible()};await page.unroute("**/api/health");await page.setViewportSize({width:320,height:820});await page.goto("http://127.0.0.1:8771/about.html");await page.locator(".sa-launch").waitFor({state:"attached"});await page.waitForTimeout(100);result.about={cta:await page.locator("main a[href*=configurator]").first().boundingBox(),helper:await page.locator(".sa-launch").evaluate(e=>({visibility:getComputedStyle(e).visibility,...e.getBoundingClientRect().toJSON()}))};await page.screenshot({path:"/tmp/recovery-final-about320.png"});return result;})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/about.html
+- Page Title: О мастерской | Академический Салон
+- Console: 1 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T18-15-09-374Z.log#L12

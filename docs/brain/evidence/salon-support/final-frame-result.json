@@ -1,0 +1,38 @@
+[
+  {
+    "path": "/priyomnaya.html",
+    "width": 320,
+    "overflow": false,
+    "footerHeading": "block"
+  },
+  {
+    "path": "/guarantees.html",
+    "width": 320,
+    "overflow": false,
+    "footerHeading": "none"
+  },
+  {
+    "path": "/oplata.html",
+    "width": 320,
+    "overflow": false,
+    "footerHeading": "none"
+  },
+  {
+    "path": "/priyomnaya.html",
+    "width": 1440,
+    "overflow": false,
+    "footerHeading": "flex"
+  },
+  {
+    "path": "/guarantees.html",
+    "width": 1440,
+    "overflow": false,
+    "footerHeading": "none"
+  },
+  {
+    "path": "/oplata.html",
+    "width": 1440,
+    "overflow": false,
+    "footerHeading": "none"
+  }
+]

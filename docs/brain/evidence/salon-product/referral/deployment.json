@@ -1,0 +1,35 @@
+{
+  "deployment": {
+    "id": "appgdep_6aa10c412db48191a12c9ccdb1846384",
+    "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+    "title": "Академический Салон — просмотр главной",
+    "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_2a753a6c21fc819195cc975af2cb9ff9",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site",
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "saymoon--akademsalon-desktop-preview",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-09-09T07:35:45.892563+00:00"
+  },
+  "version": {
+    "id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_2a753a6c21fc819195cc975af2cb9ff9",
+    "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+    "version_number": 58,
+    "source": {
+      "commit_sha": "2cfc8817b0f49c78a06cd9f8f766bc4663bd27ff"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_0000000021ac81f68ccb2413947c8f8c",
+      "content_hash": "sha256:448fd69368b8fa09b6a3932fbbb92926892cfc654b6e51392b9e45bb089e9c1c",
+      "size_bytes": 31119360,
+      "file_count": 416
+    },
+    "screenshot_url": null
+  },
+  "rollback_version": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_b26e6d0dba548191b9d1fb6b9516835c",
+  "public_backend_unchanged": true,
+  "private_live_browser": "CUA tab8: 6 friends gives 6000 discount / 0 due, explicit draft notice."
+}

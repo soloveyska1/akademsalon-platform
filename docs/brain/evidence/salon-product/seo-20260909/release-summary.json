@@ -1,0 +1,32 @@
+{
+  "production": "release194-43d38501",
+  "source": "43d385012eab92d2805e3429a02cac2c4e51cd98",
+  "previous": "release193-b2590b25",
+  "public_contracts": 75,
+  "public_smoke": 14,
+  "sitemap_urls": 77,
+  "indexnow_status": 200,
+  "indexnow_meaning": "submission received, not indexing or ranking evidence",
+  "rootsource_viewport_states": 80,
+  "frozen_viewport_states": 48,
+  "independent_primary_form_handoffs": 27,
+  "root_frozen_footer_handoffs": 7,
+  "live_footer_handoffs": 2,
+  "customer_mutations": 0,
+  "backend_changed": false,
+  "public_service_landings": 7,
+  "limitations": [
+    "No Search Console or Yandex Webmaster authenticated coverage/rank evidence.",
+    "No guaranteed ranking, rich result, conversion increase or new paid orders.",
+    "Extensionless VPS routes remain404; canonical.html paths are used.",
+    "Existing OGcover reused, no newly commissioned image."
+  ],
+  "sources": [
+    "https://developers.google.com/search/docs/appearance/snippet",
+    "https://developers.google.com/search/docs/appearance/site-names",
+    "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+    "https://yandex.ru/support/webmaster/ru/search-results/title-and-description",
+    "https://www.indexnow.org/documentation",
+    "https://www.indexnow.org/faq"
+  ]
+}

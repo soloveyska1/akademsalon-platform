@@ -1,0 +1,38 @@
+{
+  "status": "GO",
+  "frozen_source": "7ed5e283",
+  "scope": "public frozen referral.html + referral-rules.html",
+  "matrix": "/tmp/referral-final-matrix.json",
+  "functional": "/tmp/referral-final-functional.txt",
+  "screenshots": [
+    "/tmp/referral-final-320-light.png",
+    "/tmp/referral-final-390-dark.png",
+    "/tmp/referral-final-1440-light.png",
+    "/tmp/referral-final-nojs390.png"
+  ],
+  "passes": [
+    "16 states 2routes4widths2themes zero horizontal overflow",
+    "Four article cards visible with real text all16states",
+    "Dark invite readability and duplicate disclosure marker corrected",
+    "Native details Enter/Space and noJS work",
+    "Unsigned login renders and preserves #referral",
+    "Existing200 bonus/full first payment/90day terms retained"
+  ],
+  "findings": [
+    {
+      "priority": 2,
+      "status": "resolved verified6states",
+      "issue": "Floating Listik overlaps end of third earning-step text at1440x1000",
+      "evidence": "/tmp/referral-final-1440-light.png"
+    }
+  ],
+  "real_api_mutations": 0,
+  "limitation": "Referral award backend not exercised; source prototype deliberately excluded by frozen build",
+  "browser_closed": true,
+  "launcher_delta": "/tmp/referral-final-launcher-delta.txt",
+  "hashes": {
+    "public/referral.html": "1b97aecc08d90b635712a8dd422b245a40e64dfd17e4297cdfd06c1ebbf9611d",
+    "public/referral-rules.html": "1b97aecc08d90b635712a8dd422b245a40e64dfd17e4297cdfd06c1ebbf9611d",
+    "public/assets/css/salon-referral-public.css": "894bc20c290ea1dd0c707ffed07ca4f866f0888b002e3170c219ea323d70bb61"
+  }
+}

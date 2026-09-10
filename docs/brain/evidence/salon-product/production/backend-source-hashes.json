@@ -1,0 +1,6 @@
+{
+  "backend/salon_bot/direct_intake.py": "6b0561b0fec37f3a81d7c9faefa8671a2add92a17ffb552d6a1886579a745771",
+  "backend/salon_bot/direct_upload.py": "d97b0adf2f8bc72ac0191ae614d941c03dccd09d7b8e957270c01e2f814b9f17",
+  "backend/salon_bot/install_direct_intake.py": "aeca9197926e8f153ca0098e4d2dc9bdb08b971e73b1ad39b97aedd0ab94045c",
+  "backend/salon_bot/production_probe.py": "0ff9da05ba1c1c8fa34731baa77ff17c43f114cc393b2870a6ed92e0ac110f40"
+}

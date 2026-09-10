@@ -1,0 +1,1469 @@
+{
+  "decision": "GO (candidate read-only; frozen and live gates parent-owned)",
+  "head": "8a0cdd4d721bb9a95a1bfcb90c11529a1fe4170a",
+  "source_sha256": {
+    "scripts/build-production-release.py": "445ed07f45b731a3d30633e6a9c4a01ef218d21d40d6d84341423dd6895e713d",
+    "assets/js/salon-order.js": "54548e1663f3e7f7cc6befd9abab56c2fb02ad6a82f97bb90e975b1ed8eacca1",
+    "assets/js/salon-experience.js": "46df9a89874f450171c1f528a2296c7052fc232a073b6246c022b165ba4e8550",
+    "assets/css/salon-experience.css": "6708dd6979b213fe6f3bce62d35c26a312a6d94eca97e08faa655c728dec364f"
+  },
+  "html_sha256": {
+    "404.html": "8a091569146b54d79c8f447d0785de206c9f7b0491ae0cb01acf37b18cee5e38",
+    "50x.html": "7faa3e4ac46440a2c4f5c2d6755ac281aaa0dd33b7239cbe999a63aeb82aa543",
+    "about.html": "48b9b67c70430811cb86eaa22a4df8a9afa5544b3cbb8a0cd614e6889e2249c1",
+    "academic-integrity.html": "005d33963f9d185626c217eb70edf9c1ecc44425615e668723a9fcbe15dc5b42",
+    "admin-analytics.html": "9303c6aab05da711227e1aa226ce9800589a35c1d27cbc4d696c0c3fffb122ca",
+    "admin-covers.html": "abd385353df49f7845582aea0c34a696bde0413436804600c1d66768b8126266",
+    "admin.html": "b0da17f2047c58af8d5e163cf523b1411f414cbbcbaa937c0d7977fbb0c7c7d8",
+    "audit-temy-vkr.html": "dfa8c20b784b7309413851bb875ae4fe36e6033011e4fce89031c22b6f66146a",
+    "avtorskiy-zakaz.html": "f486932397f3194bc109c5415e78b68033ba4ba35393d24eb74ecae420accbfc",
+    "benefits.html": "91c531874bc95b1d9c5c3f930bb2c46845c6447b669d9f79482ad4db2eae0009",
+    "check.html": "f5146a93433d2bc3d117379bb871dbe8488668b0694789781752f2ddbdf23b4e",
+    "configurator.html": "1f2d730d7dbe3eb582e8aaed2135f3cfa6e10ca89082efdf1c758f29fb97c096",
+    "consent-analytics.html": "d11f0d3ae3be66576fb8d3146b4494eae472c69f1a3a65d5901a0ff39353aa8d",
+    "consent-marketing.html": "5b94a795e3883033500390c6abb430650d82d55ea91fd175bc61ce2f47b8f1ca",
+    "consent-publication.html": "1387b07aa11c0843edebeed139109ab96a4690fea0aeeeaf229cac3897cd47f6",
+    "consent-request.html": "9590d0b6ae70ec651f40393ebcdbdcc7447c7069a353708b046a32053edbe1fd",
+    "consent.html": "c2b96310e3cda0902339368e06708ed15517251ea5bba52d52f054fa5084efb4",
+    "dashboard.html": "4d54a12daedf36148057a64d4e851d9ccc08ea65b5eb7267f29c20c1cf9dcd20",
+    "deposit.html": "05fc0c616082ab41d01cf2ef255f0b75d6a5d8f96b26c55a6fe694c02841402a",
+    "diplomnaya-po-ekonomike.html": "bc4234237f96643414cd22c10a715306c89ceb20262dd764e9024cbe0a6538af",
+    "diplomnaya-po-psihologii.html": "b05e4a6a887bc8609ae95b9b531d4501c722ac621b8bc652aa4b4a1f84451493",
+    "diplomnaya-po-yurisprudencii.html": "08bb856857104a85b747b31da7f9e780a4be645e797fd2d0d40fd176a9d50f1e",
+    "diplomnaya-rabota.html": "a4c559477b23aea01266a7a4e496fdb64430d47edb8f33e0887fc5cf8d7c3ee1",
+    "dorabotka-otcheta-po-praktike.html": "299b756e1a985fa0d82bd882b9ef57147d022a12a8fed9cf9465a8b74c7ad4e3",
+    "dosie-nauchruka.html": "ad3438d7758153cb0f775b0dce4851655b12424e0cab0d587e233abdf0104fff",
+    "expertise.html": "c955fee3f37f63ee6b5db3a102a72b5c56f5be767f0b752383ca92a839c32506",
+    "gift.html": "3c49303d3a31cecfd7471a074f56302af908badeac99c34a08685f1db5c13d9b",
+    "guarantees.html": "6a27d10cfcc62d9034728854366d0df76c5c2b7a29ca105b1720b7aae93d04eb",
+    "guide-antiplagiat-ai.html": "c0cc2085f9293505fec2d772c05a14a4e97dd645f6674c4f7cdc65e045f11c08",
+    "guide-apellyaciya.html": "0f0c297ecd196cad23deb5e8928dcc37b631681a6c15bada64cdca47e062f731",
+    "guide-dnevnik-praktiki.html": "bd466d277b372826fae8f85cf33ff8bcc3097560a15f6486bd22c89fca369af6",
+    "guide-harakteristika-s-praktiki.html": "1837d24d9716007c64eba3293d8323fdf6c15b06ed9748cb514f6d64e9791d9c",
+    "guide-kursovaya-za-nedelyu.html": "2293d9a66b8cb94813d7490d8efddd007ae4369b96e5e96ddf05c3a64fb0e539",
+    "guide-normocontrol.html": "129803f5a08c3d1e9677a588f46ccae8dda09629635c0c1a20b862987a6c1d7a",
+    "guide-obekt-predmet-cel-zadachi.html": "3bf29e26f5f89f41b640f8d7307e1dc2141398577457e021da0892578f320d25",
+    "guide-otchet-po-praktike.html": "492fa4f612d8f9de06c5e18f7666b259cefe57a53ff765ab1c148516b103dff5",
+    "guide-otzyv-rukovoditelya-vkr.html": "e54a64a152beff40a52853b77f91f0f63f37f166a3d4bc1700a41f94c9cd706e",
+    "guide-prakticheskaya-chast-kursovoy.html": "4c2ad79bbd63bcbbee97889b6257267d06c54cd2429dcd3aefcd7898db8e83b9",
+    "guide-prezentaciya-k-zashchite.html": "3150cd7593c97e33605da126e861c9abc16f7987c51993fc838f7200ea35ec47",
+    "guide-prilozheniya-po-gost.html": "0ae24a2e44fb569cd6a910bfc645a23d8d2958ef9f4c2e7aa5f6aa85879ceca5",
+    "guide-recenziya-na-vkr.html": "79707e3d21138c53270b68b90bf52832514553078f6bc98254abb4d5ea69b4d1",
+    "guide-rech-na-zashchitu.html": "8dce0c0b857451a1482f415a57df8d6e578fdd50bd0977a0912b9cfe2367eee1",
+    "guide-rinc-statya.html": "ed95121a150ba930dbfed52134e90462c363e8a9671d1f66a746a956d5f4f643",
+    "guide-skolko-stoit-diplomnaya.html": "7f2ffc1d04e95a4dfcfe661767b67aef3f205b80299fb1a2afb986f97eeae366",
+    "guide-skolko-stoit-kursovaya.html": "09b9282144d4a7162650400bdab27cb4cd06f05a99a079cb994f8551238bf2db",
+    "guide-spisok-literatury.html": "a50c4a6a7af3b65f55be20bf11e030ceda7cc1d1c26f4aa8ed3553031fd1a4fe",
+    "guide-temy-vkr.html": "a7830557a0c881b2ed7c761a7670bc76e02a04bf20302cff405c693740643b8d",
+    "guide-titulnyj-list.html": "4547995ff01494d513e2b58a395a9fd91aded27de8b4e4505143687c315771a0",
+    "guide-vkr-struktura.html": "276fbed55faa9079a27012d97b4b135bbecedc6101fdbfcf2f3efc186e767e30",
+    "guide-vvedenie-kursovoy.html": "77d058c40d131d24fc623ae7c02eaf750658fa439aee1176bcc886dc42792a30",
+    "guide-zaklyuchenie-kursovoy.html": "7c0a423afd114b4c970dd74760dac54fc24b9a54cbd9b05cd8c45b6e3c1df324",
+    "guide-zaklyuchenie-vkr.html": "a7bba509068bb1430eaa12e75ed6113878bf411d30c6bf7410e930353213cc28",
+    "guide-zashchita-diploma.html": "bb2cdcaa077f36c0710c9860d210255942b754fe94b754f053a4827a69f84f40",
+    "index.html": "5259610927f7aa5509b7846fcdaf45d6a24d8cf6e323444f652a724f8fa82a69",
+    "kandidatskaya-dissertaciya.html": "a79049b499dc6ab2ef93c1ae80a41a5b451a70d477260a59ddfd688b6d09374b",
+    "knowledge.html": "e1504885be62e18ea34b13c31aa260e127b867b803ad18077d70b19a6eafa90e",
+    "komissiya-0.html": "0cef56b0a8c4b7d708981ac63d848a9cef1ddd0c92828a215fb38f2fb1d340d2",
+    "kursovaya-po-ekonomike.html": "3368d7745c620429827e9fa2689fc1d7e69e2230dce3e07bbb2d305172644bb9",
+    "kursovaya-po-informatike.html": "533a1a0b878e8fb997885a2976c5f65430e6d77e64519748db8fe37eb43c8024",
+    "kursovaya-po-menedzhmentu.html": "0b7841df6862fe898b903b2729cc3ea81921e4a15126f579d19596a44b4e9bde",
+    "kursovaya-po-pedagogike.html": "44ca87263d17f4a2315a58e7d9afd0c209b1fc1e9803ef138d99ae687eb7991c",
+    "kursovaya-po-psihologii.html": "79dda55f187b5a23edb4aaeb270e3f4790362fa009c2a3d9f81daf65530ce8a8",
+    "kursovaya-po-yurisprudencii.html": "81b7fc66a0be4c9899575b34ffba71114941513ff7606410d46390913523ddc3",
+    "kursovaya-rabota.html": "c7809f483678b0de966716503290a2237c77841943758ad212ee0244a3124cb7",
+    "loyalty.html": "4d0941defcdb70e0db31533e99884a1370de443a8faa454d2a9ad3bd53600004",
+    "magisterskaya-dissertaciya.html": "bd4bdf0adeb0604d5a55564bc64a7d40845b8518dbf296828a1141406d6e0660",
+    "maintenance.html": "bb51b909c0f000916229d343202f3a3331d2146a540b132979a77369044b96bc",
+    "nauchnaya-statya.html": "efbb85a065d6f4d8e2dc10752f8ceaea6d7a6ebe0e98116abaa0237eef47f0b1",
+    "normokontrol-vkr.html": "f482b2bfbce30fb0b4304d0ac33fcab4b64ab7601e5d3ca68924cd12dd77d324",
+    "oferta.html": "25c7aa4010d127ff8c7a829de3f2a333ee09c21af8d006fbb1e02878ca95b46b",
+    "offline.html": "42cf8c2a7294cab0adb05ee621c58b06e56193dca04f67c8a9b111262cefee01",
+    "oplaceno.html": "b0f037240025c10266ba70bf5cc7d8fbf297ce8eabe577fd1c14f3c52928d8b0",
+    "oplata.html": "48134383d579f6c3b681af4fafebb8bce1e6ac2b0f85a203c5850bb1f2650975",
+    "otchet-po-praktike.html": "5745f0a8945804ce0789d052420a5a5a0162800ee5e8b4f7a88ad45ee762c27b",
+    "plan.html": "4146951bcbea0fa965db1a975dd0fec09b6784db8609fe04628a4c2780542cab",
+    "plus.html": "3b87a61aa43970b32b99f96b01af8bf637ce2f2556519d188c97327ad6062c31",
+    "privacy.html": "0d3ddb341d44e552d3786b66146ae15db6acdd06d455db0f56fb2250c306fcda",
+    "priyomnaya.html": "67d144deb9907950a19e2f1420d5d6d97f636da2e30c208bc9faa2d7f005d4ab",
+    "prolog.html": "3d4d5117378f25ddaa5bf7a60051115f7aa3cdbc080f789fbed1a81ba9251ede",
+    "proverka-istochnikov-vkr.html": "19afdca7c52b5f174b046e6058d1e814a0c061b82cc13dc68234ddfed11ba3a7",
+    "razbor-zamechaniy-nauchruka.html": "6da906692ec724ab4128499d23befb2326e6c906858abb67d48102ea5f454add",
+    "redaktura-posle-ii.html": "5220fdda7b3c673a4c4c1c3b42362740b38f105819c79a9fbbc49234f99e43ea",
+    "referat.html": "09755ea58a6fdc924abe5529326e05c39f9e2ac14c3c596b70fdf8fbfb50c319",
+    "referral-rules.html": "15f5fdee6cf4e6029712178d0c0742c170a980b7adab156450f76fc764d9970a",
+    "referral.html": "b9e4c77c7ea1607c8ced214227e604ca9eb36c004899d87fb13b1bd9ec04b81b",
+    "refunds.html": "c31ed607fb5d4ea392bc5c8a4b17f3c035e4af54cb5e1f71b162464500fba26e",
+    "requisites.html": "ceb4ce0f46dfab443c87b0e68a8118e15d441a244b0c1b221404657efba30f22",
+    "reviews.html": "82b1504ab2c578f49aa11e0a178091569363d4fc8cef4b530a012a4ec8ffd647",
+    "samples.html": "65daa97abc7601f09b5c9e9930062ecaebbe60ebca33576a0c335fa7cdf212df",
+    "services.html": "4802e774902c7c887c2b7dc6e9954043512b6742355ba8f3e5f1cb8912a62fe1",
+    "specifikaciya.html": "09a1bd3c05ff1e6ccb97f772d5ee28c9c5456823dc8f37bf71caf1640e02c459",
+    "start.html": "96b64be2b05e2c867a4c1c994fb044af5eb9aba2b745df4b5bce74ce2f912efe",
+    "tariffs.html": "512f4cfa36bd9cb6453534787625005f18bb2aed36fb59f778d28bb8176e7680",
+    "terms.html": "96aae53daad3549af52a035206147239ace6eb8aa45f00dd5bf5d4c751efcab8",
+    "tools.html": "6b57596a473320ce305966f85c1fe0586e58a32bad0288691a0c3a803c1eab6a",
+    "vedenie.html": "89b0d44125ff61cfe8e24b6a2254cd59a01dc1a9536de0692af285a432ae3855",
+    "zayavka.html": "81ffe86d90fdcaffa7990ec625e44250fca524b991db2404770d82a21a3f54dd",
+    "zero-classes.html": "f459981fe791ec347c8d84a3d4bbc8c0be4bebf508333612c8d942cca747cec9"
+  },
+  "tests": [
+    {
+      "case": "indexable single description",
+      "pass": true,
+      "details": []
+    },
+    {
+      "case": "indexable single og:title",
+      "pass": true,
+      "details": []
+    },
+    {
+      "case": "indexable single og:description",
+      "pass": true,
+      "details": []
+    },
+    {
+      "case": "indexable single og:image",
+      "pass": true,
+      "details": []
+    },
+    {
+      "case": "single canonical indexable",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "all JSON-LD parses",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "no conflicting robots",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "tariffs alias",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "private noindex configurator.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "private noindex consent.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "private noindex consent-request.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "private noindex dashboard.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "private noindex oplaceno.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "derived exact discovery",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "discovery unique",
+      "pass": true,
+      "details": 77
+    },
+    {
+      "case": "no unsafe discovery",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "referral no invented date",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "history dates",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "reject https://evil.example/index.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "reject https://akademsalon.ru/?token=private",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "reject https://akademsalon.ru/#secret",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "reject https://akademsalon.ru/missing.html",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "reject http://akademsalon.ru/",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "noindex fixture <meta name=\"robots\" content=\"none\">",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "noindex fixture <meta name=\"googlebot\" content=\"NOINDEX,follow\">",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "noindex fixture <meta name=\"yandex\" content=\"noindex\">",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "noindex fixture <meta name=\"robots\" content=\"index,follow\"><meta name=\"robots\" content=\"noindex\">",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price kursovaya-rabota",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price diplomnaya-rabota",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price magisterskaya-dissertaciya",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price kandidatskaya-dissertaciya",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price otchet-po-praktike",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price nauchnaya-statya",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "bounded from price referat",
+      "pass": true,
+      "details": null
+    },
+    {
+      "case": "whole + express24",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "part explicit",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "editing explicit",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "fast unresolved",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "expressfast",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "candidate refuses speed",
+      "pass": true,
+      "state": {
+        "product": "kandidat",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "kandidat",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "invalid enum ignored",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "service precedence",
+      "pass": true,
+      "state": {
+        "product": "service:norm",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "service": "norm",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "scope without product cannot reset draft",
+      "pass": true,
+      "state": {
+        "product": "master",
+        "scope": "editing",
+        "composition": {
+          "version": 1,
+          "product": "master",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "editing"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "explicit resets unrelated extras",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diagnostic unchanged",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "diagnostic",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "legacy type and speed",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "express24",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "no contact or arbitrary financial hydration",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "kursovaya-rabota initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota scope whole",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota scope part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota scope editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota speed standard",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota speed express24",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota times2",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota fast unknown",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota checklist display only",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota scope whole",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota scope part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota scope editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota speed standard",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota speed express24",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota times2",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota fast unknown",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota checklist display only",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya scope whole",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya scope part",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya scope editing",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya speed standard",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya speed express24",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya times2",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya fast unknown",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya checklist display only",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya scope whole",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya scope part",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya scope editing",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya speed standard",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya checklist display only",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike scope whole",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike scope part",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike scope editing",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike speed standard",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike speed express24",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike times2",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike fast unknown",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike checklist display only",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya scope whole",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya scope part",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya scope editing",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya speed standard",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya speed express24",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya times2",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya fast unknown",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya checklist display only",
+      "pass": true
+    },
+    {
+      "case": "referat initial accurate base",
+      "pass": true
+    },
+    {
+      "case": "referat scope whole",
+      "pass": true
+    },
+    {
+      "case": "referat scope part",
+      "pass": true
+    },
+    {
+      "case": "referat partial no proportional promise part",
+      "pass": true
+    },
+    {
+      "case": "referat scope editing",
+      "pass": true
+    },
+    {
+      "case": "referat partial no proportional promise editing",
+      "pass": true
+    },
+    {
+      "case": "referat speed standard",
+      "pass": true
+    },
+    {
+      "case": "referat speed express24",
+      "pass": true
+    },
+    {
+      "case": "referat times2",
+      "pass": true
+    },
+    {
+      "case": "referat speed expressfast",
+      "pass": true
+    },
+    {
+      "case": "referat fast unknown",
+      "pass": true
+    },
+    {
+      "case": "referat checklist display only",
+      "pass": true
+    },
+    {
+      "case": "production release existing deterministic suite",
+      "pass": true,
+      "assertions": 2
+    }
+  ],
+  "sitemap_urls": [
+    "https://akademsalon.ru/about.html",
+    "https://akademsalon.ru/academic-integrity.html",
+    "https://akademsalon.ru/audit-temy-vkr.html",
+    "https://akademsalon.ru/avtorskiy-zakaz.html",
+    "https://akademsalon.ru/benefits.html",
+    "https://akademsalon.ru/check.html",
+    "https://akademsalon.ru/deposit.html",
+    "https://akademsalon.ru/diplomnaya-po-ekonomike.html",
+    "https://akademsalon.ru/diplomnaya-po-psihologii.html",
+    "https://akademsalon.ru/diplomnaya-po-yurisprudencii.html",
+    "https://akademsalon.ru/diplomnaya-rabota.html",
+    "https://akademsalon.ru/dorabotka-otcheta-po-praktike.html",
+    "https://akademsalon.ru/dosie-nauchruka.html",
+    "https://akademsalon.ru/gift.html",
+    "https://akademsalon.ru/guarantees.html",
+    "https://akademsalon.ru/guide-antiplagiat-ai.html",
+    "https://akademsalon.ru/guide-apellyaciya.html",
+    "https://akademsalon.ru/guide-dnevnik-praktiki.html",
+    "https://akademsalon.ru/guide-harakteristika-s-praktiki.html",
+    "https://akademsalon.ru/guide-kursovaya-za-nedelyu.html",
+    "https://akademsalon.ru/guide-normocontrol.html",
+    "https://akademsalon.ru/guide-obekt-predmet-cel-zadachi.html",
+    "https://akademsalon.ru/guide-otchet-po-praktike.html",
+    "https://akademsalon.ru/guide-otzyv-rukovoditelya-vkr.html",
+    "https://akademsalon.ru/guide-prakticheskaya-chast-kursovoy.html",
+    "https://akademsalon.ru/guide-prezentaciya-k-zashchite.html",
+    "https://akademsalon.ru/guide-prilozheniya-po-gost.html",
+    "https://akademsalon.ru/guide-recenziya-na-vkr.html",
+    "https://akademsalon.ru/guide-rech-na-zashchitu.html",
+    "https://akademsalon.ru/guide-rinc-statya.html",
+    "https://akademsalon.ru/guide-skolko-stoit-diplomnaya.html",
+    "https://akademsalon.ru/guide-skolko-stoit-kursovaya.html",
+    "https://akademsalon.ru/guide-spisok-literatury.html",
+    "https://akademsalon.ru/guide-temy-vkr.html",
+    "https://akademsalon.ru/guide-titulnyj-list.html",
+    "https://akademsalon.ru/guide-vkr-struktura.html",
+    "https://akademsalon.ru/guide-vvedenie-kursovoy.html",
+    "https://akademsalon.ru/guide-zaklyuchenie-kursovoy.html",
+    "https://akademsalon.ru/guide-zaklyuchenie-vkr.html",
+    "https://akademsalon.ru/guide-zashchita-diploma.html",
+    "https://akademsalon.ru/",
+    "https://akademsalon.ru/kandidatskaya-dissertaciya.html",
+    "https://akademsalon.ru/knowledge.html",
+    "https://akademsalon.ru/komissiya-0.html",
+    "https://akademsalon.ru/kursovaya-po-ekonomike.html",
+    "https://akademsalon.ru/kursovaya-po-informatike.html",
+    "https://akademsalon.ru/kursovaya-po-menedzhmentu.html",
+    "https://akademsalon.ru/kursovaya-po-pedagogike.html",
+    "https://akademsalon.ru/kursovaya-po-psihologii.html",
+    "https://akademsalon.ru/kursovaya-po-yurisprudencii.html",
+    "https://akademsalon.ru/kursovaya-rabota.html",
+    "https://akademsalon.ru/loyalty.html",
+    "https://akademsalon.ru/magisterskaya-dissertaciya.html",
+    "https://akademsalon.ru/nauchnaya-statya.html",
+    "https://akademsalon.ru/normokontrol-vkr.html",
+    "https://akademsalon.ru/oferta.html",
+    "https://akademsalon.ru/oplata.html",
+    "https://akademsalon.ru/otchet-po-praktike.html",
+    "https://akademsalon.ru/plan.html",
+    "https://akademsalon.ru/plus.html",
+    "https://akademsalon.ru/privacy.html",
+    "https://akademsalon.ru/priyomnaya.html",
+    "https://akademsalon.ru/prolog.html",
+    "https://akademsalon.ru/proverka-istochnikov-vkr.html",
+    "https://akademsalon.ru/razbor-zamechaniy-nauchruka.html",
+    "https://akademsalon.ru/redaktura-posle-ii.html",
+    "https://akademsalon.ru/referat.html",
+    "https://akademsalon.ru/referral.html",
+    "https://akademsalon.ru/refunds.html",
+    "https://akademsalon.ru/requisites.html",
+    "https://akademsalon.ru/reviews.html",
+    "https://akademsalon.ru/samples.html",
+    "https://akademsalon.ru/services.html",
+    "https://akademsalon.ru/specifikaciya.html",
+    "https://akademsalon.ru/terms.html",
+    "https://akademsalon.ru/tools.html",
+    "https://akademsalon.ru/vedenie.html"
+  ],
+  "reproducers": [
+    "/tmp/salon-seo-contract.py",
+    "/tmp/salon-seo-order-contract.cjs",
+    "/tmp/salon-seo-entry-contract.cjs",
+    "/tmp/salon-seo-builder-test.log",
+    "tests/production-release.test.js"
+  ],
+  "limitations": [
+    "Actual frozen build + live redirect/HTTP indexability are parent release gates. Overlay is exact reviewed release193 public HTML; do not derive from source referral prototype.",
+    "Metadata does not guarantee search rich results or ranking.",
+    "Order VM covers exact source initialization and commerce functions; parent owns full rendered form/handoff submit-free browser matrix."
+  ],
+  "findings": [],
+  "summary": {
+    "passed_cases": 127,
+    "P0": 0,
+    "P1": 0,
+    "P2": 0,
+    "source_only": true
+  },
+  "entry_delta_review": {
+    "decision": "GO",
+    "passed": 134,
+    "tests": [
+      {
+        "case": "kursovaya-rabota enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota scope whole",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota footer scope part",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota scope part",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota scope editing",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota speed standard",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota footer speed express24",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota speed express24",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota times2",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota footer speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota fast unknown",
+        "pass": true
+      },
+      {
+        "case": "kursovaya-rabota checklist display only",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota scope whole",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota footer scope part",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota scope part",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota scope editing",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota speed standard",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota footer speed express24",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota speed express24",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota times2",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota footer speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota fast unknown",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-rabota checklist display only",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya scope whole",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya footer scope part",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya scope part",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya scope editing",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya speed standard",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya footer speed express24",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya speed express24",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya times2",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya footer speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya fast unknown",
+        "pass": true
+      },
+      {
+        "case": "magisterskaya-dissertaciya checklist display only",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya scope whole",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya footer scope part",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya scope part",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya scope editing",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya speed standard",
+        "pass": true
+      },
+      {
+        "case": "kandidatskaya-dissertaciya checklist display only",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike scope whole",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike footer scope part",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike scope part",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike scope editing",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike speed standard",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike footer speed express24",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike speed express24",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike times2",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike footer speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike fast unknown",
+        "pass": true
+      },
+      {
+        "case": "otchet-po-praktike checklist display only",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya scope whole",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya footer scope part",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya scope part",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya scope editing",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya speed standard",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya footer speed express24",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya speed express24",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya times2",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya footer speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya fast unknown",
+        "pass": true
+      },
+      {
+        "case": "nauchnaya-statya checklist display only",
+        "pass": true
+      },
+      {
+        "case": "referat enhanced only after init",
+        "pass": true
+      },
+      {
+        "case": "referat initial footer sync",
+        "pass": true
+      },
+      {
+        "case": "referat initial accurate base",
+        "pass": true
+      },
+      {
+        "case": "referat footer scope whole",
+        "pass": true
+      },
+      {
+        "case": "referat scope whole",
+        "pass": true
+      },
+      {
+        "case": "referat footer scope part",
+        "pass": true
+      },
+      {
+        "case": "referat scope part",
+        "pass": true
+      },
+      {
+        "case": "referat partial no proportional promise part",
+        "pass": true
+      },
+      {
+        "case": "referat footer scope editing",
+        "pass": true
+      },
+      {
+        "case": "referat scope editing",
+        "pass": true
+      },
+      {
+        "case": "referat partial no proportional promise editing",
+        "pass": true
+      },
+      {
+        "case": "referat footer speed standard",
+        "pass": true
+      },
+      {
+        "case": "referat speed standard",
+        "pass": true
+      },
+      {
+        "case": "referat footer speed express24",
+        "pass": true
+      },
+      {
+        "case": "referat speed express24",
+        "pass": true
+      },
+      {
+        "case": "referat times2",
+        "pass": true
+      },
+      {
+        "case": "referat footer speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "referat speed expressfast",
+        "pass": true
+      },
+      {
+        "case": "referat fast unknown",
+        "pass": true
+      },
+      {
+        "case": "referat checklist display only",
+        "pass": true
+      }
+    ],
+    "reproducer": "/tmp/salon-seo-entry-contract.cjs",
+    "changes": "All footer CTA defaults preserved in HTML and synchronized after every scope/speed interaction. No-JS controls hidden until paint succeeds.",
+    "nojs_css_guard": true,
+    "data_enhanced_after_successful_paint": true
+  }
+}

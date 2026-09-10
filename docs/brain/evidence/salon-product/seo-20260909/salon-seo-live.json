@@ -1,0 +1,23 @@
+{
+  "rows": [
+    {
+      "route": "kursovaya-rabota",
+      "choice": "https://akademsalon.ru/configurator.html?product=course&result=part&speed=express24",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24"
+      }
+    },
+    {
+      "route": "otchet-po-praktike",
+      "choice": "https://akademsalon.ru/configurator.html?product=practice&result=part&speed=express24",
+      "form": {
+        "product": "practice",
+        "scope": "part",
+        "speed": "express24"
+      }
+    }
+  ],
+  "posts": 0
+}

@@ -1,0 +1,4384 @@
+{
+  "results": [
+    {
+      "route": "404.html",
+      "width": 390,
+      "url": "/404.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "50x.html",
+      "width": 390,
+      "url": "/50x.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "about.html",
+      "width": 390,
+      "url": "/about.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "academic-integrity.html",
+      "width": 390,
+      "url": "/academic-integrity.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "is-current",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "audit-temy-vkr.html",
+      "width": 390,
+      "url": "/audit-temy-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "avtorskiy-zakaz.html",
+      "width": 390,
+      "url": "/avtorskiy-zakaz.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "benefits.html",
+      "width": 390,
+      "url": "/benefits.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-benefits.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "check.html",
+      "width": 390,
+      "url": "/check.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "configurator.html",
+      "width": 390,
+      "url": "/configurator.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-order.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "DIV",
+          "class": "hp",
+          "id": ""
+        },
+        {
+          "tag": "LABEL",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "id": "website"
+        }
+      ]
+    },
+    {
+      "route": "consent-analytics.html",
+      "width": 390,
+      "url": "/consent-analytics.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "consent-marketing.html",
+      "width": 390,
+      "url": "/consent-marketing.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "consent-publication.html",
+      "width": 390,
+      "url": "/consent-publication.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "consent-request.html",
+      "width": 390,
+      "url": "/consent-request.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "consent.html",
+      "width": 390,
+      "url": "/consent.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "dashboard.html",
+      "width": 390,
+      "url": "/dashboard.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "deposit.html",
+      "width": 390,
+      "url": "/deposit.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-benefits.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-po-ekonomike.html",
+      "width": 390,
+      "url": "/diplomnaya-po-ekonomike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-po-psihologii.html",
+      "width": 390,
+      "url": "/diplomnaya-po-psihologii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-po-yurisprudencii.html",
+      "width": 390,
+      "url": "/diplomnaya-po-yurisprudencii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-rabota.html",
+      "width": 390,
+      "url": "/diplomnaya-rabota.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 390,
+      "url": "/dorabotka-otcheta-po-praktike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "dosie-nauchruka.html",
+      "width": 390,
+      "url": "/dosie-nauchruka.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "expertise.html",
+      "width": 390,
+      "url": "/expertise.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "gift.html",
+      "width": 390,
+      "url": "/gift.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guarantees.html",
+      "width": 390,
+      "url": "/guarantees.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-antiplagiat-ai.html",
+      "width": 390,
+      "url": "/guide-antiplagiat-ai.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-apellyaciya.html",
+      "width": 390,
+      "url": "/guide-apellyaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-dnevnik-praktiki.html",
+      "width": 390,
+      "url": "/guide-dnevnik-praktiki.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-harakteristika-s-praktiki.html",
+      "width": 390,
+      "url": "/guide-harakteristika-s-praktiki.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "ARTICLE",
+          "class": "article-card",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-kursovaya-za-nedelyu.html",
+      "width": 390,
+      "url": "/guide-kursovaya-za-nedelyu.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-normocontrol.html",
+      "width": 390,
+      "url": "/guide-normocontrol.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-obekt-predmet-cel-zadachi.html",
+      "width": 390,
+      "url": "/guide-obekt-predmet-cel-zadachi.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-otchet-po-praktike.html",
+      "width": 390,
+      "url": "/guide-otchet-po-praktike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-otzyv-rukovoditelya-vkr.html",
+      "width": 390,
+      "url": "/guide-otzyv-rukovoditelya-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-prakticheskaya-chast-kursovoy.html",
+      "width": 390,
+      "url": "/guide-prakticheskaya-chast-kursovoy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-prezentaciya-k-zashchite.html",
+      "width": 390,
+      "url": "/guide-prezentaciya-k-zashchite.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-prilozheniya-po-gost.html",
+      "width": 390,
+      "url": "/guide-prilozheniya-po-gost.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-recenziya-na-vkr.html",
+      "width": 390,
+      "url": "/guide-recenziya-na-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-rech-na-zashchitu.html",
+      "width": 390,
+      "url": "/guide-rech-na-zashchitu.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-rinc-statya.html",
+      "width": 390,
+      "url": "/guide-rinc-statya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-skolko-stoit-diplomnaya.html",
+      "width": 390,
+      "url": "/guide-skolko-stoit-diplomnaya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-skolko-stoit-kursovaya.html",
+      "width": 390,
+      "url": "/guide-skolko-stoit-kursovaya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-spisok-literatury.html",
+      "width": 390,
+      "url": "/guide-spisok-literatury.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-temy-vkr.html",
+      "width": 390,
+      "url": "/guide-temy-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-titulnyj-list.html",
+      "width": 390,
+      "url": "/guide-titulnyj-list.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-vkr-struktura.html",
+      "width": 390,
+      "url": "/guide-vkr-struktura.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-vvedenie-kursovoy.html",
+      "width": 390,
+      "url": "/guide-vvedenie-kursovoy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-zaklyuchenie-kursovoy.html",
+      "width": 390,
+      "url": "/guide-zaklyuchenie-kursovoy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "is-current",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-zaklyuchenie-vkr.html",
+      "width": 390,
+      "url": "/guide-zaklyuchenie-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "guide-zashchita-diploma.html",
+      "width": 390,
+      "url": "/guide-zashchita-diploma.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "index.html",
+      "width": 390,
+      "url": "/index.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-samples.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kandidatskaya-dissertaciya.html",
+      "width": 390,
+      "url": "/kandidatskaya-dissertaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "knowledge.html",
+      "width": 390,
+      "url": "/knowledge.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "komissiya-0.html",
+      "width": 390,
+      "url": "/komissiya-0.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-ekonomike.html",
+      "width": 390,
+      "url": "/kursovaya-po-ekonomike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-informatike.html",
+      "width": 390,
+      "url": "/kursovaya-po-informatike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-menedzhmentu.html",
+      "width": 390,
+      "url": "/kursovaya-po-menedzhmentu.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-pedagogike.html",
+      "width": 390,
+      "url": "/kursovaya-po-pedagogike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-psihologii.html",
+      "width": 390,
+      "url": "/kursovaya-po-psihologii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-yurisprudencii.html",
+      "width": 390,
+      "url": "/kursovaya-po-yurisprudencii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-rabota.html",
+      "width": 390,
+      "url": "/kursovaya-rabota.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "loyalty.html",
+      "width": 390,
+      "url": "/loyalty.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "magisterskaya-dissertaciya.html",
+      "width": 390,
+      "url": "/magisterskaya-dissertaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "maintenance.html",
+      "width": 390,
+      "url": "/maintenance.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "nauchnaya-statya.html",
+      "width": 390,
+      "url": "/nauchnaya-statya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 390,
+      "url": "/normokontrol-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "oferta.html",
+      "width": 390,
+      "url": "/oferta.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "offline.html",
+      "width": 390,
+      "url": "/offline.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "oplaceno.html",
+      "width": 390,
+      "url": "/oplaceno.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "oplata.html",
+      "width": 390,
+      "url": "/oplata.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "otchet-po-praktike.html",
+      "width": 390,
+      "url": "/otchet-po-praktike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "plan.html",
+      "width": 390,
+      "url": "/plan.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "plus.html",
+      "width": 390,
+      "url": "/plus.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-benefits.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "ARTICLE",
+          "class": "plus-plan-card plus-plan-card--featured",
+          "id": ""
+        },
+        {
+          "tag": "HEADER",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "P",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "EM",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "H3",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "privacy.html",
+      "width": 390,
+      "url": "/privacy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "priyomnaya.html",
+      "width": 390,
+      "url": "/priyomnaya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "LABEL",
+          "class": "hp",
+          "id": ""
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "id": "supportWebsite"
+        }
+      ]
+    },
+    {
+      "route": "prolog.html",
+      "width": 390,
+      "url": "/prolog.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "proverka-istochnikov-vkr.html",
+      "width": 390,
+      "url": "/proverka-istochnikov-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "url": "/razbor-zamechaniy-nauchruka.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 390,
+      "url": "/redaktura-posle-ii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "referat.html",
+      "width": 390,
+      "url": "/referat.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "referral.html",
+      "width": 390,
+      "url": "/referral.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "refunds.html",
+      "width": 390,
+      "url": "/refunds.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "is-current",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "requisites.html",
+      "width": 390,
+      "url": "/requisites.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "is-current",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "reviews.html",
+      "width": 390,
+      "url": "/reviews.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "samples.html",
+      "width": 390,
+      "url": "/samples.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-samples.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "services.html",
+      "width": 390,
+      "url": "/services.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "specifikaciya.html",
+      "width": 390,
+      "url": "/specifikaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "start.html",
+      "width": 390,
+      "url": "/configurator.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-order.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "DIV",
+          "class": "hp",
+          "id": ""
+        },
+        {
+          "tag": "LABEL",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "id": "website"
+        }
+      ]
+    },
+    {
+      "route": "tariffs.html",
+      "width": 390,
+      "url": "/tariffs.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "terms.html",
+      "width": 390,
+      "url": "/terms.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "A",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "tools.html",
+      "width": 390,
+      "url": "/tools.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "vedenie.html",
+      "width": 390,
+      "url": "/vedenie.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "DIV",
+          "class": "comparison-table__row comparison-table__head",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "DIV",
+          "class": "comparison-table__row",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "zayavka.html",
+      "width": 390,
+      "url": "/zayavka.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "404.html",
+      "width": 1440,
+      "url": "/404.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "50x.html",
+      "width": 1440,
+      "url": "/50x.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "about.html",
+      "width": 1440,
+      "url": "/about.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "academic-integrity.html",
+      "width": 1440,
+      "url": "/academic-integrity.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "audit-temy-vkr.html",
+      "width": 1440,
+      "url": "/audit-temy-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "avtorskiy-zakaz.html",
+      "width": 1440,
+      "url": "/avtorskiy-zakaz.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "benefits.html",
+      "width": 1440,
+      "url": "/benefits.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-benefits.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "check.html",
+      "width": 1440,
+      "url": "/check.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "configurator.html",
+      "width": 1440,
+      "url": "/configurator.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-order.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "DIV",
+          "class": "hp",
+          "id": ""
+        },
+        {
+          "tag": "LABEL",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "id": "website"
+        }
+      ]
+    },
+    {
+      "route": "consent-analytics.html",
+      "width": 1440,
+      "url": "/consent-analytics.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "consent-marketing.html",
+      "width": 1440,
+      "url": "/consent-marketing.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "consent-publication.html",
+      "width": 1440,
+      "url": "/consent-publication.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "consent-request.html",
+      "width": 1440,
+      "url": "/consent-request.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "consent.html",
+      "width": 1440,
+      "url": "/consent.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "dashboard.html",
+      "width": 1440,
+      "url": "/dashboard.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "deposit.html",
+      "width": 1440,
+      "url": "/deposit.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-benefits.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-po-ekonomike.html",
+      "width": 1440,
+      "url": "/diplomnaya-po-ekonomike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-po-psihologii.html",
+      "width": 1440,
+      "url": "/diplomnaya-po-psihologii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-po-yurisprudencii.html",
+      "width": 1440,
+      "url": "/diplomnaya-po-yurisprudencii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "diplomnaya-rabota.html",
+      "width": 1440,
+      "url": "/diplomnaya-rabota.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "dorabotka-otcheta-po-praktike.html",
+      "width": 1440,
+      "url": "/dorabotka-otcheta-po-praktike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "dosie-nauchruka.html",
+      "width": 1440,
+      "url": "/dosie-nauchruka.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "expertise.html",
+      "width": 1440,
+      "url": "/expertise.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "gift.html",
+      "width": 1440,
+      "url": "/gift.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guarantees.html",
+      "width": 1440,
+      "url": "/guarantees.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-antiplagiat-ai.html",
+      "width": 1440,
+      "url": "/guide-antiplagiat-ai.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-apellyaciya.html",
+      "width": 1440,
+      "url": "/guide-apellyaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-dnevnik-praktiki.html",
+      "width": 1440,
+      "url": "/guide-dnevnik-praktiki.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-harakteristika-s-praktiki.html",
+      "width": 1440,
+      "url": "/guide-harakteristika-s-praktiki.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-kursovaya-za-nedelyu.html",
+      "width": 1440,
+      "url": "/guide-kursovaya-za-nedelyu.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-normocontrol.html",
+      "width": 1440,
+      "url": "/guide-normocontrol.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-obekt-predmet-cel-zadachi.html",
+      "width": 1440,
+      "url": "/guide-obekt-predmet-cel-zadachi.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-otchet-po-praktike.html",
+      "width": 1440,
+      "url": "/guide-otchet-po-praktike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-otzyv-rukovoditelya-vkr.html",
+      "width": 1440,
+      "url": "/guide-otzyv-rukovoditelya-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-prakticheskaya-chast-kursovoy.html",
+      "width": 1440,
+      "url": "/guide-prakticheskaya-chast-kursovoy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-prezentaciya-k-zashchite.html",
+      "width": 1440,
+      "url": "/guide-prezentaciya-k-zashchite.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-prilozheniya-po-gost.html",
+      "width": 1440,
+      "url": "/guide-prilozheniya-po-gost.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-recenziya-na-vkr.html",
+      "width": 1440,
+      "url": "/guide-recenziya-na-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-rech-na-zashchitu.html",
+      "width": 1440,
+      "url": "/guide-rech-na-zashchitu.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-rinc-statya.html",
+      "width": 1440,
+      "url": "/guide-rinc-statya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-skolko-stoit-diplomnaya.html",
+      "width": 1440,
+      "url": "/guide-skolko-stoit-diplomnaya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-skolko-stoit-kursovaya.html",
+      "width": 1440,
+      "url": "/guide-skolko-stoit-kursovaya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-spisok-literatury.html",
+      "width": 1440,
+      "url": "/guide-spisok-literatury.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-temy-vkr.html",
+      "width": 1440,
+      "url": "/guide-temy-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-titulnyj-list.html",
+      "width": 1440,
+      "url": "/guide-titulnyj-list.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-vkr-struktura.html",
+      "width": 1440,
+      "url": "/guide-vkr-struktura.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-vvedenie-kursovoy.html",
+      "width": 1440,
+      "url": "/guide-vvedenie-kursovoy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-zaklyuchenie-kursovoy.html",
+      "width": 1440,
+      "url": "/guide-zaklyuchenie-kursovoy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-zaklyuchenie-vkr.html",
+      "width": 1440,
+      "url": "/guide-zaklyuchenie-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "guide-zashchita-diploma.html",
+      "width": 1440,
+      "url": "/guide-zashchita-diploma.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "index.html",
+      "width": 1440,
+      "url": "/index.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-samples.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kandidatskaya-dissertaciya.html",
+      "width": 1440,
+      "url": "/kandidatskaya-dissertaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "knowledge.html",
+      "width": 1440,
+      "url": "/knowledge.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "komissiya-0.html",
+      "width": 1440,
+      "url": "/komissiya-0.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-ekonomike.html",
+      "width": 1440,
+      "url": "/kursovaya-po-ekonomike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-informatike.html",
+      "width": 1440,
+      "url": "/kursovaya-po-informatike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-menedzhmentu.html",
+      "width": 1440,
+      "url": "/kursovaya-po-menedzhmentu.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-pedagogike.html",
+      "width": 1440,
+      "url": "/kursovaya-po-pedagogike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-psihologii.html",
+      "width": 1440,
+      "url": "/kursovaya-po-psihologii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-po-yurisprudencii.html",
+      "width": 1440,
+      "url": "/kursovaya-po-yurisprudencii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "kursovaya-rabota.html",
+      "width": 1440,
+      "url": "/kursovaya-rabota.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "loyalty.html",
+      "width": 1440,
+      "url": "/loyalty.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "magisterskaya-dissertaciya.html",
+      "width": 1440,
+      "url": "/magisterskaya-dissertaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "maintenance.html",
+      "width": 1440,
+      "url": "/maintenance.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "nauchnaya-statya.html",
+      "width": 1440,
+      "url": "/nauchnaya-statya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "normokontrol-vkr.html",
+      "width": 1440,
+      "url": "/normokontrol-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "oferta.html",
+      "width": 1440,
+      "url": "/oferta.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "offline.html",
+      "width": 1440,
+      "url": "/offline.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "oplaceno.html",
+      "width": 1440,
+      "url": "/oplaceno.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "oplata.html",
+      "width": 1440,
+      "url": "/oplata.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "otchet-po-praktike.html",
+      "width": 1440,
+      "url": "/otchet-po-praktike.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "plan.html",
+      "width": 1440,
+      "url": "/plan.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "plus.html",
+      "width": 1440,
+      "url": "/plus.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-benefits.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "privacy.html",
+      "width": 1440,
+      "url": "/privacy.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "priyomnaya.html",
+      "width": 1440,
+      "url": "/priyomnaya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "LABEL",
+          "class": "hp",
+          "id": ""
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "id": "supportWebsite"
+        }
+      ]
+    },
+    {
+      "route": "prolog.html",
+      "width": 1440,
+      "url": "/prolog.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "proverka-istochnikov-vkr.html",
+      "width": 1440,
+      "url": "/proverka-istochnikov-vkr.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "url": "/razbor-zamechaniy-nauchruka.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "redaktura-posle-ii.html",
+      "width": 1440,
+      "url": "/redaktura-posle-ii.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "referat.html",
+      "width": 1440,
+      "url": "/referat.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "referral.html",
+      "width": 1440,
+      "url": "/referral.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "refunds.html",
+      "width": 1440,
+      "url": "/refunds.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "requisites.html",
+      "width": 1440,
+      "url": "/requisites.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "reviews.html",
+      "width": 1440,
+      "url": "/reviews.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "samples.html",
+      "width": 1440,
+      "url": "/samples.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1",
+        "http://127.0.0.1:8768/assets/js/salon-samples.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "services.html",
+      "width": 1440,
+      "url": "/services.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "specifikaciya.html",
+      "width": 1440,
+      "url": "/specifikaciya.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "start.html",
+      "width": 1440,
+      "url": "/configurator.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-order.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "DIV",
+          "class": "hp",
+          "id": ""
+        },
+        {
+          "tag": "LABEL",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "id": "website"
+        }
+      ]
+    },
+    {
+      "route": "tariffs.html",
+      "width": 1440,
+      "url": "/tariffs.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "terms.html",
+      "width": 1440,
+      "url": "/terms.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": [
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "BUTTON",
+          "class": "",
+          "id": ""
+        },
+        {
+          "tag": "SPAN",
+          "class": "",
+          "id": ""
+        }
+      ]
+    },
+    {
+      "route": "tools.html",
+      "width": 1440,
+      "url": "/tools.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "vedenie.html",
+      "width": 1440,
+      "url": "/vedenie.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    },
+    {
+      "route": "zayavka.html",
+      "width": 1440,
+      "url": "/zayavka.html",
+      "overflow": false,
+      "h1": 1,
+      "header": 1,
+      "missingScripts": [
+        "http://127.0.0.1:8768/assets/js/salon-products.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-direct.js?v=20260909direct1",
+        "http://127.0.0.1:8768/assets/js/salon-experience.js?v=20260909experience1"
+      ],
+      "smallInputs": [],
+      "offenders": []
+    }
+  ],
+  "errors": [
+    {
+      "route": "start.html",
+      "message": "Transition was skipped"
+    }
+  ]
+}

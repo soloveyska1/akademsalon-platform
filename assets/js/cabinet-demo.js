@@ -244,10 +244,16 @@
     ]
   };
 
+  function demoDay(offset) { var d=new Date();d.setDate(d.getDate()+offset);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  orders.forEach(function(o,i){o.deadline_date=demoDay([5,12,2][i]);o.deadline_text=new Date(o.deadline_date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long'});});
+  me.milestones[0].due=demoDay(9); me.milestones[1].due=demoDay(2);
+  var demoGifts={ok:true,enabled:true,linked:true,demo:true,channels:{salon:{status:'ready',granted:false},kladovaya:{status:'ready',granted:false}}};
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
   function responseFor(path) {
     var clean = String(path || '').split('?')[0];
-    if (clean === '/features') return { ok: true, email_login: true, vk_login: true, mailru_login: false, pay_online: true };
+    if (clean === '/features') return { ok: true, email_login: true, vk_login: true, mailru_login: false, pay_online: true, community_rewards: true };
+    if (clean === '/community') return clone(demoGifts);
+    if (/^\/community\/gift\/(salon|kladovaya)$/.test(clean)) {var id=clean.split('/').pop();return demoGifts.channels[id].granted ? {ok:true,document:'<!doctype html><html lang="ru"><meta charset="utf-8"><title>Демо набора</title><body style="font:18px/1.7 sans-serif;max-width:650px;margin:70px auto;padding:25px"><h1>Демонстрация личной полки</h1><p>Здесь проверяется скачивание. Полный набор выдаётся сервером после настоящей проверки подписки.</p><p>Твои реальные подписки и аккаунт не изменялись.</p></body></html>'} : {ok:false};}
     if (clean === '/me') return clone(me);
     if (clean === '/orders') return { ok: true, orders: clone(orders) };
     if (clean === '/plans') return clone(plans);
@@ -283,7 +289,12 @@
     identified: function () { return true; },
     headers: function () { return {}; },
     get: function (path) { return Promise.resolve(responseFor(path)); },
-    post: function () { return Promise.resolve({ ok: false, error: 'demo_only' }); },
+    post: function (path, body) {
+      if(path==='/community/claim' && demoGifts.channels[body.channel]){demoGifts.channels[body.channel]={status:'granted',granted:true};return Promise.resolve(clone(demoGifts));}
+      if(path==='/milestones'){me.milestones.push({id:Date.now(),title:body.title,due:body.due});return Promise.resolve({ok:true,milestones:clone(me.milestones)});}
+      if(/^\/milestones\/\d+\/delete$/.test(path)){me.milestones=me.milestones.filter(function(m){return String(m.id)!==path.split('/')[2];});return Promise.resolve({ok:true,milestones:clone(me.milestones)});}
+      return Promise.resolve({ok:false,error:'demo_only'});
+    },
     logout: function () { return Promise.resolve({ ok: false, error: 'demo_only' }); },
     migration: Promise.resolve(null),
     ready: Promise.resolve({ ok: true, authenticated: true, user: clone(user) })
@@ -339,7 +350,7 @@
     '[data-act]', '[data-act-pay]', '[data-act-pay-dep]', '[data-act-pin]',
     '[data-act-pause]', '[data-act-cancelreq]', '[data-act-fix-send]',
     '[data-sub-buy]', '[data-sub-ar]', '[data-sub-paid]', '[data-sub-pay]',
-    '[data-sub-cancel]', '[data-dep-topup]', '[data-ms-del]', '#msAdd',
+    '[data-sub-cancel]', '[data-dep-topup]',
     '#chatSend', '#cabLogout', '#cabTg', '#cabEmailSend', '#cabEmailGo',
     '#cabClaimBtn', '#bspendApply', '#gattApply', '#bonusRefBtn',
     '[data-tip-pay]', '[data-contact]', '[data-oauth]', '[data-oauth-link]', '[data-protected-asset]',

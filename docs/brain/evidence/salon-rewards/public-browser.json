@@ -1,0 +1,380 @@
+[
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "benefits.html#deposit",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "benefits.html#bonuses",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "plus.html",
+    "overflow": false,
+    "main": true,
+    "title": "Абонементы Салон+ · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "gift.html",
+    "overflow": false,
+    "main": true,
+    "title": "Подарочный сертификат · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "reviews.html",
+    "overflow": false,
+    "main": true,
+    "title": "Отзывы клиентов · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "referral-rules.html",
+    "overflow": false,
+    "main": true,
+    "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "light",
+    "route": "specifikaciya.html",
+    "overflow": false,
+    "main": true,
+    "title": "Условия твоего заказа | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "benefits.html#deposit",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "benefits.html#bonuses",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "plus.html",
+    "overflow": false,
+    "main": true,
+    "title": "Абонементы Салон+ · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "gift.html",
+    "overflow": false,
+    "main": true,
+    "title": "Подарочный сертификат · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "reviews.html",
+    "overflow": false,
+    "main": true,
+    "title": "Отзывы клиентов · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "referral-rules.html",
+    "overflow": false,
+    "main": true,
+    "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 320,
+    "theme": "dark",
+    "route": "specifikaciya.html",
+    "overflow": false,
+    "main": true,
+    "title": "Условия твоего заказа | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "benefits.html#deposit",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "benefits.html#bonuses",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "plus.html",
+    "overflow": false,
+    "main": true,
+    "title": "Абонементы Салон+ · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "gift.html",
+    "overflow": false,
+    "main": true,
+    "title": "Подарочный сертификат · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "reviews.html",
+    "overflow": false,
+    "main": true,
+    "title": "Отзывы клиентов · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "referral-rules.html",
+    "overflow": false,
+    "main": true,
+    "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "light",
+    "route": "specifikaciya.html",
+    "overflow": false,
+    "main": true,
+    "title": "Условия твоего заказа | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "benefits.html#deposit",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "benefits.html#bonuses",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "plus.html",
+    "overflow": false,
+    "main": true,
+    "title": "Абонементы Салон+ · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "gift.html",
+    "overflow": false,
+    "main": true,
+    "title": "Подарочный сертификат · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "reviews.html",
+    "overflow": false,
+    "main": true,
+    "title": "Отзывы клиентов · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "referral-rules.html",
+    "overflow": false,
+    "main": true,
+    "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 390,
+    "theme": "dark",
+    "route": "specifikaciya.html",
+    "overflow": false,
+    "main": true,
+    "title": "Условия твоего заказа | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "benefits.html#deposit",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "benefits.html#bonuses",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "plus.html",
+    "overflow": false,
+    "main": true,
+    "title": "Абонементы Салон+ · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "gift.html",
+    "overflow": false,
+    "main": true,
+    "title": "Подарочный сертификат · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "reviews.html",
+    "overflow": false,
+    "main": true,
+    "title": "Отзывы клиентов · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "referral-rules.html",
+    "overflow": false,
+    "main": true,
+    "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "light",
+    "route": "specifikaciya.html",
+    "overflow": false,
+    "main": true,
+    "title": "Условия твоего заказа | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "benefits.html#deposit",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "benefits.html#bonuses",
+    "overflow": false,
+    "main": true,
+    "title": "Выгоды и привилегии · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "plus.html",
+    "overflow": false,
+    "main": true,
+    "title": "Абонементы Салон+ · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "gift.html",
+    "overflow": false,
+    "main": true,
+    "title": "Подарочный сертификат · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "reviews.html",
+    "overflow": false,
+    "main": true,
+    "title": "Отзывы клиентов · Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "referral-rules.html",
+    "overflow": false,
+    "main": true,
+    "title": "Клуб Салона — бонусы и приглашения | Академический Салон",
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "route": "specifikaciya.html",
+    "overflow": false,
+    "main": true,
+    "title": "Условия твоего заказа | Академический Салон",
+    "errors": []
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "date_utc": "2026-09-09T02:05:22.339621+00:00",
+  "declaration_head": "05cd9c60fdc76c9487fea2553d23e01389be986a",
+  "canonical": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "source_sha256": {
+    "index.html": "5bb4acfc263f8d1e295f8a2be0b5c73bcca96b1c9e3827a40e7bb39610b081a8",
+    "assets/css/salon-home.css": "f41d2df540dcb360630846e0ea87783e04023f98394a72c8b94d6a9d5357c49e",
+    "assets/js/salon-home.js": "0763fea1e8c772d8ffd1d7734ee6d2e145ffcc8203489470626fad336fb1b490",
+    "assets/js/salon-commerce.js": "c46f9e699e27687bd004db86c8cecc86b7db3d96be7ce9b3b602340851de3031",
+    "assets/js/salon-order.js": "bec07d691d57616ba9323b6967129df962e2d1e01b99b493556ff8b9d8e822d9"
+  },
+  "routes": [
+    "/",
+    "/configurator.html?composition=1"
+  ],
+  "data_state": "Synthetic fresh state; serviceWorkers blocked; API mocks only; no real submission",
+  "expected": "No overflow/heading collision, readable light/dark tokens, keyboard dialog, reduced motion, unchanged quote/cart/restore",
+  "actual": "36 main/dialog combinations and six functional groups pass; 85 focused tests pass; targeted contrast8.25+; motion disabled on preference",
+  "reviews": {
+    "journey_review": "GO both themes; small-print P2 closed",
+    "order_contract_review": "GO private; three contrast P2 closed and live ratios verified"
+  },
+  "limitations": [
+    "Private owner review only; public site unchanged",
+    "No conversion lift measurement",
+    "Full historical suite not rerun for CSS-only changes; previous506/681 with175 legacy interface failures remains recorded",
+    "Authoritative production server composition parsing and previous public release gates remain outstanding"
+  ]
+}

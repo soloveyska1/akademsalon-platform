@@ -1,0 +1,162 @@
+{
+  "browser": "152.0.7977.84",
+  "serviceWorkers": "block",
+  "result": {
+    "checks": [
+      "dialog Escape/focus, automatic bundle, live total, chip removal",
+      "home→form exact price, cart + stable retry (mocked API)",
+      "scope retained on product switch; introduction transferred",
+      "form→home→form partial/editing including chapter/date/discipline",
+      "candidate exception; VIP quote and included extras",
+      "mobile dock quote visibility + FAQ inline"
+    ],
+    "sizes": [
+      {
+        "width": 320,
+        "height": 3055,
+        "desk": 636.546875,
+        "overflow": false,
+        "selectFont": 16,
+        "theme": "light"
+      },
+      {
+        "width": 320,
+        "height": 3055,
+        "desk": 636.546875,
+        "overflow": false,
+        "selectFont": 16,
+        "theme": "dark"
+      },
+      {
+        "width": 360,
+        "height": 2879,
+        "desk": 611.171875,
+        "overflow": false,
+        "selectFont": 16,
+        "theme": "light"
+      },
+      {
+        "width": 360,
+        "height": 2879,
+        "desk": 611.171875,
+        "overflow": false,
+        "selectFont": 16,
+        "theme": "dark"
+      },
+      {
+        "width": 390,
+        "height": 2878,
+        "desk": 598.171875,
+        "overflow": false,
+        "selectFont": 16,
+        "theme": "light"
+      },
+      {
+        "width": 390,
+        "height": 2878,
+        "desk": 598.171875,
+        "overflow": false,
+        "selectFont": 16,
+        "theme": "dark"
+      },
+      {
+        "width": 608,
+        "height": 2792,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "light"
+      },
+      {
+        "width": 608,
+        "height": 2792,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "dark"
+      },
+      {
+        "width": 768,
+        "height": 2792,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "light"
+      },
+      {
+        "width": 768,
+        "height": 2792,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "dark"
+      },
+      {
+        "width": 800,
+        "height": 2792,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "light"
+      },
+      {
+        "width": 800,
+        "height": 2792,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "dark"
+      },
+      {
+        "width": 801,
+        "height": 2193,
+        "desk": 642.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "light"
+      },
+      {
+        "width": 801,
+        "height": 2193,
+        "desk": 642.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "dark"
+      },
+      {
+        "width": 1024,
+        "height": 2177,
+        "desk": 642.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "light"
+      },
+      {
+        "width": 1024,
+        "height": 2177,
+        "desk": 642.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "dark"
+      },
+      {
+        "width": 1440,
+        "height": 2219,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "light"
+      },
+      {
+        "width": 1440,
+        "height": 2219,
+        "desk": 644.171875,
+        "overflow": false,
+        "selectFont": 17,
+        "theme": "dark"
+      }
+    ],
+    "posts": 2,
+    "errors": []
+  }
+}

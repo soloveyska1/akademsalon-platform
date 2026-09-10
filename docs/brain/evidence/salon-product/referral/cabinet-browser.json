@@ -1,0 +1,60 @@
+{
+  "rows": [
+    {
+      "theme": "light",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "theme": "light",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "theme": "light",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "theme": "light",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "theme": "dark",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "theme": "dark",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "theme": "dark",
+      "width": 768,
+      "overflow": 0
+    },
+    {
+      "theme": "dark",
+      "width": 1440,
+      "overflow": 0
+    }
+  ],
+  "calls": [
+    {
+      "path": "/referral/claim",
+      "body": {
+        "request_id": "a6545234-5606-404c-bea2-bc8f43e5a45b",
+        "order_id": 9999,
+        "amount": 6000
+      }
+    },
+    {
+      "path": "/referral/claim/test-claim/release",
+      "body": {}
+    }
+  ],
+  "backToInvitations": true,
+  "noRealMutations": true
+}

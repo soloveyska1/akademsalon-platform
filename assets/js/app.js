@@ -60,7 +60,7 @@
       { id: 'vak',        label: 'Научная статья ВАК',               base: 18000,  prices: { diagnostic: 3000, editing: 12000, support: 18000 } },
       { id: 'scopus',     label: 'Статья Scopus / Web of Science',   base: 35000,  prices: { diagnostic: 5000, editing: 22000, support: 35000 } },
       { id: 'rinc',       label: 'Научная статья РИНЦ',              base: 9000,   prices: { diagnostic: 2500, editing: 7000,  support: 9000 } },
-      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 2500, editing: 2500,  support: 2500 } }
+      { id: 'self',       label: 'Реферат или эссе',                 base: 2500,   prices: { diagnostic: 1500, editing: 2500,  support: 2500 } }
     ],
     disciplines: [
       { id: 'hum',  label: 'Гуманитарные / экономика',                 k: 1.0 },
@@ -420,7 +420,7 @@
   /* Один fail-closed путь для внутренних и внешних analytics page labels.
      Список намеренно exact: синтаксически красивый, но неизвестный Nginx 404
      pathname всё равно может содержать имя или токен и обязан стать /other. */
-  var ANALYTICS_PAGE_LIST = '404.html 50x.html about.html academic-integrity.html admin-covers.html admin.html audit-temy-vkr.html avtorskiy-zakaz.html check.html configurator.html consent-analytics.html consent-marketing.html consent-publication.html consent-request.html consent.html dashboard.html deposit.html diplomnaya-po-ekonomike.html diplomnaya-po-psihologii.html diplomnaya-po-yurisprudencii.html diplomnaya-rabota.html dorabotka-otcheta-po-praktike.html dosie-nauchruka.html expertise.html gift.html guarantees.html guide-antiplagiat-ai.html guide-apellyaciya.html guide-dnevnik-praktiki.html guide-harakteristika-s-praktiki.html guide-kursovaya-za-nedelyu.html guide-normocontrol.html guide-obekt-predmet-cel-zadachi.html guide-otchet-po-praktike.html guide-otzyv-rukovoditelya-vkr.html guide-prakticheskaya-chast-kursovoy.html guide-prezentaciya-k-zashchite.html guide-prilozheniya-po-gost.html guide-recenziya-na-vkr.html guide-rech-na-zashchitu.html guide-rinc-statya.html guide-skolko-stoit-diplomnaya.html guide-skolko-stoit-kursovaya.html guide-spisok-literatury.html guide-temy-vkr.html guide-titulnyj-list.html guide-vkr-struktura.html guide-vvedenie-kursovoy.html guide-zaklyuchenie-kursovoy.html guide-zaklyuchenie-vkr.html guide-zashchita-diploma.html index.html kandidatskaya-dissertaciya.html knowledge.html komissiya-0.html kursovaya-po-ekonomike.html kursovaya-po-informatike.html kursovaya-po-menedzhmentu.html kursovaya-po-pedagogike.html kursovaya-po-psihologii.html kursovaya-po-yurisprudencii.html kursovaya-rabota.html loyalty.html magisterskaya-dissertaciya.html maintenance.html nauchnaya-statya.html normokontrol-vkr.html oferta.html offline.html oplaceno.html oplata.html otchet-po-praktike.html plan.html plus.html privacy.html priyomnaya.html prolog.html proverka-istochnikov-vkr.html razbor-zamechaniy-nauchruka.html redaktura-posle-ii.html referat.html referral.html refunds.html requisites.html reviews.html services.html specifikaciya.html start.html tariffs.html terms.html tools.html vedenie.html zayavka.html';
+  var ANALYTICS_PAGE_LIST = 'benefits.html samples.html 404.html 50x.html about.html academic-integrity.html admin-covers.html admin.html audit-temy-vkr.html avtorskiy-zakaz.html check.html configurator.html consent-analytics.html consent-marketing.html consent-publication.html consent-request.html consent.html dashboard.html deposit.html diplomnaya-po-ekonomike.html diplomnaya-po-psihologii.html diplomnaya-po-yurisprudencii.html diplomnaya-rabota.html dorabotka-otcheta-po-praktike.html dosie-nauchruka.html expertise.html gift.html guarantees.html guide-antiplagiat-ai.html guide-apellyaciya.html guide-dnevnik-praktiki.html guide-harakteristika-s-praktiki.html guide-kursovaya-za-nedelyu.html guide-normocontrol.html guide-obekt-predmet-cel-zadachi.html guide-otchet-po-praktike.html guide-otzyv-rukovoditelya-vkr.html guide-prakticheskaya-chast-kursovoy.html guide-prezentaciya-k-zashchite.html guide-prilozheniya-po-gost.html guide-recenziya-na-vkr.html guide-rech-na-zashchitu.html guide-rinc-statya.html guide-skolko-stoit-diplomnaya.html guide-skolko-stoit-kursovaya.html guide-spisok-literatury.html guide-temy-vkr.html guide-titulnyj-list.html guide-vkr-struktura.html guide-vvedenie-kursovoy.html guide-zaklyuchenie-kursovoy.html guide-zaklyuchenie-vkr.html guide-zashchita-diploma.html index.html kandidatskaya-dissertaciya.html knowledge.html komissiya-0.html kursovaya-po-ekonomike.html kursovaya-po-informatike.html kursovaya-po-menedzhmentu.html kursovaya-po-pedagogike.html kursovaya-po-psihologii.html kursovaya-po-yurisprudencii.html kursovaya-rabota.html loyalty.html magisterskaya-dissertaciya.html maintenance.html nauchnaya-statya.html normokontrol-vkr.html oferta.html offline.html oplaceno.html oplata.html otchet-po-praktike.html plan.html plus.html privacy.html priyomnaya.html prolog.html proverka-istochnikov-vkr.html razbor-zamechaniy-nauchruka.html redaktura-posle-ii.html referat.html referral.html refunds.html requisites.html reviews.html services.html specifikaciya.html start.html tariffs.html terms.html tools.html vedenie.html zayavka.html';
   var ANALYTICS_PAGE_MAP = {};
   ANALYTICS_PAGE_LIST.split(' ').forEach(function (name) { ANALYTICS_PAGE_MAP[name] = true; });
   function analyticsPage(value) {
@@ -2374,7 +2374,7 @@
      бренд · Цены · Гарантии · Отзывы · Клуб · Полезные материалы · тема · «Рассчитать» · «Меню».
      На главной «Рассчитать» ведёт к смете на странице, дальше — в конфигуратор. */
   /* админка — рабочий стол мастера: маркетинговый каркас сайта там ни к чему */
-  var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html';
+  var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html' || document.body.classList.contains('salon-workspace');
   if (!CHROME_OFF && !document.querySelector('.site-header')) {
     var header = document.createElement('header');
     var accountChrome = document.body.classList.contains('is-account-route');
@@ -3509,7 +3509,7 @@
   var CABINET_DEMO_PREVIEW = false;
   try {
     var demoName = new URLSearchParams(location.search).get('demo');
-    CABINET_DEMO_PREVIEW = (location.pathname.split('/').pop() === 'dashboard.html') &&
+    CABINET_DEMO_PREVIEW = (/^dashboard(?:\.html)?$/.test(location.pathname.split('/').pop())) &&
       (location.hostname === 'localhost' || location.hostname === '127.0.0.1' ||
        /\.saymoon\.chatgpt\.site$/.test(location.hostname)) &&
       (demoName === 'alexey' || demoName === 'alexey-vk' || demoName === 'entry');
@@ -4233,4 +4233,15 @@
         if (window.console && console.debug) console.debug('sw:', err && err.message);
       });
   });
+})();
+
+/* The helper starts only after an explicit question; no background chat calls. */
+(function mountSalonAssistant(){
+  if(/^admin/.test(location.pathname.split('/').pop())||document.body.classList.contains('salon-workspace'))return;
+  function mount(){
+    if(document.querySelector('script[data-salon-assistant]'))return;
+    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/salon-assistant.css?v=20260909assistant4';document.head.append(css);
+    const js=document.createElement('script');js.src='/assets/js/salon-assistant.js?v=20260909assistant4';js.dataset.salonAssistant='true';document.body.append(js);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();

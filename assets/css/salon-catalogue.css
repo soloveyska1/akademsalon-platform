@@ -1,0 +1,143 @@
+/* Works catalogue: compact index and an editable specification sheet. */
+body.salon-experience.salon-catalogue{--cat-paper:#fff;--cat-soft:#eeeafa;--cat-mint:#d9f5bb;background:var(--paper);color:var(--ink)}
+.salon-catalogue main{width:var(--container);margin:0 auto;padding:0}
+.salon-catalogue .cat-intro{display:grid;grid-template-columns:1fr 440px;align-items:center;gap:48px;padding:54px 0 34px}
+.salon-catalogue .cat-intro .eyebrow{font:500 11px 'Golos Text',sans-serif;letter-spacing:.13em;color:var(--muted)}
+.salon-catalogue .cat-intro h1{font:500 clamp(38px,4.4vw,64px)/1.08 'Golos Text',sans-serif;letter-spacing:-.055em;margin:16px 0}
+.salon-catalogue em{font-family:Literata,serif;font-weight:400}
+.salon-catalogue .cat-intro h1 em{color:var(--accent);white-space:nowrap}
+.salon-catalogue .cat-intro p{font-size:15px;line-height:1.65;color:var(--muted);margin:0}
+.salon-catalogue .cat-urgency{position:relative;background:#4934ad;color:#fff;padding:25px 26px 23px;border-radius:20px;overflow:hidden}
+.salon-catalogue .cat-urgency:after{content:'';position:absolute;right:-34px;top:-60px;width:160px;height:160px;border:1px solid #ffffff18;border-radius:50%;pointer-events:none;box-shadow:0 0 0 16px #ffffff05,0 0 0 32px #ffffff05}
+.salon-catalogue .cat-urgency-label{font-size:10px;letter-spacing:.12em;color:#e3dcfc}
+.salon-catalogue .cat-speed{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:4px;background:#30216e;padding:4px;border-radius:12px;margin:14px 0 12px;position:relative;z-index:1}
+.salon-catalogue .cat-speed button{min-height:44px;border:0;border-radius:8px;background:transparent;color:#f3efff;font:500 13px 'Golos Text',sans-serif;cursor:pointer;padding:8px}
+.salon-catalogue .cat-speed button[aria-pressed=true]{color:#292537;background:#d9f5bb;box-shadow:0 2px 5px #160b2c25}
+.salon-catalogue .cat-speed b{font-size:11px;margin-left:4px;font-weight:500}
+.salon-catalogue .cat-urgency p{color:#e3dcfc;font-size:12px;line-height:1.55;min-height:38px}
+.salon-catalogue .cat-workspace{padding:0;scroll-margin-top:108px}
+.salon-catalogue .cat-toolbar{display:flex;align-items:center;gap:22px;border-block:1px solid var(--line);padding:16px 0}
+.salon-catalogue .cat-search{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--cat-paper);border-radius:10px;padding:0 13px;flex:0 1 325px;min-width:210px;margin:0}
+.salon-catalogue .cat-search svg{width:19px;height:19px;flex-shrink:0;color:var(--muted)}
+.salon-catalogue .cat-search input{width:100%;min-width:0;height:46px;padding:0;border:0;outline:0;box-shadow:none;background:transparent;color:var(--ink);font:400 13px 'Golos Text',sans-serif}
+.salon-catalogue .cat-search input::placeholder{color:var(--muted)}
+.salon-catalogue .cat-search:focus-within{outline:2px solid var(--accent);outline-offset:3px}
+.salon-catalogue .cat-filters{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.salon-catalogue .cat-filters button{background:transparent;border:0;white-space:nowrap;color:var(--muted);border-radius:8px;padding:11px 12px;min-height:44px;font:500 12px 'Golos Text',sans-serif;cursor:pointer}
+.salon-catalogue .cat-filters button[aria-pressed=true]{background:var(--cat-soft);color:var(--accent)}
+.salon-catalogue .cat-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:15px 0;font-size:12px;color:var(--muted);min-height:52px}
+.salon-catalogue .cat-price-settings{border:0;padding:0;max-width:540px;width:auto}
+.salon-catalogue .cat-price-settings summary{padding:0;min-height:24px;display:flex;gap:18px;justify-content:flex-end;cursor:pointer;color:var(--accent);font-size:12px;list-style:none}
+.salon-catalogue summary::-webkit-details-marker{display:none}
+.salon-catalogue .cat-settings-fields{display:flex;gap:12px;flex-wrap:wrap;align-items:end;background:var(--cat-paper);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
+.salon-catalogue .cat-settings-fields label{flex:1 1 150px;font-size:12px;margin:0}
+.salon-catalogue .cat-settings-fields select,.salon-catalogue .cat-settings-fields input{display:block;width:100%;margin-top:8px;height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);font:400 13px 'Golos Text',sans-serif;min-width:0;max-width:100%}
+.salon-catalogue .cat-settings-fields button{border:0;background:none;color:var(--accent);padding:10px;min-height:44px;cursor:pointer}
+.salon-catalogue .cat-settings-fields p{flex-basis:100%;margin:0;line-height:1.5;font-size:11px}
+.salon-catalogue .cat-context{margin:0 0 16px;background:var(--cat-soft);padding:12px 16px;border-radius:8px;color:var(--accent);font-size:12px;line-height:1.5}
+.salon-catalogue .cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.salon-catalogue .cat-card{display:flex;flex-direction:column;position:relative;min-height:222px;padding:24px 24px 18px;background:var(--cat-paper);border:1px solid var(--line);border-radius:14px;text-decoration:none;box-shadow:none;transition:background .18s,border-color .18s,transform .18s;color:var(--ink);gap:0}
+.salon-catalogue .cat-card:hover{border-color:var(--accent);background:var(--cat-paper);transform:translateY(-3px);box-shadow:0 8px 24px #35265a08}
+.salon-catalogue .cat-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.salon-catalogue .cat-card h2{font:500 22px/1.16 'Golos Text',sans-serif;letter-spacing:-.035em;margin:0;max-width:290px}
+.salon-catalogue .cat-card-arrow{color:var(--accent);font-size:21px;line-height:1;flex-shrink:0}
+.salon-catalogue .cat-card p{font:400 12px/1.55 'Golos Text',sans-serif;color:var(--muted);margin:13px 0 20px;max-width:100%}
+.salon-catalogue .cat-card-bottom{margin-top:auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 10px}
+.salon-catalogue .cat-card-bottom strong{font:500 20px 'Golos Text',sans-serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.salon-catalogue .cat-card-bottom span{font-size:11px;color:var(--muted)}
+.salon-catalogue .cat-card-action{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;margin-top:16px;color:var(--accent);font-size:11px}
+.salon-catalogue .cat-price-note{color:var(--muted);font-size:11px;line-height:1.65;max-width:790px;margin:18px 0 0}
+.salon-catalogue .cat-empty{text-align:center;background:var(--cat-paper);border:1px solid var(--line);border-radius:16px;padding:34px}
+.salon-catalogue .cat-empty>span{font:italic 40px Literata,serif;color:var(--accent)}
+.salon-catalogue .cat-empty h2{font-size:25px;margin:16px 0 10px;letter-spacing:-.04em}
+.salon-catalogue .cat-empty p{font-size:14px;color:var(--muted);max-width:480px;margin:0 auto 18px}
+.salon-catalogue .cat-empty>div{display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap}
+.salon-catalogue .cat-empty button{background:none;border:0;color:var(--accent);min-height:44px;cursor:pointer}
+.salon-catalogue .cat-assurance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;margin:42px 0;padding:26px 0;border-block:1px solid var(--line)}
+.salon-catalogue .cat-assurance>div,.salon-catalogue .cat-assurance>a{position:relative;padding-left:35px;text-decoration:none}
+.salon-catalogue .cat-assurance>*>span{position:absolute;left:0;top:0;color:var(--accent);font-size:22px}
+.salon-catalogue .cat-assurance h2{font:500 15px 'Golos Text',sans-serif;margin:0 0 8px;color:var(--ink)}
+.salon-catalogue .cat-assurance p{font-size:12px;line-height:1.6;color:var(--muted);margin:0;max-width:270px}
+.salon-catalogue .cat-questions{display:grid;grid-template-columns:1fr 1.7fr;gap:10px 64px;padding:0 0 50px;margin:0}
+.salon-catalogue .cat-questions>h2{font:500 32px/1.25 'Golos Text',sans-serif;letter-spacing:-.04em;margin:12px 0}
+.salon-catalogue .cat-questions>h2 em{display:block;color:var(--accent)}
+.salon-catalogue .cat-questions>div{grid-column:2;grid-row:1/3}
+.salon-catalogue .cat-questions>a{font-size:12px;color:var(--accent);align-self:start}
+.salon-catalogue .cat-questions details{border:0;border-bottom:1px solid var(--line);background:none;padding:0;margin:0}
+.salon-catalogue .cat-questions summary{padding:18px 0;font:500 14px/1.5 'Golos Text',sans-serif;display:flex;justify-content:space-between;gap:16px;cursor:pointer;list-style:none}
+.salon-catalogue .cat-questions details p{font-size:13px;line-height:1.7;color:var(--muted);margin:0;padding:0 30px 18px 0}
+/* Native modal keeps the catalogue position and traps focus without another checkout step. */
+.salon-catalogue .catalog-sheet{width:min(940px,calc(100% - 40px));max-width:none;max-height:min(850px,calc(100dvh - 48px));padding:0;border:1px solid var(--line);border-radius:22px;background:var(--paper);color:var(--ink);box-shadow:0 24px 100px #17112733;overflow:hidden;margin:auto}
+.salon-catalogue .catalog-sheet[open]{display:flex;flex-direction:column;animation:cat-sheet-in .2s ease-out}
+.salon-catalogue .catalog-sheet::backdrop{background:#18112b77;backdrop-filter:blur(5px)}
+body.catalog-open{overflow:hidden}
+.salon-catalogue .cat-sheet-head{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--line);flex-shrink:0}
+.salon-catalogue .cat-sheet-head>span{font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.salon-catalogue .cat-close{width:44px;height:44px;flex-shrink:0;background:var(--cat-paper);border:1px solid var(--line);color:var(--ink);border-radius:50%;font:300 26px 'Golos Text',sans-serif;cursor:pointer}
+.salon-catalogue .cat-sheet-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;min-height:0;overflow:auto;overscroll-behavior:contain}
+.salon-catalogue .cat-sheet-content{padding:25px 28px 30px;min-width:0}
+.salon-catalogue .cat-sheet-content h2{font:500 34px/1.1 'Golos Text',sans-serif;letter-spacing:-.045em;margin:0 0 20px;max-width:440px}
+.salon-catalogue .cat-label{font:500 12px 'Golos Text',sans-serif;display:block;margin-bottom:9px}
+.salon-catalogue .cat-scope,.salon-catalogue .cat-sheet-speeds{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--cat-paper)}
+.salon-catalogue .cat-scope button,.salon-catalogue .cat-sheet-speeds button{flex:1;min-width:0;min-height:42px;padding:8px 5px;font:500 12px 'Golos Text',sans-serif;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer}
+.salon-catalogue .cat-scope button[aria-pressed=true],.salon-catalogue .cat-sheet-speeds button[aria-pressed=true]{background:var(--cat-soft);color:var(--accent)}
+.salon-catalogue .cat-scope button:disabled,.salon-catalogue .cat-sheet-speeds button:disabled{opacity:.4;cursor:not-allowed}
+.salon-catalogue .cat-included{list-style:none;padding:0;margin:18px 0 22px}
+.salon-catalogue .cat-included li{display:flex;gap:10px;font-size:13px;line-height:1.5;padding:5px 0}
+.salon-catalogue .cat-included li:before{content:'✓';color:var(--accent)}
+.salon-catalogue .cat-part-tip{font-size:12px;background:var(--cat-soft);color:var(--accent);padding:13px;border-radius:8px;line-height:1.6;margin:12px 0 18px}
+.salon-catalogue .cat-part-tip button{border:0;background:none;color:inherit;text-decoration:underline;text-underline-offset:3px;min-height:38px;cursor:pointer}
+.salon-catalogue .cat-sheet-time{font-size:12px;color:var(--muted);margin:9px 0 20px;line-height:1.6}
+.salon-catalogue .cat-additions{border:1px solid var(--line);border-radius:12px;padding:0;background:var(--cat-paper);margin:0}
+.salon-catalogue .cat-additions summary{display:flex;justify-content:space-between;gap:14px;list-style:none;cursor:pointer;padding:16px;font:500 14px 'Golos Text',sans-serif}
+.salon-catalogue .cat-additions summary small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:7px;line-height:1.5}
+.salon-catalogue .cat-addon{display:flex;align-items:flex-start;gap:12px;padding:16px;margin:0;border-top:1px solid var(--line);cursor:pointer}
+.salon-catalogue .cat-addon input{appearance:auto;accent-color:#5136b5;width:18px;height:18px;min-height:0;flex-shrink:0;margin:3px 0 0;padding:0}
+.salon-catalogue .cat-addon strong{font-size:13px;font-weight:500;line-height:1.5;display:block}
+.salon-catalogue .cat-addon small{font-size:11px;line-height:1.6;display:block;margin:5px 0 8px;color:var(--muted)}
+.salon-catalogue .cat-addon b{font-size:12px;font-weight:500;color:var(--accent)}
+.salon-catalogue .cat-saving{margin:0;padding:10px 16px;background:var(--cat-soft);color:var(--accent);font-size:12px;line-height:1.5}
+.salon-catalogue .cat-vip{background:var(--cat-soft);border-radius:0 0 12px 12px}
+.salon-catalogue .cat-receipt{background:var(--cat-soft);border-left:1px solid var(--line);padding:28px 24px;align-self:stretch;min-width:0}
+.salon-catalogue .cat-receipt-inner{position:sticky;top:25px}
+.salon-catalogue .cat-receipt-label{font-size:10px;letter-spacing:.12em;color:var(--accent);display:block;margin-bottom:20px}
+.salon-catalogue .cat-receipt h3{font:500 19px/1.3 'Golos Text',sans-serif;letter-spacing:-.025em;margin:0 0 8px}
+.salon-catalogue .cat-receipt-subtitle{font-size:11px;color:var(--muted);line-height:1.6;margin:0 0 20px}
+.salon-catalogue .cat-receipt-lines{padding:18px 0;border-block:1px dashed var(--line);display:grid;gap:10px;margin-bottom:20px}
+.salon-catalogue .cat-receipt-lines div{display:flex;justify-content:space-between;gap:12px;font-size:11px;line-height:1.5}
+.salon-catalogue .cat-receipt-lines b{font-weight:500;text-align:right;white-space:nowrap}
+.salon-catalogue .cat-total-label{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}
+.salon-catalogue #cat-total{display:block;font:500 29px/1.15 'Golos Text',sans-serif;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.salon-catalogue .cat-checkout{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#5136b5;color:#fff;border:0;border-radius:9px;padding:16px;text-decoration:none;margin:20px 0 10px;font-size:13px;font-weight:500;min-height:48px}
+.salon-catalogue .cat-checkout:hover{background:#412991}
+.salon-catalogue .cat-checkout-note{font-size:10px;color:var(--muted);line-height:1.7;margin:0}
+.salon-catalogue .cat-sheet-context{font-size:11px;color:var(--muted);line-height:1.5;margin:12px 0 0}
+.salon-catalogue :is(button,a,summary,select,input):focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.salon-catalogue .cat-urgency button:focus-visible{outline-color:#d9f5bb}
+.salon-catalogue [hidden]{display:none!important}
+html[data-theme=dark] body.salon-catalogue{--cat-paper:#24202f;--cat-soft:#312842}
+html[data-theme=dark] .salon-catalogue .cat-urgency{background:#3e2b89}
+html[data-theme=dark] .salon-catalogue .cat-checkout{background:#c4b3ff;color:#25183f}
+@keyframes cat-sheet-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:1550px){.salon-catalogue .cat-card{min-height:210px}}
+@media(max-width:1150px){.salon-catalogue .cat-intro{grid-template-columns:1fr 385px;gap:24px}.salon-catalogue .cat-toolbar{flex-wrap:wrap;gap:12px}.salon-catalogue .cat-search{flex:1 1 100%}.salon-catalogue .cat-filters{width:100%;justify-content:space-between}.salon-catalogue .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.salon-catalogue .cat-card{min-height:214px}}
+@media(max-width:800px){.salon-catalogue .cat-intro{grid-template-columns:1fr;gap:24px;padding:34px 0 24px}.salon-catalogue .cat-intro h1{font-size:46px}.salon-catalogue .cat-urgency{padding:18px 20px}.salon-catalogue .cat-urgency p{min-height:0}.salon-catalogue .cat-urgency p br{display:none}.salon-catalogue .cat-speed{margin:10px 0}.salon-catalogue .cat-assurance{gap:20px}.salon-catalogue .cat-assurance>div,.salon-catalogue .cat-assurance>a{padding-left:0;padding-top:33px}.salon-catalogue .cat-questions{gap:20px}.salon-catalogue .cat-card{padding:20px}.salon-catalogue .cat-sheet-layout{grid-template-columns:minmax(0,1fr) 275px}.salon-catalogue .cat-sheet-content{padding:20px}.salon-catalogue .cat-receipt{padding:24px 18px}.salon-catalogue .cat-sheet-content h2{font-size:28px}}
+@media(max-width:700px){.salon-catalogue .catalog-sheet{width:100%;max-height:100dvh;height:100dvh;border-radius:0;border:0}.salon-catalogue .cat-sheet-head{padding:8px 18px}.salon-catalogue .cat-sheet-layout{display:flex;flex-direction:column;overflow:hidden;flex:1}.salon-catalogue .cat-sheet-content{overflow:auto;overscroll-behavior:contain;flex:1;padding:22px 20px 28px}.salon-catalogue .cat-receipt{border:0;border-top:1px solid var(--line);padding:14px 20px max(14px,env(safe-area-inset-bottom));flex-shrink:0}.salon-catalogue .cat-receipt-inner{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;position:static;align-items:center}.salon-catalogue .cat-receipt-label,.salon-catalogue .cat-receipt h3,.salon-catalogue .cat-receipt-subtitle,.salon-catalogue .cat-receipt-lines{display:none}.salon-catalogue #cat-total{font-size:25px}.salon-catalogue .cat-total-label{font-size:10px;margin-bottom:5px}.salon-catalogue .cat-checkout{margin:0;padding:14px;font-size:12px}.salon-catalogue .cat-checkout-note{grid-column:1/-1;margin:8px 0 0;font-size:10px}.salon-catalogue .cat-sheet-context{margin:8px 0 0}.salon-catalogue .cat-sheet-content h2{padding-right:20px}}
+@media(max-width:600px){.salon-catalogue main{width:calc(100% - 32px)}.salon-catalogue .cat-intro{padding-top:30px;gap:20px}.salon-catalogue .cat-intro h1{font-size:40px;margin:13px 0}.salon-catalogue .cat-intro p{font-size:13px}.salon-catalogue .cat-urgency{padding:16px;border-radius:15px}.salon-catalogue .cat-urgency-label{font-size:9px}.salon-catalogue .cat-urgency p{font-size:11px}.salon-catalogue .cat-toolbar{gap:10px;padding:12px 0}.salon-catalogue .cat-filters{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding:0 2px 5px;scrollbar-width:thin}.salon-catalogue .cat-filters button{font-size:11px;padding:10px}.salon-catalogue .cat-meta{font-size:11px}.salon-catalogue .cat-grid{grid-template-columns:1fr;gap:10px}.salon-catalogue .cat-card{min-height:0;padding:20px 20px 15px}.salon-catalogue .cat-card h2{font-size:22px;max-width:280px}.salon-catalogue .cat-card p{margin:11px 0 18px;font-size:12px;max-width:360px}.salon-catalogue .cat-card-action{margin-top:13px;padding-top:11px}.salon-catalogue .cat-card-bottom strong{font-size:21px}.salon-catalogue .cat-assurance{grid-template-columns:1fr;gap:22px;margin:30px 0}.salon-catalogue .cat-assurance>div,.salon-catalogue .cat-assurance>a{padding:0 0 0 35px}.salon-catalogue .cat-assurance p{max-width:none}.salon-catalogue .cat-questions{display:flex;flex-direction:column;gap:0;padding-bottom:32px}.salon-catalogue .cat-questions>h2{font-size:28px;margin:0 0 12px}.salon-catalogue .cat-questions>h2 em{display:inline}.salon-catalogue .cat-questions>a{margin-top:16px;min-height:44px;display:flex;align-items:center}.salon-catalogue .cat-questions summary{font-size:13px}.salon-catalogue .cat-price-settings{max-width:calc(100% - 85px)}.salon-catalogue .cat-settings-fields{padding:12px;gap:8px}.salon-catalogue .cat-empty{padding:25px 16px}.salon-catalogue .cat-empty h2{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.salon-catalogue .cat-card{transition:none}.salon-catalogue .cat-card:hover{transform:none}.salon-catalogue .catalog-sheet[open]{animation:none}}
+
+.salon-catalogue .cat-resume{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:0 0 20px;padding:5px 14px;background:var(--cat-soft);border-radius:10px}.salon-catalogue .cat-resume button{background:none;border:0;color:var(--accent);font:500 12px/1.5 'Golos Text',sans-serif;min-height:44px;padding:8px 0;cursor:pointer;text-align:left}.salon-catalogue #cat-resume-clear{color:var(--muted);font-weight:400;font-size:11px;flex-shrink:0}@media(max-width:600px){.salon-catalogue .cat-resume{align-items:flex-start}.salon-catalogue .cat-resume button{font-size:11px}}
+
+/* Suppress legacy disclosure glyphs: each new control has one deliberate icon. */
+.salon-catalogue :is(.cat-price-settings,.cat-questions details,.cat-additions)>summary::after{content:none}
+.salon-catalogue .cat-price-settings>summary{min-height:24px;line-height:24px}
+.salon-catalogue .cat-price-settings[open]>summary>span,.salon-catalogue .cat-questions details[open]>summary>span,.salon-catalogue .cat-additions[open]>summary>span:last-child{transform:rotate(45deg)}
+.salon-catalogue button.cat-card{text-align:left;cursor:pointer;width:100%}
+.salon-catalogue .cat-search input{min-height:46px}
+.salon-catalogue .cat-urgency-label{display:block;line-height:1.3}
+@media(max-width:800px){.salon-catalogue .cat-intro{padding-top:24px;gap:16px}.salon-catalogue .cat-intro h1{margin:10px 0}.salon-catalogue .cat-intro>div>p br{display:none}.salon-catalogue .cat-intro>div>p{max-width:440px}.salon-catalogue .cat-urgency{padding:14px 16px}.salon-catalogue .cat-urgency-label{display:none}.salon-catalogue .cat-speed{margin:0 0 8px}.salon-catalogue .cat-meta{padding:10px 0;min-height:44px}.salon-catalogue .cat-toolbar{padding:10px 0;gap:8px}.salon-catalogue .cat-resume{margin-bottom:12px}.salon-catalogue .cat-search input{font-size:16px;min-height:44px;height:44px}.salon-catalogue .cat-settings-fields :is(input,select){font-size:16px}}
+
+.salon-catalogue .cat-scope button,.salon-catalogue .cat-sheet-speeds button{min-height:44px}
+@media(max-width:360px){.salon-catalogue .cat-intro h1{font-size:32px}}
+/* Saved choice: a quiet, actionable order ticket. */
+.salon-catalogue .cat-resume{display:flex;background:var(--sheet);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:0;margin:26px 0}.salon-catalogue .cat-resume[hidden]{display:none}.salon-catalogue #cat-resume-open{display:grid;grid-template-columns:1fr auto;text-align:left;align-items:center;gap:6px 20px;flex:1;padding:17px 20px;background:transparent;color:var(--ink);border:0;border-radius:8px;font:inherit;cursor:pointer}.cat-resume-label{grid-column:1;font-size:9px;letter-spacing:.13em;color:var(--muted)}.cat-resume strong{grid-column:1;font-size:17px;font-weight:500;letter-spacing:-.02em}.cat-resume-meta{grid-column:1;font-size:11px;color:var(--muted)}.cat-resume-action{grid-column:2;grid-row:1/4;background:var(--soft);color:var(--accent);border-radius:24px;padding:12px 17px;font-size:12px}.salon-catalogue #cat-resume-clear{align-self:center;margin:0 20px 0 0;font:inherit;font-size:11px;color:var(--muted);border:0;background:transparent;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:10px}.salon-catalogue #cat-resume-open:hover{background:var(--soft)}@media(max-width:600px){.salon-catalogue .cat-resume{flex-wrap:wrap}.salon-catalogue #cat-resume-open{padding:16px 14px;gap:6px 10px}.cat-resume strong{font-size:15px}.cat-resume-action{font-size:10px;padding:11px}.salon-catalogue #cat-resume-clear{margin:0 0 8px 5px}.cat-resume-meta{font-size:10px}}

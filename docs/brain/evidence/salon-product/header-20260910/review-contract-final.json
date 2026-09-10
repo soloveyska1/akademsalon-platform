@@ -1,0 +1,3248 @@
+{
+  "decision": "GO",
+  "base": "5ba9917a1d4bb0e8e5f76d4d4f0bca2fabc58ebb",
+  "tests": [
+    {
+      "case": "89 static targets",
+      "pass": true
+    },
+    {
+      "case": "about.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "about.html main exact",
+      "pass": true
+    },
+    {
+      "case": "about.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "about.html single shell",
+      "pass": true
+    },
+    {
+      "case": "about.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "about.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "about.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html main exact",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html single shell",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "academic-integrity.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "audit-temy-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html main exact",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html single shell",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "benefits.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "benefits.html main exact",
+      "pass": true
+    },
+    {
+      "case": "benefits.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "benefits.html single shell",
+      "pass": true
+    },
+    {
+      "case": "benefits.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "benefits.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "benefits.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "check.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "check.html main exact",
+      "pass": true
+    },
+    {
+      "case": "check.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "check.html single shell",
+      "pass": true
+    },
+    {
+      "case": "check.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "check.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "check.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "configurator.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "configurator.html main exact",
+      "pass": true
+    },
+    {
+      "case": "configurator.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "configurator.html single shell",
+      "pass": true
+    },
+    {
+      "case": "configurator.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "configurator.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "configurator.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "form links stay in form",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html main exact",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html single shell",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "consent-analytics.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html main exact",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html single shell",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "consent-marketing.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html main exact",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html single shell",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "consent-publication.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html main exact",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html single shell",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "consent-request.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "consent.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "consent.html main exact",
+      "pass": true
+    },
+    {
+      "case": "consent.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "consent.html single shell",
+      "pass": true
+    },
+    {
+      "case": "consent.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "consent.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "consent.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "deposit.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "deposit.html main exact",
+      "pass": true
+    },
+    {
+      "case": "deposit.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "deposit.html single shell",
+      "pass": true
+    },
+    {
+      "case": "deposit.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "deposit.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "deposit.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-ekonomike.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html main exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html single shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html main exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html single shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-yurisprudencii.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html main exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html single shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-rabota.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "dorabotka-otcheta-po-praktike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html main exact",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html single shell",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "dosie-nauchruka.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "expertise.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "expertise.html main exact",
+      "pass": true
+    },
+    {
+      "case": "expertise.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "expertise.html single shell",
+      "pass": true
+    },
+    {
+      "case": "expertise.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "expertise.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "expertise.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "gift.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "gift.html main exact",
+      "pass": true
+    },
+    {
+      "case": "gift.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "gift.html single shell",
+      "pass": true
+    },
+    {
+      "case": "gift.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "gift.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "gift.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guarantees.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-antiplagiat-ai.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-apellyaciya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-dnevnik-praktiki.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-harakteristika-s-praktiki.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-kursovaya-za-nedelyu.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-normocontrol.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-obekt-predmet-cel-zadachi.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-otchet-po-praktike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-otzyv-rukovoditelya-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-prakticheskaya-chast-kursovoy.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-prezentaciya-k-zashchite.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-prilozheniya-po-gost.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-recenziya-na-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-rech-na-zashchitu.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-rinc-statya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-diplomnaya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-skolko-stoit-kursovaya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-spisok-literatury.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-temy-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-titulnyj-list.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-vkr-struktura.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-vvedenie-kursovoy.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-kursovoy.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-zaklyuchenie-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html main exact",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html single shell",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "guide-zashchita-diploma.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "index.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "index.html main exact",
+      "pass": true
+    },
+    {
+      "case": "index.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "index.html single shell",
+      "pass": true
+    },
+    {
+      "case": "index.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "index.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "index.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kandidatskaya-dissertaciya.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html main exact",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html single shell",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "knowledge.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html main exact",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html single shell",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "komissiya-0.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-ekonomike.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-informatike.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-menedzhmentu.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-pedagogike.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-psihologii.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-po-yurisprudencii.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html main exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html single shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "kursovaya-rabota.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html main exact",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html single shell",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "loyalty.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "magisterskaya-dissertaciya.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "nauchnaya-statya.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "normokontrol-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "oferta.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "oferta.html main exact",
+      "pass": true
+    },
+    {
+      "case": "oferta.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "oferta.html single shell",
+      "pass": true
+    },
+    {
+      "case": "oferta.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "oferta.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "oferta.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html main exact",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html single shell",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "oplaceno.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "oplata.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "oplata.html main exact",
+      "pass": true
+    },
+    {
+      "case": "oplata.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "oplata.html single shell",
+      "pass": true
+    },
+    {
+      "case": "oplata.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "oplata.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "oplata.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html main exact",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html single shell",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "otchet-po-praktike.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "plan.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "plan.html main exact",
+      "pass": true
+    },
+    {
+      "case": "plan.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "plan.html single shell",
+      "pass": true
+    },
+    {
+      "case": "plan.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "plan.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "plan.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "plus.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "plus.html main exact",
+      "pass": true
+    },
+    {
+      "case": "plus.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "plus.html single shell",
+      "pass": true
+    },
+    {
+      "case": "plus.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "plus.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "plus.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "privacy.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "privacy.html main exact",
+      "pass": true
+    },
+    {
+      "case": "privacy.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "privacy.html single shell",
+      "pass": true
+    },
+    {
+      "case": "privacy.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "privacy.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "privacy.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "priyomnaya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "prolog.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "prolog.html main exact",
+      "pass": true
+    },
+    {
+      "case": "prolog.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "prolog.html single shell",
+      "pass": true
+    },
+    {
+      "case": "prolog.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "prolog.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "prolog.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html main exact",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html single shell",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "proverka-istochnikov-vkr.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html main exact",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html single shell",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "razbor-zamechaniy-nauchruka.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html main exact",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html single shell",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "redaktura-posle-ii.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "referat.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "referat.html main exact",
+      "pass": true
+    },
+    {
+      "case": "referat.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "referat.html single shell",
+      "pass": true
+    },
+    {
+      "case": "referat.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "referat.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "referat.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "referat.html static exact context",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html main exact",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html single shell",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "referral-rules.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "referral.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "referral.html main exact",
+      "pass": true
+    },
+    {
+      "case": "referral.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "referral.html single shell",
+      "pass": true
+    },
+    {
+      "case": "referral.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "referral.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "referral.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "refunds.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "refunds.html main exact",
+      "pass": true
+    },
+    {
+      "case": "refunds.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "refunds.html single shell",
+      "pass": true
+    },
+    {
+      "case": "refunds.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "refunds.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "refunds.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "requisites.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "requisites.html main exact",
+      "pass": true
+    },
+    {
+      "case": "requisites.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "requisites.html single shell",
+      "pass": true
+    },
+    {
+      "case": "requisites.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "requisites.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "requisites.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "reviews.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "reviews.html main exact",
+      "pass": true
+    },
+    {
+      "case": "reviews.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "reviews.html single shell",
+      "pass": true
+    },
+    {
+      "case": "reviews.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "reviews.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "reviews.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "samples.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "samples.html main exact",
+      "pass": true
+    },
+    {
+      "case": "samples.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "samples.html single shell",
+      "pass": true
+    },
+    {
+      "case": "samples.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "samples.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "samples.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "services.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "services.html main exact",
+      "pass": true
+    },
+    {
+      "case": "services.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "services.html single shell",
+      "pass": true
+    },
+    {
+      "case": "services.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "services.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "services.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html main exact",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html single shell",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "specifikaciya.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "start.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "start.html main exact",
+      "pass": true
+    },
+    {
+      "case": "start.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "start.html single shell",
+      "pass": true
+    },
+    {
+      "case": "start.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "start.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "start.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html main exact",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html single shell",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "tariffs.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "terms.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "terms.html main exact",
+      "pass": true
+    },
+    {
+      "case": "terms.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "terms.html single shell",
+      "pass": true
+    },
+    {
+      "case": "terms.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "terms.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "terms.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "tools.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "tools.html main exact",
+      "pass": true
+    },
+    {
+      "case": "tools.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "tools.html single shell",
+      "pass": true
+    },
+    {
+      "case": "tools.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "tools.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "tools.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html main exact",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html single shell",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "vedenie.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html singleton header",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html main exact",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html footer exact",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html single shell",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html search initializer before shell",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html native details fallback",
+      "pass": true
+    },
+    {
+      "case": "zayavka.html no unsafe internal targets",
+      "pass": true
+    },
+    {
+      "case": "assets/js/app.js logic unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-order.js logic unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-commerce.js logic unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/salon-experience.js logic unchanged",
+      "pass": true
+    },
+    {
+      "case": "assets/js/configurator-nav-guard.js logic unchanged",
+      "pass": true
+    },
+    {
+      "case": "404.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "50x.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "admin-analytics.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "admin-covers.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "admin.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "dashboard.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "maintenance.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "offline.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "zero-classes.html independent surface unchanged",
+      "pass": true
+    },
+    {
+      "case": "overlay newheader singleton",
+      "pass": true
+    },
+    {
+      "case": "overlay shell andsearch",
+      "pass": true
+    },
+    {
+      "case": "overlay no olddialog",
+      "pass": true
+    },
+    {
+      "case": "overlay legal main exact",
+      "pass": true
+    },
+    {
+      "case": "salon-home.css unchanged",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html dialog singleton",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html modal open",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html focus close",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html theme flips exactlyonce",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html theme roundtrip",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html Escape restores focus",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html search avoids stacked dialogs",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html searchclose focus to menu",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html searchprivacy",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html doubleinit harmless",
+      "pass": true
+    },
+    {
+      "case": "avtorskiy-zakaz.html menu still opens aftersecond",
+      "pass": true
+    },
+    {
+      "case": "entry choices preserved in all3CTAs",
+      "pass": true
+    },
+    {
+      "case": "unsafe entry href rejected https://example.invalid/configurator.html?product=course",
+      "pass": true
+    },
+    {
+      "case": "unsafe entry href rejected /dashboard.html?product=course",
+      "pass": true
+    },
+    {
+      "case": "unsafe entry href rejected /configurator.html?token=PRIVATE_SECRET",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html dialog singleton",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html modal open",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html focus close",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html theme flips exactlyonce",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html theme roundtrip",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html Escape restores focus",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html search avoids stacked dialogs",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html searchclose focus to menu",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html searchprivacy",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html doubleinit harmless",
+      "pass": true
+    },
+    {
+      "case": "diplomnaya-po-psihologii.html menu still opens aftersecond",
+      "pass": true
+    },
+    {
+      "case": "index.html dialog singleton",
+      "pass": true
+    },
+    {
+      "case": "index.html modal open",
+      "pass": true
+    },
+    {
+      "case": "index.html focus close",
+      "pass": true
+    },
+    {
+      "case": "index.html theme flips exactlyonce",
+      "pass": true
+    },
+    {
+      "case": "index.html theme roundtrip",
+      "pass": true
+    },
+    {
+      "case": "index.html Escape restores focus",
+      "pass": true
+    },
+    {
+      "case": "index.html search avoids stacked dialogs",
+      "pass": true
+    },
+    {
+      "case": "index.html searchclose focus to menu",
+      "pass": true
+    },
+    {
+      "case": "index.html searchprivacy",
+      "pass": true
+    },
+    {
+      "case": "index.html doubleinit harmless",
+      "pass": true
+    },
+    {
+      "case": "index.html menu still opens aftersecond",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing dialog singleton",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing modal open",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing focus close",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing theme flips exactlyonce",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing theme roundtrip",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing Escape restores focus",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing search avoids stacked dialogs",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing searchclose focus to menu",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing searchprivacy",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing doubleinit harmless",
+      "pass": true
+    },
+    {
+      "case": "configurator.html?product=practice&result=editing menu still opens aftersecond",
+      "pass": true
+    },
+    {
+      "case": "form header preserves content",
+      "pass": true
+    },
+    {
+      "case": "form menu preservescontent",
+      "pass": true
+    },
+    {
+      "case": "print header hidden",
+      "pass": true
+    },
+    {
+      "case": "no showModal native menu opens",
+      "pass": true
+    },
+    {
+      "case": "no showModal search fallback visible",
+      "pass": true
+    },
+    {
+      "case": "no showModal theme remains functional",
+      "pass": true
+    },
+    {
+      "case": "no runtime pageerrors",
+      "pass": true
+    },
+    {
+      "case": "noJS native menu opens",
+      "pass": true
+    },
+    {
+      "case": "noJS fallbacksearch usable",
+      "pass": true
+    },
+    {
+      "case": "noJS controls notdead",
+      "pass": true
+    }
+  ],
+  "passed": 718,
+  "source_sha256": {
+    "about.html": "748daf12b58bbb8ceb9708a3c61e98276013bd2606beeff9988d795ea6d0d500",
+    "academic-integrity.html": "0246f53899f33e3a7e6f20a38083ed806b1779742f26173772e36083f6b5e72f",
+    "assets/css/salon-experience.css": "ff3fd15756f8f015588b475b63a4ac8f26ac9df72a6dc3617d83958dde0d5830",
+    "assets/js/salon-shell.js": "0caf57b6b07544385d0ed193adc01fd703e79e2ad48f15d82631ed0b8e2c1144",
+    "audit-temy-vkr.html": "a211d1a914e23f2e973bf39944388476d57bdd321f6ac7267a7a0fc4e433178b",
+    "avtorskiy-zakaz.html": "faeaaa087ee01f8702e3a3052b399f87a4214ea238ea5c4683cde6174a05d558",
+    "benefits.html": "a444396cb7dbc0b85f7f50ec59b8bc25d67eb1c5bbceffaf51166e713f52ad57",
+    "check.html": "b47464f210987ce4b59f6d785c64aeb76eb96a8314d440a99e751aff39e1b1cd",
+    "configurator.html": "d8b411502984a3ada3f4f5b661449615da99de257cb43a1bf78055a7a879df35",
+    "consent-analytics.html": "9648626e993f32d4da2ad175f4f8d47c6bf4cc9ec86764524dc69436c634020a",
+    "consent-marketing.html": "365114977b23b8038b4019ef816ddb0c2d5d752d45f19141c569272b64d267f6",
+    "consent-publication.html": "f18a3d397743ef4e163245880e4fc6db71644e80b57e7e0a863b83fe62facade",
+    "consent-request.html": "f15cc9c2bb8fdea79563d3b87e2b523c967f8c985d7b968b8ad797c2e53ebb31",
+    "consent.html": "f3b8265b0beebf9ae5e67cbc37cd1baab2e97247bc9cfc53fe74aa0753862375",
+    "deposit.html": "04655c4d4ce11a4a15513ec95c529918f44ce9ef8121f55b50dac09023ef87a2",
+    "diplomnaya-po-ekonomike.html": "3442820df295e57c9e82e2ceda0066c43a31a454b08740dc644177e48c4e21ce",
+    "diplomnaya-po-psihologii.html": "84055bd8b6f86fb1fa3fb57c3bd696b2f845cccc3e18e878e0006461e446da14",
+    "diplomnaya-po-yurisprudencii.html": "c2af170ac70f5a9f4ab411a9e049fbee0044cf353baee6960991d056ce298aa1",
+    "diplomnaya-rabota.html": "58a56d569bf6c665d375c38f9c26229d3f4659847da5481280107fe7dbcae43d",
+    "dorabotka-otcheta-po-praktike.html": "795b60883c8365a6f1b16e0a7ad4b375436dbc3c66e6551b88ee78618cbda6e8",
+    "dosie-nauchruka.html": "946334d18957f29af7de54697e2b80ccd5f34b24c7ebfed2037b2f568cb4e2f0",
+    "expertise.html": "84e59ed42b924d78b389f3946b94dfd220f51c0b4d9e7935b35c01015f539161",
+    "gift.html": "5b8301e4d7359253d68264e108328c9773cfa4398435dba2a8fc5b97ea29eae8",
+    "guarantees.html": "cda04df27cbb6647cbac35b1f7ca7e77eee7ec8ba8d1667e78fe1c107f00f811",
+    "guide-antiplagiat-ai.html": "0d32e94e94d1ab9b2be7908e77e5bc7874ed00ac217db68466f791c68069b706",
+    "guide-apellyaciya.html": "060b9437daf635faeb1aa41d67f6ddc61062d8fa66250f3fe3c48b32086f9c2e",
+    "guide-dnevnik-praktiki.html": "ab7dfecfba45bbadca5fa704f993db4d605b021e0b6aa5ae8c2ea0b6a760d445",
+    "guide-harakteristika-s-praktiki.html": "6d6dc8ff0854c35d0e32605e06a673e5b6582633cfd7ae0b45092efb7f05051e",
+    "guide-kursovaya-za-nedelyu.html": "3124891fcc493afcd943f86305cdb9be6ab6a8c4fe84fdb45276f7cd36b722f5",
+    "guide-normocontrol.html": "f0d43282fd3a08263713648e1036de0af08b50bca8ad1fd91208795abab0f0a2",
+    "guide-obekt-predmet-cel-zadachi.html": "9ba857df1cd8c86f717c2ef22123e2502e33540a655455046e02dc180e4ca6fb",
+    "guide-otchet-po-praktike.html": "d9fbc393a8dda1c40d2ff822880f0851ada4ddfc3944958ce3c893d39e765379",
+    "guide-otzyv-rukovoditelya-vkr.html": "9fd2558cd8b2e6538acbdb3156c8b72fd59aaabddb35c9923d8a28d7bb42dcfa",
+    "guide-prakticheskaya-chast-kursovoy.html": "8b60667c11bed1d8c086398a530e3cf3867e1bbf227a8a76bff49bd2d854f33a",
+    "guide-prezentaciya-k-zashchite.html": "e3772c1a9ce64845437e8a41aa109c687ec878187995b74242c44e9aff7a2236",
+    "guide-prilozheniya-po-gost.html": "bfec737c0d6280814ee7b158025f38cb562f337188039f0e7835ff735c97a97b",
+    "guide-recenziya-na-vkr.html": "ff93209026e0708b70539e4c3dc0194f42db03516d5b6e4bbc9b0455177902ad",
+    "guide-rech-na-zashchitu.html": "8d55942a8141c554f52eb1c1198249a02bf2e363cfae7d3c19aa6f371aaa87da",
+    "guide-rinc-statya.html": "ca0578a1255f68c92e43fbecd00915bbf51ed4eac5ea3097fedf71e1f4b2b4d1",
+    "guide-skolko-stoit-diplomnaya.html": "9a9b6ac89227e7e4633f96c51dc22ef726bf4fd9e789c910d5a879c56ff34f47",
+    "guide-skolko-stoit-kursovaya.html": "65fdbf736730d38d271dd878fe28e9dbebab4f4a50bb4085ab5d257049a922e9",
+    "guide-spisok-literatury.html": "aae413787d07a9c7310f06ff3bfe21ec935a41a05691ef14d830f6b10a28c781",
+    "guide-temy-vkr.html": "bbc9a5904795abaea919ec4d546be911d4716d8b3c7ade95d9ca139bde2cec7b",
+    "guide-titulnyj-list.html": "098b4defc3ffeac50a305179c88d5b80685d36c821dec7be0627345dcb0f08c0",
+    "guide-vkr-struktura.html": "9a8cb0d6c48514f9850cab29354eab2a184a26a960d997000f7b12d1dec935a1",
+    "guide-vvedenie-kursovoy.html": "8dc2a7fae951a234e19c7426e34b003b909fc20cabb0b25b47965e757e63abca",
+    "guide-zaklyuchenie-kursovoy.html": "a1e35ba5bd0ae675d07117bc46536135746fef2dc6511ef1a36b564b07e1e6d8",
+    "guide-zaklyuchenie-vkr.html": "1d0e885113b61a8b74be0338bef1a255c0d0285cdfe07cf8edb51f2394c2dc25",
+    "guide-zashchita-diploma.html": "407879e3f2bfbf7d5032cc29d79c615fbfcae1d70ea604ce1224c8d940a4af21",
+    "index.html": "7903600d3d3ec57f92b139002c713a6e815bcca8f1e398832409e3b01c3aa46f",
+    "kandidatskaya-dissertaciya.html": "bdc896f2b293544b961027ebb119bead8833ca64c5e473c007ad83f621b4dc30",
+    "knowledge.html": "aff87c621506f91971595bf4329855b5950035311f189f2febf5db6fb3176eb1",
+    "komissiya-0.html": "49d074d2a25f472fb82e3616885ce86f4b17381a0b00df2b1dfaf66d8740df45",
+    "kursovaya-po-ekonomike.html": "44a58673007414a4ef1b48c15f9ff07feebdbc64f6ae494356ee7cf9599d60ca",
+    "kursovaya-po-informatike.html": "24f375fe378e7171e065cac1a256824d1137d4b61c25744d23d6d698af7f78ee",
+    "kursovaya-po-menedzhmentu.html": "50b72306101cbb28b3932a11c1d71d66d89311e1e3331497fba68acc13c3f699",
+    "kursovaya-po-pedagogike.html": "b85b318a559cdbc7c51c64a2fe8a33983ba5d4c2e8a351b04e0fd9f86926f85f",
+    "kursovaya-po-psihologii.html": "facc78fd8c66ac660248772d3fb434d7bccbb1416292b9564ce3db778d837a12",
+    "kursovaya-po-yurisprudencii.html": "6ff02d8f29d39bc46f474fc47e89f01553938d0907e888278540ebf8354519bb",
+    "kursovaya-rabota.html": "2152aa11c7d422095d67e7aa424561f9f411145eb73512e23c7a335b3ea315ed",
+    "loyalty.html": "dae46ab1e0d309eca9454133af751c1e1c5b31074352a844b688861c6b09935f",
+    "magisterskaya-dissertaciya.html": "1fa8a1ebedee8648e64ac1a6513c0b56ed750aa0205a0222fe58cc1afff0e4b5",
+    "nauchnaya-statya.html": "de071d3bacfcb52dee1b27ee5a35645137d78dc3178e5472de498ce2fa3d7871",
+    "normokontrol-vkr.html": "efafcbfd317c9044a43f05e4968bf83b4db37b6a30aa7b87782b5eaeb5b919e3",
+    "oferta.html": "751dc7e5e9fbae0cb384d2562d0e4d82527d457786c44edb37bc3b09986d4284",
+    "oplaceno.html": "7da94eeed3fd4f3fe112c4ff29b010dd8c7ac2fe538bbe64c6dd94dd99be1682",
+    "oplata.html": "ceb2149b04466180efabc1bfc5a24f8cd79abce6e0c96309bf686d054c814ac7",
+    "otchet-po-praktike.html": "89dd4f2d797940d01b938393d83e58b4a7bb1d489adac58f52f698b152042cc4",
+    "plan.html": "f0c81755789445c0ab8eef7b8c931637ba8f384aad4281ed53305c44761082fe",
+    "plus.html": "f755f23085b99b50468f7c003ab355c0b3a2a37142d8c8ebcbfee308af022e98",
+    "privacy.html": "7261e1ce787caa3d584aa60adcf60289d921367017942dbfb58e15f3250191b2",
+    "priyomnaya.html": "8251eff1ee5b116e4efb45247a00b1ffa23d9878f2a59df5fdd39b5bb0b33a10",
+    "prolog.html": "1bb07aaddd17202a44f7a6e66dde6a6f8f1a3ad15232dcad85fe88921e3266b6",
+    "proverka-istochnikov-vkr.html": "cd2e8d26a2cab37e1dea5d613cb40b34e45d1a7a4a11dde94a0396156b5e3ed6",
+    "razbor-zamechaniy-nauchruka.html": "5b7e23e1426d94590a5c63e0bca25c254949b60b321344816018eeb04b6bf248",
+    "redaktura-posle-ii.html": "d6f233fc8408db9d4b531ab3c24a70c4b2e3c8bf6b2668561dab4140b80886b7",
+    "referat.html": "1e24b14d8b149f0db6d3fd402f6be2e3b97f13d9cd6687eab3c7416cad152c72",
+    "referral-rules.html": "bb80c61a114dd1f2d91a3ce805c5a9f3d6799ec7a88eaf268d0f170b861bf4ce",
+    "referral.html": "022e4a643d9956a3d3511c8d3037ed471b3b1efb2527e085b3a38609f68e1a30",
+    "refunds.html": "4c32ef0383bec6fea3b294f3df9b3b4c4fe9a37f375676cbc210137da05298d5",
+    "requisites.html": "3e74f0dd0089a1825a727b588ed0bf57002f39843fbacdb8c7331a01fdde1817",
+    "reviews.html": "9ee7bebc0a76011fce91113d34fd9f4a70aa971bbd541f40a793713b42a7eda4",
+    "samples.html": "bf6b85c988247b1e882af01a5855e06c5c319b3a366a4bc1cf623800972c3bde",
+    "scripts/legal-presentation.py": "22d516d7562902357d1dbe2ad5fb0ae2d7ad73d88cab296b977c6005c41cab50",
+    "services.html": "288da79a4cc0db429240497968c2cc51c3816daee3c092d46e3e6b460ba8a778",
+    "specifikaciya.html": "e8e296802c5447af23dde54c4206173d4d1163ecb2b3fd54d2db79e1ff20aaca",
+    "start.html": "be2cc550c24be24764c666564125c910aca72b911fc5a02b6e075b28079c8938",
+    "tariffs.html": "b034b7de26266dc206ac95d4e9a1c980d858b7c2779b739ff24f914267aa20ab",
+    "terms.html": "b86999b35eaa406ee0a6da3322f88fca55561b9c34703db9b7e21f8946f7166b",
+    "tools.html": "118dd82e0e6cde8e1a23229ceda32531d96a21d1a663ecb0eb746e869f5c6670",
+    "vedenie.html": "df6e9adc6d59f597fd450f0cb1ec0d7737e97b22ffc5f7fea19b835994ad4bce",
+    "zayavka.html": "1fc9dbdb290e85dafe60683204005da16fa6e9617d963ca4213b21d881124f82"
+  },
+  "reproducer": "docs/brain/evidence/salon-product/header-20260910/review-contract-run.py",
+  "findings": [],
+  "browser": {
+    "passed": 58,
+    "tests": [
+      {
+        "case": "avtorskiy-zakaz.html dialog singleton",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html modal open",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html focus close",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html theme flips exactlyonce",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html theme roundtrip",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html Escape restores focus",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html search avoids stacked dialogs",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html searchclose focus to menu",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html searchprivacy",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html doubleinit harmless",
+        "pass": true
+      },
+      {
+        "case": "avtorskiy-zakaz.html menu still opens aftersecond",
+        "pass": true
+      },
+      {
+        "case": "entry choices preserved in all3CTAs",
+        "pass": true
+      },
+      {
+        "case": "unsafe entry href rejected https://example.invalid/configurator.html?product=course",
+        "pass": true
+      },
+      {
+        "case": "unsafe entry href rejected /dashboard.html?product=course",
+        "pass": true
+      },
+      {
+        "case": "unsafe entry href rejected /configurator.html?token=PRIVATE_SECRET",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html dialog singleton",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html modal open",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html focus close",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html theme flips exactlyonce",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html theme roundtrip",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html Escape restores focus",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html search avoids stacked dialogs",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html searchclose focus to menu",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html searchprivacy",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html doubleinit harmless",
+        "pass": true
+      },
+      {
+        "case": "diplomnaya-po-psihologii.html menu still opens aftersecond",
+        "pass": true
+      },
+      {
+        "case": "index.html dialog singleton",
+        "pass": true
+      },
+      {
+        "case": "index.html modal open",
+        "pass": true
+      },
+      {
+        "case": "index.html focus close",
+        "pass": true
+      },
+      {
+        "case": "index.html theme flips exactlyonce",
+        "pass": true
+      },
+      {
+        "case": "index.html theme roundtrip",
+        "pass": true
+      },
+      {
+        "case": "index.html Escape restores focus",
+        "pass": true
+      },
+      {
+        "case": "index.html search avoids stacked dialogs",
+        "pass": true
+      },
+      {
+        "case": "index.html searchclose focus to menu",
+        "pass": true
+      },
+      {
+        "case": "index.html searchprivacy",
+        "pass": true
+      },
+      {
+        "case": "index.html doubleinit harmless",
+        "pass": true
+      },
+      {
+        "case": "index.html menu still opens aftersecond",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing dialog singleton",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing modal open",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing focus close",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing theme flips exactlyonce",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing theme roundtrip",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing Escape restores focus",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing search avoids stacked dialogs",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing searchclose focus to menu",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing searchprivacy",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing doubleinit harmless",
+        "pass": true
+      },
+      {
+        "case": "configurator.html?product=practice&result=editing menu still opens aftersecond",
+        "pass": true
+      },
+      {
+        "case": "form header preserves content",
+        "pass": true
+      },
+      {
+        "case": "form menu preservescontent",
+        "pass": true
+      },
+      {
+        "case": "print header hidden",
+        "pass": true
+      },
+      {
+        "case": "no showModal native menu opens",
+        "pass": true
+      },
+      {
+        "case": "no showModal search fallback visible",
+        "pass": true
+      },
+      {
+        "case": "no showModal theme remains functional",
+        "pass": true
+      },
+      {
+        "case": "no runtime pageerrors",
+        "pass": true
+      },
+      {
+        "case": "noJS native menu opens",
+        "pass": true
+      },
+      {
+        "case": "noJS fallbacksearch usable",
+        "pass": true
+      },
+      {
+        "case": "noJS controls notdead",
+        "pass": true
+      }
+    ],
+    "errors": []
+  },
+  "summary": {
+    "passed": 718,
+    "P0": 0,
+    "P1": 0,
+    "P2": 0,
+    "files": 92
+  },
+  "closed_findings": [
+    {
+      "priority": "P2",
+      "problem": "Falsy initialization marker allowed duplicate setup.",
+      "fix": "shReady=1; second injection harmless on four browser routes."
+    },
+    {
+      "priority": "P2",
+      "problem": "Search fallback hidden in browsers without showModal.",
+      "fix": "Capability guard before search enhancement; native fallback and theme tested."
+    }
+  ],
+  "fixture_dependencies": [
+    "docs/brain/evidence/salon-product/header-20260910/review-contract-legacy-fixture.html"
+  ],
+  "reproducer_sha256": {
+    "docs/brain/evidence/salon-product/header-20260910/review-contract-static.py": "97ec0c7edf70579e564b257fc6fc8888920c44d2495a440d4753d986394c6920",
+    "docs/brain/evidence/salon-product/header-20260910/review-contract-legacy-fixture.html": "83300911a345ffb882f023b0f0559141dc6ce33f32422f7397101b5097f4eb4b",
+    "docs/brain/evidence/salon-product/header-20260910/review-contract-run.py": "f562a0b95348a0fed1ccbf76dcf24f7ecd4398eeb848279a61b39958a8931d0f",
+    "docs/brain/evidence/salon-product/header-20260910/review-contract-browser.js": "8cdec1d7519e650196c77297da6906dbe3f0ee47c81242c9e5151afb1f72fc57"
+  },
+  "own_browser_closed": true,
+  "limits": [
+    "89 source pages+minimal overlay fixture (actual raw input separately verified by receipt); real browser legacy/home/psychology/form/noJS/no-dialog-support. Parent owns final visual/frozen/live gates.",
+    "Browser API/external traffic mocked; no actual messages, orders or financial mutation.",
+    "Final89HTML change only stylesheet cache query: separate exact normalized-hash receipt review-contract-cache-delta.json; runtime/CSS/browser behavior unchanged."
+  ],
+  "final_drift": []
+}

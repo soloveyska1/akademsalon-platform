@@ -1,0 +1,33 @@
+{
+  "date_utc": "2026-09-09T02:27:56.073848+00:00",
+  "declaration_head": "568df06af1851e8df9a2ff3de3fb80a02fe66941",
+  "canonical": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "source_sha256": {
+    "index.html": "f3934f8396228e7863e3e943594b6b9d27ce0708e262cd21ca1c8522dc7e4501",
+    "assets/css/salon-home.css": "1504682e49c6b276e1ac07b10b727e36ef6aa4e815865a6ac9e3718d843334d6",
+    "assets/js/salon-home.js": "84a84900a21862042d8b657937a5399d256e44aafb7c4820713782c5b9ba7406",
+    "tests/salon-experience.test.js": "cb7aa502b3688c418299f1d1ca98080ffd0bff5b1084ba8c43176baac603e733"
+  },
+  "routes": [
+    "/",
+    "/#home-benefits",
+    "/#order-desk",
+    "/configurator.html?composition=1"
+  ],
+  "data_state": "Fresh Chromium152 contexts; serviceWorkers blocked; synthetic API fixtures; no real orders",
+  "proof": "24 main/menu states,36 benefit states,36 main/extras commerce states; new shell and original order journeys; sticky/animation dock regression;18 contrast pairs>=5.58;85focused pass",
+  "reviews": "journey_review GO both themes; order_contract_review GO incl final dock fix",
+  "economic_sources": [
+    "benefits.html#bonuses",
+    "benefits.html#compare",
+    "plus.html",
+    "gift.html",
+    "assets/js/salon-benefits.js"
+  ],
+  "limitations": [
+    "Private preview only; no public-domain deployment",
+    "No conversion or profit measurement",
+    "Public server composition parsing and earlier release gates remain outstanding",
+    "Historical full suite not rerun for scoped shell iteration; earlier175 legacy failures remain disclosed"
+  ]
+}

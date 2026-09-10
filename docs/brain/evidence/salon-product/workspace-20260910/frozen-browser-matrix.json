@@ -1,0 +1,1368 @@
+{
+  "checks": 120,
+  "overflow": [],
+  "clippedTabs": [],
+  "errors": [],
+  "states": [
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "home",
+      "overflow": false,
+      "heading": "Привет, Алексей",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "orders",
+      "overflow": false,
+      "heading": "Твои заказы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "messages",
+      "overflow": false,
+      "heading": "Сообщения",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "documents",
+      "overflow": false,
+      "heading": "Документы",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "calendar",
+      "overflow": false,
+      "heading": "Сроки без сюрпризов",
+      "forms": [
+        {
+          "kind": "milestone",
+          "epoch": "0"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "benefits",
+      "overflow": false,
+      "heading": "Приятно быть своим",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "order-701-work",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "order-701-chat",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "message",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "order-701-files",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "upload",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "order-701-money",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [
+        {
+          "kind": "bonus",
+          "epoch": "0",
+          "order": "701"
+        },
+        {
+          "kind": "gift",
+          "epoch": "0",
+          "order": "701"
+        }
+      ],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "order-701-terms",
+      "overflow": false,
+      "heading": "Курсовая с исследованием",
+      "forms": [],
+      "tabs": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "profile",
+      "overflow": false,
+      "heading": "Твой профиль",
+      "forms": [],
+      "tabs": true
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "browser": "152.0.7977.84",
+  "serviceWorkers": "block",
+  "result": [
+    {
+      "theme": "light",
+      "item": "proof hover",
+      "color": "rgb(252, 251, 255)",
+      "bg": "#4934ad",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "item": "express badge",
+      "color": "rgb(44, 57, 30)",
+      "bg": "rgb(217, 245, 187)",
+      "ratio": 10.36
+    },
+    {
+      "theme": "light",
+      "item": "VIP badge",
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(81, 54, 181)",
+      "ratio": 8.25
+    },
+    {
+      "theme": "dark",
+      "item": "proof hover",
+      "color": "rgb(252, 251, 255)",
+      "bg": "#3e2b89",
+      "ratio": 10.66
+    },
+    {
+      "theme": "dark",
+      "item": "express badge",
+      "color": "rgb(44, 57, 30)",
+      "bg": "rgb(217, 245, 187)",
+      "ratio": 10.36
+    },
+    {
+      "theme": "dark",
+      "item": "VIP badge",
+      "color": "rgb(37, 24, 63)",
+      "bg": "rgb(196, 179, 255)",
+      "ratio": 8.77
+    }
+  ]
+}

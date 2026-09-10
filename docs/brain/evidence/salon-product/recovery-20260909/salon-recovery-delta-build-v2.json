@@ -1,0 +1,9 @@
+{
+  "source_commit": "b2590b25a21f74df35f46127725ba4a69af3e826",
+  "files": 434,
+  "changed": 103,
+  "delta_sha256": "e15cc4137b79fd83138a3f4f2a15bb5234cfc5d14221d99ba49c9d01fe793339",
+  "delta_bytes": 545444,
+  "manifest_sha256": "9e56203068c807f3bb6b6c8f13840c63f6dd2dcf316214b495aac1d79024064b",
+  "local_overlay_parity": true
+}

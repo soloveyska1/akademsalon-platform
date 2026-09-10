@@ -1,0 +1,55 @@
+[
+  {
+    "route": "referral",
+    "status": 200,
+    "exact": false,
+    "sites_injection_only": true
+  },
+  {
+    "route": "referral-rules",
+    "status": 200,
+    "exact": false,
+    "sites_injection_only": true
+  },
+  {
+    "route": "dashboard",
+    "status": 200,
+    "exact": false,
+    "sites_injection_only": true
+  },
+  {
+    "route": "assets/css/salon-referral.css",
+    "status": 200,
+    "exact": true
+  },
+  {
+    "route": "assets/js/salon-referral.js",
+    "status": 200,
+    "exact": true
+  },
+  {
+    "route": "assets/js/salon-referral-policy.js",
+    "status": 200,
+    "exact": true
+  },
+  {
+    "route": "assets/js/cabinet.js",
+    "status": 200,
+    "exact": true
+  },
+  {
+    "route": "assets/js/salon-cabinet.js",
+    "status": 200,
+    "exact": true
+  },
+  {
+    "route": "assets/css/salon-cabinet.css",
+    "status": 200,
+    "exact": true
+  },
+  {
+    "route": "assets/js/salon-experience.js",
+    "status": 200,
+    "exact": true
+  }
+]

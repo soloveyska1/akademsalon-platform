@@ -68,7 +68,8 @@ test('strict attribution precedes analytics v2 on every measured public page', (
   const measured = pages.filter((file) =>
     fs.readFileSync(path.join(root, file), 'utf8').includes('assets/js/analytics-v2.js'),
   );
-  assert.equal(measured.length, 87);
+  assert.ok(measured.length >= 87, 'existing measured routes must not disappear');
+  for (const added of ['samples.html', 'benefits.html']) assert.ok(measured.includes(added), added + ': new public route measured');
   for (const file of measured) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
     assert.match(html, /<script(?: defer)? src="assets\/js\/analytics-attribution-v2\.js\?v=20260829analytics4"><\/script>\s*<script(?: defer)? src="assets\/js\/analytics-v2\.js\?v=20260829analytics4"><\/script>/,
