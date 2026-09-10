@@ -1,0 +1,28 @@
+{
+  "source_commit": "f26bb2e4045df364f91d8b9ec1e34ba86226922f",
+  "files": 434,
+  "changed": 103,
+  "delta_sha256": "b92d2580243ffaf1e3df5264f4dce17bab30c0374909fb40abf1e7c9024907bd",
+  "delta_bytes": 532932,
+  "manifest_sha256": "d37b01dc0ad4e94e91fead36a5085f2406423b7d4790a7924585b5719e618fb3",
+  "local_overlay_parity": true,
+  "readback_paths": [
+    "assets/css/salon-experience.css",
+    "assets/js/salon-experience.js",
+    "normokontrol-vkr.html",
+    "plan.html",
+    "redaktura-posle-ii.html",
+    "razbor-zamechaniy-nauchruka.html",
+    "dorabotka-otcheta-po-praktike.html",
+    "index.html",
+    "about.html",
+    "knowledge.html",
+    "services.html",
+    "gift.html",
+    "dashboard.html",
+    "configurator.html",
+    "priyomnaya.html",
+    "oplaceno.html",
+    "referral.html"
+  ]
+}

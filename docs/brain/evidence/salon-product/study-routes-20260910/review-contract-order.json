@@ -1,0 +1,78 @@
+{
+  "passed": 4,
+  "tests": [
+    {
+      "case": "df maps exact defense6000",
+      "pass": true,
+      "state": {
+        "product": "service:defense",
+        "scope": "whole",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "whole"
+        },
+        "service": "defense",
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "course contextual part",
+      "pass": true,
+      "state": {
+        "product": "course",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "course",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "practice contextual part",
+      "pass": true,
+      "state": {
+        "product": "practice",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "practice",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    },
+    {
+      "case": "diplom contextual part",
+      "pass": true,
+      "state": {
+        "product": "diplom",
+        "scope": "part",
+        "composition": {
+          "version": 1,
+          "product": "diplom",
+          "speed": "standard",
+          "package": "standard",
+          "addons": [],
+          "scope": "part"
+        },
+        "promo": "",
+        "gift": ""
+      }
+    }
+  ]
+}

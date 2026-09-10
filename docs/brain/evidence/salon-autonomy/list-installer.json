@@ -1,0 +1,9 @@
+{
+  "before_web": "2e7f7e959049c22feb3b108c64f9f87b6d1a97703eb95f068e4327d64b14df9f",
+  "after_web": "4a008c0ed257d8614ef34698fe84dce01b6a64bd4c01c79cb74ef0724a76b621",
+  "before_assistant": "d736615ea0f51f8886451394222d316fe8e45aae22811fedb4bb703bc7293c63",
+  "after_assistant": "ca32ca8d1bc6293780cff1580f10bd4a7492708ac20cee9518e3674cac0d1039",
+  "database_changed": false,
+  "backup": "/var/folders/xx/v200p6jj3jn68953g8k4rw3m0000gn/T/salon-list-final-installer-bud1bi4a/backups/assistant-20260909T140953121860Z",
+  "apply_rollback_forward": true
+}

@@ -1,0 +1,1054 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-c2f3182451894c5fad8c18f24493a68d",
+  "slug": "salon-admin-rebuild",
+  "status": "submitted",
+  "branch": "codex/salon-admin-rebuild",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": "bb88f7d6c33c8f7fef91ba4be9c4d03b9def77ab",
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": ".openai/hosting.json",
+        "match": "exact"
+      },
+      {
+        "path": "404.html",
+        "match": "exact"
+      },
+      {
+        "path": "50x.html",
+        "match": "exact"
+      },
+      {
+        "path": "about.html",
+        "match": "exact"
+      },
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/campaigns/autumn-2026",
+        "match": "tree"
+      },
+      {
+        "path": "assets/css/order-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/order-specification.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/polish15-admin.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-admin-workspace.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-admin.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-assistant.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-cabinet.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-catalogue.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-direct.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-experience.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-home.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-intake.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-legal.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-library.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-portfolio.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-quote.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-referral-public.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-referral.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-reviews.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-rewards.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-select.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-support.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-tools.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-workspace.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/docs/specification-2026",
+        "match": "tree"
+      },
+      {
+        "path": "assets/img/salon-assistant",
+        "match": "tree"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cabinet-demo.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/order-journey.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/order-specification.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-supporting.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-admin-core.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-admin-workspace.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-assistant.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-benefits.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-catalogue.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-commerce.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-direct.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-experience.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-home.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-intake.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-legal.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-library.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-order-domain.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-order.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-portfolio-data.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-portfolio.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-products.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-quote.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-referral-policy.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-referral.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-reviews.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-rewards.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-samples.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-select.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-shell.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-support.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-tools.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-workspace.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples",
+        "match": "tree"
+      },
+      {
+        "path": "assets/vendor/pdfjs",
+        "match": "tree"
+      },
+      {
+        "path": "audit-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "avtorskiy-zakaz.html",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/direct_upload.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/production_probe.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_direct_upload.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_production_probe.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "benefits.html",
+        "match": "exact"
+      },
+      {
+        "path": "check.html",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-marketing.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-publication.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-request.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent.html",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/order-stages-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-admin-control",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-admin-rebuild",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-autonomy",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-control-release",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-direct",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-learning",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-product",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-referral-visual-fix",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-rewards",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-support",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/specification-document",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/specification-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5905274fa24a4c61b51894d5e1a08e0a/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5905274fa24a4c61b51894d5e1a08e0a/manifest.json",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-6c013fa0fe204031bacc51592c1ddae9",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9914ea8c80304507b79f0c93f198d696/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9914ea8c80304507b79f0c93f198d696/manifest.json",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c2f3182451894c5fad8c18f24493a68d/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ea41aecae85d424d883e5044bc75af43/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ea41aecae85d424d883e5044bc75af43/manifest.json",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f0707e43d5ba4a9b9abb90aa0262c567/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f0707e43d5ba4a9b9abb90aa0262c567/manifest.json",
+        "match": "exact"
+      },
+      {
+        "path": "dorabotka-otcheta-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "expertise.html",
+        "match": "exact"
+      },
+      {
+        "path": "gift.html",
+        "match": "exact"
+      },
+      {
+        "path": "guarantees.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-antiplagiat-ai.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-apellyaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-dnevnik-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-harakteristika-s-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-kursovaya-za-nedelyu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-normocontrol.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-obekt-predmet-cel-zadachi.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otzyv-rukovoditelya-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prakticheskaya-chast-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prezentaciya-k-zashchite.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prilozheniya-po-gost.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-recenziya-na-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rech-na-zashchitu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rinc-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-diplomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-kursovaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-spisok-literatury.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-titulnyj-list.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vkr-struktura.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vvedenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zashchita-diploma.html",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "kandidatskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "knowledge.html",
+        "match": "exact"
+      },
+      {
+        "path": "komissiya-0.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026",
+        "match": "tree"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "magisterskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "maintenance.html",
+        "match": "exact"
+      },
+      {
+        "path": "nauchnaya-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "normokontrol-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "offline.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplaceno.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplata.html",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "plan.html",
+        "match": "exact"
+      },
+      {
+        "path": "plus.html",
+        "match": "exact"
+      },
+      {
+        "path": "privacy.html",
+        "match": "exact"
+      },
+      {
+        "path": "priyomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "prolog-interactive.html",
+        "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
+      },
+      {
+        "path": "proverka-istochnikov-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "razbor-zamechaniy-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "redaktura-posle-ii.html",
+        "match": "exact"
+      },
+      {
+        "path": "referat.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral-rules.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral.html",
+        "match": "exact"
+      },
+      {
+        "path": "refunds.html",
+        "match": "exact"
+      },
+      {
+        "path": "requisites.html",
+        "match": "exact"
+      },
+      {
+        "path": "reviews.html",
+        "match": "exact"
+      },
+      {
+        "path": "samples.html",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-production-release.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-sites-static.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/legal-presentation.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/rebuild-learning-pages.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/referral-presentation.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/render-campaign-video.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-route-inventory.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "specification-interactive.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "start.html",
+        "match": "exact"
+      },
+      {
+        "path": "sw.js",
+        "match": "exact"
+      },
+      {
+        "path": "tariffs.html",
+        "match": "exact"
+      },
+      {
+        "path": "terms.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-admin-comfort.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-admin-polish15.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-curator-planner.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-hall-design.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-home-overview.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-wayfinding.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-attribution-v2.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/automatic-payment.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-navigation-guard.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/deposit-page-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/economic-safety.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/first-step-measurement-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/knowledge-page-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/order-submit-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/privacy-security-contracts.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-release.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-smoke.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/pwa-install.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-admin-control.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-admin-workspace.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-assistant.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-autoquote.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-cabinet.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-commerce.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-direct.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-experience.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-learning.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-legal-presentation.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-referral.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-reviews.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-rewards-redesign.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-support.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-workspace.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/supporting-pages-polish15.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tools.html",
+        "match": "exact"
+      },
+      {
+        "path": "vedenie.html",
+        "match": "exact"
+      },
+      {
+        "path": "zayavka.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:direct-order"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:admin-control-workspace"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:admin-workspace-replacement"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:salon-direct"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 2,
+  "base_manifest_hash": "3b75a7418637dc43d63d39d142979b820b58ec2fde905650fff337f84a64a88b"
+}

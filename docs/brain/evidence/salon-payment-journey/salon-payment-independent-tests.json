@@ -1,0 +1,25 @@
+{
+  "passed": 13,
+  "tests": [
+    "test_review_concurrent_bonus_one_revision",
+    "test_review_deposit_exact_owner_before_money_access",
+    "test_review_failed_pdf_gift_restores_ledger",
+    "test_review_gift_cancel_returns_exact_hold",
+    "test_review_guest_first_promo_claim_then_other_order_denied",
+    "test_review_legacy_discount_invoice_keeps_matching_snapshot",
+    "test_review_legacy_fullgift_pdf_needs_financial_reissue",
+    "test_review_nonce_cannot_replay_other_identity",
+    "test_review_payment_rejects_fresh_revision_of_unmatched_document",
+    "test_review_rollback_retained_gift_standalone_after_real_acceptance",
+    "test_review_same_cash_different_settlement_requires_refresh",
+    "test_review_stale_online_cannot_cancel_invoice",
+    "test_review_unhashable_action_rejected_before_write"
+  ],
+  "failures": [],
+  "hashes": {
+    "backend/salon_bot/payment_journey.py": "e737f63f737ce52d401392a2cbe5bd750f0ad4b631f1e135f5981d3a41001a93",
+    "backend/salon_bot/install_payment_journey.py": "8595ceed757a8edbf4012f3c3c72f9b6af7bd11e7eba734779cddaeaa7420bed",
+    "backend/salon_bot/tests/test_payment_journey.py": "70f3321c0e68989fe8a7f5c4b6fa2d6ce59c0948b7a3d0a68562d9d3869a3292"
+  },
+  "note": "Isolated synthetic SQLite; actual source patches and DB helpers; PDF generation mocked; reused parent schema/setup only"
+}

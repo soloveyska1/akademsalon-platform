@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "step": "menu/theme",
+      "open": true,
+      "themeChanged": true,
+      "order": "/configurator.html?product=course&result=part&speed=express24&disc=psychology"
+    },
+    {
+      "step": "header-to-form",
+      "product": "course",
+      "scope": "part",
+      "params": {
+        "product": "course",
+        "result": "part",
+        "speed": "express24",
+        "disc": "psychology"
+      }
+    },
+    {
+      "step": "guide-header",
+      "height": 75,
+      "overflow": false
+    },
+    {
+      "step": "search",
+      "open": true,
+      "menuClosed": true,
+      "links": 7
+    },
+    {
+      "step": "focus-return",
+      "menu": true
+    }
+  ],
+  "errors": [],
+  "blockedMutations": [],
+  "source_commit": "666e7b8f95aa262fc7f152bc7fc117469a8489b5",
+  "browser": "Fresh Chromium, serviceWorkers blocked",
+  "state": "anonymous; live GET/HEAD only"
+}

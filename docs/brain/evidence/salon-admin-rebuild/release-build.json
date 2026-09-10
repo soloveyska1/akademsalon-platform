@@ -1,0 +1,32 @@
+{
+  "source_commit": "1a211115ebeaf4caf98ea9e374e74c0ac61e0ad1",
+  "files": 439,
+  "delta_files": 104,
+  "archive_bytes": 615154,
+  "paths": [
+    "index.html",
+    "dashboard.html",
+    "configurator.html",
+    "zayavka.html",
+    "services.html",
+    "kursovaya-rabota.html",
+    "kursovaya-po-psihologii.html",
+    "benefits.html",
+    "admin.html",
+    "privacy.html",
+    "oferta.html",
+    "referral.html",
+    "referral-rules.html",
+    "sitemap.xml",
+    "sw.js",
+    "assets/js/app.js",
+    "assets/js/salon-workspace.js",
+    "assets/css/salon-workspace.css",
+    "assets/js/admin.js",
+    "assets/js/salon-admin-core.js",
+    "assets/js/salon-admin-workspace.js",
+    "assets/css/salon-admin-workspace.css",
+    "assets/css/salon-admin.css",
+    "assets/css/salon-referral-public.css"
+  ]
+}

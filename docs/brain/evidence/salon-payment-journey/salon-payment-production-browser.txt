@@ -1,0 +1,6 @@
+### Result
+[{"url":"https://akademsalon.ru/dashboard.html?v=release203","width":390,"scrollWidth":390,"hasPaymentDomain":true,"login":true,"script":"https://akademsalon.ru/assets/js/salon-payment-domain.js?v=20260910payment1&r=ac931664aa350a93"},{"url":"https://akademsalon.ru/dashboard.html?v=release203","width":1440,"scrollWidth":1440,"hasPaymentDomain":true,"login":true,"script":"https://akademsalon.ru/assets/js/salon-payment-domain.js?v=20260910payment1&r=ac931664aa350a93"}]
+### Ran Playwright code
+```js
+await (async (page) => { const out=[]; for(const width of [390,1440]){await page.setViewportSize({width,height:900});out.push(await page.evaluate(()=>({url:location.href,width:innerWidth,scrollWidth:document.documentElement.scrollWidth,hasPaymentDomain:!!window.SalonPaymentDomain,login:!!document.querySelector("[data-form=email]"),script:document.querySelector("script[src*=salon-payment-domain]")?.src})));}return out; })(page);
+```

@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: account production page uses the final concept shell
+ok 1 - account production page uses the final concept shell
+  ---
+  duration_ms: 1.424125
+  type: 'test'
+  ...
+# Subtest: разделы кабинета не показывают один и тот же экран
+ok 2 - разделы кабинета не показывают один и тот же экран
+  ---
+  duration_ms: 0.1695
+  type: 'test'
+  ...
+# Subtest: дело разложено по разделам, а не одной лентой
+ok 3 - дело разложено по разделам, а не одной лентой
+  ---
+  duration_ms: 0.228083
+  type: 'test'
+  ...
+# Subtest: падение шаблона раздела не оставляет пустой экран
+ok 4 - падение шаблона раздела не оставляет пустой экран
+  ---
+  duration_ms: 0.357625
+  type: 'test'
+  ...
+# Subtest: служебный текст кабинета не мельче 11px на десктопе
+ok 5 - служебный текст кабинета не мельче 11px на десктопе
+  ---
+  duration_ms: 4.096
+  type: 'test'
+  ...
+# Subtest: account authentication and live order mechanics remain bound
+ok 6 - account authentication and live order mechanics remain bound
+  ---
+  duration_ms: 1.650125
+  type: 'test'
+  ...
+# Subtest: Telegram is a primary login independent from email and unfinished OAuth providers
+ok 7 - Telegram is a primary login independent from email and unfinished OAuth providers
+  ---
+  duration_ms: 0.5755
+  type: 'test'
+  ...
+# Subtest: critical production actions survive background refreshes and expired sessions
+ok 8 - critical production actions survive background refreshes and expired sessions
+  ---
+  duration_ms: 0.756875
+  type: 'test'
+  ...
+# Subtest: account mobile edition is bounded and motion-safe
+ok 9 - account mobile edition is bounded and motion-safe
+  ---
+  duration_ms: 0.337041
+  type: 'test'
+  ...
+# Subtest: admin production page uses the final concept workspace
+ok 10 - admin production page uses the final concept workspace
+  ---
+  duration_ms: 1.128416
+  type: 'test'
+  ...
+# Subtest: admin API actions and operational hooks remain present
+ok 11 - admin API actions and operational hooks remain present
+  ---
+  duration_ms: 0.485291
+  type: 'test'
+  ...
+# Subtest: handoff keeps staged billing and every delivery path reachable
+ok 12 - handoff keeps staged billing and every delivery path reachable
+  ---
+  duration_ms: 0.469708
+  type: 'test'
+  ...
+# Subtest: admin workspace supports light, dark and compact mobile layouts
+ok 13 - admin workspace supports light, dark and compact mobile layouts
+  ---
+  duration_ms: 0.114833
+  type: 'test'
+  ...
+# Subtest: cabinet exposes one ordered route with compact section identity
+ok 14 - cabinet exposes one ordered route with compact section identity
+  ---
+  duration_ms: 1.636458
+  type: 'test'
+  ...
+# Subtest: the messages badge counts messages, not files from another section
+ok 15 - the messages badge counts messages, not files from another section
+  ---
+  duration_ms: 0.243334
+  type: 'test'
+  ...
+# Subtest: desktop navigation has a strong current state without changing routes
+ok 16 - desktop navigation has a strong current state without changing routes
+  ---
+  duration_ms: 0.434125
+  type: 'test'
+  ...
+# Subtest: new matter is primary only where creation belongs to the route
+ok 17 - new matter is primary only where creation belongs to the route
+  ---
+  duration_ms: 0.890792
+  type: 'test'
+  ...
+# Subtest: mobile navigation keeps three core routes stable and groups the rest
+ok 18 - mobile navigation keeps three core routes stable and groups the rest
+  ---
+  duration_ms: 0.406292
+  type: 'test'
+  ...
+# Subtest: mobile route does not jump horizontally when the current section changes
+ok 19 - mobile route does not jump horizontally when the current section changes
+  ---
+  duration_ms: 0.251333
+  type: 'test'
+  ...
+# Subtest: wayfinding assets are cache-busted
+ok 20 - wayfinding assets are cache-busted
+  ---
+  duration_ms: 0.097209
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 64.331875

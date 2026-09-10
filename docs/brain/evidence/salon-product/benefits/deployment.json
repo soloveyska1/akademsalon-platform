@@ -1,0 +1,34 @@
+{
+  "site": "https://akademsalon-desktop-preview.saymoon.chatgpt.site/benefits",
+  "version": 52,
+  "source": "36a08516bdd193514326a2fd5c99014199e99ec7",
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_b8bb7f7a12b481918e8f4e9ed80b4455",
+  "deployment_id": "appgdep_6aa0e5635c78819180c1622664094bb1",
+  "status": "succeeded",
+  "updated_at": "2026-09-09T04:49:50.464434+00:00",
+  "archive_local_sha256": "128b6afadd3885080483449762c878eabfb446ba2fe0780baf5f0948d4ea0bef",
+  "archive_storage_sha256": "sha256:765bca606fced624852a0886e7229c3f4ffc647b5059d1e9571d00372f8ae357",
+  "access": {
+    "mode": "custom",
+    "allowed_users": 1,
+    "external_visitors": 0,
+    "workspace_groups": 0,
+    "tenant_groups": 0,
+    "role": "owner",
+    "revision": 1
+  },
+  "rollback_version": 51,
+  "rollback_version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_34a6dd67623c81919ee1838ac3b29227",
+  "rollback": "previous saved version independently read and retained; not exercised",
+  "readback": [
+    "Live /benefits: four tabs, default3x14000/150days Pro net1510 including fee.",
+    "Live deposit tab:30000 contribution,20000 usage,10000 cash remaining,reserve3000,conditionalextra600.",
+    "Live /samples practice: replacementpedagogicalreport18pages; realPDFcanvas/text, jumps3/7/17 andnewhashURL.",
+    "Existing tab6 returned to permanent private /benefits. No actual order/payment performed."
+  ],
+  "public_domain": "unchanged",
+  "cleanup": [
+    "Owned live8768 PID47595 and QA8769 PID47623 stopped.",
+    "Owned salon-benefits and independent reviewer browser sessions closed."
+  ]
+}

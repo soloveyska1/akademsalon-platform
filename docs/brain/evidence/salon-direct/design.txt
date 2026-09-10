@@ -1,0 +1,24 @@
+# Direct order design and acceptance
+
+User-directed replacement of the situation/diagnosis funnel, 2026-09-09. OUT-006.
+
+Live reference studkladovaya.ru read 2026-09-09 via GET and browser. Tokens: paper #f4f2ec, ink #0f0e0c, violet #3b3bff, lime #d9ff3d; Golos, display sans, editorial serif. Salon interpretation: paper #f5f3ed, ink #191916, violet #4841dc, chartreuse #d8f36a, white #fff, muted #66645d. Golos headings/body; restrained Literata italic. Signature is an immediately usable price slip alongside an oversized clear work-order headline. Quiet catalogue with service/price/time in each row; no ornamental statistics, fake urgency or fabricated reviews.
+
+Compared options internally: a diagnostic dashboard conflicts with direct order; a full-screen artistic cover delays ordering. Chosen: editorial hero plus functioning estimate, visible catalogue, order form in one page. Same family as Kladovaya through palette, typography, rounded controls and linked product footer; no literal duplication.
+
+Independent baseline reviews confirm home-zero diagnostic misrouting, hidden self price and support result contradiction. Full scope uses tier vip, editing turn. Published base figures remain from SalonCalc, timing marked planning estimate; final quote and date fixed before payment.
+
+Bootstrap resolved: former integrated owner-launcher branch had post-result documentation commits, causing TERMINAL_RESULT_DRIFT. Its clean HEAD is preserved in tag archive/salon-owner-launcher-20260909, detached worktree unchanged, and fresh origin/main. Deleted only the already-merged local branch pointer. No terminal manifest/status/hash edited. Latest conflicts: hard=0, warnings=60, blocking=0. Integration owner consciously accepts dormant/legacy ref warnings for this disjoint local candidate; no public integration performed.
+
+Acceptance evidence (2026-09-09):
+- 73/73 required focused checks: salon-direct, order-submit-contract, privacy-security-contracts, practice-support-specification, analytics-v2-browser, analytics-attribution-v2. Two contract/privacy suites updated to inspect actual external producer JS instead of deleted inline wizard; behavioral assertions preserved.
+- Browser: 130 combinations = 13 routes x 5 widths (360,390,768,1024,1440) x light/dark. Overflow, missing h1 and sub-16px text controls absent. Tested selection, actual home CTA, search/empty state, full/partial order, Enter/native submission, double submit, 409 consent, uncertain retry same ID, invalid server ID, exact practice A1/VIP91k packages, file retry, private contact, remarks/commission transfers, Cyrillic promo. Synthetic requests intercepted; zero real orders sent.
+- Screenshots: home-desktop.png 1440x1000 light, order-mobile.png 390x2995 light; Chromium via playwright-cli, empty form state. Exact source fingerprints in source-fingerprints.json; frozen candidate commit will be in workstream result_sha.
+- Private Sites build: noindex,nofollow, early fetch/beacon/submit isolation. Actual production API requests=0. Build-only overlay; production source HTML unaffected.
+- Existing public backend read-only smoke 14/14 incl current consent revisions. This is not a deployed redesign smoke or production order proof.
+- build, JS syntax, git diff --check and brain validate pass.
+- Full historical suite: 666 total, 490 pass, 176 fail. Do not claim full-suite green. Failure inventory in legacy-suite.json. Historic wizard, facade, fixed consumer counts/copy and removed popup requirements are not the new acceptance contract. Independent review identified two actual preserved handoff regressions, both fixed and browser-tested. Public release still requires an explicit historical-test migration disposition plus deployment health/smoke/rollback. Owner-private preview is separate.
+- Independent journey review: GO after fixing required private contact and restoring VIP package boundaries; 16 landing prices checked. Independent order-contract review: GO after preserving practice/VIP cart profiles and restoring both handoffs; independently reran protocol/privacy suites 35/35.
+- Optional external council: doctor showed configured providers; actual kimi call unavailable (model channel503), sonnet OAuth expired. Neither produced a review; do not count them as approvals. Two read-only agent reviews above completed.
+
+Reproduce: node --test tests/salon-direct.test.js tests/order-submit-contract.test.js tests/privacy-security-contracts.test.js tests/practice-support-specification.test.js tests/analytics-v2-browser.test.js tests/analytics-attribution-v2.test.js; npm run build. Serve source on localhost8769 and built dist/client on8770. Create synthetic /tmp/salon-synthetic.txt, run browser-qa.js and private-preview-qa.js through playwright-cli run-code. API routes are intercepted before actions. Cleanup test browsers/servers afterwards.

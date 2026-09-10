@@ -145,6 +145,8 @@ KNOWN_ORDER_LINKS = frozenset(
     {
         ("bonus_ledger", "order_id"),
         ("delivery_artifacts", "order_id"),
+        # Recognized schema only: ANY linked upload receipt still blocks cleanup.
+        ("direct_upload_receipts", "order_id"),
         ("delivery_outbox", "order_id"),
         ("deposit_ledger", "order_id"),
         ("deposit_v2_ops", "order_id"),

@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: offer always precedes invoice even when first stage is due
+ok 1 - offer always precedes invoice even when first stage is due
+  ---
+  duration_ms: 0.95125
+  type: 'test'
+  ...
+# Subtest: accepted offer exposes server due only
+ok 2 - accepted offer exposes server due only
+  ---
+  duration_ms: 0.112125
+  type: 'test'
+  ...
+# Subtest: claimed suppresses new payment and benefits
+ok 3 - claimed suppresses new payment and benefits
+  ---
+  duration_ms: 0.0475
+  type: 'test'
+  ...
+# Subtest: closed and paused orders cannot enter checkout
+ok 4 - closed and paused orders cannot enter checkout
+  ---
+  duration_ms: 0.14025
+  type: 'test'
+  ...
+# Subtest: zero outstanding is settled and not unknown or pay
+ok 5 - zero outstanding is settled and not unknown or pay
+  ---
+  duration_ms: 0.06625
+  type: 'test'
+  ...
+# Subtest: number accepts real API prefix once
+ok 6 - number accepts real API prefix once
+  ---
+  duration_ms: 0.095333
+  type: 'test'
+  ...
+# Subtest: frozen specification takes precedence over request estimates
+ok 7 - frozen specification takes precedence over request estimates
+  ---
+  duration_ms: 0.156875
+  type: 'test'
+  ...
+# Subtest: no final item price does not become free
+ok 8 - no final item price does not become free
+  ---
+  duration_ms: 0.05675
+  type: 'test'
+  ...
+# Subtest: payment body pins exact amount revision and snapshot
+ok 9 - payment body pins exact amount revision and snapshot
+  ---
+  duration_ms: 0.290542
+  type: 'test'
+  ...
+# Subtest: priced cannot bypass acceptance by constructing checkout body
+ok 10 - priced cannot bypass acceptance by constructing checkout body
+  ---
+  duration_ms: 0.377666
+  type: 'test'
+  ...
+# Workspace contract: 17 passed, 0 failed
+# Subtest: tests/salon-workspace.test.js
+ok 2 - tests/salon-workspace.test.js
+  ---
+  duration_ms: 66.04125
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 73.446375

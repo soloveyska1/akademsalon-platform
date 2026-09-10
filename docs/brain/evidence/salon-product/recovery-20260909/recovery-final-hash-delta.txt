@@ -1,0 +1,9 @@
+### Result
+{"hash":"/dashboard.html#documents","afterPushClick":"/dashboard.html#benefits","visible":true,"url":"http://127.0.0.1:8771/dashboard.html#benefits"}
+### Ran Playwright code
+```js
+await (async(page)=>{await page.context().route("**/*",r=>r.request().url().startsWith("http://127.0.0.1:8771/")&&r.request().method()==="GET"?r.continue():r.abort());await page.route("**/api/health",r=>r.fulfill({status:200,contentType:"application/json",body:"{\"ok\":true}"}));await page.goto("http://127.0.0.1:8771/offline.html");const html=await page.content();await page.route("**/dashboard.html",r=>r.fulfill({status:200,contentType:"text/html",body:html}));await page.goto("http://127.0.0.1:8771/dashboard.html");await page.evaluate(()=>location.hash="documents");await page.waitForTimeout(50);const hash=await page.locator("[data-resume]").getAttribute("href");await page.locator("[data-retry]").click();await page.waitForTimeout(100);await page.evaluate(()=>history.pushState(null,"","/dashboard.html#benefits"));await page.locator("[data-resume]").evaluate(e=>{e.addEventListener("click",event=>event.preventDefault());e.click()});return {hash,afterPushClick:await page.locator("[data-resume]").getAttribute("href"),visible:await page.locator("[data-resume]").isVisible(),url:await page.url()};})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/dashboard.html#benefits
+- Page Title: Пауза в соединении · Академический Салон

@@ -1,0 +1,29 @@
+{
+  "synthetic": false,
+  "authenticated": false,
+  "states": [
+    {
+      "width": 390,
+      "overflow": false,
+      "text": "К рабочей области\nНа сайт Салона\nАКАДЕМИЧЕСКИЙ САЛОН\nМастерская.\nТвой порядок.\n\nЗаказы, сроки и клиенты. Каждая деталь на своём месте.\n\nа.\nВсё под твоим контролем\n\nПодтверди вход в Telegram. Мастерская откроется здесь автоматически.\n\nВойти через Telegram ↗\n Доступ только для администратора. Пароль не нужен.",
+      "legacyScripts": [],
+      "styles": [
+        "https://akademsalon.ru/assets/fonts/fonts.css?r=690d17f8aa89d3f7",
+        "https://akademsalon.ru/assets/css/salon-admin-workspace.css?v=20260910new1&r=aa34ad19cf6401cf"
+      ]
+    },
+    {
+      "width": 1440,
+      "overflow": false,
+      "text": "К рабочей области\nНа сайт Салона\nАКАДЕМИЧЕСКИЙ САЛОН\nМастерская.\nТвой порядок.\n\nЗаказы, сроки и клиенты. Каждая деталь на своём месте.\n\nПространство для управления Салоном\nа.\nВсё под твоим контролем\n\nПодтверди вход в Telegram. Мастерская откроется здесь автоматически.\n\nВойти через Telegram ↗\n Доступ только для администратора. Пароль не нужен.",
+      "legacyScripts": [],
+      "styles": [
+        "https://akademsalon.ru/assets/fonts/fonts.css?r=690d17f8aa89d3f7",
+        "https://akademsalon.ru/assets/css/salon-admin-workspace.css?v=20260910new1&r=aa34ad19cf6401cf"
+      ]
+    }
+  ],
+  "errors": [],
+  "nonGet": [],
+  "privateStatus": 403
+}

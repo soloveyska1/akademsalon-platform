@@ -1,0 +1,41 @@
+{
+  "id": "appgdep_6aa0bf2792108191910e9b3f91bcd71a",
+  "project_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7",
+  "title": "Академический Салон — просмотр главной",
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_efdc9e9802fc8191af13e085b4d0e3fe",
+  "type": "publish",
+  "status": "succeeded",
+  "url": "https://akademsalon-desktop-preview.saymoon.chatgpt.site",
+  "screenshot_asset_pointer": null,
+  "provider_deployment_id": null,
+  "failure_message": null,
+  "env_set_revision": 0,
+  "updated_at": "2026-09-09T02:06:41.933225+00:00",
+  "source_sha": "6203b199d18f74797c05152fed1fe5bd4840908f",
+  "version_number": 48,
+  "archive_storage_hash": "sha256:a0a5f26942483fd6bfe3aff56f68f497b4457cc9b6c5ee2c8bdec4821bb20ce1",
+  "local_archive_sha256": "93c1f3b7032f7c3938ff10a86f16587accc571c73fba0e4adf15a2d218c2541a",
+  "access": {
+    "owner_only": true,
+    "revision": 1,
+    "groups": 0,
+    "external_visitors": 0
+  },
+  "readback": {
+    "browser": "CUA owner authenticated in-app tab1",
+    "route": "/",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "observations": [
+      "New violet hero and mint underline visible",
+      "Extras dialog selected defense+norm, quote37500, Escape returns opener",
+      "Theme toggle works; light homepage left open and marked deliverable",
+      "No actual submission; private isolation banner visible"
+    ]
+  },
+  "previous_version": 47,
+  "rollback": "Previous version retained; rollback not executed",
+  "public_domain": "akademsalon.ru unchanged"
+}

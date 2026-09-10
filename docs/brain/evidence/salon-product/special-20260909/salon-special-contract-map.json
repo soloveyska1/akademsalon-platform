@@ -1,0 +1,79 @@
+{
+  "head": "f27a2f10",
+  "services": [
+    {
+      "code": "pl",
+      "id": "plan",
+      "from": 3000,
+      "fixed": true,
+      "planPrices": {
+        "course": 3000,
+        "diplom": 3000,
+        "master": 5000,
+        "candidate": 5000,
+        "practice": 3000,
+        "other": 3000
+      },
+      "required": [
+        "work"
+      ]
+    },
+    {
+      "code": "nm",
+      "id": "norm",
+      "from": 5000,
+      "fixed": false,
+      "planPrices": null,
+      "required": []
+    },
+    {
+      "code": "ai",
+      "id": "ai",
+      "from": 2500,
+      "fixed": false,
+      "planPrices": null,
+      "required": [
+        "vol",
+        "prompt",
+        "sources"
+      ]
+    },
+    {
+      "code": "rv",
+      "id": "review",
+      "from": 2500,
+      "fixed": false,
+      "planPrices": null,
+      "required": []
+    }
+  ],
+  "practice": {
+    "base": {
+      "base": 2500,
+      "low": 2500,
+      "high": 3500,
+      "lowFmt": "2 500",
+      "highFmt": "3 500",
+      "range": "2 500 – 3 500 ₽"
+    },
+    "turn": {
+      "base": 8000,
+      "low": 8000,
+      "high": 11000,
+      "lowFmt": "8 000",
+      "highFmt": "11 000",
+      "range": "8 000 – 11 000 ₽"
+    },
+    "vip": {
+      "base": 14000,
+      "low": 14000,
+      "high": 19500,
+      "lowFmt": "14 000",
+      "highFmt": "19 500",
+      "range": "14 000 – 19 500 ₽"
+    }
+  },
+  "source": "assets/js/app.js:53-110,226-277",
+  "browser": "not run: local8771refused, own session closed",
+  "externalMutations": false
+}

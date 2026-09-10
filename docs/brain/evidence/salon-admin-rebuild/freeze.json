@@ -1,0 +1,28 @@
+{
+  "source_commit": "1a211115ebeaf4caf98ea9e374e74c0ac61e0ad1",
+  "verified_at_utc": "2026-09-10T00:47:00.784392+00:00",
+  "source_hashes": {
+    "admin.html": "660e495ef386ee8d8068ffa8986954a58fdee9b73cef9e03dbdb1b90ab211297",
+    "assets/js/salon-admin-core.js": "1ce0a9152bc8ae665160ab3d3f01273e87e7724b9c0adba9b23af6dd77ab1bde",
+    "assets/js/salon-admin-workspace.js": "aeeec7d667733ff68b22c9fbe97a0e6bc79ce522b98363a5d53caa663782b7df",
+    "assets/css/salon-admin-workspace.css": "aa34ad19cf6401cfd489197619c52c0fcee51a44c652dc5fec041f204927196b",
+    "tests/salon-admin-workspace.test.js": "fd86641c9df8cee17dc0210712ad07f67cca253ccc37bf5e8eb921c11076bbd6"
+  },
+  "release": "release202-1a211115",
+  "rollback": "release201-7ed5e283",
+  "canonical": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "review_delta": "Independent reviews predate PWA-only HTML metadata fix. Core/runtime/CSS contract review bytes preserved. Frozen 150-state matrix and 76 public tests rerun after PWA fix. Non-order review predates final order-only changes.",
+  "proofs": {
+    "root_ui_states": 150,
+    "root_order_browser_assertions": 5,
+    "independent_contract_assertions": 47,
+    "independent_non_order_states": 44,
+    "new_node_tests": 20,
+    "public_tests": 76,
+    "production_smoke": 14,
+    "live_login_states": 2,
+    "P0": 0,
+    "P1": 0
+  },
+  "privacy": "Synthetic customer fixture data only. Live checks were unauthenticated and read-only; deployment changed static files only. No real payments, messages or order mutations made during QA."
+}

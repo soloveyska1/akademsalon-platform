@@ -1,0 +1,13 @@
+{
+  "status": "Действителен",
+  "amount": "5 000 ₽",
+  "builderHidden": true,
+  "fragmentCleared": true,
+  "overflow": false,
+  "errors": [],
+  "posts": [],
+  "requests": [
+    "GET",
+    "GET"
+  ]
+}

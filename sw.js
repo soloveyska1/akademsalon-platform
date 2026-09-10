@@ -18,6 +18,7 @@ const SHELL_CACHE = `salon-shell-${VERSION}`;
 const PAGE_CACHE = `salon-pages-${VERSION}`;
 const OFFLINE_URL = '/offline.html';
 
+/* При обновлении не переносим старый offline из HTTP-кэша в новую семью. */
 /* Минимальный запас, который должен быть на устройстве до первого офлайна. */
 const PRECACHE = [
   OFFLINE_URL,
@@ -28,12 +29,12 @@ const PRECACHE = [
 ];
 
 /* Адреса, чью разметку не кэшируем ни при каких условиях. */
-const PRIVATE_PAGES = /^\/(dashboard|admin(?:-[a-z0-9-]+)?|oplaceno)\.html$/;
+const PRIVATE_PAGES = /^\/(dashboard|admin(?:-[a-z0-9-]+)?|oplaceno)(?:\.html)?\/?$/;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(SHELL_CACHE)
-      .then((cache) => cache.addAll(PRECACHE))
+      .then((cache) => cache.addAll(PRECACHE.map((url) => new Request(url, { cache: 'reload' }))))
       .then(() => self.skipWaiting()),
   );
 });
@@ -75,7 +76,7 @@ self.addEventListener('fetch', (event) => {
 
   if (isVersionedAsset(url)) {
     event.respondWith(
-      caches.match(request).then((hit) => hit || fetch(request).then((response) => {
+      caches.match(request, { cacheName: SHELL_CACHE }).then((hit) => hit || fetch(request).then((response) => {
         if (response && response.ok && response.type === 'basic') {
           const copy = response.clone();
           caches.open(SHELL_CACHE).then((cache) => cache.put(request, copy));
@@ -101,8 +102,8 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       })
-      .catch(() => caches.match(request)
-        .then((hit) => (priv ? null : hit) || caches.match(OFFLINE_URL))
+      .catch(() => (priv ? Promise.resolve(null) : caches.match(request, { cacheName: PAGE_CACHE }))
+        .then((hit) => hit || caches.match(OFFLINE_URL, { cacheName: SHELL_CACHE }))
         .then((hit) => hit || new Response('Нет сети', {
           status: 503,
           headers: { 'Content-Type': 'text/plain; charset=utf-8' },

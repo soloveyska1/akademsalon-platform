@@ -1,0 +1,70 @@
+{
+  "source_commit": "432dfa9bd03a716c38b85d5d648d2655ed1ab8ed",
+  "steps": [
+    {
+      "action": "apply",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "pay_online": true,
+      "webapp_sha256": "2e7f7e959049c22feb3b108c64f9f87b6d1a97703eb95f068e4327d64b14df9f",
+      "assistant_source": "timing",
+      "quote_state": "manual_required",
+      "quote_can_pay": false
+    },
+    {
+      "action": "rollback",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "pay_online": true,
+      "webapp_sha256": "ade607b6005ffb359c6841fdd8ed28c6773a1cbd67109567710972d85928ed29"
+    },
+    {
+      "action": "forward",
+      "health": {
+        "ok": true,
+        "uptime_s": 0,
+        "active_orders": 37,
+        "uploads": {
+          "pending": 0,
+          "delayed": 0
+        }
+      },
+      "pay_online": true,
+      "webapp_sha256": "2e7f7e959049c22feb3b108c64f9f87b6d1a97703eb95f068e4327d64b14df9f",
+      "assistant_source": "timing",
+      "quote_state": "manual_required",
+      "quote_can_pay": false
+    }
+  ],
+  "database_restored": false,
+  "install": {
+    "backup": "/root/salon_bot/backups/autoquote-20260909T133107314700Z",
+    "before": "ade607b6005ffb359c6841fdd8ed28c6773a1cbd67109567710972d85928ed29",
+    "after": "2e7f7e959049c22feb3b108c64f9f87b6d1a97703eb95f068e4327d64b14df9f",
+    "module": "3e48174c95853ab0537d47254fba3319a1f32d39aadf27cd344355cb95ce4a80",
+    "assistant": "d736615ea0f51f8886451394222d316fe8e45aae22811fedb4bb703bc7293c63",
+    "database_changed": false
+  },
+  "forward_install": {
+    "backup": "/root/salon_bot/backups/autoquote-20260909T133113115892Z",
+    "before": "ade607b6005ffb359c6841fdd8ed28c6773a1cbd67109567710972d85928ed29",
+    "after": "2e7f7e959049c22feb3b108c64f9f87b6d1a97703eb95f068e4327d64b14df9f",
+    "module": "3e48174c95853ab0537d47254fba3319a1f32d39aadf27cd344355cb95ce4a80",
+    "assistant": "d736615ea0f51f8886451394222d316fe8e45aae22811fedb4bb703bc7293c63",
+    "database_changed": false
+  }
+}

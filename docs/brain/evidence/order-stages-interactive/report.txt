@@ -1,0 +1,35 @@
+# Order stages redesign evidence
+
+Date: 2026-09-09. Base e53d11cea40055f2dae41a0f212cbbac4c79055f, branch codex/order-stages-interactive, workstream WS-a4cbf79bebbb46d287d1f6f9b4f38e44. The exact source files are bound by source-hashes.json.
+
+## User outcome
+
+Five manually navigable stages: assignment, terms, work, review and delivery. Short copy with an interactive example document; whole/chapter/revision changes survive to result filenames. Clear distinction between correcting agreed requirements and additional work. Persistent example label; no payment/order submission, artificial percentage, deadline or fake testimonial. Existing current design shell and real configurator/cabinet/conditions routes retained. Questions collapse via native details.
+
+## Composition and integration boundary
+
+Current private redesign lives in salon-direct-orders, ahead of canonical main. Its owner explicitly retains prolog.html historical scope and accepted a non-overlapping handoff: prolog-interactive.html plus assets/css/order-journey.css and assets/js/order-journey.js. On integration the owner replaces prolog.html with this document and removes the intermediate HTML from final distribution. Canonical and og URL remain prolog.html. No independent publication from this branch, to avoid reverting the newer shared design.
+
+The preview at localhost:8774 is a temporary read-only copy of the newer product with these three files overlaid and the new HTML also served at prolog.html. This is the tested product composition. Current shared dependencies: salon-direct.css, salon-experience.css, salon-home.css and salon-shell.js, plus unchanged shared product/API scripts from the source shell. Page-scoped shell skin exists because shared selectors currently enumerate five other body classes.
+
+## Deterministic and browser proof
+
+- Browser matrix: Chromium, 320/360/390/768/1024/1280/1440, light/dark, all five stages = 70 states. Zero overflow, exactly one visible panel, no page-owned small active targets, no page errors. browser-matrix.json.
+- Scenario checks: scope choice to delivery; new requirements boundary; keyboard Home/End/Arrow wrap; deep-link initialization. All passed.
+- Reduced motion enabled in matrix; independent check confirms animation:none, transform:none, transition:0s.
+- Independent no-JS check: all five panels and anchor links remain accessible; scope and revision controls are hidden, next/prev are hidden; no 320px overflow.
+- Current shared authentication API is mocked as unauthenticated for matrix. Unmocked localhost produces existing auth/session CORS; no customer authentication or production submit is claimed.
+- The legacy site service worker cached old development assets. Local test origin worker/caches were cleared, worker registration blocked during matrix, and delivered page assets use a fresh journey2 cache key. Final screenshots correspond to the exact new version.
+- Canonical legacy regression: 651/651, Brain 39/39, Brain strict validation passes. Adding intermediate prolog-interactive.html to the legacy full-suite discovery generates six expected composition failures (unknown route/taxonomy, newer shell/cache conventions, newer dependencies absent in canonical). The intermediate page is not a production route; these are not claimed green. Integration must validate the composed prolog.html in current product and remove intermediate HTML.
+- Visual checks: desktop assignment and delivery, mobile light assignment and dark review screenshots. Final dark/light footer and 320px current header checked.
+
+## Independent reviews
+
+1. stages_ux_review: P0=0/P1=0, live scope persistence and revision examples, 360px layout. P2 decorative arrow implying a link removed.
+2. stages_functional_review: P0=0/P1=0/P2=0 after retest. Keyboard tabs and Next/Prev, scope across all panels, noJS, reduced motion and 320–1440 widths. Discovered 320px inherited header overflow and noJS dead controls, both reproduced and fixed. Shared menu Enter/Escape focus restoration confirmed.
+
+## Rollback and release
+
+No canonical or public production mutation. For private composition rollback restore previous prolog.html and remove only the two new page assets (shared files unchanged). Integration owner performs current private Sites publication and exact live readback; previous private version should be retained. Real checkout .claude/launch.json and parallel owner dirty files preserved.
+
+Measured contrast of page headings, controls and document text in both themes: minimum4.73:1, all sampled normal text>=4.5. See contrast.json.

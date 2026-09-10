@@ -1,0 +1,137 @@
+TAP version 13
+# Subtest: standalone entry excludes all legacy admin UI and stylesheet imports
+ok 1 - standalone entry excludes all legacy admin UI and stylesheet imports
+  ---
+  duration_ms: 1.557583
+  type: 'test'
+  ...
+# Subtest: declared all-new UI renders operational modules without legacy renderer
+ok 2 - declared all-new UI renders operational modules without legacy renderer
+  ---
+  duration_ms: 1.239083
+  type: 'test'
+  ...
+# Subtest: attention prioritizes claimed money over deadline and new state
+ok 3 - attention prioritizes claimed money over deadline and new state
+  ---
+  duration_ms: 0.130125
+  type: 'test'
+  ...
+# Subtest: unknown monetary values never render zero
+ok 4 - unknown monetary values never render zero
+  ---
+  duration_ms: 9.436708
+  type: 'test'
+  ...
+# Subtest: integer validation does not silently truncate decimals or text
+ok 5 - integer validation does not silently truncate decimals or text
+  ---
+  duration_ms: 0.194333
+  type: 'test'
+  ...
+# Subtest: escaping and URL allowlist reject executable links
+ok 6 - escaping and URL allowlist reject executable links
+  ---
+  duration_ms: 0.146959
+  type: 'test'
+  ...
+# Subtest: mutation persists uncertainty marker before network and blocks duplicates
+ok 7 - mutation persists uncertainty marker before network and blocks duplicates
+  ---
+  duration_ms: 0.41325
+  type: 'test'
+  ...
+# Subtest: network failure survives reload until explicit reconciliation
+ok 8 - network failure survives reload until explicit reconciliation
+  ---
+  duration_ms: 0.404167
+  type: 'test'
+  ...
+# Subtest: HTTP500 cannot be normalized to ok by JSON content
+ok 9 - HTTP500 cannot be normalized to ok by JSON content
+  ---
+  duration_ms: 0.25925
+  type: 'test'
+  ...
+# Subtest: malformed and success-without-id stay uncertain
+ok 10 - malformed and success-without-id stay uncertain
+  ---
+  duration_ms: 0.403042
+  type: 'test'
+  ...
+# Subtest: definite validation refusal permits corrected submission
+ok 11 - definite validation refusal permits corrected submission
+  ---
+  duration_ms: 0.142208
+  type: 'test'
+  ...
+# Subtest: storage unavailable blocks non-idempotent mutation
+ok 12 - storage unavailable blocks non-idempotent mutation
+  ---
+  duration_ms: 0.074667
+  type: 'test'
+  ...
+# Subtest: late read from previous identity cannot expose private data
+ok 13 - late read from previous identity cannot expose private data
+  ---
+  duration_ms: 0.1365
+  type: 'test'
+  ...
+# Subtest: late mutation retains uncertainty after identity change
+ok 14 - late mutation retains uncertainty after identity change
+  ---
+  duration_ms: 0.575292
+  type: 'test'
+  ...
+# Subtest: repricing retains exact saved rights, corrections and inputs without mutation
+ok 15 - repricing retains exact saved rights, corrections and inputs without mutation
+  ---
+  duration_ms: 0.260125
+  type: 'test'
+  ...
+# Subtest: unsigned A2 and missing B2 rights never auto-confirm
+ok 16 - unsigned A2 and missing B2 rights never auto-confirm
+  ---
+  duration_ms: 0.185209
+  type: 'test'
+  ...
+# Subtest: weighted allocations preserve rubles and every line remains stable
+ok 17 - weighted allocations preserve rubles and every line remains stable
+  ---
+  duration_ms: 0.05175
+  type: 'test'
+  ...
+# Subtest: unresolved author fallback is not silently downgraded to academic help
+ok 18 - unresolved author fallback is not silently downgraded to academic help
+  ---
+  duration_ms: 0.5895
+  type: 'test'
+  ...
+# Subtest: unrecognized HTTP400 and409 errors stay locked
+ok 19 - unrecognized HTTP400 and409 errors stay locked
+  ---
+  duration_ms: 0.3795
+  type: 'test'
+  ...
+# Subtest: success contract binds order responses to exact target and offer URLs
+ok 20 - success contract binds order responses to exact target and offer URLs
+  ---
+  duration_ms: 0.620333
+  type: 'test'
+  ...
+# Workspace contract: 17 passed, 0 failed
+# Subtest: tests/salon-workspace.test.js
+ok 2 - tests/salon-workspace.test.js
+  ---
+  duration_ms: 51.416208
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 66.913709

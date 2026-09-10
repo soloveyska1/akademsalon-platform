@@ -1,0 +1,65 @@
+{
+  "status": "GO",
+  "scope": "Read-only local about and recovery UX review",
+  "matrix": {
+    "states": 40,
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "pages": [
+      "about",
+      "50x",
+      "404",
+      "offline",
+      "maintenance"
+    ],
+    "evidence": "/tmp/recovery-matrix.json"
+  },
+  "blockers": [],
+  "verified": [
+    "All40states havezero documentoverflow or small maininteractivecontrols;compactaboutheaderwithinviewport",
+    "About3tabs showonepanel,HomeEndkeyboardpass",
+    "AboutnoJSall3panelsreadable,tabbarhidden",
+    "Aboutprooflinks pointtosamples/reviews/guarantees/requisites;familylinkstudkladovaya.ru",
+    "About320primaryCTA fullyvisible;60pxhelperhiddenwhenCTAvisible",
+    "Eacherrorpagehas0externalJSscripts andplainhome/services/cabinet/Telegramlinks",
+    "Healthmockoktrue showsmanualresume anddoesnotnavigate automatically",
+    "Healthmockokfalse and503 rejectsuccess andkeepresumehidden",
+    "Healthtimeout8seconds re-enablesbutton;secondclickduringbusydoesnotduplicaterequest",
+    "Originalnavigationfallbackconfigurator?work=practice&result=editing preservedbyallowedtarget;0externalJS",
+    "NoJSerrorpageskeepplainnavigation;retryhiddenwithoutJS",
+    "Distinct404/offline/servererror/maintenancecopy;paymentstatusnotinferredfromhealth",
+    "Finaldelta: same-document hashchangeupdatesresume;historypushState hashrefreshesbeforeexplicitresumeclick;applePWAmeta present on4errors"
+  ],
+  "evidence": [
+    "/tmp/recovery-functional.json",
+    "/tmp/recovery-health.txt",
+    "/tmp/recovery-timeout.txt",
+    "/tmp/recovery-about-1440-dark.png",
+    "/tmp/recovery-50x-320-light.png",
+    "/tmp/recovery-maintenance-1440-dark.png",
+    "/tmp/recovery-final-about320.png",
+    "/tmp/recovery-final-hash-delta.txt"
+  ],
+  "limits": [
+    "Healthresultsaremockedlocally;notproductionavailabilityverification",
+    "Browsernetworkmutationsblocked;noactualorders/payments/messages",
+    "Read-onlysources;noserverstarted;rootpreviewretained"
+  ],
+  "sha256": {
+    "about.html": "6672118a9af2a9a28f00d3a313c7481d499ad031472599d037637181eed8f279",
+    "50x.html": "7faa3e4ac46440a2c4f5c2d6755ac281aaa0dd33b7239cbe999a63aeb82aa543",
+    "404.html": "8a091569146b54d79c8f447d0785de206c9f7b0491ae0cb01acf37b18cee5e38",
+    "offline.html": "42cf8c2a7294cab0adb05ee621c58b06e56193dca04f67c8a9b111262cefee01",
+    "maintenance.html": "bb51b909c0f000916229d343202f3a3331d2146a540b132979a77369044b96bc",
+    "assets/css/salon-experience.css": "121e9a60b6e0f69b49def269ab7a9f889f8ddc3f08ed13973af81c4c76635fa8",
+    "assets/js/salon-experience.js": "18476e915ba24d55b1e675d54829038965b41875661f8c9a0ba9a40dc4fd27b7"
+  }
+}

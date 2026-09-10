@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-09T13:35:58.059377+00:00",
+  "source_commit": "432dfa9bd03a716c38b85d5d648d2655ed1ab8ed",
+  "sqlite_quick_check": "ok",
+  "services": {
+    "salon-bot-v2.service": "active",
+    "nginx": "active",
+    "salon-watch.timer": "active"
+  },
+  "links": {
+    "current": "/var/www/academic_saloon/releases/release185-432dfa9b",
+    "dist": "/var/www/academic_saloon/releases/release185-432dfa9b",
+    "previous": "/var/www/academic_saloon/releases/release184-0341e9c4"
+  },
+  "private_urls": {
+    "/docs/brain/START-HERE.md": 404,
+    "/.env": 404,
+    "/assets/js/cabinet-demo.js": 404,
+    "/__site-preview.js": 404,
+    "/._index.html": 404
+  },
+  "promo": {
+    "uses_left": 4,
+    "applications": 0,
+    "amount": 6000,
+    "minimum": 45000,
+    "expires_at": "2026-09-10",
+    "active": true,
+    "paid_conversions": "not established"
+  },
+  "runtime_error_line_count": 3,
+  "telegram_startup": {
+    "warmup_timeouts": 3,
+    "recovered": true,
+    "polling_started_at": "2026-09-09T13:33:06Z",
+    "evidence": "service journal: Start polling and Run polling; no later errors observed"
+  }
+}

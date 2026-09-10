@@ -1,0 +1,49 @@
+{
+  "decision": "GO: reviewed UI scope; gift real payment excluded",
+  "matrixStates": 204,
+  "matrixOverflow": 0,
+  "benefitsTabStates": 48,
+  "legalArticleParity": {
+    "oferta.html": true,
+    "privacy.html": true,
+    "refunds.html": true,
+    "requisites.html": true,
+    "terms.html": true,
+    "consent.html": true,
+    "consent-request.html": true,
+    "consent-publication.html": true,
+    "consent-marketing.html": true,
+    "consent-analytics.html": true,
+    "academic-integrity.html": true,
+    "loyalty.html": true
+  },
+  "fixed": [
+    "Plan links now #plus and destination h1 Salon+ verified with local demo",
+    "Legal nested frame removed, h1 mobile 27px, paragraphs14px, copy44px",
+    "Period/gift/review controls44px"
+  ],
+  "interactions": [
+    "Review filter25/3/19 counts; More9→18",
+    "Viewer320x420, original loaded, ArrowRight2/47, zoom, Escape and opener-focus restore",
+    "Legal find11matches, Enter1/11, no-match and clear",
+    "Gift160charwish+recipient:390dark no overflow/clipping"
+  ],
+  "limits": [
+    "External network blocked; gift/config requests intentionally aborted",
+    "Gift payment was not submitted; root owns checkout verification",
+    "Matrix preceded narrow fixes; affected UI retested after fixes"
+  ],
+  "sha256": {
+    "benefits.html": "31d518f0ffcfca4915d1d8a292926a7f1759383cf7ba3bd38c6af841aa9d5c97",
+    "deposit.html": "b9a37e5b11fafafde65821ec24ee2ee595f24bff00687b3df515111898620435",
+    "plus.html": "c9fe211723f945ef2cb3e9ae08f142dac11c61a0b82e841e39454a85c8c4578e",
+    "gift.html": "e20412a5f5b2ff7109df1ea6a430b26b0715e00257554c32a7aa853cc7c873e4",
+    "reviews.html": "cdbf5d4c6b8884550512d8a49ca21eef2e5033fd160b7df50393617fefd5abf1",
+    "assets/css/salon-rewards.css": "09576fdfac6cdba0b17965f5b510e52b383d89857169098ccf8a5f485a079e1b",
+    "assets/css/salon-reviews.css": "2311b4ffd4364e994425ab3162bd49ed1622216dbb71d2f61c5d7a93c1272d3d",
+    "assets/css/salon-legal.css": "c41d699df1c7b18cf9b9e09c86f8942cf81e43f68cc2b3375bca9291a1c48880",
+    "assets/js/salon-rewards.js": "89d54a9ae8ad3830f1d4b2112ae107f0ec8040efd0059e6aaf31bc98319cb034",
+    "assets/js/salon-reviews.js": "3312b3bb74ed5e0cef7e8cc49b079a7a6c09bdb39ae79f19d011f861b355059e",
+    "assets/js/salon-legal.js": "586def6bad10a889669b2b172deb5faae4df483c752c867ea7023ac0ae44c6d1"
+  }
+}

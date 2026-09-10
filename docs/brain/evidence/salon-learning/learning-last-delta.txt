@@ -1,0 +1,12 @@
+### Result
+[[],{"focused":true,"launcher":[]},{"handoff":true,"textLength":118},{"handoffURL":"http://127.0.0.1:8771/configurator.html?situation=comments&result=diagnostic&route=page&handoff=remarks","stored":["salon_remarks_handoff_v1"]}]
+### Ran Playwright code
+```js
+await (async(page)=>{await page.emulateMedia({reducedMotion:"reduce"});await page.context().route("**/*",r=>r.request().url().startsWith("http://127.0.0.1:8771/")&&r.request().method()==="GET"?r.continue():r.abort());await page.addInitScript(()=>{navigator.serviceWorker.register=()=>Promise.reject(new Error("QA blocked SW"));});await page.setViewportSize({width:390,height:740});await page.goto("http://127.0.0.1:8771/knowledge.html");await page.waitForTimeout(250);const out=[];out.push(await page.evaluate(()=>[...document.querySelectorAll(".sa-launcher,.assistant-launcher")].map(e=>({class:e.className,...e.getBoundingClientRect().toJSON()}))));await page.locator("[data-library-search]").fill("практика");out.push(await page.evaluate(()=>({focused:document.activeElement.hasAttribute("data-library-search"),launcher:[...document.querySelectorAll(".sa-launcher,.assistant-launcher")].map(e=>({class:e.className,display:getComputedStyle(e).display,visibility:getComputedStyle(e).visibility,...e.getBoundingClientRect().toJSON()}))})));await page.screenshot({path:"/tmp/learning-final-search390.png"});await page.goto("http://127.0.0.1:8771/dosie-nauchruka.html");await page.locator("[data-tool-example]").click();out.push({handoff:await page.locator("[data-remarks-handoff-submit]").isEnabled(),textLength:(await page.locator("[data-tool-input]").inputValue()).length});await page.locator("[data-remarks-handoff-submit]").click();out.push({handoffURL:await page.url(),stored:await page.evaluate(()=>Object.keys(sessionStorage).filter(k=>/remark/i.test(k)))});return out;})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/configurator.html?situation=comments&result=diagnostic&route=page
+- Page Title: Заказать работу | Академический Салон
+- Console: 1 errors, 0 warnings
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T16-32-27-892Z.log#L1-L7

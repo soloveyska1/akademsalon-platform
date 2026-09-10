@@ -1,0 +1,2 @@
+### Result
+[{"theme":"light","route":"subscriptions","count":86,"min":4.73,"bad":[]},{"theme":"light","route":"bonuses","count":33,"min":5.27,"bad":[]},{"theme":"light","route":"deposit","count":41,"min":5.27,"bad":[]},{"theme":"light","route":"more","count":27,"min":4.73,"bad":[]},{"theme":"dark","route":"subscriptions","count":86,"min":6.23,"bad":[]},{"theme":"dark","route":"bonuses","count":33,"min":5.27,"bad":[]},{"theme":"dark","route":"deposit","count":41,"min":5.27,"bad":[]},{"theme":"dark","route":"more","count":27,"min":6.23,"bad":[]}]

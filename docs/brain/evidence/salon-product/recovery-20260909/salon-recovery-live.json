@@ -1,0 +1,22 @@
+{
+  "about": {
+    "url": "https://akademsalon.ru/about.html?v=release193",
+    "title": "Внимание к задаче.\nНа каждом шаге.",
+    "active": "В работе",
+    "overflow": false
+  },
+  "before": {
+    "recovery": "50x",
+    "buttons": [
+      "Проверить доступность"
+    ]
+  },
+  "recovery": {
+    "url": "https://akademsalon.ru/50x.html?v=release193",
+    "status": "Сайт отвечает. Можно повторить переход. Статус заявки или оплаты проверяется отдельно в кабинете.",
+    "resume": "/",
+    "overflow": false
+  },
+  "errors": [],
+  "blockedWrites": 0
+}

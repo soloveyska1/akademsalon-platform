@@ -1,0 +1,11 @@
+### Result
+{"active":{"x":180.1875,"y":334.3125,"width":117.890625,"height":44},"tabs":{"x":18,"y":328.3125,"width":354,"height":56},"filters":[44,44,44]}
+### Ran Playwright code
+```js
+await (async(page)=>{await page.goto("about:blank");await page.setViewportSize({width:390,height:750});await page.goto("http://127.0.0.1:8771/dashboard.html?demo=alexey#order-701-money");await page.locator(".ws-tabs").waitFor({state:"visible"});await page.screenshot({path:"/tmp/new-workspace-money-tab-final390.png"});const active=await page.locator(".ws-tabs [aria-current=page]").boundingBox();const tabs=await page.locator(".ws-tabs").boundingBox();await page.goto("http://127.0.0.1:8771/dashboard.html?demo=alexey#orders");await page.setViewportSize({width:1440,height:900});const filters=await page.locator(".ws-filter button").evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height));return{active,tabs,filters};})(page);
+```
+### Page
+- Page URL: http://127.0.0.1:8771/dashboard.html?demo=alexey#orders
+- Page Title: Демо: кабинет Алексея — Академический Салон
+### Events
+- New console entries: .playwright-cli/console-2026-09-09T23-02-27-850Z.log#L5-L8

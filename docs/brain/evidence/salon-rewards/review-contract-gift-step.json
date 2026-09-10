@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "invalid": {
+    "posts": 0,
+    "preview": "—",
+    "error": "Выберите номинал от 2 000 ₽ до 50 000 ₽, с шагом 100 ₽."
+  },
+  "validAmount": 2100,
+  "posts": 1,
+  "errors": [],
+  "productionMutations": 0,
+  "source_commit": "54051785",
+  "module_sha256": "e1e229ba244a5515aec8b1592e9d52c9f2866681e02cdc4285575f959ad6d42a"
+}

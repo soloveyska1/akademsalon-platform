@@ -1,0 +1,49 @@
+{
+  "decision": "GO for final reviewed backend candidate; no open P0/P1; production not exercised",
+  "scope": "Backend payment journey module and hash-pinned installer only; no deployment or UI endorsement",
+  "reproducers": [
+    "/tmp/salon-payment-installer-review.py",
+    "/tmp/salon-payment-independent-tests.py",
+    "/tmp/salon-payment-happy-integration.py"
+  ],
+  "evidence": [
+    "/tmp/salon-payment-independent-tests.json",
+    "/tmp/salon-payment-installer-review.json",
+    "/tmp/salon-payment-happy-integration.json"
+  ],
+  "open": [],
+  "closed": [
+    "unsupported source checkout replaced by price plus source-snapshot provenance",
+    "full-gift accepts exact specification without fake cash payment",
+    "accepted gift held through expiry; cancellation releases once",
+    "pending online invoice cannot be cancelled by stale new expected_revision",
+    "state detects equal-cash differing settlement",
+    "for_pay rejects mismatching financial settlement even with fresh revision",
+    "rollback retains standalone gift.py compatibility; exact retained code tested after accepted gift, expiry and cancellation",
+    "unhashable action rejects before state change",
+    "deposit pay_order json import checked through actual three-stage engine",
+    "real PDF explicit bonus/discount/gift/cash settlement; full-gift acknowledgment and no extra payment; accepted PDF bytes unchanged",
+    "old full-gift without settlement requires revision; existing matching invoice not invalidated"
+  ],
+  "hashes": {
+    "backend/salon_bot/payment_journey.py": "e737f63f737ce52d401392a2cbe5bd750f0ad4b631f1e135f5981d3a41001a93",
+    "backend/salon_bot/install_payment_journey.py": "8595ceed757a8edbf4012f3c3c72f9b6af7bd11e7eba734779cddaeaa7420bed"
+  },
+  "passed": {
+    "independent_actual_db": 13,
+    "happy_engine_and_real_pdf": 6,
+    "installer_sandbox": 4
+  },
+  "limits": [
+    "No live provider, customer requests or production activation.",
+    "Provider URL creation, external notification/delivery and handoff transports stubbed; network forbidden. Money reserve/confirm/receipt/specification/effects use actual functions and SQLite economic triggers.",
+    "Real fpdf2 renderer and PDF text assertions exercised for ordinary bonus and full-gift. Local Georgia emits missing ₽ glyph warnings in pre-existing gross/stage labels; new settlement fields explicitly say руб.; production Linux font glyphs not observed.",
+    "Rollback retains standalone gift.py compatibility; subsequent source preparation must recognize retained hash."
+  ],
+  "run_order": "Run installer-review first to capture exact retained gift bytes; then independent-tests.",
+  "fixture_source_hash": "70f3321c0e68989fe8a7f5c4b6fa2d6ce59c0948b7a3d0a68562d9d3869a3292",
+  "pdfs": {
+    "/tmp/salon-payment-real-contract.pdf": "cfbfc72a9244512cecdc0a649d1369b8189550b2c316855914f8017bbbbee1fe",
+    "/tmp/salon-payment-fullgift-contract.pdf": "8297b6d4c628f15ded5beae727ae2809df64453b44a7ffa7b72fcd65fda7e95d"
+  }
+}

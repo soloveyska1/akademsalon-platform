@@ -1,0 +1,3 @@
+Original artwork generated with image_gen using the original List mascot as the identity reference.
+Prompt: Create a precise transparent 2x2 sprite sheet with four equal cells, same ivory paper mascot with mint folded corner and violet ink face and limbs, consistent scale and camera. Top left: greeting with a wave. Top right: thinking with finger near chin. Bottom left: writing with pencil and notepad. Bottom right: happy answer-ready with open hands. Preserve character identity, no text, labels or scenery.
+Original: listik-states-original.png (1280x1280 RGBA). Public export: assets/img/salon-assistant/listik-states.webp (1024x1024). Only resize/transcode outside image_gen; animations are CSS tied to actual UI states.

@@ -1,0 +1,23 @@
+test_accept_exact_revision_and_no_fake_payment (__main__.Journey.test_accept_exact_revision_and_no_fake_payment) ... ok
+test_bonus_atomic_spec_and_repeat (__main__.Journey.test_bonus_atomic_spec_and_repeat) ... ok
+test_claimed_and_paid_block_discounts (__main__.Journey.test_claimed_and_paid_block_discounts) ... ok
+test_gift_covers_all_no_cash_or_rewards (__main__.Journey.test_gift_covers_all_no_cash_or_rewards) ... ok
+test_missing_consent_or_admin_cannot_accept (__main__.Journey.test_missing_consent_or_admin_cannot_accept) ... ok
+test_nonce_payload_conflict (__main__.Journey.test_nonce_payload_conflict) ... ok
+test_offer_revision_invalidates_old_payment_surface (__main__.Journey.test_offer_revision_invalidates_old_payment_surface) ... ok
+test_pdf_failure_rolls_back_bonus (__main__.Journey.test_pdf_failure_rolls_back_bonus) ... ok
+test_pending_invoice_blocks_discounts (__main__.Journey.test_pending_invoice_blocks_discounts) ... ok
+test_plan_one_two_three_math (__main__.Journey.test_plan_one_two_three_math) ... ok
+test_promo_firstorder_target_excluded_only (__main__.Journey.test_promo_firstorder_target_excluded_only) ... ok
+test_promo_pdf_failure_rolls_back_claim_and_counter (__main__.Journey.test_promo_pdf_failure_rolls_back_claim_and_counter) ... ok
+test_second_order_firstpromo_rejected (__main__.Journey.test_second_order_firstpromo_rejected) ... ok
+test_stale_before_any_balance_write (__main__.Journey.test_stale_before_any_balance_write) ... ok
+test_unowned_guest_cannot_spend_logged_in_wallet (__main__.Journey.test_unowned_guest_cannot_spend_logged_in_wallet) ... ok
+test_online_invoice_reuse_exact_snapshot_and_all_plans (__main__.PaymentIntegration.test_online_invoice_reuse_exact_snapshot_and_all_plans) ... ok
+test_online_lost_provider_response_reuses_existing_invoice (__main__.PaymentIntegration.test_online_lost_provider_response_reuses_existing_invoice) ... ok
+test_deposit_actual_three_stages_confirm_exact_and_repeat (__main__.PaymentIntegration.test_deposit_actual_three_stages_confirm_exact_and_repeat) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 2.102s
+
+OK

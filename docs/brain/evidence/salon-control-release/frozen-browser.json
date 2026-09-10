@@ -1,0 +1,437 @@
+{
+  "source": "4dfb5dc3270eb1ddb60e2f373252c17150358817",
+  "states": [
+    {
+      "width": 320,
+      "theme": "light",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 320,
+      "theme": "dark",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "route": "summary",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "panel": "feed",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "panel": "handoff",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "panel": "plan",
+      "overflow": false,
+      "visible": 1
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "panel": "brief",
+      "overflow": false,
+      "visible": 1
+    }
+  ],
+  "errors": [],
+  "posts": [],
+  "badges": [
+    {
+      "text": "3",
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(81, 54, 181)"
+    },
+    {
+      "text": "1",
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(81, 54, 181)"
+    },
+    {
+      "text": "1",
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(81, 54, 181)"
+    },
+    {
+      "text": "1",
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(81, 54, 181)"
+    }
+  ]
+}

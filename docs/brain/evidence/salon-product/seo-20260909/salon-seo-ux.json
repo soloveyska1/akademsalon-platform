@@ -1,0 +1,76 @@
+{
+  "status": "GO",
+  "scope": "7entrypages+cataloguedirectory and publicGETorderhandoff",
+  "matrix": "/tmp/seo-entry-matrix.json",
+  "matrix_states": 56,
+  "handoff_variants": 27,
+  "passed": [
+    "Primaryhandoff preservesproduct/scope/speed in27actualformGETs",
+    "Noestimatedpriceforpart/editing;whole24hshowsx2",
+    "Candidateonlystandardspeed",
+    "All7catalogueHTMLlandinglinksvisible52px",
+    "Checklistprogressworks",
+    "Latestheader/footerstylefixed;mobilehelperyieldschooser",
+    "FreshnoJS7pages:0inertchooserbuttons,threeformatlinksremain,footerinitialproductcorrect",
+    "Mobile320coursepricevisibletop731,scopebuttons54px andspeed44px,mascothidden",
+    "Candidateonlystandardspeed;noexpresspromiseinnoscript",
+    "Latest6stylechecks320/1440showcoherentheader/footerandzerooverflow"
+  ],
+  "remaining": [],
+  "evidence": [
+    "/tmp/seo-entry-handoff.json",
+    "/tmp/seo-entry-fallback.txt",
+    "/tmp/seo-entry-final-delta.txt",
+    "/tmp/seo-entry-final-kursovaya-rabota-320.png",
+    "/tmp/seo-entry-final-referat-1440.png",
+    "/tmp/seo-entry-final-footer-referat-1440.png",
+    "/tmp/seo-entry-last-delta.txt",
+    "/tmp/seo-final-compact-kursovaya-rabota320.png",
+    "/tmp/seo-final-compact-kandidatskaya-dissertaciya320.png"
+  ],
+  "resolved": [
+    {
+      "priority": "P1",
+      "issue": "Footer CTA lost chosenproduct/scope/speed",
+      "fix": "Boundfooterinitialproduct andupdateswithchooser; actualGETreferatpartfastmatchesformevenafterpriorcandidateediting"
+    },
+    {
+      "priority": "P1",
+      "issue": "Floatingassistantcoveredmobilechooser",
+      "fix": "Observeentirebrief;hiddenwhilechooserisvisible"
+    },
+    {
+      "priority": "P2",
+      "issue": "MissinghomeCSSmalformedheader/footer",
+      "fix": "Sharedsheetrestored; account20px,desktopheader100px,mobile63px"
+    },
+    {
+      "priority": "P2",
+      "issue": "InertnoJScontrols andcandidateexpresspromise",
+      "fix": "All7hidechooseruntilenhanced;candidatefallbackspecificnonexpresscopy"
+    },
+    {
+      "priority": "P2",
+      "issue": "Breadcrumb43pxtarget",
+      "fix": "minwidth44"
+    }
+  ],
+  "limits": [
+    "AlltestslocalGETonly; noorders/payments/messages submitted",
+    "56initialmatrixfollowedbytargetedlatestdeltaretests; initialscreenscanpreceedheader/compactfix",
+    "ThisisUXhandoffreview,notproofsearchrankings/indexation/livepublication"
+  ],
+  "sha256": {
+    "kursovaya-rabota.html": "c7809f483678b0de966716503290a2237c77841943758ad212ee0244a3124cb7",
+    "diplomnaya-rabota.html": "a4c559477b23aea01266a7a4e496fdb64430d47edb8f33e0887fc5cf8d7c3ee1",
+    "otchet-po-praktike.html": "5745f0a8945804ce0789d052420a5a5a0162800ee5e8b4f7a88ad45ee762c27b",
+    "referat.html": "09755ea58a6fdc924abe5529326e05c39f9e2ac14c3c596b70fdf8fbfb50c319",
+    "magisterskaya-dissertaciya.html": "bd4bdf0adeb0604d5a55564bc64a7d40845b8518dbf296828a1141406d6e0660",
+    "nauchnaya-statya.html": "efbb85a065d6f4d8e2dc10752f8ceaea6d7a6ebe0e98116abaa0237eef47f0b1",
+    "kandidatskaya-dissertaciya.html": "a79049b499dc6ab2ef93c1ae80a41a5b451a70d477260a59ddfd688b6d09374b",
+    "services.html": "4802e774902c7c887c2b7dc6e9954043512b6742355ba8f3e5f1cb8912a62fe1",
+    "assets/css/salon-experience.css": "6708dd6979b213fe6f3bce62d35c26a312a6d94eca97e08faa655c728dec364f",
+    "assets/js/salon-experience.js": "46df9a89874f450171c1f528a2296c7052fc232a073b6246c022b165ba4e8550",
+    "assets/js/salon-order.js": "54548e1663f3e7f7cc6befd9abab56c2fb02ad6a82f97bb90e975b1ed8eacca1"
+  }
+}

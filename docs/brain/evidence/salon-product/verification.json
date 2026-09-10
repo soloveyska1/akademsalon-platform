@@ -1,0 +1,59 @@
+{
+  "observed_at": "2026-09-09T01:17:33.019521+00:00",
+  "declaration_head": "50a0fa30fdee27e04eb93490b4ae157a78dfed3e",
+  "canonical_fetched": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "owner_decision": "express24 ×2; faster individually quoted",
+  "source_fingerprints": "source-fingerprints.json",
+  "browser": "Playwright Chromium salon-product",
+  "data": "synthetic only; all external API intercepted before navigation; no real POST",
+  "screenshots": {
+    "home-desktop.png": {
+      "route": "index.html",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "theme": "light",
+      "state": "course standard empty extras"
+    },
+    "home-workbench.png": {
+      "route": "index.html#choose-work",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "theme": "light",
+      "state": "course standard empty extras"
+    },
+    "home-mobile.png": {
+      "route": "index.html#choose-work",
+      "viewport": [
+        390,
+        844
+      ],
+      "theme": "light",
+      "state": "course standard empty extras"
+    }
+  },
+  "focused_tests": {
+    "direct_commerce_analytics_privacy": {
+      "pass": 85,
+      "fail": 0
+    },
+    "cabinet_label_navigation": {
+      "pass": 20,
+      "fail": 0
+    }
+  },
+  "review": {
+    "journey_review": "GO after scope-aware quote return fixes; 756 home-origin combinations plus two form-origin defects reproduced and closed",
+    "order_contract_review": "GO private preview; stale express, thaw restrictions and pending line arithmetic fixed"
+  },
+  "not_verified": [
+    "real server acceptance of express/pending fields",
+    "real authentication callbacks",
+    "conversion improvement",
+    "public-domain deployment and rollback"
+  ],
+  "known_route_warning": "Fast navigation through start.html can emit native view transition skipped; no new JS errors in final home/form journeys."
+}

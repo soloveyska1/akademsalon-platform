@@ -1,0 +1,22 @@
+test_ambiguous_work_does_not_select_first_mention (test_assistant.Assistant.test_ambiguous_work_does_not_select_first_mention) ... ok
+test_bad_input (test_assistant.Assistant.test_bad_input) ... ok
+test_checklist_is_not_a_receipt (test_assistant.Assistant.test_checklist_is_not_a_receipt) ... ok
+test_client_context_cannot_create_order_facts (test_assistant.Assistant.test_client_context_cannot_create_order_facts) ... ok
+test_followup_topic_and_email_gift_limits (test_assistant.Assistant.test_followup_topic_and_email_gift_limits) ... ok
+test_gifts_starter_has_actual_action (test_assistant.Assistant.test_gifts_starter_has_actual_action) ... ok
+test_greetings_and_thanks (test_assistant.Assistant.test_greetings_and_thanks) ... ok
+test_human_wins_over_payment_and_order (test_assistant.Assistant.test_human_wins_over_payment_and_order) ... ok
+test_long_question_never_silently_truncated (test_assistant.Assistant.test_long_question_never_silently_truncated) ... ok
+test_multiple_intents_keep_referral_relevant (test_assistant.Assistant.test_multiple_intents_keep_referral_relevant) ... ok
+test_order_facts_only_from_authorized_argument (test_assistant.Assistant.test_order_facts_only_from_authorized_argument) ... ok
+test_payment_issue_does_not_invite_duplicate (test_assistant.Assistant.test_payment_issue_does_not_invite_duplicate) ... ok
+test_product_followup_is_only_allowlisted_navigation (test_assistant.Assistant.test_product_followup_is_only_allowlisted_navigation) ... ok
+test_questions_have_actual_destinations (test_assistant.Assistant.test_questions_have_actual_destinations) ... ok
+test_receipts_refunds_certificates_and_deadline (test_assistant.Assistant.test_receipts_refunds_certificates_and_deadline) ... ok
+test_unknown_and_human_request_are_not_invented (test_assistant.Assistant.test_unknown_and_human_request_are_not_invented) ... ok
+test_work_scope_and_urgency_are_not_fixed_price (test_assistant.Assistant.test_work_scope_and_urgency_are_not_fixed_price) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.003s
+
+OK

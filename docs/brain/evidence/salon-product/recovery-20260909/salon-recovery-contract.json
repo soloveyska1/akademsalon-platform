@@ -1,0 +1,460 @@
+{
+  "decision": "GO for bounded recovery/about implementation; frozen deployment gates pending",
+  "head": "ccf9c5db54cc4c7a082c3513b9e834f4dd55196f",
+  "source_sha256": {
+    "404.html": "8a091569146b54d79c8f447d0785de206c9f7b0491ae0cb01acf37b18cee5e38",
+    "50x.html": "7faa3e4ac46440a2c4f5c2d6755ac281aaa0dd33b7239cbe999a63aeb82aa543",
+    "offline.html": "42cf8c2a7294cab0adb05ee621c58b06e56193dca04f67c8a9b111262cefee01",
+    "maintenance.html": "bb51b909c0f000916229d343202f3a3331d2146a540b132979a77369044b96bc",
+    "about.html": "6672118a9af2a9a28f00d3a313c7481d499ad031472599d037637181eed8f279",
+    "assets/js/salon-experience.js": "18476e915ba24d55b1e675d54829038965b41875661f8c9a0ba9a40dc4fd27b7",
+    "assets/css/salon-experience.css": "121e9a60b6e0f69b49def269ab7a9f889f8ddc3f08ed13973af81c4c76635fa8"
+  },
+  "error_inline_scripts_identical": true,
+  "inline_script_sha256": {
+    "404.html": "25cb2530fea9f3a142baf5d243b7cc3ed468e7ed6b7ea25db60258d1020d2004",
+    "50x.html": "25cb2530fea9f3a142baf5d243b7cc3ed468e7ed6b7ea25db60258d1020d2004",
+    "offline.html": "25cb2530fea9f3a142baf5d243b7cc3ed468e7ed6b7ea25db60258d1020d2004",
+    "maintenance.html": "25cb2530fea9f3a142baf5d243b7cc3ed468e7ed6b7ea25db60258d1020d2004"
+  },
+  "initial_browser": {
+    "tests": [
+      {
+        "id": "404.html passive-load",
+        "pass": true,
+        "detail": {
+          "data": {
+            "local": {
+              "review_sentinel": "unchanged"
+            },
+            "session": {
+              "review_sentinel": "unchanged"
+            },
+            "scripts": []
+          },
+          "requests": [
+            "http://127.0.0.1:8771/404.html",
+            "http://127.0.0.1:8771/assets/img/favicon.svg"
+          ]
+        }
+      },
+      {
+        "id": "50x.html passive-load",
+        "pass": true,
+        "detail": {
+          "data": {
+            "local": {
+              "review_sentinel": "unchanged"
+            },
+            "session": {
+              "review_sentinel": "unchanged"
+            },
+            "scripts": []
+          },
+          "requests": [
+            "http://127.0.0.1:8771/50x.html",
+            "http://127.0.0.1:8771/assets/img/favicon.svg"
+          ]
+        }
+      },
+      {
+        "id": "offline.html passive-load",
+        "pass": true,
+        "detail": {
+          "data": {
+            "local": {
+              "review_sentinel": "unchanged"
+            },
+            "session": {
+              "review_sentinel": "unchanged"
+            },
+            "scripts": []
+          },
+          "requests": [
+            "http://127.0.0.1:8771/offline.html",
+            "http://127.0.0.1:8771/assets/img/favicon.svg"
+          ]
+        }
+      },
+      {
+        "id": "maintenance.html passive-load",
+        "pass": true,
+        "detail": {
+          "data": {
+            "local": {
+              "review_sentinel": "unchanged"
+            },
+            "session": {
+              "review_sentinel": "unchanged"
+            },
+            "scripts": []
+          },
+          "requests": [
+            "http://127.0.0.1:8771/maintenance.html",
+            "http://127.0.0.1:8771/assets/img/favicon.svg"
+          ]
+        }
+      },
+      {
+        "id": "route /dashboard.html?paid=42#order-42-money",
+        "pass": true,
+        "detail": {
+          "actual": "/dashboard.html?paid=42#order-42-money",
+          "expected": "/dashboard.html?paid=42#order-42-money"
+        }
+      },
+      {
+        "id": "route /dashboard#claim=fixture_token",
+        "pass": true,
+        "detail": {
+          "actual": "/dashboard#claim=fixture_token",
+          "expected": "/dashboard#claim=fixture_token"
+        }
+      },
+      {
+        "id": "route /dashboard#oauth=ok",
+        "pass": false,
+        "detail": {
+          "actual": "/dashboard#claim=fixture_token",
+          "expected": "/dashboard#oauth=ok"
+        }
+      },
+      {
+        "id": "route /zayavka.html#k=fixture_offer",
+        "pass": true,
+        "detail": {
+          "actual": "/zayavka.html#k=fixture_offer",
+          "expected": "/zayavka.html#k=fixture_offer"
+        }
+      },
+      {
+        "id": "route /gift?buy=42&t=fixture_token#code=AS-FIXTURE",
+        "pass": true,
+        "detail": {
+          "actual": "/gift?buy=42&t=fixture_token#code=AS-FIXTURE",
+          "expected": "/gift?buy=42&t=fixture_token#code=AS-FIXTURE"
+        }
+      },
+      {
+        "id": "route /oplaceno.html?Shp_kind=gift&Shp_gift=42",
+        "pass": true,
+        "detail": {
+          "actual": "/oplaceno.html?Shp_kind=gift&Shp_gift=42",
+          "expected": "/oplaceno.html?Shp_kind=gift&Shp_gift=42"
+        }
+      },
+      {
+        "id": "route /configurator?product=practice&result=editing#step2",
+        "pass": true,
+        "detail": {
+          "actual": "/configurator?product=practice&result=editing#step2",
+          "expected": "/configurator?product=practice&result=editing#step2"
+        }
+      },
+      {
+        "id": "route /missing?return=https://external.invalid/#secret",
+        "pass": true,
+        "detail": {
+          "actual": "/",
+          "expected": "/"
+        }
+      },
+      {
+        "id": "route /50x.html?next=/dashboard#claim=secret",
+        "pass": true,
+        "detail": {
+          "actual": "/",
+          "expected": "/"
+        }
+      },
+      {
+        "id": "route /api/orders/42?token=secret",
+        "pass": true,
+        "detail": {
+          "actual": "/",
+          "expected": "/"
+        }
+      },
+      {
+        "id": "route /admin.html#imp=secret",
+        "pass": true,
+        "detail": {
+          "actual": "/",
+          "expected": "/"
+        }
+      },
+      {
+        "id": "route //external.invalid/path",
+        "pass": true,
+        "detail": {
+          "actual": "/",
+          "expected": "/"
+        }
+      },
+      {
+        "id": "route /offline.html?return=/gift#code=secret",
+        "pass": true,
+        "detail": {
+          "actual": "/",
+          "expected": "/"
+        }
+      },
+      {
+        "id": "health ok",
+        "pass": true,
+        "detail": {
+          "d": {
+            "ok": "true",
+            "resumeHidden": false,
+            "text": "Сайт отвечает. Можно повторить переход. Статус заявки или оплаты проверяется отдельно в кабинете.",
+            "storage": "{\"local\":{\"review_sentinel\":\"unchanged\"},\"session\":{\"review_sentinel\":\"unchanged\"}}"
+          },
+          "requests": [
+            {
+              "url": "http://127.0.0.1:8771/assets/img/favicon.svg",
+              "method": "GET",
+              "cookie": "review_secret=fixture_cookie"
+            },
+            {
+              "url": "http://127.0.0.1:8771/api/health",
+              "method": "GET"
+            }
+          ]
+        }
+      },
+      {
+        "id": "health false",
+        "pass": true,
+        "detail": {
+          "d": {
+            "ok": null,
+            "resumeHidden": true,
+            "text": "Пока не удалось получить ответ. Проверь соединение и попробуй позже. Если вопрос срочный, напиши в Telegram.",
+            "storage": "{\"local\":{\"review_sentinel\":\"unchanged\"},\"session\":{\"review_sentinel\":\"unchanged\"}}"
+          },
+          "requests": [
+            {
+              "url": "http://127.0.0.1:8771/api/health",
+              "method": "GET"
+            }
+          ]
+        }
+      },
+      {
+        "id": "manual retry succeeds",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "id": "health nonjson",
+        "pass": true,
+        "detail": {
+          "d": {
+            "ok": null,
+            "resumeHidden": true,
+            "text": "Пока не удалось получить ответ. Проверь соединение и попробуй позже. Если вопрос срочный, напиши в Telegram.",
+            "storage": "{\"local\":{\"review_sentinel\":\"unchanged\"},\"session\":{\"review_sentinel\":\"unchanged\"}}"
+          },
+          "requests": [
+            {
+              "url": "http://127.0.0.1:8771/api/health",
+              "method": "GET"
+            }
+          ]
+        }
+      },
+      {
+        "id": "health non2xx",
+        "pass": true,
+        "detail": {
+          "d": {
+            "ok": null,
+            "resumeHidden": true,
+            "text": "Пока не удалось получить ответ. Проверь соединение и попробуй позже. Если вопрос срочный, напиши в Telegram.",
+            "storage": "{\"local\":{\"review_sentinel\":\"unchanged\"},\"session\":{\"review_sentinel\":\"unchanged\"}}"
+          },
+          "requests": [
+            {
+              "url": "http://127.0.0.1:8771/api/health",
+              "method": "GET"
+            }
+          ]
+        }
+      },
+      {
+        "id": "health network",
+        "pass": true,
+        "detail": {
+          "d": {
+            "ok": null,
+            "resumeHidden": true,
+            "text": "Пока не удалось получить ответ. Проверь соединение и попробуй позже. Если вопрос срочный, напиши в Telegram.",
+            "storage": "{\"local\":{\"review_sentinel\":\"unchanged\"},\"session\":{\"review_sentinel\":\"unchanged\"}}"
+          },
+          "requests": [
+            {
+              "url": "http://127.0.0.1:8771/api/health",
+              "method": "GET"
+            }
+          ]
+        }
+      },
+      {
+        "id": "health redirect",
+        "pass": true,
+        "detail": {
+          "d": {
+            "ok": null,
+            "resumeHidden": true,
+            "text": "Пока не удалось получить ответ. Проверь соединение и попробуй позже. Если вопрос срочный, напиши в Telegram.",
+            "storage": "{\"local\":{\"review_sentinel\":\"unchanged\"},\"session\":{\"review_sentinel\":\"unchanged\"}}"
+          },
+          "requests": [
+            {
+              "url": "http://127.0.0.1:8771/api/health",
+              "method": "GET"
+            }
+          ]
+        }
+      },
+      {
+        "id": "hang8s and duplicateclick",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "id": "latehealth no false success",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "id": "slow json body timeout",
+        "pass": true,
+        "detail": null
+      }
+    ],
+    "errors": [],
+    "nonReadRequests": [],
+    "externalMutations": false
+  },
+  "about_and_nojs": {
+    "tests": [
+      {
+        "id": "about-no-previous-choice",
+        "pass": true
+      },
+      {
+        "id": "about-tabs-keyboard",
+        "pass": true
+      },
+      {
+        "id": "about-tabs-no-storage-network",
+        "pass": true
+      },
+      {
+        "id": "404.html nojs",
+        "pass": true
+      },
+      {
+        "id": "50x.html nojs",
+        "pass": true
+      },
+      {
+        "id": "offline.html nojs",
+        "pass": true
+      },
+      {
+        "id": "maintenance.html nojs",
+        "pass": true
+      }
+    ],
+    "errors": [],
+    "externalMutations": false
+  },
+  "final_target_delta": {
+    "tests": [
+      {
+        "id": "hashchange target refresh",
+        "pass": true
+      },
+      {
+        "id": "popstate target refresh",
+        "pass": true
+      },
+      {
+        "id": "late health uses latest URL",
+        "pass": true
+      },
+      {
+        "id": "resume click reads replaceState URL",
+        "pass": true
+      },
+      {
+        "id": "updated unknown/admin target rejected",
+        "pass": true
+      }
+    ],
+    "externalMutations": false
+  },
+  "closed_findings": [
+    {
+      "id": "stale same-document target",
+      "priority": "P2",
+      "evidence": "initial route /dashboard#oauth=ok failure superseded by five final updateTarget checks; hashchange/popstate/beforehealth/success/click update memory/anchor"
+    }
+  ],
+  "current_positive_assertions": 38,
+  "pwa_test": {
+    "source_pass": 5,
+    "source_fail": 2,
+    "failure_scope": [
+      "referral.html private prototype missing manifest",
+      "referral-rules.html private prototype missing manifest/cachefamily"
+    ],
+    "evidence": "/tmp/salon-recovery-pwa.log",
+    "frozen_required": true
+  },
+  "builder_review": "scripts/build-production-release.py:29-33 replaces20260806shell123 acrossSW/HTML/JS/CSS/webmanifest withproduction-commitprefix; exactfrozenartifactverificationstillrequired",
+  "guarantees": [
+    "No API requests/storage writes/externalJS onerrorload; browser may fetch static icon",
+    "Only userclick performs GET/api/health, credentials omit, noReferer, redirect error",
+    "8second limit coverspendingresponse andslowJSON; duplicatesblocked;latehealthnotshown",
+    "No automaticnavigation, financialPOST, tokenprocessing, analytics",
+    "Knownoriginalpath query/hash onlyruntime+resumeanchor; unknown/admin/API/errorroutefallback /",
+    "Health payload operatingmetrics notdisplayed/copied/stored",
+    "About tabs onlyDOM; no previouschoice strip; prices/backendforms unchanged"
+  ],
+  "external_mutations": false,
+  "source_edits": false,
+  "browser_closed": true,
+  "blockers": [],
+  "reproducers": {
+    "harnesses": [
+      {
+        "path": "/tmp/salon-recovery-contract-browser.js",
+        "sha256": "c6d68260c18251c5c95917119425c958536909de70861386da7c50963613bae4"
+      },
+      {
+        "path": "/tmp/salon-recovery-about.js",
+        "sha256": "f8e17c619daedffe86dfb95c4923924c2ec20d5a3dd320ba37199a9cd206d131"
+      },
+      {
+        "path": "/tmp/salon-recovery-delta.js",
+        "sha256": "81d4355208a5a751f128a9f5fe546f58795a639fbfb6c7fb7df0351487217135"
+      }
+    ],
+    "command_template": "/Users/saymurrbk.ru/.codex/skills/playwright/scripts/playwright_cli.sh -s=recovery-contract open about:blank; /Users/saymurrbk.ru/.codex/skills/playwright/scripts/playwright_cli.sh -s=recovery-contract run-code --filename <harness-path>; /Users/saymurrbk.ru/.codex/skills/playwright/scripts/playwright_cli.sh -s=recovery-contract close",
+    "prerequisite": "Owner preview running at http://127.0.0.1:8771; each harness creates fresh context with serviceWorkers:block, mocks health/outcomes and blocks external access; do not replace mocks with real financial requests",
+    "coverage": {
+      "salon-recovery-contract-browser.js": "27 baseline assertions:4 passive loads,13 pathcases,6 health outcomes,manualretry,8snetworktimeout+duplicateclick,lateack,8sslowJSON.26PASS; stalehash case closed by delta",
+      "salon-recovery-about.js": "7PASS:about3 and noJS4",
+      "salon-recovery-delta.js": "5PASS finaltargetrefresh:hashchange,popstate,latehealth,replaceState+click,adminreject"
+    },
+    "outputs": [
+      "/tmp/salon-recovery-contract-browser.log",
+      "/tmp/salon-recovery-about.log",
+      "/tmp/salon-recovery-delta.log",
+      "/tmp/salon-recovery-pwa.log"
+    ]
+  }
+}

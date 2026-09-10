@@ -1,0 +1,98 @@
+{
+  "browser": "152.0.7977.84",
+  "serviceWorkers": "block",
+  "result": {
+    "checks": [
+      {
+        "width": 320,
+        "overflow": false,
+        "copyTextRight": 198.5,
+        "deskLeft": 28,
+        "collision": false,
+        "paper": "#faf9f6",
+        "accent": "#5136b5",
+        "ctaColor": "rgb(255, 255, 255)",
+        "ctaBg": "rgb(81, 54, 181)",
+        "theme": "light"
+      },
+      {
+        "width": 390,
+        "overflow": false,
+        "copyTextRight": 316.34375,
+        "deskLeft": 28,
+        "collision": false,
+        "paper": "#faf9f6",
+        "accent": "#5136b5",
+        "ctaColor": "rgb(255, 255, 255)",
+        "ctaBg": "rgb(81, 54, 181)",
+        "theme": "light"
+      },
+      {
+        "width": 390,
+        "overflow": false,
+        "copyTextRight": 316.34375,
+        "deskLeft": 28,
+        "collision": false,
+        "paper": "#191621",
+        "accent": "#c4b3ff",
+        "ctaColor": "rgb(37, 24, 63)",
+        "ctaBg": "rgb(196, 179, 255)",
+        "theme": "dark"
+      },
+      {
+        "width": 801,
+        "overflow": false,
+        "copyTextRight": 247.140625,
+        "deskLeft": 325,
+        "collision": false,
+        "paper": "#faf9f6",
+        "accent": "#5136b5",
+        "ctaColor": "rgb(255, 255, 255)",
+        "ctaBg": "rgb(81, 54, 181)",
+        "theme": "light"
+      },
+      {
+        "width": 801,
+        "overflow": false,
+        "copyTextRight": 247.140625,
+        "deskLeft": 325,
+        "collision": false,
+        "paper": "#191621",
+        "accent": "#c4b3ff",
+        "ctaColor": "rgb(37, 24, 63)",
+        "ctaBg": "rgb(196, 179, 255)",
+        "theme": "dark"
+      },
+      {
+        "width": 1440,
+        "overflow": false,
+        "copyTextRight": 457.203125,
+        "deskLeft": 832,
+        "collision": false,
+        "paper": "#191621",
+        "accent": "#c4b3ff",
+        "ctaColor": "rgb(37, 24, 63)",
+        "ctaBg": "rgb(196, 179, 255)",
+        "theme": "dark"
+      },
+      {
+        "width": 1440,
+        "overflow": false,
+        "copyTextRight": 457.203125,
+        "deskLeft": 832,
+        "collision": false,
+        "paper": "#faf9f6",
+        "accent": "#5136b5",
+        "ctaColor": "rgb(255, 255, 255)",
+        "ctaBg": "rgb(81, 54, 181)",
+        "theme": "light"
+      }
+    ],
+    "reduced": {
+      "running": 0,
+      "heroAnimation": "none",
+      "scroll": "auto"
+    },
+    "keyboard": "14 Tabs: no underlying page control focused (native browser-chrome stop allowed); Escape restores opener"
+  }
+}

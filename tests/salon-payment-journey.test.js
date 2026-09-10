@@ -1,0 +1,13 @@
+const test=require('node:test'),assert=require('node:assert/strict');
+const P=require('../assets/js/salon-payment-domain.js');
+const offered={id:12,no:'№12',status:'priced',price:30000,due_total:27000,actions:['accept_price'],plan:[{kind:'prepay',amount:13500,state:'due'},{kind:'final',amount:13500,state:'later'}],due_now:{kind:'prepay',amount:13500},payments:[],specification_meta:{snapshot_id:7,data_sha256:'b'.repeat(64)},checkout:{revision:'a'.repeat(64),can_accept:true,can_benefit:true}};
+test('offer always precedes invoice even when first stage is due',()=>{assert.equal(P.view(offered).phase,'offer');assert.equal(P.view(offered).amount,13500);assert.equal(P.view(offered).net,27000)});
+test('accepted offer exposes server due only',()=>{assert.equal(P.view({...offered,status:'prepay',actions:[]}).phase,'pay');assert.equal(P.view({...offered,status:'work',actions:[],due_now:null}).phase,'waiting')});
+test('claimed suppresses new payment and benefits',()=>{const v=P.view({...offered,claimed:true});assert.equal(v.phase,'checking');assert.equal(v.benefits,false)});
+test('closed and paused orders cannot enter checkout',()=>{for(const patch of [{paused:true},{status:'cancel'},{status:'done'}]){assert.equal(P.view({...offered,...patch}).phase,'closed')}});
+test('zero outstanding is settled and not unknown or pay',()=>assert.equal(P.view({...offered,status:'work',actions:[],due_total:0,due_now:null}).phase,'settled'));
+test('number accepts real API prefix once',()=>{assert.equal(P.number(offered),'№12');assert.equal(P.number({id:12,no:'№ №12'}),'№12')});
+test('frozen specification takes precedence over request estimates',()=>{const lines=P.lines({items:[{label:'wrong',final_price:99}],specification_lines:[{line_id:'a',title:'Курсовая',price_rub:30000,scope:{included:['Глава 1']}}]});assert.equal(lines[0].price,30000);assert.equal(lines[0].title,'Курсовая')});
+test('no final item price does not become free',()=>assert.equal(P.lines({items:[{label:'Работа',final_price:null}]})[0].price,null));
+test('payment body pins exact amount revision and snapshot',()=>{const body=P.payBody({...offered,status:'prepay'},'a@example.invalid');assert.equal(body.expected_snapshot,7);assert.equal(body.expected_amount,13500);assert.equal(body.expected_revision,'a'.repeat(64))});
+test('priced cannot bypass acceptance by constructing checkout body',()=>assert.throws(()=>P.payBody(offered,''),/accept_required/));

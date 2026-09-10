@@ -1,0 +1,21 @@
+AS-SPEC 4.0 verification, 2026-09-09
+Scope: new fictional filled sample and editable per-order template; page replacement prepared as isolated integration input.
+
+Deterministic evidence
+- Reproduce: bundled Codex Python legal/specification-2026/verify.py. artifact-qa.json binds final DOCX/PDF hashes, page counts, XML/privacy/metadata and field/page checks.
+- Sample 8 pages; template 9 pages. All 17 final page PNGs were opened and visually inspected by root after the final clause fixes. No clipping, overlap, broken tables or unintended blank pages. render-page-hashes.json binds the inspected renders; representative first/last/appendix pages retained.
+- DOCX title black, native Title without paragraph border; headers/footer consistent; PDF copy from exact final rendered DOCX. Template intentionally contains per-order placeholders and an inapplicable-to-A1/A2 rights appendix to remove before use.
+- Local composed preview used current shared CSS and the isolated page replacement, with API responses mocked and service worker disabled. No real payment/account transaction was tested.
+- Browser 48 states (320/360/390/768/1024/1440; light/dark; four tabs): 0 overflow, 0 hidden selected panels, minimum44px controls, dark footer rgb(41,35,55), no page errors. Keyboard End/wrap, four IP modes and deep link checked. browser-results.json and reproducible browser-check.js retained.
+- Local PDF link returned 200 application/pdf and exact final PDF hash; both links resolve to new sample. Numeric totals 3000+7000+4000=14000. Illustrative scope/deliverables/deadline/price agree across PDF and HTML.
+- Brain validate --strict passed:125 records/263 links/69 manifests. Diff whitespace check passed.
+
+Independent reviews (read-only, not a substitute for primary sources or runtime evidence)
+- /root/stages_ux_review: initial review P0=0/P1=0; P2 empirical-exclusion ambiguity and missing receipt nomenclature field identified and fixed. Final bound XML check accepted both DOCX.
+- /root/stages_functional_review: identified P1 in8.1 allowing IP agreement only before start. Corrected to fill, agree and sign B1/B2 appendix before offering position for payment. Final delta review P0=0/P1=0; both DOCX hashes exactly those in artifact-qa.json.
+- Primary legal sources with date and actual operational limitations are in owner-guide.md. Reviewers did not write files. No claim of absolute legal protection or verified backend automation.
+
+Not covered
+Production deployment/readback, payment/receipt/backend e-sign/archive, general offer rewrite and legal qualification of all existing advertising are separate integration/release checks. Internal legal/ source is not a customer download and must be excluded from publication. Existing accepted documents are not retrospectively replaced. Referral prototype is unrelated and remains inactive.
+
+Final conflict scan: initial snapshot moved while another owner changed refs; repeated scan stable, hard0/warnings59/blocking0, explicit inherited-warning allowance. See conflict-snapshot.txt. Own QA server8774 and named spec-doc browser closed.
