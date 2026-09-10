@@ -15,8 +15,13 @@ namespace, session, order, wallet or promotion is replaced.
 must be enabled, production mode must be active and Password3 must be configured.
 Isolated test credentials and the precise Indexjson form must be verified first.
 The initial deployment is a closed catalogue; it contains no synthetic purchase,
-account, price, document or payment fixture. Real payment and receipt readback are
-still required before advertising an open shop.
+account, price, document or payment fixture. The default release gate is real
+payment and receipt readback before advertising an open shop. On 10 September
+the owner explicitly declined a real charge and instructed public launch and
+publication after the verified demo journey. This launch exception is recorded
+separately in `deployment/owner-launch-decision.json` in the launch evidence root;
+it is not a successful real-payment, fiscal-receipt or delivery verification.
+Do not create a synthetic paid purchase or mark payment evidence verified.
 
 A private positive-integer `verification_owner_id` in that manifest allows only
 the matching existing account to complete this real purchase while public
@@ -24,7 +29,8 @@ the matching existing account to complete this real purchase while public
 all merchant, production-mode and refund-key guards still apply. The customer
 accepts the ordinary terms and pays the unchanged price through the ordinary UI.
 Do not synthesize consent, purchases, payments or entitlements in production.
-Remove this temporary owner field when opening checkout after the readback.
+Remove this temporary owner field when opening checkout, including an explicitly
+authorized launch without real-charge verification.
 To close all new payments again, set `checkout_enabled=false` and remove
 `verification_owner_id`; restart the service to reload the private manifest.
 
