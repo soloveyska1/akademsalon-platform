@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-cf3ea0c08cc14336abda42cd3eeb5429",
   "slug": "salon-payment-journey",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-payment-journey",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "95c30b9698d11d4fdf53676753130e32dbe715dd",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -1093,6 +1093,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "68f5f9e684bfcce3d3e28a10f4b87912bd63d09fddf179b71940b0af5c971ab0"
 }
