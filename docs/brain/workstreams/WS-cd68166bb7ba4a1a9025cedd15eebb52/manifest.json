@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-cd68166bb7ba4a1a9025cedd15eebb52",
   "slug": "listik-concierge",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/listik-concierge",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "33600d2c0f255a9072596df74145cc2c5a2a7551",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -1153,6 +1153,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "4c1fd5fff6361b8205c51a7c9de4c9dddf784a3a6c6441cc770e088b2736b5d3"
 }
