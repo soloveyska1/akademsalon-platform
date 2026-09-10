@@ -17,6 +17,8 @@
     send_failed:'Письмо не отправилось. Попробуй ещё раз или войди через Telegram.', csrf:'Сессия истекла. Начни вход через Telegram или обнови страницу.',
   };
   let products = [], authenticated = false, enabled = false, terms = '', selected = null, quote = null, requestKey = null;
+  let readerState=null, cardFilter='all';
+  const PROMO_END=1790802000000;
   let checkoutGeneration=0, interactionGeneration=0, demandPending=false, demandKey=null;
   let telegramTimer = null, accountTimer = null, busy = false, quoteSequence = 0, catalogueSequence = 0, loginCompleting = false;
   const INTENT_KEY='salon_material_intent_v1';
@@ -35,11 +37,16 @@
     return data;
   }
   function safeSource(url) { try { const u=new URL(url); return u.protocol==='https:' ? u.href : '#'; } catch { return '#'; } }
+  const pagesFor=p=>(p.previews||[]).filter(x=>/^\/assets\/store\/[a-z0-9/_-]+\.(png|webp|jpg)$/.test(x.path));
   function renderCards() {
-    $('products').innerHTML = products.map(p => `<article class="product-card" id="${esc(p.sku)}"><p class="category">${esc(p.programme)} · ${esc(p.semester)} семестр</p><h3>${esc(p.title)}</h3><p class="description">${esc(p.description)}</p><ul>${p.contents.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p class="meta">${esc(p.page_label)} · PDF + редактируемый DOCX<br>${esc(p.requirements_label)}</p><div class="foot"><div><span class="price">${money(p.price)}</span><span class="stock">Доступно ${p.available} из ${p.licences} лицензий · в брони ${p.reserved}</span></div><span class="quiet">Личная<br>неэксклюзивная лицензия</span></div><div class="card-actions"><button class="preview-button" data-preview="${esc(p.sku)}">Посмотреть страницы</button><button class="button" data-buy="${esc(p.sku)}" ${!enabled || !p.available?'disabled':''}>${!p.available?'Нет свободных лицензий':'Выбрать за '+money(p.price)}</button></div><p class="source"><a href="${esc(safeSource(p.source_url))}" target="_blank" rel="noopener">РПД и основание комплекта ↗</a></p></article>`).join('');
-    $('catalogue-status').hidden = enabled && products.length > 0;
-    if (!enabled) $('catalogue-status').textContent='Готовим запуск оплаты. Сейчас доступны состав и предпросмотр материалов.';
-    else if (!products.length) $('catalogue-status').textContent='Новые материалы проходят проверку. Загляни позже.';
+    const expanded=new Set([...document.querySelectorAll('.product-card:has(.card-details[open])')].map(x=>x.id));
+    const shown=products.filter(p=>cardFilter==='all'||(cardFilter==='speech')===p.programme.startsWith('44.'));
+    $('products').innerHTML=shown.map(p=>`<article class="product-card" id="${esc(p.sku)}"><button type="button" class="card-visual" data-preview="${esc(p.sku)}" aria-label="Посмотреть страницы: ${esc(p.title)}"><span class="visual-label">${p.programme.startsWith('44.')?'Логопедия':'Социальная работа'}<span>${esc(p.semester)} семестр</span></span><img src="${esc(pagesFor(p)[0]?.path||'')}" alt="Фрагмент: ${esc(p.title)}" loading="lazy"><span class="visual-open">Полистать ${pagesFor(p).length} фрагмента <span>↗</span></span></button><div class="card-body"><h3>${esc(p.title)}</h3><p class="meta">${esc(p.page_label)} · PDF + Word</p><details class="card-details" ${expanded.has(p.sku)?'open':''}><summary>Состав и требования</summary><p>${esc(p.description)}</p><ul>${p.contents.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p>${esc(p.requirements_label)}</p><a href="${esc(safeSource(p.source_url))}" target="_blank" rel="noopener">Открыть РПД ↗</a></details><div class="foot"><span class="price">${money(p.price)}</span><span class="stock">${p.available?`${p.available} из ${p.licences} лицензий доступны`:'Свободных лицензий сейчас нет'}${p.reserved?`<br>Сейчас в брони: ${p.reserved}`:''}</span></div><div class="card-actions"><button type="button" class="button secondary" data-preview="${esc(p.sku)}">Смотреть</button><button type="button" class="button" data-buy="${esc(p.sku)}" ${!enabled||!p.available?'disabled':''}>${!p.available?'Нет лицензий':'Выбрать комплект ↗'}</button></div><p class="card-note">Личная неэксклюзивная лицензия · скачивание в кабинете</p></div></article>`).join('');
+    $('hero-preview').disabled=!products.some(p=>p.sku==='social-pedagogy');
+    readerChoice();
+    $('catalogue-status').hidden=enabled&&products.length>0;
+    if(!enabled)$('catalogue-status').textContent='Оформление временно закрыто. Состав и предпросмотр доступны.';
+    else if(!products.length)$('catalogue-status').textContent='Новые материалы проходят проверку. Загляни позже.';
   }
   async function loadCatalog() {
     const sequence=++catalogueSequence;
@@ -47,11 +54,26 @@
       if(selected && (!enabled || !products.some(p=>p.sku===selected.sku && p.available))) {++quoteSequence;quote=null;$('pay-button').disabled=true;$('checkout-status').textContent='Наличие изменилось. Закрой оформление и выбери доступный материал.';} }
     catch { if(sequence===catalogueSequence)$('catalogue-status').textContent='Не удалось проверить наличие. Обнови страницу, когда появится соединение.'; }
   }
-  function preview(sku) {
-    const p=products.find(x=>x.sku===sku); if (!p) return;
-    $('preview-content').innerHTML=`<p class="eyebrow">Фрагмент оригинального файла</p><h2>${esc(p.title)}</h2><p>${esc(p.preview_note || 'Несколько страниц из комплекта. Полные файлы доступны после оплаты.')}</p><div class="preview-pages">${(p.previews || []).filter(x=>/^\/assets\/store\/[a-z0-9/_-]+\.(png|webp|jpg)$/.test(x.path)).map(x=>`<figure><img src="${esc(x.path)}" alt="${esc(x.label)}" loading="lazy"><figcaption>${esc(x.label)}</figcaption></figure>`).join('')}</div><p class="quiet">Предпросмотр содержит только перечисленные страницы. PDF и Word целиком не загружаются.</p>`;
-    $('preview-dialog').showModal(); metric('preview_opened',sku);
+  function readerChoice(){
+    if(!readerState)return;const current=products.find(p=>p.sku===readerState.product.sku),button=$('reader-buy');
+    button.disabled=!enabled||!current?.available;button.textContent=!enabled?'Продажи приостановлены':!current?.available?'Нет лицензий':'Выбрать этот комплект ↗';
   }
+  function readerPage() {
+    if(!readerState)return;const {product,index,zoom}=readerState,pages=pagesFor(product),page=pages[index];
+    $('reader-page').dataset.zoom=String(zoom);
+    $('reader-page').innerHTML=page?`<figure><img src="${esc(page.path)}" alt="${esc(page.label)}"><figcaption>${esc(page.label)}</figcaption></figure>`:'<p>Фрагменты пока не опубликованы.</p>';
+    $('reader-page').scrollTop=0;$('reader-page').scrollLeft=0;
+    $('reader-count').textContent=pages.length?(index+1)+' / '+pages.length:'Нет фрагментов';
+    $('reader-prev').disabled=index===0;$('reader-next').disabled=index>=pages.length-1;
+    $('reader-zoom').textContent=zoom?'По ширине':'Увеличить';$('reader-zoom').setAttribute('aria-pressed',String(zoom));readerChoice();
+  }
+  function preview(sku) {
+    const p=products.find(x=>x.sku===sku);if(!p)return;
+    readerState={product:p,index:0,zoom:false,opener:document.activeElement};
+    $('preview-content').innerHTML=`<header class="reader-head"><p class="eyebrow">Предпросмотр · фрагменты оригинала</p><h2 id="reader-title">${esc(p.title)}</h2></header><div class="reader-tools"><div><button id="reader-prev" data-reader="prev" type="button" aria-label="Предыдущий фрагмент">←</button><span id="reader-count" aria-live="polite"></span><button id="reader-next" data-reader="next" type="button" aria-label="Следующий фрагмент">→</button></div><button id="reader-zoom" data-reader="zoom" type="button" aria-pressed="false">Увеличить</button></div><div id="reader-page" class="reader-page" tabindex="0" role="region" aria-label="Страница документа. В увеличенном виде прокручивай стрелками"></div><footer class="reader-foot"><div><strong>${money(p.price)}</strong><span>${esc(p.page_label)} · PDF + Word</span></div><button id="reader-buy" type="button" class="button" data-reader="buy">Выбрать этот комплект ↗</button></footer>`;
+    readerPage();$('preview-dialog').showModal();metric('preview_opened',sku);
+  }
+  function moveReader(delta){if(!readerState)return;readerState.index=Math.max(0,Math.min(Math.max(0,pagesFor(readerState.product).length-1),readerState.index+delta));readerPage();}
   async function refreshQuote() {
     const sequence=++quoteSequence, sku=selected?.sku;
     if(!authenticated || !sku || !$('checkout-dialog').open)return;
@@ -66,6 +88,7 @@
     } catch(e) { if(sequence===quoteSequence){$('checkout-status').textContent=e.message;if(e.code==='login_required'){authenticated=false;$('login').hidden=false;showSelection();}} }
   }
   function showSelection() {
+    $('checkout-dialog').dataset.auth=String(authenticated);
     $('checkout-title').textContent=selected.title;
     $('checkout-description').textContent=selected.page_label+' · PDF и редактируемый Word. '+selected.requirements_label;
     $('checkout-guest').hidden=authenticated;$('checkout-form').hidden=!authenticated;
@@ -105,12 +128,13 @@
   document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
   $('checkout-dialog').addEventListener('close',closeCheckout);
   $('checkout-dialog').addEventListener('cancel',closeCheckout);
+  $('seasonal-coupon').addEventListener('click',()=>{if(busy)return;if(Date.now()>=PROMO_END){$('seasonal-coupon').hidden=true;return;}$('coupon').value='СЕМЕСТР';void refreshQuote();});
   $('use-bonus').addEventListener('change',refreshQuote); $('apply-coupon').addEventListener('click',refreshQuote);
   $('coupon').addEventListener('input',()=>{++quoteSequence;quote=null;requestKey=null;$('pay-button').disabled=true;$('checkout-status').textContent='Нажми «Применить», чтобы пересчитать сумму.';});
   $('checkout-form').addEventListener('submit',async e=>{
     e.preventDefault(); if(busy || !authenticated || !quote || !selected || !$('accept-terms').checked)return;
     const generation=++checkoutGeneration, checkoutSku=selected.sku;
-    busy=true; $('pay-button').disabled=true; $('checkout-status').textContent='Резервируем лицензию и открываем кассу…';
+    busy=true;['coupon','use-bonus','apply-coupon','seasonal-coupon'].forEach(id=>$(id).disabled=true); $('pay-button').disabled=true; $('checkout-status').textContent='Резервируем лицензию и открываем кассу…';
     requestKey ||= crypto.randomUUID().replaceAll('-','');
     const params=new URLSearchParams(location.search);
     const source=params.get('utm_source')==='kladovaya'?'kladovaya':params.get('utm_source')==='telegram'?'telegram':'salon';
@@ -123,7 +147,7 @@
       if(result.purchase.payment_url) { metric('payment_redirect'); $('checkout-dialog').close(); location.assign(result.purchase.payment_url); }
       else { $('checkout-status').textContent='Статус покупки обновлён. Проверь «Мои покупки».'; await loadAccount(); }
     } catch(err) { if(generation!==checkoutGeneration || selected?.sku!==checkoutSku){notice('Проверь «Мои покупки» перед повторным оформлением.');await loadAccount();return;} $('checkout-status').textContent=err.message; if(err.code==='quote_changed')await refreshQuote(); if(err.code==='already_owned'||err.code==='already_reserved') { $('checkout-dialog').close(); await loadAccount(); $('purchases').scrollIntoView(); } }
-    finally { busy=false; $('pay-button').disabled=!quote; }
+    finally { busy=false; ['coupon','use-bonus','apply-coupon','seasonal-coupon'].forEach(id=>$(id).disabled=false);$('pay-button').disabled=!quote; }
   });
   $('demand-form').addEventListener('submit',async e=>{
     e.preventDefault();if(demandPending)return;
@@ -143,6 +167,16 @@
   $('verify-code').addEventListener('click',async()=>{const b=$('verify-code');if(b.disabled)return;b.disabled=true;try{await api('/api/auth/email/verify',{email:$('email').value,code:$('code').value},{'X-Session-Mode':'cookie'});await afterLogin(true);}catch(e){$('login-status').textContent=e.message;}finally{b.disabled=false;}});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){void loadAccount();void loadCatalog();}});
   if(new URLSearchParams(location.search).has('Shp_store')) { history.replaceState(null,'',location.pathname+'#purchases'); $('account-status').textContent='Проверяем подтверждение оплаты. Войди тем же способом, которым оформлял покупку.'; }
+  $('hero-preview').addEventListener('click',()=>preview('social-pedagogy'));
+  $('shop-filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;cardFilter=b.dataset.filter;if(!['all','social','speech'].includes(cardFilter))return;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderCards();});
+  $('preview-content').addEventListener('click',async e=>{const b=e.target.closest('[data-reader]');if(!b||!readerState)return;const action=b.dataset.reader;if(action==='prev')moveReader(-1);if(action==='next')moveReader(1);if(action==='zoom'){readerState.zoom=!readerState.zoom;readerPage();}if(action==='buy'&&!$('reader-buy').disabled){const sku=readerState.product.sku;$('preview-dialog').close();await choose(sku);}});
+  $('preview-dialog').addEventListener('keydown',e=>{if(!readerState)return;if(readerState.zoom&&e.target===$('reader-page'))return;if(e.key==='ArrowRight'){e.preventDefault();moveReader(1);}if(e.key==='ArrowLeft'){e.preventDefault();moveReader(-1);}});
+  $('preview-dialog').addEventListener('close',()=>{const opener=readerState?.opener,sku=readerState?.product.sku;readerState=null;if(!$('checkout-dialog').open){const fallback=[...document.querySelectorAll('[data-preview]')].find(b=>b.dataset.preview===sku);(opener?.isConnected?opener:fallback||$('hero-preview')).focus();}});
+  $('shop-theme').addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('salon_theme',next);}catch{}});
+  function campaign(){const active=Date.now()<PROMO_END;$('shop-offer').hidden=!active;$('seasonal-coupon').hidden=!active;}
+  campaign();setInterval(campaign,60000);
+  function requestAnchor(){if(location.hash==='#request')$('demand-panel').open=true;}
+  window.addEventListener?.('hashchange',requestAnchor);requestAnchor();
   async function init() {
     const returning=location.hash==='#purchases';if(returning)forget();
     const interaction=interactionGeneration;
