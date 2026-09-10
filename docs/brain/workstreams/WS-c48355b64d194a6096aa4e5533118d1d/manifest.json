@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-c48355b64d194a6096aa4e5533118d1d",
   "slug": "material-catalogue-20260910",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/material-catalogue-20260910",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": "0e05ce04ed1a2ea0a382e2d2b1527046b3aad951",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-006"
   ],
@@ -73,6 +73,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 12,
-  "base_manifest_hash": "cde14b1ec78c8230ca6e14127c732c578dd42f17496b336bf446f3e6fa1883db"
+  "manifest_revision": 13,
+  "base_manifest_hash": "c4218f2e4a350e675abdaad217421c40e682d85e61f0ecd6fcab26a773b05320"
 }
