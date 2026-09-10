@@ -1,0 +1,45 @@
+{
+  "sha256": "aeeec7d667733ff68b22c9fbe97a0e6bc79ce522b98363a5d53caa663782b7df",
+  "checks": [
+    {
+      "name": "Bound owner price endpoint",
+      "ok": true
+    },
+    {
+      "name": "Unbound client creates offer",
+      "ok": true
+    },
+    {
+      "name": "Guest email price endpoint",
+      "ok": true
+    },
+    {
+      "name": "Media boolean produces attachment button",
+      "ok": true
+    },
+    {
+      "name": "Master messages labeled master",
+      "ok": true
+    },
+    {
+      "name": "Claimed payments not included in paid sum",
+      "ok": true
+    },
+    {
+      "name": "Owner identity visible in modal",
+      "ok": true
+    },
+    {
+      "name": "Price binds identical lines under both specification fields",
+      "ok": true
+    },
+    {
+      "name": "Attention excludes admin archived orders",
+      "ok": true
+    },
+    {
+      "name": "Unread orders trigger response",
+      "ok": true
+    }
+  ]
+}

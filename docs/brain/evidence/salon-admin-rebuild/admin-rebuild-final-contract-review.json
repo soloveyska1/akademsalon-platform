@@ -1,0 +1,53 @@
+{
+  "decision": "GO bounded order/auth/transport/AS-SPEC contract review",
+  "P0": [],
+  "P1": [],
+  "synthetic_assertions": 47,
+  "source_root": "/Users/saymurrbk.ru/.codex/worktrees/salon-admin-rebuild",
+  "source_hashes": {
+    "admin.html": "ac41176d7476ca909a8d1654e179ae80d57ec7373530d119bfe6a574a5a68310",
+    "assets/js/salon-admin-core.js": "1ce0a9152bc8ae665160ab3d3f01273e87e7724b9c0adba9b23af6dd77ab1bde",
+    "assets/js/salon-admin-workspace.js": "aeeec7d667733ff68b22c9fbe97a0e6bc79ce522b98363a5d53caa663782b7df",
+    "assets/css/salon-admin-workspace.css": "aa34ad19cf6401cfd489197619c52c0fcee51a44c652dc5fec041f204927196b"
+  },
+  "evidence": [
+    {
+      "report": "/tmp/admin-rebuild-core-review.json",
+      "reproducer": "/tmp/admin-rebuild-core-review.cjs",
+      "reproducer_sha256": "b373fdf633b7d4031eb3f72f9c3f655fca718c912db9cccd376249c17c78e789"
+    },
+    {
+      "report": "/tmp/admin-rebuild-workspace-review.json",
+      "reproducer": "/tmp/admin-rebuild-workspace-review.cjs",
+      "reproducer_sha256": "dd07e1d189aa04646c31bad01b18e74612e217e5fde0c82bdeec9c119b165328"
+    },
+    {
+      "report": "/tmp/admin-rebuild-spec-models.json",
+      "reproducer": "/tmp/admin-rebuild-spec-models.py",
+      "reproducer_sha256": "e7158e439d9d4768c3df16922ca797ef60f31f0de624476dd92285534ec904ed"
+    },
+    {
+      "report": "/tmp/admin-rebuild-editor-review.json",
+      "reproducer": "/tmp/admin-rebuild-editor-review.cjs",
+      "reproducer_sha256": "a02b17a52cf1b08e36af49926daa3367055b90cdfddd2ae6926e462763c2fdb1"
+    }
+  ],
+  "coverage": [
+    "Server owner/client/archive/media/work_type/unread exact fields",
+    "Bound order price/offer payloads and positive response identifiers",
+    "Claimed payments excluded from paid total",
+    "Normalized A1/A2/B1/B2 exact server roundtrip and strict validation",
+    "Unchanged B2 editor roles and technical participants preserved",
+    "Unknown HTTP200/400/409/500 outcomes, pending before POST and reload",
+    "Legacy bonus marker migration/reconcile, upload query alias locking",
+    "Auth epoch response/body guards and403 identity invalidation",
+    "Safe offer URL and sameorder response validation"
+  ],
+  "limits": [
+    "No live backend POST, real payments, notifications, customer records, or production modifications.",
+    "Backend snapshot freshness not asserted as production.",
+    "Visual and broader non-order paths are separate review.",
+    "Current source still root working tree; pin these bytes before release."
+  ],
+  "backend_snapshot_sha256": "225f23dba32b25a8ac2381e28c255eed07b14a991362604938dc0ba61fe89c10"
+}
