@@ -3,7 +3,7 @@ from pathlib import Path
 import os,sys,json
 ROOT=Path('/Users/saymurrbk.ru/.codex/worktrees/listik-concierge')
 sys.path.insert(0,str(ROOT/'backend/salon_bot'));import assistant
-os.chdir(ROOT)
+os.chdir(ROOT/'.brain/listik-release/public209')
 class Local(SimpleHTTPRequestHandler):
  def do_POST(self):
   if self.path=='/api/assistant/answer':

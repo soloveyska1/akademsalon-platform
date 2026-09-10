@@ -1,0 +1,83 @@
+{
+  "source_commit": "0821d4c7bf6daa2d77bc03b669f2e123d86469a6",
+  "canonical_base": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "baseline_release": "release208-store-current-0e05ce04",
+  "baseline_archive_sha256": "53fe78ecbd204a979a1b2ae9f24189406b1f333ebf3e5d5eaf40756c477dde32",
+  "artifact_sha256": "98c5d2fac153144226303eec55c04ecc7c01cadf33b2a812b69f69566dd9f708",
+  "static_files": 459,
+  "knowledge": {
+    "pages": 77,
+    "chunks": 2223,
+    "sha256": "7c37d57e334b38798d534f4724d238e212cc5f114cf85fb95cc2ede98c63c8fc"
+  },
+  "tests": {
+    "assistant_and_installer": "28/28",
+    "js_bridge_submit_builder": "28/28",
+    "public_regressions": "76/76",
+    "brain": "39/39"
+  },
+  "browser": {
+    "local_origin": "http://127.0.0.1:8784",
+    "runtime": "Playwright CLI Chromium",
+    "fixtures": "All customer mutations intercepted; only synthetic example.test contact and order77777; no production mutation",
+    "widths": [
+      360,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "reduced_motion": true,
+    "single_order_owner": true,
+    "request_and_payload_stable_after_500": true,
+    "upload_retry_isolated": true,
+    "route_preserves_unresolved_mutation": true,
+    "handoff_uncertainty_locks_reset": true,
+    "existing_configurator_preserved": true,
+    "store_latest208_checked": [
+      390,
+      1280
+    ]
+  },
+  "limits": [
+    "No real order, lead, payment, fiscal receipt or delivery created during QA.",
+    "Cannot promise answers to literally arbitrary questions; insufficient sources clarify and prepare editable human handoff.",
+    "Unsent form retained until completed; completed and fully uploaded receipt can reset.",
+    "Publication is independent of canonical main integration."
+  ],
+  "screenshots": {
+    "store-1280.png": "f36f9165957f51d480edfe6fdf7ceed5f47311c44f31361495c74eeb342d70ed",
+    "social-desktop.png": "a15b2a437a74542300a262c271783d5b6bd6c57a863979072eb0e8a8d0a7247c",
+    "intake-mobile.png": "56b78faa2a33e3ba14ac3d0d48a032b9d197a9fc5a770f92b168ddc27ca49992",
+    "live-store-answer-mobile.png": "b1a837d32f7437fde6484f5179d2e9157da88b9f17bb66608747c03bd313df91",
+    "store-390.png": "4cd67e5fc972980cf535950157f8c9bacb9cf58fa2e742f781d79aef42aa2bbc",
+    "draft-mobile.png": "6388e5c9e3ae3061b9cefc8843881a5e032bb48e9ded3b927e9f91a00423f440",
+    "live-intake-desktop.png": "ec5670deebc10386c9a27ba2d62df70e6d6670f82f4120f31b06dfa397813fcf",
+    "answer-dark-mobile.png": "93be3fea6f48dc6263ac56c97fe36b5fa287d24668523f00806ae755f8862f60",
+    "accepted-mobile.png": "e6a6f39b097bbd8eb19482f40d70cee745a516511a0d5724f6ba021b4dbe78fe"
+  },
+  "live": {
+    "source_commit": "0821d4c7bf6daa2d77bc03b669f2e123d86469a6",
+    "release": "/var/www/academic_saloon/releases/release209-listik-0821d4c7",
+    "previous": "/var/www/academic_saloon/releases/release208-store-current-0e05ce04",
+    "dist_preserved": "/var/www/academic_saloon/releases/release203-09ccfca4",
+    "files": 459,
+    "assistant_hash": "8a1a4293ccb2d6e22ea622123b39b8265335297bd32da94e3a286793444c6c0a",
+    "knowledge_hash": "7c37d57e334b38798d534f4724d238e212cc5f114cf85fb95cc2ede98c63c8fc",
+    "first_backup": "/root/salon_bot/backups/listik-20260910T230644896709Z",
+    "rollback_verified": true,
+    "forward_backup": "/root/salon_bot/backups/listik-20260910T230651697334Z",
+    "health": {
+      "ok": true,
+      "service": "active"
+    },
+    "database_changed_by_installer": false,
+    "timestamp_utc": "2026-09-10T23:06:54Z",
+    "read_only_smoke": "14/14",
+    "browser": "Three real answer200 responses; correct live prefill; consent/participation unchecked; no console/request errors; no real order or lead submitted."
+  }
+}
