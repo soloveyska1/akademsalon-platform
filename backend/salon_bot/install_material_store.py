@@ -51,7 +51,7 @@ def main():
         raise SystemExit("live webapp hash changed; no files modified")
     patched = patch_webapp(original.decode()).encode()
     source = Path(__file__).with_name("material_store")
-    files = [source / n for n in ("__init__.py", "core.py", "provider.py", "http.py", "admin.py")]
+    files = [source / n for n in ("__init__.py", "core.py", "provider.py", "http.py", "admin.py", "metrics.py", "demand.py")]
     for file in files:
         compile(file.read_text(), str(file), "exec")
     report = {"mode": "preflight", "webapp_before": actual,

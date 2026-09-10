@@ -4,6 +4,7 @@
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const money = value => Number(value).toLocaleString('ru-RU') + ' ₽';
   const errors = {
+    request_limit:'За сутки уже принято три запроса. Попробуй завтра.', request_changed:'Запрос изменён. Обнови страницу перед новой отправкой.',
     login_required:'Войди в аккаунт, чтобы сохранить покупку.', quote_changed:'Сумма изменилась. Проверь расчёт и попробуй ещё раз.',
     sold_out:'Свободных лицензий этой версии сейчас нет.', already_owned:'Этот материал уже есть в твоих покупках.',
     already_reserved:'Этот материал уже забронирован. Продолжи оплату в «Моих покупках».', reservation_limit:'У тебя уже две активные брони. Продолжи одну из них.',
@@ -16,7 +17,13 @@
     send_failed:'Письмо не отправилось. Попробуй ещё раз или войди через Telegram.', csrf:'Сессия истекла. Начни вход через Telegram или обнови страницу.',
   };
   let products = [], authenticated = false, enabled = false, terms = '', selected = null, quote = null, requestKey = null;
-  let telegramTimer = null, accountTimer = null, busy = false, quoteSequence = 0, catalogueSequence = 0, initialHashHandled = false;
+  let checkoutGeneration=0, interactionGeneration=0, demandPending=false, demandKey=null;
+  let telegramTimer = null, accountTimer = null, busy = false, quoteSequence = 0, catalogueSequence = 0, loginCompleting = false;
+  const INTENT_KEY='salon_material_intent_v1';
+  const metric=(event,sku=selected?.sku||'none')=>window.StoreMetrics?.track(event,sku);
+  function remember(sku) { try { sessionStorage.setItem(INTENT_KEY,JSON.stringify({sku,until:Date.now()+30*60*1000})); } catch {} }
+  function forget() { try {sessionStorage.removeItem(INTENT_KEY);}catch{} const u=new URL(location.href);u.searchParams.delete('buy');if(products.some(p=>p.sku===u.hash.slice(1)))u.hash='catalogue';history.replaceState(null,'',u.pathname+u.search+u.hash); }
+  function closeCheckout() { ++interactionGeneration; ++checkoutGeneration; ++quoteSequence;quote=null;selected=null;requestKey=null;forget();$('pay-button').disabled=true;$('login-home').append($('login')); }
   function notice(message) { $('toast').textContent = message; $('toast').hidden = false; window.setTimeout(() => {$('toast').hidden = true;}, 8000); }
   function csrf() { return document.cookie.split('; ').find(x => x.startsWith('__Host-salon_csrf='))?.split('=').slice(1).join('=') || ''; }
   async function api(path, body, headers = {}) {
@@ -37,33 +44,43 @@
   async function loadCatalog() {
     const sequence=++catalogueSequence;
     try { const d=await api('/api/store/catalogue'); if(sequence!==catalogueSequence)return; products=d.products || []; enabled=d.checkout_enabled === true; terms=d.terms; renderCards();
-      if(!initialHashHandled){initialHashHandled=true;const sku=location.hash.slice(1);if(products.some(p=>p.sku===sku))requestAnimationFrame(()=>$(sku)?.scrollIntoView());} }
+      if(selected && (!enabled || !products.some(p=>p.sku===selected.sku && p.available))) {++quoteSequence;quote=null;$('pay-button').disabled=true;$('checkout-status').textContent='Наличие изменилось. Закрой оформление и выбери доступный материал.';} }
     catch { if(sequence===catalogueSequence)$('catalogue-status').textContent='Не удалось проверить наличие. Обнови страницу, когда появится соединение.'; }
   }
   function preview(sku) {
     const p=products.find(x=>x.sku===sku); if (!p) return;
     $('preview-content').innerHTML=`<p class="eyebrow">Фрагмент оригинального файла</p><h2>${esc(p.title)}</h2><p>${esc(p.preview_note || 'Несколько страниц из комплекта. Полные файлы доступны после оплаты.')}</p><div class="preview-pages">${(p.previews || []).filter(x=>/^\/assets\/store\/[a-z0-9/_-]+\.(png|webp|jpg)$/.test(x.path)).map(x=>`<figure><img src="${esc(x.path)}" alt="${esc(x.label)}" loading="lazy"><figcaption>${esc(x.label)}</figcaption></figure>`).join('')}</div><p class="quiet">Предпросмотр содержит только перечисленные страницы. PDF и Word целиком не загружаются.</p>`;
-    $('preview-dialog').showModal();
+    $('preview-dialog').showModal(); metric('preview_opened',sku);
   }
   async function refreshQuote() {
-    const sequence=++quoteSequence;
+    const sequence=++quoteSequence, sku=selected?.sku;
+    if(!authenticated || !sku || !$('checkout-dialog').open)return;
     quote=null; $('pay-button').disabled=true;
     try {
-      const calculated=await api('/api/store/quote', {sku:selected.sku,use_bonus:$('use-bonus').checked,coupon:$('coupon').value.trim()});
-      if(sequence!==quoteSequence)return;
-      quote=calculated;
+      const calculated=await api('/api/store/quote', {sku,use_bonus:$('use-bonus').checked,coupon:$('coupon').value.trim()});
+      if(sequence!==quoteSequence || selected?.sku!==sku || !$('checkout-dialog').open)return;
+      quote=calculated; metric('quote_ready',sku);
       $('quote-lines').innerHTML=`<p><span>Цена комплекта</span><span>${money(quote.price)}</span></p><p><span>Скидка по промокоду</span><span>−${money(quote.discount)}</span></p><p><span>Бонусами</span><span>−${money(quote.bonus)}</span></p><p class="total"><span>К оплате</span><strong>${money(quote.cash)}</strong></p>`;
       $('pay-button').textContent=`Перейти к оплате ${money(quote.cash)}`; $('checkout-status').textContent='';
       $('pay-button').disabled=false; requestKey=null;
-    } catch(e) { if(sequence===quoteSequence)$('checkout-status').textContent=e.message; }
+    } catch(e) { if(sequence===quoteSequence){$('checkout-status').textContent=e.message;if(e.code==='login_required'){authenticated=false;$('login').hidden=false;showSelection();}} }
+  }
+  function showSelection() {
+    $('checkout-title').textContent=selected.title;
+    $('checkout-description').textContent=selected.page_label+' · PDF и редактируемый Word. '+selected.requirements_label;
+    $('checkout-guest').hidden=authenticated;$('checkout-form').hidden=!authenticated;
+    $('selection-price').textContent=money(selected.price);
+    if(!authenticated){$('checkout-login-slot').append($('login'));$('login').hidden=false;}
+    if(!$('checkout-dialog').open)$('checkout-dialog').showModal();
   }
   async function choose(sku) {
-    selected=products.find(x=>x.sku===sku); if (!selected) return;
-    if (!authenticated) { notice('Войди, чтобы покупка сохранилась в твоей библиотеке.'); $('purchases').scrollIntoView(); $('telegram-login').focus(); return; }
-    $('checkout-title').textContent=selected.title;
-    $('checkout-description').textContent=selected.page_label+' · PDF и DOCX. '+selected.requirements_label;
-    $('accept-terms').checked=false; $('use-bonus').checked=false; $('coupon').value='';
-    $('checkout-status').textContent=''; $('checkout-dialog').showModal(); await refreshQuote();
+    ++interactionGeneration;
+    const product=products.find(x=>x.sku===sku);
+    if(!product || !enabled || !product.available){forget();notice(!product?'Материал не найден. Выбери комплект в каталоге.':!enabled?errors.checkout_unavailable:errors.sold_out);return;}
+    ++quoteSequence;quote=null;requestKey=null;selected=product;remember(sku);metric('product_selected',sku);
+    $('pay-button').disabled=true;$('accept-terms').checked=false;$('use-bonus').checked=false;$('coupon').value='';
+    $('quote-lines').textContent='';$('checkout-status').textContent='';showSelection();
+    if(authenticated)await refreshQuote();
   }
   function renderAccount(d) {
     $('bonus-balance').textContent=d.balance.toLocaleString('ru-RU');
@@ -75,14 +92,24 @@
     else { clearInterval(accountTimer); accountTimer=null; }
   }
   async function loadAccount() { if (!authenticated || document.hidden) return; try { renderAccount(await api('/api/store/account')); } catch(e) { $('account-status').textContent=e.message; } }
-  async function afterLogin() { authenticated=true; $('login').hidden=true; $('account-content').hidden=false; $('account-status').textContent='Покупки закреплены за этим аккаунтом.'; clearInterval(telegramTimer); telegramTimer=null; await Promise.all([loadAccount(),loadCatalog()]); if(selected) await choose(selected.sku); }
-  async function loadSession() { try { const d=await api('/api/auth/session'); if(d.authenticated) await afterLogin(); } catch { /* Catalogue remains usable without sign-in. */ } }
+  async function afterLogin(interactive=false) {
+    if(loginCompleting)return;loginCompleting=true;
+    const wasAuthenticated=authenticated;authenticated=true;$('login').hidden=true;$('account-content').hidden=false;
+    $('account-status').textContent='Покупки закреплены за этим аккаунтом.';clearInterval(telegramTimer);telegramTimer=null;
+    if(interactive && !wasAuthenticated)metric('auth_completed');
+    try { await Promise.all([loadAccount(),loadCatalog()]);window.StoreMetrics?.retryRevoke();if(selected && $('checkout-dialog').open){showSelection();await refreshQuote();} }
+    finally {loginCompleting=false;}
+  }
+  async function loadSession() { try {const d=await api('/api/auth/session');if(d.authenticated)await afterLogin();}catch{} }
   $('products').addEventListener('click', e=>{const previewButton=e.target.closest('[data-preview]');const buy=e.target.closest('[data-buy]');if(previewButton)preview(previewButton.dataset.preview);if(buy)void choose(buy.dataset.buy);});
-  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>{++quoteSequence;b.closest('dialog').close();}));
+  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
+  $('checkout-dialog').addEventListener('close',closeCheckout);
+  $('checkout-dialog').addEventListener('cancel',closeCheckout);
   $('use-bonus').addEventListener('change',refreshQuote); $('apply-coupon').addEventListener('click',refreshQuote);
   $('coupon').addEventListener('input',()=>{++quoteSequence;quote=null;requestKey=null;$('pay-button').disabled=true;$('checkout-status').textContent='Нажми «Применить», чтобы пересчитать сумму.';});
   $('checkout-form').addEventListener('submit',async e=>{
-    e.preventDefault(); if(busy || !quote || !selected || !$('accept-terms').checked)return;
+    e.preventDefault(); if(busy || !authenticated || !quote || !selected || !$('accept-terms').checked)return;
+    const generation=++checkoutGeneration, checkoutSku=selected.sku;
     busy=true; $('pay-button').disabled=true; $('checkout-status').textContent='Резервируем лицензию и открываем кассу…';
     requestKey ||= crypto.randomUUID().replaceAll('-','');
     const params=new URLSearchParams(location.search);
@@ -90,17 +117,40 @@
     const body={sku:selected.sku,request_key:requestKey,expected_cash:quote.cash,use_bonus:$('use-bonus').checked,
       coupon:$('coupon').value.trim(),accept_terms:true,terms,attribution:{source,surface:params.get('surface')||'catalogue'}};
     try {
+      metric('checkout_submitted');
       const result=await api('/api/store/checkout',body);
-      if(result.purchase.payment_url) { $('checkout-dialog').close(); location.assign(result.purchase.payment_url); }
+      if(generation!==checkoutGeneration || selected?.sku!==checkoutSku){notice('Бронь сохранена в «Моих покупках». Проверь выбранный материал перед оплатой.');await loadAccount();return;}
+      if(result.purchase.payment_url) { metric('payment_redirect'); $('checkout-dialog').close(); location.assign(result.purchase.payment_url); }
       else { $('checkout-status').textContent='Статус покупки обновлён. Проверь «Мои покупки».'; await loadAccount(); }
-    } catch(err) { $('checkout-status').textContent=err.message; if(err.code==='quote_changed')await refreshQuote(); if(err.code==='already_owned'||err.code==='already_reserved') { $('checkout-dialog').close(); await loadAccount(); $('purchases').scrollIntoView(); } }
+    } catch(err) { if(generation!==checkoutGeneration || selected?.sku!==checkoutSku){notice('Проверь «Мои покупки» перед повторным оформлением.');await loadAccount();return;} $('checkout-status').textContent=err.message; if(err.code==='quote_changed')await refreshQuote(); if(err.code==='already_owned'||err.code==='already_reserved') { $('checkout-dialog').close(); await loadAccount(); $('purchases').scrollIntoView(); } }
     finally { busy=false; $('pay-button').disabled=!quote; }
   });
+  $('demand-form').addEventListener('submit',async e=>{
+    e.preventDefault();if(demandPending)return;
+    if(!authenticated){$('demand-status').textContent='Войди ниже и нажми «Передать задание» ещё раз. Введённый текст останется на странице.';$('purchases').scrollIntoView();$('telegram-login').focus();return;}
+    demandPending=true;['demand-send','demand-subject','demand-task','demand-deadline','demand-budget'].forEach(id=>$(id).disabled=true);demandKey ||= crypto.randomUUID().replaceAll('-','');
+    try{const result=await api('/api/store/requests',{subject:$('demand-subject').value.trim(),task:$('demand-task').value.trim(),deadline:$('demand-deadline').value,budget:Number($('demand-budget').value),request_key:demandKey});
+      if(!Number.isSafeInteger(result.id)||result.id<=0)throw new Error('Не удалось подтвердить получение. Попробуй ещё раз.');
+      $('demand-status').textContent='Запрос №'+result.id+' получен. Это подтверждение записи, а не обещание выполнения. Спасибо: так мы выберем следующие материалы.';demandKey=null;$('demand-form').reset();}
+    catch(err){$('demand-status').textContent=err.message;if(err.code==='login_required'){authenticated=false;$('login').hidden=false;}}
+    finally{demandPending=false;['demand-send','demand-subject','demand-task','demand-deadline','demand-budget'].forEach(id=>$(id).disabled=false);}
+  });
+  $('demand-form').addEventListener('input',()=>{if(!demandPending)demandKey=null;});
   $('purchases-list').addEventListener('click',async e=>{const b=e.target.closest('[data-retry]');if(!b)return;b.disabled=true;try {const r=await api('/api/store/purchases/'+b.dataset.retry+'/pay',{});if(r.purchase.payment_url)location.assign(r.purchase.payment_url);else await loadAccount();}catch(err){notice(err.message);}finally{b.disabled=false;}});
-  $('telegram-login').addEventListener('click',async()=>{try {const d=await api('/api/auth/start',{});$('telegram-link').href=d.link;$('telegram-link').hidden=false;$('login-status').textContent='Открой Telegram по ссылке и подтверди вход в боте. Эта страница дождётся подтверждения.';clearInterval(telegramTimer);const until=Date.now()+d.ttl*1000;telegramTimer=setInterval(async()=>{if(Date.now()>until){clearInterval(telegramTimer);$('login-status').textContent='Срок подтверждения истёк. Начни вход ещё раз.';return;}try{const p=await api('/api/auth/poll',{}, {'X-Auth-Poll':d.poll_state});if(!p.pending)await afterLogin();}catch{}},2500);}catch(e){$('login-status').textContent=e.message;}});
-  $('email-form').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;try{await api('/api/auth/start',{});await api('/api/auth/email/start',{email:$('email').value});$('code-row').hidden=false;$('code').focus();$('login-status').textContent='Код отправлен. Проверь входящие и папку «Спам».';}catch(err){$('login-status').textContent=err.message;}finally{b.disabled=false;}});
-  $('verify-code').addEventListener('click',async()=>{try{await api('/api/auth/email/verify',{email:$('email').value,code:$('code').value},{'X-Session-Mode':'cookie'});await afterLogin();}catch(e){$('login-status').textContent=e.message;}});
+  $('telegram-login').addEventListener('click',async()=>{try {metric('auth_started');const d=await api('/api/auth/start',{});$('telegram-link').href=d.link;$('telegram-link').hidden=false;$('login-status').textContent='Открой Telegram по ссылке и подтверди вход в боте. Эта страница дождётся подтверждения.';clearInterval(telegramTimer);const until=Date.now()+d.ttl*1000;telegramTimer=setInterval(async()=>{if(Date.now()>until){clearInterval(telegramTimer);$('login-status').textContent='Срок подтверждения истёк. Начни вход ещё раз.';return;}try{const p=await api('/api/auth/poll',{}, {'X-Auth-Poll':d.poll_state});if(!p.pending)await afterLogin(true);}catch{}},2500);}catch(e){$('login-status').textContent=e.message;}});
+  $('email-form').addEventListener('submit',async e=>{e.preventDefault();if(!$('email').reportValidity())return;const b=$('email-send');if(b.disabled)return;b.disabled=true;try{metric('auth_started');await api('/api/auth/start',{});await api('/api/auth/email/start',{email:$('email').value});$('code-row').hidden=false;$('code').value='';b.textContent='Отправить ещё раз';$('code').focus();$('login-status').textContent='Код отправлен. Проверь входящие и папку «Спам».';}catch(err){$('login-status').textContent=err.message;}finally{b.disabled=false;}});
+  $('code').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('verify-code').click();}});
+  $('verify-code').addEventListener('click',async()=>{const b=$('verify-code');if(b.disabled)return;b.disabled=true;try{await api('/api/auth/email/verify',{email:$('email').value,code:$('code').value},{'X-Session-Mode':'cookie'});await afterLogin(true);}catch(e){$('login-status').textContent=e.message;}finally{b.disabled=false;}});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){void loadAccount();void loadCatalog();}});
   if(new URLSearchParams(location.search).has('Shp_store')) { history.replaceState(null,'',location.pathname+'#purchases'); $('account-status').textContent='Проверяем подтверждение оплаты. Войди тем же способом, которым оформлял покупку.'; }
-  void loadCatalog(); void loadSession();
+  async function init() {
+    const returning=location.hash==='#purchases';if(returning)forget();
+    const interaction=interactionGeneration;
+    await Promise.all([loadCatalog(),loadSession()]); metric('shop_opened','none');
+    if(returning || interaction!==interactionGeneration)return;
+    const params=new URLSearchParams(location.search);let sku=params.get('buy') || location.hash.slice(1);
+    if(!sku){try{const pending=JSON.parse(sessionStorage.getItem(INTENT_KEY)||'null');if(pending?.until>Date.now())sku=pending.sku;else forget();}catch{forget();}}
+    if(products.some(p=>p.sku===sku))await choose(sku);else if(params.has('buy'))notice('Материал не найден. Выбери комплект в каталоге.');
+  }
+  void init();
 })();

@@ -14,7 +14,7 @@ from aiohttp import web
 from .. import config, db
 from ..services import mailer
 from .core import Store, StoreError, INV_OFFSET, TERMS_VERSION
-from . import provider
+from . import provider, metrics, demand
 
 log = logging.getLogger(__name__)
 ROOT = Path(os.environ.get("MATERIAL_STORE_ROOT", "/var/lib/academic-material-store"))
@@ -78,8 +78,8 @@ class Runtime:
             "rules": {"cashback_pct": 3, "achievement_pct": 2, "max_discount_pct": 10, "hold_minutes": 15}},
             headers={"Cache-Control": "no-store", "Access-Control-Allow-Origin": "https://studkladovaya.ru"})
 
-    async def body(self, request):
-        if request.content_length and request.content_length > 4096:
+    async def body(self, request, limit=4096):
+        if request.content_length and request.content_length > limit:
             raise StoreError("bad_request")
         try:
             b = await request.json()
@@ -88,6 +88,37 @@ class Runtime:
         if not isinstance(b, dict):
             raise StoreError("bad_request")
         return b
+
+    async def event(self, request):
+        if request.headers.get("Origin") != "https://akademsalon.ru":
+            return web.Response(status=403)
+        b = await self.body(request)
+        if not metrics.validate(b):
+            return web.Response(status=400)
+        u = await self.identity(request)
+        if (u and (u["id"] in getattr(config,"ADMIN_IDS",[]) or
+                ("session_imp" in u.keys() and u["session_imp"]))) or request.headers.get("X-Store-QA") == "1":
+            return web.Response(status=204)
+        await asyncio.to_thread(metrics.record,self.root / "metrics.sqlite3",b)
+        return web.Response(status=204,headers={"Cache-Control":"no-store"})
+
+    async def revoke_events(self, request):
+        if request.headers.get("Origin") != "https://akademsalon.ru":
+            return web.Response(status=403)
+        b = await self.body(request)
+        try:
+            await asyncio.to_thread(metrics.revoke,self.root / "metrics.sqlite3",b)
+        except ValueError:
+            return web.Response(status=400)
+        except RuntimeError:
+            return web.Response(status=503,headers={'Retry-After':'60'})
+        return web.Response(status=204,headers={"Cache-Control":"no-store"})
+
+    async def request_material(self, request):
+        u = await self.user(request)
+        b = await self.body(request,16384)
+        identifier = await asyncio.to_thread(demand.submit,self.root / "requests.sqlite3",u["id"],b)
+        return web.json_response({"ok":True,"id":identifier},headers={"Cache-Control":"no-store"})
 
     async def quote(self, request):
         u = await self.user(request)
@@ -263,6 +294,20 @@ class Runtime:
 def register(app, identity, root=None):
     runtime = Runtime(app, identity, Path(root) if root else ROOT)
     app[STATE_KEY] = runtime
+    @web.middleware
+    async def linked_analytics_revoke(request, handler):
+        response = await handler(request)
+        # A successful existing signed revoke must cover the store from every
+        # Salon page, including tabs that never loaded the shop UI.
+        if request.method == "POST" and request.path == "/api/analytics/revoke" and response.status < 300:
+            try:
+                body = await request.json()
+                await asyncio.to_thread(metrics.revoke,runtime.root / "metrics.sqlite3",
+                    {"session_id":"0"*32,"deletion_secret":body.get("deletion_secret","")})
+            except (ValueError,TypeError,AttributeError):
+                pass
+        return response
+    app.middlewares.append(linked_analytics_revoke)
     def guarded(handler):
         async def handle(request):
             try:
@@ -276,15 +321,22 @@ def register(app, identity, root=None):
         return handle
     app.router.add_get("/api/store/catalogue", guarded(runtime.catalogue))
     app.router.add_get("/api/store/account", guarded(runtime.account))
+    app.router.add_post("/api/store/requests", guarded(runtime.request_material))
+    app.router.add_post("/api/store/events", guarded(runtime.event))
+    app.router.add_post("/api/store/events/revoke", guarded(runtime.revoke_events))
     app.router.add_post("/api/store/quote", guarded(runtime.quote))
     app.router.add_post("/api/store/checkout", guarded(runtime.checkout))
     app.router.add_post("/api/store/purchases/{id:\\d+}/pay", guarded(runtime.resume))
     app.router.add_get("/api/store/purchases/{id:\\d+}/{format:pdf|docx|zip}", guarded(runtime.download))
     async def lifecycle(app):
         async def loop():
+            last_cleanup=0
             while True:
                 try:
                     await runtime.sweep()
+                    if time.time()-last_cleanup>3600:
+                        await asyncio.to_thread(demand.cleanup,runtime.root)
+                        last_cleanup=time.time()
                 except Exception as exc:
                     log.error("material worker pending type=%s", type(exc).__name__)
                 await asyncio.sleep(30)
