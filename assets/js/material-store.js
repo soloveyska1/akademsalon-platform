@@ -172,7 +172,6 @@
   $('preview-content').addEventListener('click',async e=>{const b=e.target.closest('[data-reader]');if(!b||!readerState)return;const action=b.dataset.reader;if(action==='prev')moveReader(-1);if(action==='next')moveReader(1);if(action==='zoom'){readerState.zoom=!readerState.zoom;readerPage();}if(action==='buy'&&!$('reader-buy').disabled){const sku=readerState.product.sku;$('preview-dialog').close();await choose(sku);}});
   $('preview-dialog').addEventListener('keydown',e=>{if(!readerState)return;if(readerState.zoom&&e.target===$('reader-page'))return;if(e.key==='ArrowRight'){e.preventDefault();moveReader(1);}if(e.key==='ArrowLeft'){e.preventDefault();moveReader(-1);}});
   $('preview-dialog').addEventListener('close',()=>{const opener=readerState?.opener,sku=readerState?.product.sku;readerState=null;if(!$('checkout-dialog').open){const fallback=[...document.querySelectorAll('[data-preview]')].find(b=>b.dataset.preview===sku);(opener?.isConnected?opener:fallback||$('hero-preview')).focus();}});
-  $('shop-theme').addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('salon_theme',next);}catch{}});
   function campaign(){const active=Date.now()<PROMO_END;$('shop-offer').hidden=!active;$('seasonal-coupon').hidden=!active;}
   campaign();setInterval(campaign,60000);
   function requestAnchor(){if(location.hash==='#request')$('demand-panel').open=true;}
