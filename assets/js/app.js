@@ -4237,11 +4237,11 @@
 
 /* The helper starts only after an explicit question; no background chat calls. */
 (function mountSalonAssistant(){
-  if(/^admin/.test(location.pathname.split('/').pop())||document.body.classList.contains('salon-workspace'))return;
+  if(/^admin/.test(location.pathname.split('/').pop())||document.body.classList.contains('salon-workspace')||(window.parent!==window&&new URLSearchParams(location.search).get('assistant')==='1'))return;
   function mount(){
     if(document.querySelector('script[data-salon-assistant]'))return;
-    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/salon-assistant.css?v=20260909assistant4';document.head.append(css);
-    const js=document.createElement('script');js.src='/assets/js/salon-assistant.js?v=20260909assistant4';js.dataset.salonAssistant='true';document.body.append(js);
+    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/css/salon-assistant.css?v=listik20260911';document.head.append(css);
+    const js=document.createElement('script');js.src='/assets/js/salon-assistant.js?v=listik20260911';js.dataset.salonAssistant='true';document.body.append(js);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();

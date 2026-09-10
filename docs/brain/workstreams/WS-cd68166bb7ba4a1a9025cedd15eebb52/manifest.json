@@ -1,1 +1,1158 @@
-{"schema_version":2,"workstream_id":"WS-cd68166bb7ba4a1a9025cedd15eebb52","slug":"listik-concierge","status":"active","branch":"codex/listik-concierge","base_sha":"e53d11cea40055f2dae41a0f212cbbac4c79055f","result_sha":null,"outcome_ids":["OUT-006"],"write_owner":"codex-root","scope":{"write":[{"path":"404.html","match":"exact"},{"path":"50x.html","match":"exact"},{"path":"about.html","match":"exact"},{"path":"academic-integrity.html","match":"exact"},{"path":"admin.html","match":"exact"},{"path":"assets/campaigns/autumn-2026/pinned-caption.html","match":"exact"},{"path":"assets/campaigns/autumn-2026/promo-caption.html","match":"exact"},{"path":"assets/campaigns/autumn-2026/two-projects.jpg","match":"exact"},{"path":"assets/campaigns/autumn-2026/two-projects.mp4","match":"exact"},{"path":"assets/css/order-journey.css","match":"exact"},{"path":"assets/css/order-specification.css","match":"exact"},{"path":"assets/css/salon-admin-workspace.css","match":"exact"},{"path":"assets/css/salon-admin.css","match":"exact"},{"path":"assets/css/salon-assistant.css","match":"exact"},{"path":"assets/css/salon-cabinet.css","match":"exact"},{"path":"assets/css/salon-catalogue.css","match":"exact"},{"path":"assets/css/salon-direct.css","match":"exact"},{"path":"assets/css/salon-experience.css","match":"exact"},{"path":"assets/css/salon-home.css","match":"exact"},{"path":"assets/css/salon-intake.css","match":"exact"},{"path":"assets/css/salon-legal.css","match":"exact"},{"path":"assets/css/salon-library.css","match":"exact"},{"path":"assets/css/salon-portfolio.css","match":"exact"},{"path":"assets/css/salon-referral-public.css","match":"exact"},{"path":"assets/css/salon-referral.css","match":"exact"},{"path":"assets/css/salon-reviews.css","match":"exact"},{"path":"assets/css/salon-rewards.css","match":"exact"},{"path":"assets/css/salon-select.css","match":"exact"},{"path":"assets/css/salon-support.css","match":"exact"},{"path":"assets/css/salon-tools.css","match":"exact"},{"path":"assets/css/salon-workspace.css","match":"exact"},{"path":"assets/docs/specification-2026/specification-sample.docx","match":"exact"},{"path":"assets/docs/specification-2026/specification-sample.pdf","match":"exact"},{"path":"assets/docs/specification-2026/specification-template.docx","match":"exact"},{"path":"assets/docs/specification-2026/specification-template.pdf","match":"exact"},{"path":"assets/img/salon-assistant/list.webp","match":"exact"},{"path":"assets/img/salon-assistant/listik-states.webp","match":"exact"},{"path":"assets/js/admin.js","match":"exact"},{"path":"assets/js/app.js","match":"exact"},{"path":"assets/js/cabinet-demo.js","match":"exact"},{"path":"assets/js/cabinet.js","match":"exact"},{"path":"assets/js/order-journey.js","match":"exact"},{"path":"assets/js/order-specification.js","match":"exact"},{"path":"assets/js/polish15-supporting.js","match":"exact"},{"path":"assets/js/salon-admin-core.js","match":"exact"},{"path":"assets/js/salon-admin-workspace.js","match":"exact"},{"path":"assets/js/salon-assistant-knowledge.js","match":"exact"},{"path":"assets/js/salon-assistant-order.js","match":"exact"},{"path":"assets/js/salon-assistant.js","match":"exact"},{"path":"assets/js/salon-benefits.js","match":"exact"},{"path":"assets/js/salon-cabinet.js","match":"exact"},{"path":"assets/js/salon-catalogue.js","match":"exact"},{"path":"assets/js/salon-commerce.js","match":"exact"},{"path":"assets/js/salon-direct.js","match":"exact"},{"path":"assets/js/salon-experience.js","match":"exact"},{"path":"assets/js/salon-home.js","match":"exact"},{"path":"assets/js/salon-intake.js","match":"exact"},{"path":"assets/js/salon-legal.js","match":"exact"},{"path":"assets/js/salon-library.js","match":"exact"},{"path":"assets/js/salon-order-domain.js","match":"exact"},{"path":"assets/js/salon-order.js","match":"exact"},{"path":"assets/js/salon-payment-domain.js","match":"exact"},{"path":"assets/js/salon-portfolio-data.js","match":"exact"},{"path":"assets/js/salon-portfolio.js","match":"exact"},{"path":"assets/js/salon-products.js","match":"exact"},{"path":"assets/js/salon-referral-policy.js","match":"exact"},{"path":"assets/js/salon-referral.js","match":"exact"},{"path":"assets/js/salon-reviews.js","match":"exact"},{"path":"assets/js/salon-rewards.js","match":"exact"},{"path":"assets/js/salon-samples.js","match":"exact"},{"path":"assets/js/salon-select.js","match":"exact"},{"path":"assets/js/salon-shell.js","match":"exact"},{"path":"assets/js/salon-support.js","match":"exact"},{"path":"assets/js/salon-tools.js","match":"exact"},{"path":"assets/js/salon-workspace.js","match":"exact"},{"path":"assets/samples/comparison.pdf","match":"exact"},{"path":"assets/samples/comparison.png","match":"exact"},{"path":"assets/samples/essay.pdf","match":"exact"},{"path":"assets/samples/essay.png","match":"exact"},{"path":"assets/samples/method.pdf","match":"exact"},{"path":"assets/samples/method.png","match":"exact"},{"path":"assets/samples/practice.pdf","match":"exact"},{"path":"assets/samples/practice.png","match":"exact"},{"path":"assets/samples/project.pdf","match":"exact"},{"path":"assets/samples/project.png","match":"exact"},{"path":"assets/samples/referat.pdf","match":"exact"},{"path":"assets/samples/referat.png","match":"exact"},{"path":"assets/samples/risk.pdf","match":"exact"},{"path":"assets/samples/risk.png","match":"exact"},{"path":"assets/vendor/pdfjs/LICENSE","match":"exact"},{"path":"assets/vendor/pdfjs/pdf.min.mjs","match":"exact"},{"path":"assets/vendor/pdfjs/pdf.worker.min.mjs","match":"exact"},{"path":"audit-temy-vkr.html","match":"exact"},{"path":"avtorskiy-zakaz.html","match":"exact"},{"path":"backend/salon_bot/assistant.py","match":"exact"},{"path":"backend/salon_bot/assistant_knowledge.json","match":"exact"},{"path":"backend/salon_bot/autoquote.py","match":"exact"},{"path":"backend/salon_bot/community_rewards.py","match":"exact"},{"path":"backend/salon_bot/direct_intake.py","match":"exact"},{"path":"backend/salon_bot/direct_upload.py","match":"exact"},{"path":"backend/salon_bot/install_assistant.py","match":"exact"},{"path":"backend/salon_bot/install_assistant_concierge.py","match":"exact"},{"path":"backend/salon_bot/install_autoquote.py","match":"exact"},{"path":"backend/salon_bot/install_community_rewards.py","match":"exact"},{"path":"backend/salon_bot/install_direct_intake.py","match":"exact"},{"path":"backend/salon_bot/install_out001_synthetic.py","match":"exact"},{"path":"backend/salon_bot/install_payment_journey.py","match":"exact"},{"path":"backend/salon_bot/out001_synthetic.py","match":"exact"},{"path":"backend/salon_bot/payment_journey.py","match":"exact"},{"path":"backend/salon_bot/production_probe.py","match":"exact"},{"path":"backend/salon_bot/referral_rewards.py","match":"exact"},{"path":"backend/salon_bot/tests/test_assistant.py","match":"exact"},{"path":"backend/salon_bot/tests/test_assistant_concierge.py","match":"exact"},{"path":"backend/salon_bot/tests/test_autoquote.py","match":"exact"},{"path":"backend/salon_bot/tests/test_community_rewards.py","match":"exact"},{"path":"backend/salon_bot/tests/test_direct_intake.py","match":"exact"},{"path":"backend/salon_bot/tests/test_out001_synthetic.py","match":"exact"},{"path":"backend/salon_bot/tests/test_payment_journey.py","match":"exact"},{"path":"backend/salon_bot/tests/test_referral_rewards.py","match":"exact"},{"path":"benefits.html","match":"exact"},{"path":"check.html","match":"exact"},{"path":"configurator.html","match":"exact"},{"path":"consent-analytics.html","match":"exact"},{"path":"consent-marketing.html","match":"exact"},{"path":"consent-publication.html","match":"exact"},{"path":"consent-request.html","match":"exact"},{"path":"consent.html","match":"exact"},{"path":"dashboard.html","match":"exact"},{"path":"deposit.html","match":"exact"},{"path":"diplomnaya-po-ekonomike.html","match":"exact"},{"path":"diplomnaya-po-psihologii.html","match":"exact"},{"path":"diplomnaya-po-yurisprudencii.html","match":"exact"},{"path":"diplomnaya-rabota.html","match":"exact"},{"path":"docs/brain/evidence/listik-concierge","match":"tree"},{"path":"docs/brain/evidence/order-stages-interactive/browser-check.js","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/browser-matrix.json","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/contrast.json","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/journey-dark-390-4.png","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/journey-light-1440-1.png","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/journey-light-1440-5.png","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/journey-light-390-1.png","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/report.txt","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/scope-check.json","match":"exact"},{"path":"docs/brain/evidence/order-stages-interactive/source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-delta.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-drawer-feed-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-drawer-plan-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-login-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-login-320-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-short-chat390.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-final-short-price390.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/admin-review-login-output.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/contracts.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/README.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/root-browser-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/salon-admin-candidate-contract.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/salon-admin-candidate-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/salon-admin-fixture.js","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/salon-admin-root-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/salon-admin-ux-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-control/salon-admin-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-browser-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-core-review.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-core-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-editor-review.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-editor-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-final-contract-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-live-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-order-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-review-modules.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-spec-models.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-spec-models.py","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-spec-roundtrip-actual.py","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-workspace-review.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/admin-rebuild-workspace-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/brain-validate.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/browser-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-1440-clients-91001-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-1440-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-1440-orders-9701-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-1440-visits.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-390-clients-91001-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-390-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-390-orders-9701-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/dark-390-visits.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/focused-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/freeze.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-1440-clients-91001-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-1440-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-1440-orders-9701-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-1440-visits.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-390-clients-91001-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-390-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-390-orders-9701-brief.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/light-390-visits.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/live-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/live-login-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/live-login-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/order-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/README.txt","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/release-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/release-manifest.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/release-rollback.py","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/synthetic-fixtures.json","match":"exact"},{"path":"docs/brain/evidence/salon-admin-rebuild/synthetic-preview.py","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/assistant-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/assistant-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/backend-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/checkpoint.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/configurator-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/configurator-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/conflict-summary-release185.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/conflict-summary.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/dashboard-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/dashboard-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/final-health-release185.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/journey-auth-review.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/journey-extras-review.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-1440-dark-chat.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-360-dark-handoff.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-360-light-welcome.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-backend-release186.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-image-prompt.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-installer.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-journey-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-original.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-review-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-review-summary.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-short-320.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-static-release186.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/list-unit-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-backend-release187.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-builder-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-image-prompt.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-installer.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-live-browser-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-live-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-live-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-live-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-motion-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-motion-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-public-tests-release187.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-review-summary.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-services.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-short-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-states-original.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-static-release187.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-topics-fixed-320.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-unit-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-visual-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/listik-welcome.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/live-browser-release185.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/live-browser-release185.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/live-dashboard-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/live-dashboard-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/live-smoke-release185.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/login-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/public-browser-release185.js","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/public-browser-release185.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/public-tests-release185.txt","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/salon-backend-release185.py","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/salon-final-readback185.py","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/salon-static-release185.py","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/specifikaciya-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/specifikaciya-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/static-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/workspace-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-autonomy/workspace-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/admin-contracts.json","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/admin1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/cabinet-contracts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/deploy-verified.py","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/frozen-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/frozen-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/independent-ux-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/live-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/live-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/public-gates.txt","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/README.txt","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/release200-live-admin-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/release200-live-admin-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/release200-live-dashboard-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-control-release/release200-live-dashboard-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-direct/browser-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-direct/browser-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-direct/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-direct/design.txt","match":"exact"},{"path":"docs/brain/evidence/salon-direct/home-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-direct/legacy-suite.json","match":"exact"},{"path":"docs/brain/evidence/salon-direct/order-mobile.png","match":"exact"},{"path":"docs/brain/evidence/salon-direct/private-preview-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-direct/private-preview-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-direct/source-fingerprints.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-final-deltas.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-final-header320-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-final-interactions.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-final-knowledge320-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-final-search390.png","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-last-delta.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-last-mascot.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/learning-review-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/production-native-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/root-browser-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/root-browser-initial.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-audit-contract-mocks.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-audit-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-audit-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-brain.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-build-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-check390.png","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-conflicts-final.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-contract-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-frozen-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-frozen-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-guide390.png","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-local-final.tap","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-local.tap","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-preflight.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-production-services.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-public-gates-final.tap","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-root-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-search390.png","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-learning-ux-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-learning/salon-site-link-audit.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/payment-cards-orders-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/README.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-checkout-deploy203.py","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-backend-release.out","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-backend-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-conflicts-final.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-conflicts-predeploy.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-contract-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-focused.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-happy-integration.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-happy-integration.py","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-independent-tests.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-independent-tests.py","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-installer-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-installer-review.py","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-journey-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-production-browser.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-production-console.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-production-fonts.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-public-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-public-readback.json","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-public-regression-final.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-public-regression.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-static-release.out","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-validate-final.txt","match":"exact"},{"path":"docs/brain/evidence/salon-payment-journey/salon-payment-validate.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/baseline-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/build.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/composed-deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/composed-live-readback.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/contrast.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-deposit-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-deposit-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-gift-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-gift-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-loyalty-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-loyalty-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-plus-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-plus-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-referral-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/details-final-referral-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/final-visual.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/final-visual.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/focused-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/independent-live-review.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/integrated-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/integrated-journey.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/integrated-journey.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/live-readback.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/public-gift.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/public-gift.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/review.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/specification-composition.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/specification-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/supporting-focused.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/ui-journeys.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefit-details/ui-journeys.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/bonuses-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/bonuses-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/bonuses-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/bonuses-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/browser-journey-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/browser-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/browser-matrix-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/browser-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/contrast-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/deposit-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/deposit-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/deposit-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/deposit-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/more-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/more-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/more-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/more-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/run-browser-check.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/subscriptions-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/subscriptions-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/subscriptions-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/subscriptions-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits-redesign/verification.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/bonuses-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/bonuses-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/build-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/contrast-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/deposit-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/deposit-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/focused-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/more-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/more-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/practice-pages.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/practice-reader.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/qa-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/review.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/run-browser-check.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/subscriptions-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/benefits/subscriptions-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/browser-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet-label-tests.tap","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/browser-journey-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/browser-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/browser-matrix-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/browser-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/calendar-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/calendar-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/calendar-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/calendar-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/community-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/community-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/community-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/community-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/entry.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/gift-kladovaya.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/gift-salon.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/home-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/home-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/home-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/home-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-659-chat-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-659-chat-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-659-chat-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-659-chat-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-701-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-701-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-701-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/order-701-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/run-browser-check.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/cabinet/verification.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/back-isolated.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/back-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/back.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-sheet-1440-dark-false.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-sheet-1440-light-false.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-sheet-390-dark-true.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/catalog-sheet-390-light-true.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/contrast-isolated.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/contrast-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/focused-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/home-journey-isolated.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/home-journey-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/home-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/home-qa-isolated.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/home-qa-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/home-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/journey-isolated.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/journey-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/look-isolated.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/look-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/look.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/price-parity.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/run-browser-check.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/catalogue/verification.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/compact-final-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/compact-final-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/compact-mobile-faq.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/compact-panel-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/compact-panel-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/focused.tap","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/salon-compact-baseline-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/salon-compact-baseline.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/salon-compact-qa-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/salon-compact-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/compact/verification.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-flow.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-frozen.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-frozen.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-live.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/browser-source.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/contract-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/entries.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/flow-frozen.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/flow-frozen.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/flow-source.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/frozen-contract-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/frozen-contract-review.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/indexnow.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/production-status.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/psychology-320-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/psychology-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/rebuild-discipline.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/release-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/release-notes.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/review-contract.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/review-entry.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/review-order.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/submit-changed-indexnow.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/ux-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/discipline-20260909/verify-entry.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/after-dark-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/after-light-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/before-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/browser-check.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/browser-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/contract-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/contract-review.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/frozen-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/live-dark-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/live-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/notes.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/release-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/fieldset-20260910/ux-review.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/focused-tests.tap","match":"exact"},{"path":"docs/brain/evidence/salon-product/full-suite.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/header-final-50x-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/header-final-delta.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/header-final-plan-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/header-review-interactions.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/header-review-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/header-review-modern.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/metadata.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-about320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-browser-final.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-browser-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-contract-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-exact-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-frozen.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-frozen.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-frozen320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-live-retry.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-live-retry.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-live.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-production-release.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-production-status.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-production320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260909/salon-header-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/activate-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/all-pages.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/all-pages.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/before1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/candidate-menu390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/candidate1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/frozen-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/frozen-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/frozen-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/live-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/live-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/live-home1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/live-menu390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/notes.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/pages.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/prepare-activation.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/prepare-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/preserved-redirects.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/rebuild-header.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/recovered-initial-attempt.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-actual-overlay-receipt.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-cache-delta.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-legacy-fixture.html","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-run.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-static.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-contract-static.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/review-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/scope-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/source-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/header-20260910/static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/home-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/home-mobile.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/home-workbench.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/audit-notes.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/brain-validation.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/frozen-audit.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/frozen-audit.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/live-audit.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/live-completed-195.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/mobile-audit-20260909/live-incomplete.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/audit-pdfs.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/focused-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/pdf-audit.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/provenance.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/review.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/run-browser-check.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-all-docs-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-all-docs.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-contrast-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-final-spot-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-final-spot.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-intake-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-intake-submit-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-intake-submit.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-library-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-library-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-portfolio-qa-result.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-portfolio-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-proof-project-final.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-reader-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/salon-reader-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/portfolio/source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/artifact-contracts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/backend-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/backend-review.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/backend-source-hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/browser-price-proof.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/builder-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/configurator-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/configurator-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/dashboard-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/dashboard-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/final-health.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/intake-handler-proof.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/live-documents.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/live-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/mandatory-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/nginx-mime-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/out001-live-after.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/out001-live-before.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/payment-economic-proof.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/protocol-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/public-artifact.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/public-browser-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/public-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/public-documents.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/specifikaciya-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/specifikaciya-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/static-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/synthetic-runtime-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/production/synthetic-schema-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/metadata.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/rebuild-pages.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-50x-320-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-about-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-final-about320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-final-hash-delta.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-functional.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-health.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-maintenance-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/recovery-timeout.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-50x-mobile.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-about-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-about.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-brain-v2.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-build-v2.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-contract-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-contract-map.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-delta-build-v2.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-delta.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-frozen-v2-50x.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-frozen-v2-about.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-frozen-v2.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-frozen-v2.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-live-50x.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-live-about.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-live.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-production-release-v2.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-production-status.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-public-tests-v2.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-static-release-v2.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-sw-controller.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-sw-controller.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-sw-old-v2.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-sw-old.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-sw-v2.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-sw-v2.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-recovery-v2-exact-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-sw-contract.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-sw-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/recovery-20260909/salon-sw-independent-delta.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/browser-harness.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/cabinet-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/cabinet-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/cabinet.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/core-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/hashes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/mobile.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/node-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/public-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/public-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/review.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/shell-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/referral/shell-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/routes.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/salon-home-qa-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/salon-home-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/salon-home-return-qa-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/salon-home-return-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/salon-legacy-home-qa-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/salon-legacy-home-qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/entry-data.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/rebuild-search-entry.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/release-summary.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/root-matrix-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-audit.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-brain.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-builder-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-contract.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-course-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-course-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-entry-contract.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-exact-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-final-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-flow.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-frozen-course-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-frozen-course-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-frozen-flow.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-frozen-flow.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-frozen.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-frozen.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-generator-idempotence.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-indexnow.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-live-kursovaya-rabota.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-live-otchet-po-praktike.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-live.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-order-contract.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-production-release.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-production-status.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-source-audit.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-submit-indexnow.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/salon-seo-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/seo-20260909/sites-publish-state.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/contrast-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/dock-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/dock.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/focused.tap","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/journey-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/look-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/look.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/qa-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-main-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-main-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-main-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-main-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-menu-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-menu-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-perks-gift-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-perks-semester-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/shell-perks-single-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/shell/verification.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/source-fingerprints.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/metadata.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/rebuild-special-pages.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-browser-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-candidate-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-contract-map.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-exact-conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-frozen-desktop.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-frozen-mobile.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-frozen.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-frozen.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-launcher-delta.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-live-dorabotka-otcheta-po-praktike.html.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-live-plan.html.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-live.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-mobile.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-production-release.out","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-production-status.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-source-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/salon-special-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-clean-trail.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-final-cta320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-final-demo320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-final-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-final-redaktura-posle-ii-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-functional.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-last-clean-hero320.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-last-delta.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-routes.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/special-20260909/special-saved-choice-fixture.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/build-study-routes.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/conflicts-frozen.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/conflicts-source.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/conflicts-strict.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/frozen-visual.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/guide-map.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/live-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/live-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/live-psychology390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/notes.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/prepare-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/public-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/reading1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/rebuild-entry-reading.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-observers.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-observers.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-order.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-order.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-route.cjs","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-route.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-run.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-static.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-contract-static.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/review-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/route-data.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/source-visual.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/static-release.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/study-routes-20260910/visual-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/contrast-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/contrast.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/deployment.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/focused.tap","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/qa-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/qa.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-extras-selected-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-extras-selected-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-main-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-main-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-main-320-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-main-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-main-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/style-main-801-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/verification.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/visual-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/style/visual.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/verification.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/contracts.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/deploy-verified.py","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-1440-dark-documents.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-1440-dark-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-1440-dark-order-701-money.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-1440-light-documents.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-1440-light-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-1440-light-order-701-money.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-390-dark-documents.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-390-dark-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-390-dark-order-701-money.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-390-light-documents.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-390-light-home.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-390-light-order-701-money.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-browser-matrix.js","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/frozen-browser-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/public-gates.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-1-new-workspace-home-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-2-new-workspace-order-701-chat-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-3-new-workspace-docs-fresh1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-4-new-workspace-docs-fresh390dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-5-new-workspace-money-tab-final390.png","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-new-workspace-final-delta.txt","match":"exact"},{"path":"docs/brain/evidence/salon-product/workspace-20260910/review-ux-new-workspace-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/conflicts.txt","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/deploy-verified.py","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/frozen-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/frozen-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/independent-contract.json","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/independent-contract.py","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/independent-ux.json","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/live-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/live-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/overview.txt","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/public-gates.txt","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/referral-live-1440-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/referral-live-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/referral-live-390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-referral-visual-fix/referral-live-390-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/build-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/build.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/delta-build.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/deploy-reviewed.py","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/deterministic-candidate.tap","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/gift-config-live.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/production-native-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/production-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/production-services.txt","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/production-smoke.txt","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/public-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/public-deposit-1440.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/public-gates-final.tap","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/public-gates.tap","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/public-referral-390.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-campaign-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-campaign-gift-long390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-campaign-legal320.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-campaign-legal390-dark.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-calculators-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-calculators-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-delta-release.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-gift-browser.js","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-gift-browser.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-gift-step.js","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-gift-step.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-legal-parity.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/review-contract-math.json","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/root-benefits.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/root-gift.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/root-oferta.png","match":"exact"},{"path":"docs/brain/evidence/salon-rewards/slider-final.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/browser-journey-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/browser-journey.js","match":"exact"},{"path":"docs/brain/evidence/salon-support/builder-tests.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/cabinet-baseline-matrix.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/cabinet-chat-390x320.png","match":"exact"},{"path":"docs/brain/evidence/salon-support/cabinet-more-390x320.png","match":"exact"},{"path":"docs/brain/evidence/salon-support/cached-preview-frame-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/contract-tests.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/final-frame-result.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/guarantees-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-support/live-browser188.js","match":"exact"},{"path":"docs/brain/evidence/salon-support/live-browser188.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/live-question390.png","match":"exact"},{"path":"docs/brain/evidence/salon-support/live-services188.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/live-smoke188.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/oplata-1440-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-support/priyomnaya-320-light.png","match":"exact"},{"path":"docs/brain/evidence/salon-support/public-tests-188-candidate.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/public-tests-release188.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/review-summary.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/static-release188.json","match":"exact"},{"path":"docs/brain/evidence/salon-support/visual-interactions.txt","match":"exact"},{"path":"docs/brain/evidence/salon-support/visual-matrix.json","match":"exact"},{"path":"docs/brain/evidence/specification-document/artifact-qa.json","match":"exact"},{"path":"docs/brain/evidence/specification-document/browser-results.json","match":"exact"},{"path":"docs/brain/evidence/specification-document/conflict-snapshot.txt","match":"exact"},{"path":"docs/brain/evidence/specification-document/local-link-check.json","match":"exact"},{"path":"docs/brain/evidence/specification-document/render-page-hashes.json","match":"exact"},{"path":"docs/brain/evidence/specification-document/sample-page-1.png","match":"exact"},{"path":"docs/brain/evidence/specification-document/sample-page-8.png","match":"exact"},{"path":"docs/brain/evidence/specification-document/spec-dark-390-4.png","match":"exact"},{"path":"docs/brain/evidence/specification-document/spec-light-1440-1.png","match":"exact"},{"path":"docs/brain/evidence/specification-document/template-page-9.png","match":"exact"},{"path":"docs/brain/evidence/specification-document/verification-report.txt","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/browser-matrix.js","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/browser-matrix.json","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/contrast-check.js","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/contrast.json","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/input-hashes.json","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/report.txt","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/spec-dark-1440-4.png","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/spec-light-1440-1.png","match":"exact"},{"path":"docs/brain/evidence/specification-interactive/spec-light-390-1.png","match":"exact"},{"path":"docs/brain/workstreams/WS-5905274fa24a4c61b51894d5e1a08e0a/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-5905274fa24a4c61b51894d5e1a08e0a/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-6c013fa0fe204031bacc51592c1ddae9/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-6c013fa0fe204031bacc51592c1ddae9/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-9914ea8c80304507b79f0c93f198d696/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-9914ea8c80304507b79f0c93f198d696/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-c2f3182451894c5fad8c18f24493a68d/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-c2f3182451894c5fad8c18f24493a68d/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-cd68166bb7ba4a1a9025cedd15eebb52/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-cf3ea0c08cc14336abda42cd3eeb5429/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-cf3ea0c08cc14336abda42cd3eeb5429/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-ea41aecae85d424d883e5044bc75af43/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-ea41aecae85d424d883e5044bc75af43/manifest.json","match":"exact"},{"path":"docs/brain/workstreams/WS-f0707e43d5ba4a9b9abb90aa0262c567/HANDOFF.md","match":"exact"},{"path":"docs/brain/workstreams/WS-f0707e43d5ba4a9b9abb90aa0262c567/manifest.json","match":"exact"},{"path":"dorabotka-otcheta-po-praktike.html","match":"exact"},{"path":"dosie-nauchruka.html","match":"exact"},{"path":"expertise.html","match":"exact"},{"path":"gift.html","match":"exact"},{"path":"guarantees.html","match":"exact"},{"path":"guide-antiplagiat-ai.html","match":"exact"},{"path":"guide-apellyaciya.html","match":"exact"},{"path":"guide-dnevnik-praktiki.html","match":"exact"},{"path":"guide-harakteristika-s-praktiki.html","match":"exact"},{"path":"guide-kursovaya-za-nedelyu.html","match":"exact"},{"path":"guide-normocontrol.html","match":"exact"},{"path":"guide-obekt-predmet-cel-zadachi.html","match":"exact"},{"path":"guide-otchet-po-praktike.html","match":"exact"},{"path":"guide-otzyv-rukovoditelya-vkr.html","match":"exact"},{"path":"guide-prakticheskaya-chast-kursovoy.html","match":"exact"},{"path":"guide-prezentaciya-k-zashchite.html","match":"exact"},{"path":"guide-prilozheniya-po-gost.html","match":"exact"},{"path":"guide-recenziya-na-vkr.html","match":"exact"},{"path":"guide-rech-na-zashchitu.html","match":"exact"},{"path":"guide-rinc-statya.html","match":"exact"},{"path":"guide-skolko-stoit-diplomnaya.html","match":"exact"},{"path":"guide-skolko-stoit-kursovaya.html","match":"exact"},{"path":"guide-spisok-literatury.html","match":"exact"},{"path":"guide-temy-vkr.html","match":"exact"},{"path":"guide-titulnyj-list.html","match":"exact"},{"path":"guide-vkr-struktura.html","match":"exact"},{"path":"guide-vvedenie-kursovoy.html","match":"exact"},{"path":"guide-zaklyuchenie-kursovoy.html","match":"exact"},{"path":"guide-zaklyuchenie-vkr.html","match":"exact"},{"path":"guide-zashchita-diploma.html","match":"exact"},{"path":"index.html","match":"exact"},{"path":"kandidatskaya-dissertaciya.html","match":"exact"},{"path":"knowledge.html","match":"exact"},{"path":"komissiya-0.html","match":"exact"},{"path":"kursovaya-po-ekonomike.html","match":"exact"},{"path":"kursovaya-po-informatike.html","match":"exact"},{"path":"kursovaya-po-menedzhmentu.html","match":"exact"},{"path":"kursovaya-po-pedagogike.html","match":"exact"},{"path":"kursovaya-po-psihologii.html","match":"exact"},{"path":"kursovaya-po-yurisprudencii.html","match":"exact"},{"path":"kursovaya-rabota.html","match":"exact"},{"path":"legal/specification-2026/browser-check.js","match":"exact"},{"path":"legal/specification-2026/build.py","match":"exact"},{"path":"legal/specification-2026/owner-guide.md","match":"exact"},{"path":"legal/specification-2026/page-replacement.html","match":"exact"},{"path":"legal/specification-2026/sample-extracted.txt","match":"exact"},{"path":"legal/specification-2026/template-extracted.txt","match":"exact"},{"path":"legal/specification-2026/verify.py","match":"exact"},{"path":"loyalty.html","match":"exact"},{"path":"magisterskaya-dissertaciya.html","match":"exact"},{"path":"maintenance.html","match":"exact"},{"path":"nauchnaya-statya.html","match":"exact"},{"path":"normokontrol-vkr.html","match":"exact"},{"path":"oferta.html","match":"exact"},{"path":"offline.html","match":"exact"},{"path":"oplaceno.html","match":"exact"},{"path":"oplata.html","match":"exact"},{"path":"otchet-po-praktike.html","match":"exact"},{"path":"plan.html","match":"exact"},{"path":"plus.html","match":"exact"},{"path":"privacy.html","match":"exact"},{"path":"priyomnaya.html","match":"exact"},{"path":"prolog.html","match":"exact"},{"path":"proverka-istochnikov-vkr.html","match":"exact"},{"path":"razbor-zamechaniy-nauchruka.html","match":"exact"},{"path":"redaktura-posle-ii.html","match":"exact"},{"path":"referat.html","match":"exact"},{"path":"referral-rules.html","match":"exact"},{"path":"referral.html","match":"exact"},{"path":"refunds.html","match":"exact"},{"path":"requisites.html","match":"exact"},{"path":"reviews.html","match":"exact"},{"path":"samples.html","match":"exact"},{"path":"scripts/build-assistant-knowledge.py","match":"exact"},{"path":"scripts/build-production-release.py","match":"exact"},{"path":"scripts/build-sites-static.mjs","match":"exact"},{"path":"scripts/legal-presentation.py","match":"exact"},{"path":"scripts/rebuild-learning-pages.py","match":"exact"},{"path":"scripts/referral-presentation.py","match":"exact"},{"path":"scripts/render-campaign-video.py","match":"exact"},{"path":"scripts/salon-route-inventory.mjs","match":"exact"},{"path":"services.html","match":"exact"},{"path":"specifikaciya.html","match":"exact"},{"path":"start.html","match":"exact"},{"path":"sw.js","match":"exact"},{"path":"tariffs.html","match":"exact"},{"path":"terms.html","match":"exact"},{"path":"tests/account-admin-comfort.test.js","match":"exact"},{"path":"tests/account-admin-polish15.test.js","match":"exact"},{"path":"tests/account-curator-planner.test.js","match":"exact"},{"path":"tests/account-hall-design.test.js","match":"exact"},{"path":"tests/account-home-overview.test.js","match":"exact"},{"path":"tests/account-wayfinding.test.js","match":"exact"},{"path":"tests/analytics-attribution-v2.test.js","match":"exact"},{"path":"tests/automatic-payment.test.js","match":"exact"},{"path":"tests/configurator-navigation-guard.test.js","match":"exact"},{"path":"tests/deposit-page-regression.test.js","match":"exact"},{"path":"tests/economic-safety.test.js","match":"exact"},{"path":"tests/first-step-measurement-contract.test.js","match":"exact"},{"path":"tests/knowledge-page-regression.test.js","match":"exact"},{"path":"tests/order-submit-contract.test.js","match":"exact"},{"path":"tests/privacy-security-contracts.test.js","match":"exact"},{"path":"tests/production-release.test.js","match":"exact"},{"path":"tests/pwa-install.test.js","match":"exact"},{"path":"tests/salon-admin-control.test.js","match":"exact"},{"path":"tests/salon-admin-workspace.test.js","match":"exact"},{"path":"tests/salon-assistant-concierge.test.js","match":"exact"},{"path":"tests/salon-cabinet.test.js","match":"exact"},{"path":"tests/salon-commerce.test.js","match":"exact"},{"path":"tests/salon-direct.test.js","match":"exact"},{"path":"tests/salon-experience.test.js","match":"exact"},{"path":"tests/salon-learning.test.js","match":"exact"},{"path":"tests/salon-legal-presentation.test.js","match":"exact"},{"path":"tests/salon-payment-journey.test.js","match":"exact"},{"path":"tests/salon-referral.test.js","match":"exact"},{"path":"tests/salon-reviews.test.js","match":"exact"},{"path":"tests/salon-rewards-redesign.test.js","match":"exact"},{"path":"tests/salon-support.test.js","match":"exact"},{"path":"tests/salon-workspace.test.js","match":"exact"},{"path":"tests/supporting-pages-polish15.test.js","match":"exact"},{"path":"tools.html","match":"exact"},{"path":"vedenie.html","match":"exact"},{"path":"zayavka.html","match":"exact"}],"read":[]},"semantic_scope":[{"access":"write","key":"shared-runtime:assistant"},{"access":"write","key":"ui-state:listik-concierge"}],"proof_command_ids":["brain:test","brain:validate"],"manifest_revision":1,"base_manifest_hash":null}
+{
+  "schema_version": 2,
+  "workstream_id": "WS-cd68166bb7ba4a1a9025cedd15eebb52",
+  "slug": "listik-concierge",
+  "status": "active",
+  "branch": "codex/listik-concierge",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "404.html",
+        "match": "exact"
+      },
+      {
+        "path": "50x.html",
+        "match": "exact"
+      },
+      {
+        "path": "about.html",
+        "match": "exact"
+      },
+      {
+        "path": "academic-integrity.html",
+        "match": "exact"
+      },
+      {
+        "path": "admin.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/campaigns/autumn-2026/pinned-caption.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/campaigns/autumn-2026/promo-caption.html",
+        "match": "exact"
+      },
+      {
+        "path": "assets/campaigns/autumn-2026/two-projects.jpg",
+        "match": "exact"
+      },
+      {
+        "path": "assets/campaigns/autumn-2026/two-projects.mp4",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/order-journey.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/order-specification.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-admin-workspace.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-admin.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-assistant.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-cabinet.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-catalogue.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-direct.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-experience.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-home.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-intake.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-legal.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-library.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-portfolio.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-referral-public.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-referral.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-reviews.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-rewards.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-select.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-support.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-tools.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/css/salon-workspace.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/docs/specification-2026/specification-sample.docx",
+        "match": "exact"
+      },
+      {
+        "path": "assets/docs/specification-2026/specification-sample.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/docs/specification-2026/specification-template.docx",
+        "match": "exact"
+      },
+      {
+        "path": "assets/docs/specification-2026/specification-template.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/img/salon-assistant/list.webp",
+        "match": "exact"
+      },
+      {
+        "path": "assets/img/salon-assistant/listik-states.webp",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/admin.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/app.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cabinet-demo.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/order-journey.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/order-specification.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/polish15-supporting.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-admin-core.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-admin-workspace.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-assistant-knowledge.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-assistant-order.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-assistant.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-benefits.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-cabinet.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-catalogue.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-commerce.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-direct.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-experience.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-home.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-intake.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-legal.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-library.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-order-domain.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-order.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-payment-domain.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-portfolio-data.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-portfolio.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-products.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-referral-policy.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-referral.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-reviews.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-rewards.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-samples.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-select.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-shell.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-support.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-tools.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/salon-workspace.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/comparison.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/comparison.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/essay.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/essay.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/method.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/method.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/practice.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/practice.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/project.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/project.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/referat.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/referat.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/risk.pdf",
+        "match": "exact"
+      },
+      {
+        "path": "assets/samples/risk.png",
+        "match": "exact"
+      },
+      {
+        "path": "assets/vendor/pdfjs/LICENSE",
+        "match": "exact"
+      },
+      {
+        "path": "assets/vendor/pdfjs/pdf.min.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "assets/vendor/pdfjs/pdf.worker.min.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "audit-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "avtorskiy-zakaz.html",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/assistant_knowledge.json",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/direct_upload.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_assistant_concierge.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/install_payment_journey.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/payment_journey.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/production_probe.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_assistant.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_assistant_concierge.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_autoquote.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_community_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_direct_intake.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_out001_synthetic.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_payment_journey.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_referral_rewards.py",
+        "match": "exact"
+      },
+      {
+        "path": "benefits.html",
+        "match": "exact"
+      },
+      {
+        "path": "check.html",
+        "match": "exact"
+      },
+      {
+        "path": "configurator.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-analytics.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-marketing.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-publication.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent-request.html",
+        "match": "exact"
+      },
+      {
+        "path": "consent.html",
+        "match": "exact"
+      },
+      {
+        "path": "dashboard.html",
+        "match": "exact"
+      },
+      {
+        "path": "deposit.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "diplomnaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/listik-concierge",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/order-stages-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-admin-control",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-admin-rebuild",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-autonomy",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-control-release",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-direct",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-learning",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-payment-journey",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-product",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-referral-visual-fix",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-rewards",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-support",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/specification-document",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/specification-interactive",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-5905274fa24a4c61b51894d5e1a08e0a",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-6c013fa0fe204031bacc51592c1ddae9",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-9914ea8c80304507b79f0c93f198d696",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-a4cbf79bebbb46d287d1f6f9b4f38e44",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-b4a8ea7f7e06481ebd8a08f661f160cc",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c2f3182451894c5fad8c18f24493a68d",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-cd68166bb7ba4a1a9025cedd15eebb52/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-cf3ea0c08cc14336abda42cd3eeb5429",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ea41aecae85d424d883e5044bc75af43",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-f0707e43d5ba4a9b9abb90aa0262c567",
+        "match": "tree"
+      },
+      {
+        "path": "dorabotka-otcheta-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "dosie-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "expertise.html",
+        "match": "exact"
+      },
+      {
+        "path": "gift.html",
+        "match": "exact"
+      },
+      {
+        "path": "guarantees.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-antiplagiat-ai.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-apellyaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-dnevnik-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-harakteristika-s-praktiki.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-kursovaya-za-nedelyu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-normocontrol.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-obekt-predmet-cel-zadachi.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-otzyv-rukovoditelya-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prakticheskaya-chast-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prezentaciya-k-zashchite.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-prilozheniya-po-gost.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-recenziya-na-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rech-na-zashchitu.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-rinc-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-diplomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-skolko-stoit-kursovaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-spisok-literatury.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-temy-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-titulnyj-list.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vkr-struktura.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-vvedenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-kursovoy.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zaklyuchenie-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "guide-zashchita-diploma.html",
+        "match": "exact"
+      },
+      {
+        "path": "index.html",
+        "match": "exact"
+      },
+      {
+        "path": "kandidatskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "knowledge.html",
+        "match": "exact"
+      },
+      {
+        "path": "komissiya-0.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-ekonomike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-informatike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-menedzhmentu.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-pedagogike.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-psihologii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-po-yurisprudencii.html",
+        "match": "exact"
+      },
+      {
+        "path": "kursovaya-rabota.html",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/browser-check.js",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/build.py",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/owner-guide.md",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/page-replacement.html",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/sample-extracted.txt",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/template-extracted.txt",
+        "match": "exact"
+      },
+      {
+        "path": "legal/specification-2026/verify.py",
+        "match": "exact"
+      },
+      {
+        "path": "loyalty.html",
+        "match": "exact"
+      },
+      {
+        "path": "magisterskaya-dissertaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "maintenance.html",
+        "match": "exact"
+      },
+      {
+        "path": "nauchnaya-statya.html",
+        "match": "exact"
+      },
+      {
+        "path": "normokontrol-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "oferta.html",
+        "match": "exact"
+      },
+      {
+        "path": "offline.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplaceno.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplata.html",
+        "match": "exact"
+      },
+      {
+        "path": "otchet-po-praktike.html",
+        "match": "exact"
+      },
+      {
+        "path": "plan.html",
+        "match": "exact"
+      },
+      {
+        "path": "plus.html",
+        "match": "exact"
+      },
+      {
+        "path": "privacy.html",
+        "match": "exact"
+      },
+      {
+        "path": "priyomnaya.html",
+        "match": "exact"
+      },
+      {
+        "path": "prolog.html",
+        "match": "exact"
+      },
+      {
+        "path": "proverka-istochnikov-vkr.html",
+        "match": "exact"
+      },
+      {
+        "path": "razbor-zamechaniy-nauchruka.html",
+        "match": "exact"
+      },
+      {
+        "path": "redaktura-posle-ii.html",
+        "match": "exact"
+      },
+      {
+        "path": "referat.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral-rules.html",
+        "match": "exact"
+      },
+      {
+        "path": "referral.html",
+        "match": "exact"
+      },
+      {
+        "path": "refunds.html",
+        "match": "exact"
+      },
+      {
+        "path": "requisites.html",
+        "match": "exact"
+      },
+      {
+        "path": "reviews.html",
+        "match": "exact"
+      },
+      {
+        "path": "samples.html",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-assistant-knowledge.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-production-release.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/build-sites-static.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/legal-presentation.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/rebuild-learning-pages.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/referral-presentation.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/render-campaign-video.py",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-route-inventory.mjs",
+        "match": "exact"
+      },
+      {
+        "path": "services.html",
+        "match": "exact"
+      },
+      {
+        "path": "specifikaciya.html",
+        "match": "exact"
+      },
+      {
+        "path": "start.html",
+        "match": "exact"
+      },
+      {
+        "path": "sw.js",
+        "match": "exact"
+      },
+      {
+        "path": "tariffs.html",
+        "match": "exact"
+      },
+      {
+        "path": "terms.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-admin-comfort.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-admin-polish15.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-curator-planner.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-hall-design.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-home-overview.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/account-wayfinding.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/analytics-attribution-v2.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/automatic-payment.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/configurator-navigation-guard.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/deposit-page-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/economic-safety.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/first-step-measurement-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/knowledge-page-regression.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/order-submit-contract.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/privacy-security-contracts.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/production-release.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/pwa-install.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-admin-control.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-admin-workspace.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-assistant-concierge.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-cabinet.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-commerce.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-direct.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-experience.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-learning.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-legal-presentation.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-payment-journey.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-referral.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-reviews.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-rewards-redesign.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-support.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/salon-workspace.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tests/supporting-pages-polish15.test.js",
+        "match": "exact"
+      },
+      {
+        "path": "tools.html",
+        "match": "exact"
+      },
+      {
+        "path": "vedenie.html",
+        "match": "exact"
+      },
+      {
+        "path": "zayavka.html",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "shared-runtime:assistant"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:listik-concierge"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}

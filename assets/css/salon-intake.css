@@ -4,3 +4,12 @@
 .salon-intake .intake-settings>summary::after{content:none}.salon-intake #direct-order .upload-box{text-align:left}.salon-intake .order-heading{padding-bottom:0}.salon-intake #direct-order .check-row{font-size:11px}
 .salon-intake .order-heading{padding:0}.salon-intake .order-layout{padding-bottom:0}.salon-intake #send-order{min-height:52px;margin-top:16px}.salon-intake .order-main{padding-top:30px;padding-bottom:45px}
 .salon-intake .intake-shortcuts button,.salon-intake .intake-suggestion{min-height:44px}.salon-intake .intake-shortcuts{margin:3px 0 8px}.salon-intake #direct-order .check-row{min-height:44px}.salon-intake .intake-sample button{min-height:44px;min-width:44px}
+
+/* One persistent order form inside Listik. */
+body.salon-assistant-embed{min-width:0;background:var(--paper,#f8f7f3);padding:0!important}
+.salon-assistant-embed :is(.site-header,.site-footer,.sa-launch,.mobile-dock,.mobile-edition-note,.intake-breadcrumb,.intake-hero,.intake-back){display:none!important}
+.salon-assistant-embed main{padding:16px!important;margin:0!important;max-width:none!important;min-height:0!important}
+.salon-assistant-embed .order-layout{margin:0;display:block}.salon-assistant-embed .order-layout>aside{margin-top:16px}
+.salon-assistant-embed .intake-task{margin-top:0}.salon-assistant-embed .order-success{margin:0}
+body.salon-direct.salon-intake.salon-assistant-embed>header.site-header,body.salon-direct.salon-intake.salon-assistant-embed>footer.site-footer,body.salon-direct.salon-intake.salon-assistant-embed .order-heading{display:none!important}
+body.salon-direct.salon-intake.salon-assistant-embed .intake-settings{margin-top:0}

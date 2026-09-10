@@ -1,0 +1,31 @@
+async page=>{
+ await page.unroute('**/api/assistant/answer');
+ await page.setViewportSize({width:1280,height:900});
+ await page.goto('http://127.0.0.1:8784/configurator.html');
+ await page.locator('#topic').fill('Существующая тема клиента');
+ await page.locator('details').filter({has:page.locator('#details')}).locator('summary').click();
+ await page.locator('#details').fill('Существующие условия');
+ await page.getByRole('button',{name:'Открыть Листика, бота-помощника Салона'}).click();
+ await page.getByRole('textbox',{name:'Сообщение Листику'}).fill('Хочу заказать курсовую на тему Мотивация студентов');
+ await page.getByRole('button',{name:'Отправить вопрос',exact:true}).click();
+ await page.waitForFunction(()=>document.querySelector('#sa-feed').getAttribute('aria-busy')==='false');
+ await page.locator('.sa-order-action').last().click();
+ await page.getByText('В форме уже есть задание.',{exact:false}).waitFor();
+ if(await page.locator('#topic').inputValue()!=='Существующая тема клиента'||await page.locator('#details').inputValue()!=='Существующие условия')throw new Error('existing form overwritten');
+ if(await page.locator('.sa-order-frame').count())throw new Error('second mutation owner');
+ await page.goto('http://127.0.0.1:8784/');
+ await page.getByRole('button',{name:'Открыть Листика, бота-помощника Салона'}).click();
+ await page.getByRole('button',{name:'Позвать мастера',exact:true}).click();
+ await page.locator('.sa-handoff [name=contact]').fill('listik-fixture@example.test');
+ await page.locator('.sa-handoff [name=consent]').check();
+ let leads=0;await page.route('**/api/lead',async route=>{leads++;await route.fulfill({status:500,contentType:'application/json',body:'{"ok":false,"error":"fixture_unknown_outcome"}'});});
+ await page.getByRole('button',{name:'Отправить мастеру',exact:false}).click();
+ await page.getByText('Не удалось подтвердить отправку.',{exact:false}).waitFor();
+ await page.evaluate(()=>location.hash='order-202');
+ if(!await page.locator('.sa-send-handoff').isDisabled())throw new Error('hash unlocked handoff');
+ await page.getByRole('button',{name:'Свернуть чат'}).click();await page.getByRole('button',{name:'Открыть Листика, бота-помощника Салона'}).click();
+ await page.getByRole('button',{name:'Начать новый разговор'}).click();await page.getByRole('button',{name:'Начать заново',exact:true}).click();
+ if(!await page.locator('.sa-send-handoff').isDisabled()||leads!==1)throw new Error('reset duplicated handoff');
+ await page.getByText('Отправка вопроса ещё не подтверждена.',{exact:false}).waitFor();
+ return {existingFormPreserved:true,noSecondIframe:true,handoffPosts:leads,hashAndResetPreserveUncertainHandoff:true};
+}

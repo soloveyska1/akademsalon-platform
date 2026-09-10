@@ -14,6 +14,12 @@ let composition=M?M.read():null,compositionControls=null;
 const serviceTypes={plan:'svc_plan',ai:'svc_ai',review:'svc_review',tutor:'svc_tutor',norm:'svc_norm',defense:'svc_defense',defensepack:'svc_defense_pack',commission0:'commission_zero',psychologyvip:'custom',author:'svc_author_order'};
 const serviceList=window.SalonServices||[];
 let queue=[],busy=false,confirmed=null,frozenPayload=null,service=null,serviceAnswers={};
+const assistantEmbedded=window.parent!==window&&params.get('assistant')==='1';
+let assistantPrefilled=false,assistantTouched=false;
+form.addEventListener('input',()=>assistantTouched=true,true);form.addEventListener('change',()=>assistantTouched=true,true);
+function assistantState(state){if(assistantEmbedded)window.parent.postMessage({type:'salon:assistant-order-state',version:1,state,id:confirmed?.id||null,pending:queue.filter(a=>a.state!=='ok').length,brief:state==='editing'?Object.fromEntries(['product','scope','discipline','topic','volume','deadline'].map(k=>[k,$(k).value])):undefined},location.origin)}
+if(assistantEmbedded){document.body.classList.add('salon-assistant-embed');}
+
 const diagnosticOption=new Option('Письменный разбор (по желанию)','diagnostic');$('scope').append(diagnosticOption);$('scope').append(new Option('Помощь с готовым проектом по этапам','support')); 
 C.disciplines.filter(d=>!['hum','law','tech','med'].includes(d.id)).forEach(d=>$('discipline').append(new Option(d.label,d.id))); 
 let svcCode=params.get('service')||(params.get('plan')==='1'?'pl':null)||(params.get('offer')||'').replace(/^svc_/,'');
@@ -197,11 +203,12 @@ function payload(){const a=selected(),activeComposition=compositionState();const
  return p;
 }
 function renderUploads(){
+ assistantState('uploads');
  $('upload-results').replaceChildren();queue.forEach(a=>{const row=document.createElement('div');row.className='file-row';const text=document.createElement('span');text.textContent=a.file.name+' · '+({wait:'ожидает загрузки',up:'загружаем…',ok:'файл передан',err:'файл не загрузился'}[a.state]);row.append(text);if(a.state==='err'){const b=document.createElement('button');b.type='button';b.textContent='Повторить загрузку';b.onclick=()=>upload(a);row.append(b)}$('upload-results').append(row)})
 }
 async function upload(a){if(!confirmed||a.state==='up'||a.state==='ok')return;a.state='up';renderUploads();try{const fd=new FormData();fd.append('file',a.file,a.file.name);fd.append('client_file_id',a.id);const h=S.api.headers('POST');if(confirmed.token)h['X-Order-Token']=confirmed.token;const r=await fetch(S.api.base+'/orders/'+confirmed.id+'/upload',{method:'POST',credentials:'include',headers:h,body:fd});const data=await r.json();a.state=r.ok&&data.ok===true?'ok':'err'}catch(e){a.state='err'}renderUploads();if(queue.every(f=>f.state==='ok')){try{sessionStorage.removeItem(draftKey)}catch(e){}}}
 async function showSuccess(r,attempt){
- confirmed=r;if(M)M.clear();if(S.visit?.order)S.visit.order(r.id,r.token);if(S.metrika?.goal)S.metrika.goal('order_submitted');S.orderContract.clear('configurator',undefined,attempt.clientRequestId);
+ confirmed=r;assistantState('confirmed');if(M)M.clear();if(S.visit?.order)S.visit.order(r.id,r.token);if(S.metrika?.goal)S.metrika.goal('order_submitted');S.orderContract.clear('configurator',undefined,attempt.clientRequestId);
  if(r.token)S.api.addGuestToken(r.token);if(r.guest_session)S.api.setGuestHint(true);
  if(!queue.length){try{sessionStorage.removeItem(draftKey)}catch(e){}}
  document.querySelector('.order-layout').hidden=true;document.body.classList.add('is-success');$('order-success').hidden=false;$('success-id').textContent=String(r.id);
@@ -223,11 +230,11 @@ form.addEventListener('submit',async e=>{
   if(!form.reportValidity())return;
   frozenPayload=payload();
  }
- if(S.visit?.event)S.visit.event('submit_attempt',{cta:service?'service:'+service.code:'calculator'});busy=true;freeze(true);$('send-order').disabled=true;$('send-order').textContent='Отправляем…';$('form-message').hidden=true;
+ if(S.visit?.event)S.visit.event('submit_attempt',{cta:service?'service:'+service.code:'calculator'});busy=true;assistantState('sending');freeze(true);$('send-order').disabled=true;$('send-order').textContent='Отправляем…';$('form-message').hidden=true;
  let attempt;try{attempt=await S.orderContract.submit('configurator',frozenPayload,25000)}catch(e){attempt={st:0,r:null}}
  busy=false;$('send-order').disabled=false;
  if(S.orderContract.isConfirmed(attempt)){await showSuccess(attempt.r,attempt);return}
- const kind=S.orderContract.classify(attempt),error=attempt.r?.error;
+ const kind=S.orderContract.classify(attempt),error=attempt.r?.error;assistantState(['definitive_rejection','local_blocked'].includes(kind)?'rejected':'uncertain');
  if(/consent.*mismatch/.test(error||'')){$('send-order').disabled=true;$('send-order').textContent='Нужно обновить страницу';message('Условия обработки заявки обновились. Заявка не принята. Скопируйте введённое задание и обновите страницу, затем проверьте согласие.');return}
  if(kind==='definitive_rejection'||kind==='local_blocked'){
   if(kind==='definitive_rejection')S.orderContract.clear('configurator',undefined,attempt.clientRequestId);
@@ -238,4 +245,38 @@ form.addEventListener('submit',async e=>{
   message(kind==='conflict'?'Сервер сообщил о конфликте заявки. Мы сохранили эту попытку. Повторите проверку или свяжитесь с нами; не создавайте новую заявку.':'Пока нет подтверждения сервера. Заявка могла дойти. Повторная проверка использует тот же номер попытки и не создаёт новую заявку.');
  }
 });
+// Form-owned, atomic draft transfer. It cannot merge with an edited task.
+function applyAssistantBrief(value){
+ const bridge=window.SalonAssistantOrder;
+ if(!bridge||assistantPrefilled||assistantTouched||busy||confirmed||frozenPayload||queue.length||$('topic').value.trim()||$('details').value.trim()||service)return false;
+ const b=bridge.clean(value);assistantPrefilled=true;
+ if(b.product){setValue('product',b.product);changeProduct();}
+ for(const [key,id] of [['scope','scope'],['discipline','discipline']])if(b[key])setValue(id,b[key]);
+ for(const key of ['topic','volume','deadline'])if(b[key])$(key).value=b[key];
+ if(b.notes)$('details').value=b.notes;
+ update();for(const key of ['topic','details'])$(key).dispatchEvent(new Event('input',{bubbles:true}));
+ return true;
+}
+window.SalonAssistantIntake={applyBrief:applyAssistantBrief};
+if(assistantEmbedded){
+ // No personal fields or consents cross the bridge. One reviewed draft per form.
+ import('/assets/js/salon-assistant-order.js?v=listik20260911').then(()=>{
+  const bridge=window.SalonAssistantOrder;
+  window.addEventListener('message',e=>{
+   if(!bridge.validEvent(e,window.parent,location.origin,'salon:assistant-prefill'))return;
+   const applied=applyAssistantBrief(e.data.brief);
+   if(applied)assistantState('prefilled');
+   else if(!assistantPrefilled)assistantState('editing');
+  });
+  assistantState('ready');
+ });
+ form.addEventListener('input',()=>{if(!busy&&!confirmed&&!frozenPayload)assistantState('editing');});
+ document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.origin);if(u.hash&&u.pathname===location.pathname)return;
+  // Open reference pages separately; keep the single form and File objects alive.
+  if(a.id==='success-cabinet'&&!pendingFiles()){a.target='_top';return;}
+  if(a.id==='success-cabinet'&&pendingFiles()){e.preventDefault();message('Часть файлов ещё не передана. Повтори загрузку ниже, затем открой кабинет.');return;}
+  a.target='_blank';a.rel='noopener noreferrer';
+ },true);
+}
+
 })();

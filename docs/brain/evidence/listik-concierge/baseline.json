@@ -1,0 +1,9 @@
+{
+  "release": "release207-store-design-36b11ec7",
+  "archive_sha256": "94157103c121e783ad73245bd3f56fa93a3141abff8df9cd5dacd1e7b04393eb",
+  "pages": 77,
+  "chunks": 2223,
+  "patch_base": "f878db1a",
+  "knowledge_sha256": "bf8f45d519452b894698e409c1f485eed411af0919724a625687d4f812f2e410",
+  "actual_shared_assets_match_reviewed_dependency_after_cache_token_normalization": true
+}

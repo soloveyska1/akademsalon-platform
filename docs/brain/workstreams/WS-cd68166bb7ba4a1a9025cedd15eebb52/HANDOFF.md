@@ -10,4 +10,12 @@ Proof: failing-first backend/site retrieval/intake tests, frontend handler harne
 
 Design: retain existing paper #f8f7f3, violet #5136b5, graphite #292538, lavender #eee9fa, sage #dce7cd; Golos controls, Literata brief headings. Signature is Listik changing poses while a visible brief fills from conversation. Quiet order receipt and single next action; no fake scarcity or fabricated thinking transcript.
 
-Next: verify conflict gate and merge published dependency, then implement grounded answer coverage and conversational order intake.
+Implementation: structured public retrieval from 77 exact published pages, curated support/sales/social answers, bounded task extraction, actual eligible campaign metadata, context-aware stage guidance. Browser uses a persistent same-origin configurator iframe and form-owned atomic prefill, existing serialized order contract, separate attachment retries, accepted-order binding and guarded handoff. Typing/mascot states, sources, draft progress, themes, keyboard and reduced motion supported.
+
+Published dependency advanced to release207-store-design-36b11ec7 while implementing. All five modified shared static files were compared to f878db1a after cache-token normalization: exact match. Release must use `scripts/build-production-release.py --baseline-archive .brain/listik-release/baseline207.tar.gz --ref <implementation> --output <new-path>`: it refuses overlapping shared changes and stale knowledge, preserves store and all other files except cache-family/fingerprint rewrites. Knowledge reproduces via `scripts/build-assistant-knowledge.py --root .brain/listik-release/baseline207 --check`; baseline digest in evidence. Full legacy build intentionally fails if source pages do not match this newer published corpus.
+
+Proof so far: Python 27/27, focused JS+builder28/28, Brain39/39, Brain validate125/263/78. Browser at390 proves same request/payload across synthetic500 then200, separate upload500 retry200, hash transition preserves pending attempt, acceptance binds order77777. Matrix360/390/768/1024/1440 light/dark and reduced motion previously passed. Two independent bounded reviews have no remaining P0/P1; final exact artifact verification pending. No real customer/order/payment/human handoff created.
+
+Conflict owner decision: hard0; explicitly accepted60 historical warnings (59 terminal worktree-presence warnings and dormant unmanaged overlap group), all inspected; no active hard conflict. Exact snapshot in evidence; repeat before final integration. Original user dirty file remains untouched.
+
+Next: freeze implementation, verify exact published-overlay artifact, source installer apply/rollback, then live readback and final evidence. Source integration to fresh canonical remains a separate gate.

@@ -57,6 +57,15 @@ def build(repo, revision, legacy, output):
  commit=subprocess.check_output(['git','rev-parse',revision+'^{commit}'],cwd=repo,text=True).strip()
  names=subprocess.check_output(['git','ls-tree','-r','--name-only',commit],cwd=repo,text=True).splitlines()
  files={n:subprocess.check_output(['git','show',commit+':'+n],cwd=repo) for n in names if allowed(n)}
+ # The assistant's sources must match this frozen public source, not a prior checkout.
+ knowledge_name='backend/salon_bot/assistant_knowledge.json'
+ knowledge_hash=None
+ if knowledge_name in names:
+  knowledge_bytes=subprocess.check_output(['git','show',commit+':'+knowledge_name],cwd=repo)
+  knowledge=json.loads(knowledge_bytes);knowledge_hash=sha(knowledge_bytes)
+  for page in knowledge['pages']:
+   name=page['url'].lstrip('/')
+   if name not in files or sha(files[name])!=page['sha256']:raise ValueError('stale assistant knowledge: '+name)
  old=legacy.read_bytes()
  if b'200' not in old or 'первый заказ'.encode() not in old or b'__site-preview' in old: raise ValueError('unexpected legacy referral input')
  # Present the verified public referral independently from legal documents.
@@ -92,7 +101,7 @@ def build(repo, revision, legacy, output):
  output.mkdir(parents=True)
  for name,data in files.items():
   path=output/name; path.parent.mkdir(parents=True,exist_ok=True); path.write_bytes(data)
- manifest={'source_commit':commit,'shell_version':version,'legacy_referral_sha256':sha(old),'excluded':['private source','cabinet-demo.js','unactivated referral prototype'],'files':{name:sha(data) for name,data in sorted(files.items())}}
+ manifest={'source_commit':commit,'assistant_knowledge_sha256':knowledge_hash,'shell_version':version,'legacy_referral_sha256':sha(old),'excluded':['private source','cabinet-demo.js','unactivated referral prototype'],'files':{name:sha(data) for name,data in sorted(files.items())}}
  receipt=output.with_suffix('.manifest.json'); receipt.write_text(json.dumps(manifest,indent=2)+'\n')
  archive=output.with_suffix('.tar.gz')
  with tarfile.open(archive,'w:gz',format=tarfile.PAX_FORMAT) as tar:
@@ -101,6 +110,59 @@ def build(repo, revision, legacy, output):
    import io
    tar.addfile(info,io.BytesIO(files[name]))
  return {'source_commit':commit,'output':str(output),'manifest':str(receipt),'archive':str(archive),'archive_sha256':sha(archive.read_bytes()),'file_count':len(files)}
+def build_overlay(repo, revision, baseline, output):
+ """Bounded assistant overlay on a frozen published release, preserving concurrent work."""
+ commit=subprocess.check_output(['git','rev-parse',revision+'^{commit}'],cwd=repo,text=True).strip()
+ files={}
+ with tarfile.open(baseline,'r:gz') as archive:
+  for member in archive:
+   if member.isdir():continue
+   name=str(PurePosixPath(member.name.removeprefix('./')))
+   if not member.isfile() or name.startswith('/') or '..' in PurePosixPath(name).parts:raise ValueError('unsafe baseline entry')
+   files[name]=archive.extractfile(member).read()
+ before={n:sha(b) for n,b in files.items()}
+ patches=['assets/js/app.js','assets/js/salon-assistant.js','assets/js/salon-order.js','assets/css/salon-assistant.css','assets/css/salon-intake.css','assets/js/salon-assistant-order.js']
+ normalize=lambda b:re.sub(rb'production-[a-f0-9]{12}',b'20260806shell123',b)
+ # Refuse an overlay if another release changed the same shared source.
+ for name in patches[:-1]:
+  expected=subprocess.check_output(['git','show','f878db1a:'+name],cwd=repo)
+  if normalize(files[name])!=expected:raise ValueError('overlapping published change: '+name)
+ if patches[-1] in files:raise ValueError('new module already exists')
+ knowledge_bytes=subprocess.check_output(['git','show',commit+':backend/salon_bot/assistant_knowledge.json'],cwd=repo)
+ for page in json.loads(knowledge_bytes)['pages']:
+  if before.get(page['url'].lstrip('/'))!=page['sha256']:raise ValueError('knowledge is not from exact published baseline: '+page['url'])
+ for name in patches:files[name]=subprocess.check_output(['git','show',commit+':'+name],cwd=repo)
+ version='production-'+commit[:12]
+ for name,data in list(files.items()):
+  if PurePosixPath(name).suffix in ('.html','.js','.css','.webmanifest'):
+   files[name]=normalize(data).replace(b'20260806shell123',version.encode())
+ asset_hashes={n:sha(b)[:16] for n,b in files.items()}
+ pattern=re.compile(r"\b(src|href)=(\"|')([^\"']+)\2")
+ for name,data in list(files.items()):
+  if not name.endswith('.html'):continue
+  def fingerprint(m):
+   u=urlsplit(html.unescape(m[3]));key=unquote(u.path).lstrip('/')
+   if u.scheme or u.netloc or key not in files or PurePosixPath(key).suffix not in ('.js','.css'):return m[0]
+   query=[q for q in u.query.split('&') if q and not q.startswith('r=')]+['r='+asset_hashes[key]]
+   value=u.path+'?'+'&'.join(query)+('#'+u.fragment if u.fragment else '')
+   return m[1]+'='+m[2]+html.escape(value,quote=True)+m[2]
+  files[name]=pattern.sub(fingerprint,data.decode()).encode()
+ if output.exists():raise ValueError('output already exists')
+ output.mkdir(parents=True)
+ for name,data in files.items():
+  dest=output/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
+ manifest={'source_commit':commit,'baseline_archive_sha256':sha(baseline.read_bytes()),'baseline_release':'release207-store-design-36b11ec7','assistant_knowledge_sha256':sha(knowledge_bytes),'shell_version':version,'patches':patches,'before_files':before,'files':{n:sha(b) for n,b in sorted(files.items())},'transform':'six assistant assets; shared shell cache generation; HTML asset fingerprints only'}
+ receipt=output.with_suffix('.manifest.json');receipt.write_text(json.dumps(manifest,indent=2)+'\n')
+ archive=output.with_suffix('.tar.gz')
+ with tarfile.open(archive,'w:gz',format=tarfile.PAX_FORMAT) as tar:
+  import io
+  for name,data in sorted(files.items()):
+   info=tarfile.TarInfo(name);info.size=len(data);info.mode=0o644;info.mtime=0;tar.addfile(info,io.BytesIO(data))
+ return {'source_commit':commit,'output':str(output),'manifest':str(receipt),'archive':str(archive),'archive_sha256':sha(archive.read_bytes()),'file_count':len(files)}
+
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--ref',required=True);p.add_argument('--legacy-referral',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
- print(json.dumps(build(a.repo,a.ref,a.legacy_referral,a.output)))
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--ref',required=True);p.add_argument('--legacy-referral',type=Path);p.add_argument('--baseline-archive',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+ if a.baseline_archive:result=build_overlay(a.repo,a.ref,a.baseline_archive,a.output)
+ elif a.legacy_referral:result=build(a.repo,a.ref,a.legacy_referral,a.output)
+ else:p.error('a baseline archive or legacy referral is required')
+ print(json.dumps(result))
