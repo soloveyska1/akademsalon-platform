@@ -1699,6 +1699,7 @@
 
   /* ---------------- Скип-линк + #main ---------------- */
   (function () {
+    if (ASSISTANT_ONLY) return;
     var main = document.querySelector('main') || document.querySelector('section');
     if (main && !main.id) main.id = 'main';
     var skip = document.querySelector('.skip-link, .workspace-skip-link');
