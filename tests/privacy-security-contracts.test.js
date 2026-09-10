@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const root = path.resolve(__dirname, '..');
+const root = process.env.SALON_PUBLIC_ROOT || path.resolve(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 
 const app = read('assets/js/app.js');
@@ -11,7 +11,7 @@ const cabinet = read('assets/js/cabinet.js');
 const admin = read('assets/js/admin.js');
 const extras = read('assets/js/extras.js');
 const supporting = read('assets/js/polish15-supporting.js');
-const configurator = read('configurator.html');
+const configurator = read('configurator.html') + '\n' + read('assets/js/salon-order.js');
 const zayavka = read('zayavka.html');
 const analyticsConsent = read('consent-analytics.html');
 const privacy = read('privacy.html');
@@ -103,7 +103,7 @@ test('referral contract consistently rewards the inviter after the first paid or
 });
 
 test('order capability tokens stay out of new upload/list query strings', () => {
-  assert.match(configurator, /h\['X-Order-Token'\] = attOrder\.token/);
+  assert.match(configurator, /h\['X-Order-Token'\]\s*=\s*confirmed\.token/);
   assert.match(app, /'X-Order-Tokens': g\.join\(','\)/);
   assert.match(cabinet, /'X-Order-Token': t/);
   assert.match(cabinet, /'X-Order-Tokens': tokens\.join\(','\)/);

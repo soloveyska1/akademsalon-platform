@@ -22,7 +22,7 @@ test('session curator is a compact planner rather than a generic account panel',
   assert.match(curator, /account-curator-agenda/);
   assert.match(curator, /account-curator-aside/);
   assert.match(curator, /Раньше, чем станет срочно/);
-  assert.match(curator, /Напомним за 7, 3 и 1 день/);
+  assert.match(curator, /Напоминания в Telegram за 7, 3 и 1 день доступны при подключённом боте/);
   assert.doesNotMatch(curator, /<div class="account-panel">/);
 });
 

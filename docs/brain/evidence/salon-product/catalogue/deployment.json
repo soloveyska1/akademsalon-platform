@@ -1,0 +1,35 @@
+{
+  "site": "https://akademsalon-desktop-preview.saymoon.chatgpt.site/services",
+  "version": 50,
+  "source": "fcef03b3b91529d6e477d5ceb45e716a0bd2ef31",
+  "version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_a8c81d2395788191b9b7ca4f32352fc5",
+  "deployment_id": "appgdep_6aa0d1d907888191bf9ba561a9774142",
+  "status": "succeeded",
+  "updated_at": "2026-09-09T03:26:26.646856+00:00",
+  "archive_local_sha256": "237a3dd89180e44b328a2af63d5636318a367e37743db5606e8d28898d48eb90",
+  "archive_storage_sha256": "830e91c7b2642fb190f4a0a3a05a19036577c907da041fb91ff13fc3c4542ab5",
+  "access": {
+    "mode": "custom",
+    "allowed_users": 1,
+    "external_visitors": 0,
+    "workspace_groups": 0,
+    "tenant_groups": 0,
+    "current_user_role": "owner"
+  },
+  "rollback_version": 49,
+  "rollback_version_id": "appgprj_6a66b7b3535c819198c9c962f50dc7b7~appgver_1ee6fb65a3508191bd4e101797298c73",
+  "rollback": "retained saved version independently read; not executed",
+  "readback": [
+    "services.html redirects to /services with new catalogue and private-preview banner",
+    "all12 works shown; shared shell and compact UI visible in existing in-app tab",
+    "express24 course28000; optional defense+norm bundle9500; total37500",
+    "checkout reaches /configurator?composition=1 with course,express24,bothaddons,total37500",
+    "no form submitted; returned user view to /services and marked deliverable"
+  ],
+  "cleanup": [
+    "task-owned live8768 PID22588 stopped",
+    "task-owned raw8769 PID22610 stopped",
+    "testbrowser salon-catalog closed; fresh contexts closed after every run"
+  ],
+  "public_akademsalon": "unchanged"
+}

@@ -1,0 +1,95 @@
+{
+  "rows": [
+    {
+      "route": "kursovaya-po-ekonomike",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24&disc=hum",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "hum"
+      }
+    },
+    {
+      "route": "diplomnaya-po-ekonomike",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=diplom&result=part&speed=express24&disc=hum",
+      "form": {
+        "product": "diplom",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "hum"
+      }
+    },
+    {
+      "route": "kursovaya-po-menedzhmentu",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24&disc=hum",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "hum"
+      }
+    },
+    {
+      "route": "kursovaya-po-pedagogike",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24&disc=pedagogy",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "pedagogy"
+      }
+    },
+    {
+      "route": "kursovaya-po-yurisprudencii",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24&disc=jurisprudence",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "jurisprudence"
+      }
+    },
+    {
+      "route": "diplomnaya-po-yurisprudencii",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=diplom&result=part&speed=express24&disc=jurisprudence",
+      "form": {
+        "product": "diplom",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "jurisprudence"
+      }
+    },
+    {
+      "route": "kursovaya-po-informatike",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24&disc=tech",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "tech"
+      }
+    },
+    {
+      "route": "kursovaya-po-psihologii",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=course&result=part&speed=express24&disc=psychology",
+      "form": {
+        "product": "course",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "psychology"
+      }
+    },
+    {
+      "route": "diplomnaya-po-psihologii",
+      "choice": "http://127.0.0.1:8771/configurator.html?product=diplom&result=part&speed=express24&disc=psychology",
+      "form": {
+        "product": "diplom",
+        "scope": "part",
+        "speed": "express24",
+        "disc": "psychology"
+      }
+    }
+  ],
+  "posts": 0
+}

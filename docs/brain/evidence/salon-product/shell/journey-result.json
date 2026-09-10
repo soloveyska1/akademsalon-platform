@@ -1,0 +1,306 @@
+{
+  "browser": "152.0.7977.84",
+  "serviceWorkers": "block",
+  "result": {
+    "checks": [
+      "native menu→local search→Escape returns visible opener; theme and dock",
+      "18 keyboard tabs; native browser chrome allowed; Escape clears expanded/body lock",
+      "footer/menu anchor targets chooser below sticky header and retains quote",
+      "real cookie settings dialog remains reachable; no change submitted",
+      "benefit tab Arrow/Home/End and exact single/semester/gift destinations",
+      "36 benefit viewport/theme/selection states; reduced motion"
+    ],
+    "geometry": [
+      {
+        "w": 320,
+        "theme": "light",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 474
+      },
+      {
+        "w": 320,
+        "theme": "light",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 474
+      },
+      {
+        "w": 320,
+        "theme": "light",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 474
+      },
+      {
+        "w": 320,
+        "theme": "dark",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 474
+      },
+      {
+        "w": 320,
+        "theme": "dark",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 474
+      },
+      {
+        "w": 320,
+        "theme": "dark",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 474
+      },
+      {
+        "w": 390,
+        "theme": "light",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 447
+      },
+      {
+        "w": 390,
+        "theme": "light",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 447
+      },
+      {
+        "w": 390,
+        "theme": "light",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 447
+      },
+      {
+        "w": 390,
+        "theme": "dark",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 447
+      },
+      {
+        "w": 390,
+        "theme": "dark",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 447
+      },
+      {
+        "w": 390,
+        "theme": "dark",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 447
+      },
+      {
+        "w": 608,
+        "theme": "light",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 470
+      },
+      {
+        "w": 608,
+        "theme": "light",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 470
+      },
+      {
+        "w": 608,
+        "theme": "light",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 470
+      },
+      {
+        "w": 608,
+        "theme": "dark",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 470
+      },
+      {
+        "w": 608,
+        "theme": "dark",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 470
+      },
+      {
+        "w": 608,
+        "theme": "dark",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 470
+      },
+      {
+        "w": 801,
+        "theme": "light",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 801,
+        "theme": "light",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 801,
+        "theme": "light",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 801,
+        "theme": "dark",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 801,
+        "theme": "dark",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 801,
+        "theme": "dark",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1024,
+        "theme": "light",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1024,
+        "theme": "light",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1024,
+        "theme": "light",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1024,
+        "theme": "dark",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1024,
+        "theme": "dark",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1024,
+        "theme": "dark",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 299
+      },
+      {
+        "w": 1440,
+        "theme": "light",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 311
+      },
+      {
+        "w": 1440,
+        "theme": "light",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 311
+      },
+      {
+        "w": 1440,
+        "theme": "light",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 311
+      },
+      {
+        "w": 1440,
+        "theme": "dark",
+        "id": "single",
+        "overflow": false,
+        "inside": false,
+        "height": 311
+      },
+      {
+        "w": 1440,
+        "theme": "dark",
+        "id": "semester",
+        "overflow": false,
+        "inside": false,
+        "height": 311
+      },
+      {
+        "w": 1440,
+        "theme": "dark",
+        "id": "gift",
+        "overflow": false,
+        "inside": false,
+        "height": 311
+      }
+    ],
+    "errors": [],
+    "realPosts": 0
+  }
+}

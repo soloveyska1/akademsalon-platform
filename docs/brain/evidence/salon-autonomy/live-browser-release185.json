@@ -1,0 +1,81 @@
+{
+  "source_commit": "432dfa9bd03a716c38b85d5d648d2655ed1ab8ed",
+  "browser": "152.0.7977.84",
+  "data": "live signed-out GET-only",
+  "rows": [
+    {
+      "path": "/dashboard.html",
+      "width": 390,
+      "title": "Мой Салон · Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "Твоя работа.Твой ритм.",
+      "assistant": true
+    },
+    {
+      "path": "/configurator.html",
+      "width": 390,
+      "title": "Заказать работу | Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "Теперь твоя задача.",
+      "assistant": false
+    },
+    {
+      "path": "/samples.html",
+      "width": 390,
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "Открой готовую работу.",
+      "assistant": false
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "С учёбой можно проще.",
+      "assistant": false
+    },
+    {
+      "path": "/dashboard.html",
+      "width": 1440,
+      "title": "Мой Салон · Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "Твоя работа.Твой ритм.",
+      "assistant": true
+    },
+    {
+      "path": "/configurator.html",
+      "width": 1440,
+      "title": "Заказать работу | Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "Теперь твоя задача.",
+      "assistant": false
+    },
+    {
+      "path": "/samples.html",
+      "width": 1440,
+      "title": "Готовые работы: библиотека документов | Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "Открой готовую работу.",
+      "assistant": false
+    },
+    {
+      "path": "/",
+      "width": 1440,
+      "title": "Учебные работы с нуля и на доработку | Академический Салон",
+      "overflow": false,
+      "preview": false,
+      "heading": "С учёбой можно проще.",
+      "assistant": false
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

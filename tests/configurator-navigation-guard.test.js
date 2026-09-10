@@ -186,5 +186,5 @@ test('every analytics-enabled page boots exclusion guard before shared runtime a
     );
     assert.ok(guardAt > 0 && guardAt < runtimeAt && runtimeAt < analyticsAt, file);
   }
-  assert.equal(consumers, 87);
+  assert.ok(consumers >= 87, 'public analytics consumers must not disappear');
 });

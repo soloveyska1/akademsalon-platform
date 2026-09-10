@@ -1,0 +1,86 @@
+{
+  "passed": 20,
+  "tests": [
+    {
+      "case": "entry observes exact3targets",
+      "pass": true
+    },
+    {
+      "case": "entry no mutation before visibility callback",
+      "pass": true
+    },
+    {
+      "case": "entry visible action hides launcher",
+      "pass": true
+    },
+    {
+      "case": "entry second action retains hide",
+      "pass": true
+    },
+    {
+      "case": "entry no actions restores launcher",
+      "pass": true
+    },
+    {
+      "case": "entry duplicate observer entries safe",
+      "pass": true
+    },
+    {
+      "case": "entry absent surface/capability {\"eligible\":false}",
+      "pass": true
+    },
+    {
+      "case": "entry absent surface/capability {\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "entry absent surface/capability {\"eligible\":false,\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "entry focus not hidden",
+      "pass": true
+    },
+    {
+      "case": "learning observes exact3targets",
+      "pass": true
+    },
+    {
+      "case": "learning no mutation before visibility callback",
+      "pass": true
+    },
+    {
+      "case": "learning visible action hides launcher",
+      "pass": true
+    },
+    {
+      "case": "learning second action retains hide",
+      "pass": true
+    },
+    {
+      "case": "learning no actions restores launcher",
+      "pass": true
+    },
+    {
+      "case": "learning duplicate observer entries safe",
+      "pass": true
+    },
+    {
+      "case": "learning absent surface/capability {\"eligible\":false}",
+      "pass": true
+    },
+    {
+      "case": "learning absent surface/capability {\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "learning absent surface/capability {\"eligible\":false,\"support\":false}",
+      "pass": true
+    },
+    {
+      "case": "learning focus not hidden",
+      "pass": true
+    }
+  ],
+  "scope": "Exact observer code in VM; only class mutations exposed; storage/network absent. Desktop/mobile use identical observer."
+}

@@ -1,0 +1,33 @@
+{
+  "verdict": "GO",
+  "supersedes": "short viewport P1 in /tmp/listik-motion-review.json",
+  "css_sha256": "47d5adfeb6373fa56dc4c9da3a0a93e359a45a57fb2409d6b4d40f32c6db3e93",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 320,
+      "panel_bottom": 312,
+      "footer_bottom": 311,
+      "send_top": 206,
+      "send_bottom": 250,
+      "all_six_topic_buttons_actionable": true
+    },
+    {
+      "width": 390,
+      "height": 420,
+      "panel_bottom": 412,
+      "footer_bottom": 411,
+      "send_top": 306,
+      "send_bottom": 350,
+      "all_six_topic_buttons_actionable": true
+    }
+  ],
+  "topic_buttons_min_height": 44,
+  "screenshots": [
+    "/tmp/listik-topics-fixed-320.png",
+    "/tmp/listik-topics-fixed-420.png"
+  ],
+  "browser": "listik-final closed",
+  "actual_external_mutations": "blocked",
+  "own_server_started": false
+}

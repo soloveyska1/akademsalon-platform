@@ -123,6 +123,7 @@ CREATE TABLE bonus_ledger(
   order_id INTEGER
 );
 CREATE TABLE delivery_artifacts(id INTEGER PRIMARY KEY,order_id INTEGER);
+CREATE TABLE direct_upload_receipts(id INTEGER PRIMARY KEY,order_id INTEGER);
 CREATE TABLE deposit_ledger(id INTEGER PRIMARY KEY,order_id INTEGER);
 CREATE TABLE deposit_v2_ops(id INTEGER PRIMARY KEY,order_id INTEGER);
 CREATE TABLE deposit_v2_reward_claims(id INTEGER PRIMARY KEY,order_id INTEGER);
@@ -2115,7 +2116,7 @@ def insert_race(synthetic_context, resp):
 
     def test_foreign_outbox_linked_money_and_schema_drift_block_without_deletion(self) -> None:
         cases = (
-            "foreign_outbox", "payment", "schema", "order_column",
+            "foreign_outbox", "payment", "upload_receipt", "schema", "order_column",
             "generated_column", "missing_known_link", "missing_surface_column",
             "foreign_key",
         )
@@ -2137,6 +2138,9 @@ def insert_race(synthetic_context, resp):
                             "INSERT INTO payments(order_id,amount) VALUES(?,100)",
                             (order_id,),
                         )
+                    elif case == "upload_receipt":
+                        self.assertNotIn(("direct_upload_receipts", "order_id"), runtime.ALLOWED_LINKS)
+                        connection.execute("INSERT INTO direct_upload_receipts(order_id) VALUES(?)", (order_id,))
                     elif case == "schema":
                         connection.execute(
                             "CREATE TABLE future_rewards(order_identifier INTEGER)"

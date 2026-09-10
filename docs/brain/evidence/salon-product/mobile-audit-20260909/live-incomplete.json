@@ -1,0 +1,14 @@
+{
+  "error": "page.waitForFunction: Timeout 30000ms exceeded.",
+  "url": "https://akademsalon.ru/configurator.html?product=course&result=editing&speed=expressfast&disc=psychology",
+  "errors": [],
+  "posts": 0,
+  "state": {
+    "ready": "loading",
+    "title": "Заказать работу | Академический Салон",
+    "hasForm": false,
+    "hasSpeed": false,
+    "products": "undefined",
+    "commerce": "undefined"
+  }
+}

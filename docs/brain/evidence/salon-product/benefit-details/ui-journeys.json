@@ -1,0 +1,31 @@
+{
+  "done": [
+    "plus 30 prices",
+    "plus 150 prices",
+    "fixed session",
+    "plan details",
+    "menu open",
+    "menu return focus",
+    "deposit tier 20000",
+    "deposit tier 30000",
+    "deposit tier 45000",
+    "deposit tier 60000",
+    "deposit destination",
+    "checkout initially hidden",
+    "gift amount",
+    "gift text escaped",
+    "checkout opens",
+    "name transfers",
+    "wish transfers",
+    "email focus",
+    "email fields show",
+    "email fields hide",
+    "invalid gift caught locally",
+    "no mutation requests",
+    "rule index",
+    "rule anchors resolve",
+    "promo anchor preserved"
+  ],
+  "errors": [],
+  "posts": []
+}

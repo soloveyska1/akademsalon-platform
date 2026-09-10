@@ -1,0 +1,136 @@
+{
+  "source": "/Users/saymurrbk.ru/.codex/worktrees/salon-admin-rebuild/assets/js/salon-admin-core.js",
+  "sha256": "1ce0a9152bc8ae665160ab3d3f01273e87e7724b9c0adba9b23af6dd77ab1bde",
+  "checks": [
+    {
+      "name": "Success shape /admin/orders/71/price",
+      "ok": true
+    },
+    {
+      "name": "Success shape /admin/orders/71/plan",
+      "ok": true
+    },
+    {
+      "name": "Success shape /admin/orders/71/confirm_payment",
+      "ok": true
+    },
+    {
+      "name": "Success shape /admin/orders/71/message",
+      "ok": true
+    },
+    {
+      "name": "Success shape /admin/orders/71/upload?preview=1",
+      "ok": true
+    },
+    {
+      "name": "Offer URL restricted and numeric id",
+      "ok": true
+    },
+    {
+      "name": "Legacy bonus marker blocks duplicate POST",
+      "ok": true
+    },
+    {
+      "name": "403 triggers identity invalidation",
+      "ok": true
+    },
+    {
+      "name": "Unknown upload query variant remains locked",
+      "ok": true
+    },
+    {
+      "name": "Telegram sync post-side-effect failure stays locked",
+      "ok": true
+    },
+    {
+      "name": "Strict positive integer",
+      "ok": true
+    },
+    {
+      "name": "Escapes HTML strings",
+      "ok": true
+    },
+    {
+      "name": "Rejects javascript link",
+      "ok": true
+    },
+    {
+      "name": "Allocation exact integer total 6001",
+      "ok": true
+    },
+    {
+      "name": "Unconfirmed author service blocked",
+      "ok": true
+    },
+    {
+      "name": "A2 unconfirmed blocked",
+      "ok": true
+    },
+    {
+      "name": "B1 preserved and independently cloned",
+      "ok": true
+    },
+    {
+      "name": "Mutation pending marker precedes request",
+      "ok": true
+    },
+    {
+      "name": "Rejected mutation stays locked",
+      "ok": true
+    },
+    {
+      "name": "Malformed JSON stays locked",
+      "ok": true
+    },
+    {
+      "name": "Invalid successful response stays locked when validator supplied",
+      "ok": true
+    },
+    {
+      "name": "Server 500 stays locked",
+      "ok": true
+    },
+    {
+      "name": "Unknown 2xx-negative cannot unlock unsafe repeat",
+      "ok": true
+    },
+    {
+      "name": "Unknown HTTP 400 negative retains lock",
+      "ok": true
+    },
+    {
+      "name": "Unknown HTTP 409 negative retains lock",
+      "ok": true
+    },
+    {
+      "name": "Known prewrite validation unlocks",
+      "ok": true
+    },
+    {
+      "name": "Identity change before response blocks private GET",
+      "ok": true
+    },
+    {
+      "name": "Identity change while JSON body pending blocks private GET",
+      "ok": true
+    },
+    {
+      "name": "Identity change while POST pending retains lock",
+      "ok": true
+    },
+    {
+      "name": "Reload retains unknown lock",
+      "ok": true
+    },
+    {
+      "name": "Blocked storage blocks POST",
+      "ok": true
+    },
+    {
+      "name": "Concurrent mutation sends once",
+      "ok": true
+    }
+  ],
+  "passed": 32,
+  "failed": 0
+}

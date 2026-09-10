@@ -1,0 +1,81 @@
+{
+  "source": "candidate",
+  "mode": "VM actual handlers; API, post-render and refresh mocked; synthetic data only",
+  "hashes": {
+    "assets/js/salon-workspace.js": "193625459d9c6d6cd8e42771e34061ff8cc5d72b1e32fe9886501784a77fd406",
+    "assets/js/salon-order-domain.js": "365e549ac6c2236cd3f9a72abe1fcae86d420e16120a301b98bf0030d9c3ad4b"
+  },
+  "passed": 17,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Dialog binds order and artifact",
+      "pass": true
+    },
+    {
+      "name": "Back/hash navigation closes dialog and stale submit cannot mutate B",
+      "pass": true
+    },
+    {
+      "name": "Same-order newer version cannot silently replace reviewed artifact",
+      "pass": true
+    },
+    {
+      "name": "Auth loss closes dialog and clears bound context",
+      "pass": true
+    },
+    {
+      "name": "Identity change closes dialog",
+      "pass": true
+    },
+    {
+      "name": "Old identity form sends no request",
+      "pass": true
+    },
+    {
+      "name": "Unknown due does not imply no payment required",
+      "pass": true
+    },
+    {
+      "name": "Claimed payment-array state suppresses online form",
+      "pass": true
+    },
+    {
+      "name": "Claimed payment also suppresses manual-transfer instructions and gift controls",
+      "pass": true
+    },
+    {
+      "name": "Unknown claimed status suppresses payment until reconciled",
+      "pass": true
+    },
+    {
+      "name": "Late message success preserves newer unsent draft",
+      "pass": true
+    },
+    {
+      "name": "Unchanged acknowledged draft clears",
+      "pass": true
+    },
+    {
+      "name": "Off-route draft does not suppress polling",
+      "pass": true
+    },
+    {
+      "name": "Manual refresh remains available during pending mutation",
+      "pass": true
+    },
+    {
+      "name": "Actual login email form is bound and request starts",
+      "pass": true
+    },
+    {
+      "name": "Actual login claim form is epoch-bound",
+      "pass": true
+    },
+    {
+      "name": "Late order payment URL does not redirect after leaving that order",
+      "pass": true
+    }
+  ],
+  "reproducer": "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/tests/salon-workspace.test.js"
+}

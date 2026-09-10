@@ -1,0 +1,33 @@
+{
+  "synthetic": true,
+  "checks": [
+    {
+      "name": "Exact payment confirmation visible",
+      "pass": true
+    },
+    {
+      "name": "Payment bound to record and amount",
+      "pass": true
+    },
+    {
+      "name": "Late success retains newer draft",
+      "pass": true
+    },
+    {
+      "name": "Create once then ownerless offer",
+      "pass": true
+    },
+    {
+      "name": "AS SPEC same lines and total",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "postPaths": [
+    "/admin/orders/9703/confirm_payment",
+    "/admin/orders/9701/message",
+    "/admin/orders",
+    "/admin/offers"
+  ],
+  "failures": []
+}

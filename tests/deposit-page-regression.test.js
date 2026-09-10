@@ -35,8 +35,8 @@ test('deposit page has complete indexable metadata', () => {
   assert.match(page, /property="og:image" content="https:\/\/akademsalon\.ru\/assets\/img\/og-cover-v3\.png"/);
   assert.equal((page.match(/<h1\b/gi) || []).length, 1, 'exactly one H1');
   assert.match(page, /assets\/js\/app\.js\?v=/);
-  assert.match(page, /assets\/css\/mobile\.css\?v=/);
-  assert.match(page, /assets\/css\/polish15-supporting\.css\?v=/);
+  assert.match(page, /assets\/css\/salon-home\.css\?v=/);
+  assert.match(page, /assets\/css\/salon-experience\.css\?v=/);
 });
 
 test('calculator mirrors the four live wallet top-ups and loyalty rates', () => {
@@ -88,7 +88,7 @@ test('page keeps money and bonuses separate and states the approved limits', () 
 });
 
 test('public CTA opens the existing wallet and never initiates payment', () => {
-  assert.match(page, /href="dashboard\.html#wallet">Перейти в кошелёк/);
+  assert.match(page, /href="dashboard\.html#deposit">Перейти в кошелёк/);
   assert.match(page, /Оплата происходит только в кабинете\. Эта страница ничего не списывает\./);
   assert.doesNotMatch(page, /Salon\.api\.post|\/deposit\/topup|data-dep-topup/);
   assert.doesNotMatch(page, /фиктивн|демо-оплат|тестов(?:ая|ый) оплат/i);

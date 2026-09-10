@@ -1,0 +1,111 @@
+{
+  "decision": "GO",
+  "sha256": "598df2188c33707fcd7d2a8fadf9e99a6b82943969c542aacc9757a6aabc4e8d",
+  "tests": [
+    {
+      "id": "install-reload-all-five",
+      "pass": true
+    },
+    {
+      "id": "private-fresh-offline-with-oldcache-first",
+      "pass": true
+    },
+    {
+      "id": "public-old-only-rejected",
+      "pass": true
+    },
+    {
+      "id": "public-current-page-hit",
+      "pass": true
+    },
+    {
+      "id": "private-no-page-lookup-even-if-cached",
+      "pass": true
+    },
+    {
+      "id": "versioned-asset-current-only",
+      "pass": true
+    },
+    {
+      "id": "bypass /api/health",
+      "pass": true
+    },
+    {
+      "id": "bypass /orders",
+      "pass": true
+    },
+    {
+      "id": "bypass https://external.test/x",
+      "pass": true
+    },
+    {
+      "id": "HTTP503notreplaced",
+      "pass": true
+    },
+    {
+      "id": "everymatchscoped",
+      "pass": true
+    },
+    {
+      "id": "failed-precache-no-skipWaiting",
+      "pass": true
+    }
+  ],
+  "lookups": [
+    {
+      "url": "https://fixture.test/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "https://fixture.test/about.html",
+      "cacheName": "salon-pages-20260806shell123"
+    },
+    {
+      "url": "https://fixture.test/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "https://fixture.test/about.html",
+      "cacheName": "salon-pages-20260806shell123"
+    },
+    {
+      "url": "https://fixture.test/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "https://fixture.test/assets/css/a.css?v=1",
+      "cacheName": "salon-shell-20260806shell123"
+    }
+  ],
+  "precache": [
+    {
+      "url": "https://fixture.test/offline.html",
+      "cache": "reload"
+    },
+    {
+      "url": "https://fixture.test/assets/img/icon-192.png",
+      "cache": "reload"
+    },
+    {
+      "url": "https://fixture.test/assets/img/icon-512.png",
+      "cache": "reload"
+    },
+    {
+      "url": "https://fixture.test/assets/img/icon-maskable-512.png",
+      "cache": "reload"
+    },
+    {
+      "url": "https://fixture.test/assets/img/favicon.svg",
+      "cache": "reload"
+    }
+  ],
+  "external_mutations": false,
+  "limitation": "Deterministic worker/cache fixture; actual browser192-upgrade releasegate independently pending",
+  "reproducer": {
+    "path": "/tmp/salon-sw-contract.cjs",
+    "sha256": "e51871c3ce56195048cf40f5b6dddf44d293ec7ef311db16485b44d5a500d744",
+    "command": "node /tmp/salon-sw-contract.cjs",
+    "cwd": "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders"
+  },
+  "review": "OnlyprecacheHTTPcachemode andreadcachescopes changed. InstallfailurecontinuespreventingskipWaiting;private/API/nonGET/external rules preserved."
+}

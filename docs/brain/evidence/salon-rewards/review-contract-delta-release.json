@@ -1,0 +1,22 @@
+{
+  "decision": "GO",
+  "p0": 0,
+  "p1": 0,
+  "source_commit": "3988a47186db92b269ce569e0204aa7a5abc79e4",
+  "script_sha256": "7a5d41191d168343503d8fa0f4310ddbdab83032980c8efc19365c4c85236ab2",
+  "delta_sha256": "53182d56fc02826b2857ab44e67c97ef4d8fe8327f557426d8ea42c96a61a88f",
+  "manifest_sha256": "0c7bcd39bfc515a97cc287015f1b26b6c5e81c79699012817269c91c94890a37",
+  "delta_members_independently_verified": 110,
+  "target_manifest_files": 430,
+  "reviewed_guards": [
+    "exact current/dist188",
+    "unpublished copy only",
+    "archive path/link/type guards",
+    "full target manifest equality before activation",
+    "per-symlink atomic replacement",
+    "restore old current/dist on verification error",
+    "real rollback-forward readback scheduled in script"
+  ],
+  "optional_hardening": "Pin manifest byte hash in script as well as source_commit",
+  "limits": "Read-only packaging audit and local archive member verification. Deployment, HTTP readback and rollback-forward not executed by reviewer. No source or production changes."
+}

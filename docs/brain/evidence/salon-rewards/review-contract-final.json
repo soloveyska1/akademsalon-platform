@@ -1,0 +1,20 @@
+{
+  "decision": "GO",
+  "p0": 0,
+  "p1": 0,
+  "p2_open_in_reviewed_scope": 0,
+  "base_head": "f9d2ea0c3983d6a79b83095fcea85c3850f094db",
+  "hashes": {
+    "assets/js/polish15-supporting.js": "e1e229ba244a5515aec8b1592e9d52c9f2866681e02cdc4285575f959ad6d42a",
+    "assets/js/salon-rewards.js": "af9bbbc84be29d87fe9928b9da6f8b90f61e52e46b3eeadb353c1c1da4998fd2",
+    "assets/js/salon-benefits.js": "1ddb71ca030e5f67f772087474c181c53978d89a3bcd34b5e1728b20f2797104",
+    "scripts/legal-presentation.py": "f9e59e4f11759d0e840450e6507fd77d211acc995c5ad3cf959df9b9b3681665",
+    "scripts/build-production-release.py": "a9a493bc1582bda7153c0430b2366b3305e44d54ed18275b57a04e5c810d3440"
+  },
+  "browser_gift_cases": 11,
+  "browser_calculator_cases": 12,
+  "browser_pageerrors": 0,
+  "legal_article_parity": 12,
+  "production_mutations": 0,
+  "limits": "Browser APIs fully intercepted; no actual provider charge, email delivery or production state mutation performed."
+}

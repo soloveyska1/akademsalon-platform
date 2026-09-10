@@ -1,0 +1,70 @@
+{
+  "calculations": [
+    {
+      "total": 1000,
+      "parts": 1,
+      "sum": 1000,
+      "valid": true
+    },
+    {
+      "total": 1000,
+      "parts": 2,
+      "sum": 1000,
+      "valid": true
+    },
+    {
+      "total": 1000,
+      "parts": 3,
+      "sum": 1000,
+      "valid": true
+    },
+    {
+      "total": 45001,
+      "parts": 1,
+      "sum": 45001,
+      "valid": true
+    },
+    {
+      "total": 45001,
+      "parts": 2,
+      "sum": 45001,
+      "valid": true
+    },
+    {
+      "total": 45001,
+      "parts": 3,
+      "sum": 45001,
+      "valid": true
+    },
+    {
+      "total": 300000,
+      "parts": 1,
+      "sum": 300000,
+      "valid": true
+    },
+    {
+      "total": 300000,
+      "parts": 2,
+      "sum": 300000,
+      "valid": true
+    },
+    {
+      "total": 300000,
+      "parts": 3,
+      "sum": 300000,
+      "valid": true
+    }
+  ],
+  "invalidClears": true,
+  "steps": true,
+  "cases": true,
+  "noConsentBlocked": true,
+  "once": true,
+  "privacyAck": true,
+  "payloadPath": "/priyomnaya.html#urgent",
+  "saved": "Обращение № 9021. Ответ придёт на указанный контакт.",
+  "contactStorageResidue": false,
+  "errors": [],
+  "realCustomerMutations": 0,
+  "externalBlocked": 0
+}

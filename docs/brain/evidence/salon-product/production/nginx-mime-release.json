@@ -1,0 +1,11 @@
+{
+  "backup": "/root/salon_bot/backups/static-mime-20260909T085244Z",
+  "before_sha256": "e66545c320c7ac2c2f84f76a3d4b9d87c216179fdd67388e573ea3e1d489003d",
+  "after_sha256": "32ffe2a4123c54fcdcb02d4411e6bbdcfc27c93ce82ea53852f0361dde075838",
+  "actions": [
+    "apply-config-test-reload",
+    "rollback-config-test-reload",
+    "forward-config-test-reload"
+  ],
+  "scope": "only Salon /assets/ mjs MIME"
+}

@@ -1,0 +1,906 @@
+{
+  "minimum": 4.73,
+  "under45": [],
+  "results": [
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 14.11
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Заказать работу ↗",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "01Задание",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "02Условия",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "03Работа",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "04Проверка",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "05Результат",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "С чего начнём?",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Выбери, что нужно. Тему, материалы ",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "ПРИМЕР ЗАКАЗА01 / 05",
+      "ratio": 4.73
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Отдельная глава",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Целиком",
+      "ratio": 5.3
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Глава",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Доработка",
+      "ratio": 5.3
+    },
+    {
+      "theme": "light",
+      "stage": 1,
+      "text": "Начать можно с того, что уже есть",
+      "ratio": 5.3
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 14.11
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Заказать работу ↗",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "01Задание",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "02Условия",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "03Работа",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "04Проверка",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "05Результат",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Всё ясно. До оплаты.",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Состав, цена, срок и порядок оплаты",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "ПРИМЕР ЗАКАЗА02 / 05",
+      "ratio": 4.73
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Отдельная глава",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Что получишь",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Состав и формат",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Когда",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Конкретная дата",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Сколько",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Согласованная цена",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Как платить",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Порядок по этапам",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 2,
+      "text": "Что фиксируем в заказе ↗",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 14.11
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "Заказать работу ↗",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "01Задание",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "02Условия",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "03Работа",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "04Проверка",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "05Результат",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "Заказ в работе. Ты в курсе.",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "Файлы, сроки и переписка остаются в",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "ПРИМЕР ЗАКАЗА03 / 05",
+      "ratio": 4.73
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "Отдельная глава",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 3,
+      "text": "Открыть личный кабинет ↗",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 14.11
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Заказать работу ↗",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "01Задание",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "02Условия",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "03Работа",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "04Проверка",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "05Результат",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Есть замечания? Разберём.",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Сверяем результат с заданием. Разни",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "ПРИМЕР ЗАКАЗА04 / 05",
+      "ratio": 4.73
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Какие правки?",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "По заданию",
+      "ratio": 5.3
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Новая задача",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Сначала согласуем",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Новый объём, цену и срок. Начнём по",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 4,
+      "text": "Условия доработок ↗",
+      "ratio": 8.25
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 14.11
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "Заказать работу ↗",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "01Задание",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "02Условия",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "03Работа",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "04Проверка",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "05Результат",
+      "ratio": 8.57
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "Готово. Всё у тебя.",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "Получаешь файлы в согласованном фор",
+      "ratio": 5.58
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "ПРИМЕР ЗАКАЗА05 / 05",
+      "ratio": 4.73
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "Твоя работа.Твои файлы.",
+      "ratio": 14.85
+    },
+    {
+      "theme": "light",
+      "stage": 5,
+      "text": "Следующий этап только по согласован",
+      "ratio": 5.3
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 15.5
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Заказать работу ↗",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "01Задание",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "02Условия",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "03Работа",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "04Проверка",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "05Результат",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "С чего начнём?",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Выбери, что нужно. Тему, материалы ",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "ПРИМЕР ЗАКАЗА01 / 05",
+      "ratio": 7.27
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Отдельная глава",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Целиком",
+      "ratio": 9.27
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Глава",
+      "ratio": 8.67
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Доработка",
+      "ratio": 9.27
+    },
+    {
+      "theme": "dark",
+      "stage": 1,
+      "text": "Начать можно с того, что уже есть",
+      "ratio": 9.27
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 15.5
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Заказать работу ↗",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "01Задание",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "02Условия",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "03Работа",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "04Проверка",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "05Результат",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Всё ясно. До оплаты.",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Состав, цена, срок и порядок оплаты",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "ПРИМЕР ЗАКАЗА02 / 05",
+      "ratio": 7.27
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Отдельная глава",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Что получишь",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Состав и формат",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Когда",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Конкретная дата",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Сколько",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Согласованная цена",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Как платить",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Порядок по этапам",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 2,
+      "text": "Что фиксируем в заказе ↗",
+      "ratio": 7.83
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 15.5
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "Заказать работу ↗",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "01Задание",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "02Условия",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "03Работа",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "04Проверка",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "05Результат",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "Заказ в работе. Ты в курсе.",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "Файлы, сроки и переписка остаются в",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "ПРИМЕР ЗАКАЗА03 / 05",
+      "ratio": 7.27
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "Отдельная глава",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 3,
+      "text": "Открыть личный кабинет ↗",
+      "ratio": 7.83
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 15.5
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Заказать работу ↗",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "01Задание",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "02Условия",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "03Работа",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "04Проверка",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "05Результат",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Есть замечания? Разберём.",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Сверяем результат с заданием. Разни",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "ПРИМЕР ЗАКАЗА04 / 05",
+      "ratio": 7.27
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Какие правки?",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "По заданию",
+      "ratio": 9.27
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Новая задача",
+      "ratio": 8.67
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Сначала согласуем",
+      "ratio": 7.83
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Новый объём, цену и срок. Начнём по",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 4,
+      "text": "Условия доработок ↗",
+      "ratio": 7.83
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "Большая работа.Понятные шаги.",
+      "ratio": 15.5
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "Заказать работу ↗",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "01Задание",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "02Условия",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "03Работа",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "04Проверка",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "05Результат",
+      "ratio": 11.92
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "Готово. Всё у тебя.",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "Получаешь файлы в согласованном фор",
+      "ratio": 8.38
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "ПРИМЕР ЗАКАЗА05 / 05",
+      "ratio": 7.27
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "Твоя работа.Твои файлы.",
+      "ratio": 14.01
+    },
+    {
+      "theme": "dark",
+      "stage": 5,
+      "text": "Следующий этап только по согласован",
+      "ratio": 9.27
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "theme": "light",
+    "route": "plus",
+    "count": 113,
+    "min": 4.73,
+    "bad": []
+  },
+  {
+    "theme": "light",
+    "route": "deposit",
+    "count": 80,
+    "min": 4.73,
+    "bad": []
+  },
+  {
+    "theme": "light",
+    "route": "referral",
+    "count": 35,
+    "min": 5.3,
+    "bad": []
+  },
+  {
+    "theme": "light",
+    "route": "gift",
+    "count": 40,
+    "min": 4.73,
+    "bad": []
+  },
+  {
+    "theme": "light",
+    "route": "loyalty",
+    "count": 168,
+    "min": 5.3,
+    "bad": []
+  },
+  {
+    "theme": "dark",
+    "route": "plus",
+    "count": 113,
+    "min": 6.23,
+    "bad": []
+  },
+  {
+    "theme": "dark",
+    "route": "deposit",
+    "count": 80,
+    "min": 6.04,
+    "bad": []
+  },
+  {
+    "theme": "dark",
+    "route": "referral",
+    "count": 35,
+    "min": 6.23,
+    "bad": []
+  },
+  {
+    "theme": "dark",
+    "route": "gift",
+    "count": 40,
+    "min": 6.23,
+    "bad": []
+  },
+  {
+    "theme": "dark",
+    "route": "loyalty",
+    "count": 168,
+    "min": 7.09,
+    "bad": []
+  }
+]

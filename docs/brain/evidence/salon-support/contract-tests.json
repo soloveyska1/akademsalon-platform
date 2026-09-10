@@ -1,0 +1,70 @@
+{
+  "source": "/Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders/assets/js/salon-support.js",
+  "sha256": "5cd12dc419edb6f7ea83d1c2fa915f5512400a178d30d1ee442bb6edcc5fec7f",
+  "networkCalls": 0,
+  "productionMutations": 0,
+  "cases": [
+    {
+      "name": "uncertain:{\"ok\":false,\"error\":\"bad_json\"}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":false,\"error\":\"server_error\"}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":false,\"error\":\"network\"}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:null",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":true,\"id\":true}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":true,\"id\":\"12\"}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":true,\"id\":0}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":true,\"id\":-1}",
+      "pass": true
+    },
+    {
+      "name": "uncertain:{\"ok\":true}",
+      "pass": true
+    },
+    {
+      "name": "promise rejection blocks duplicate",
+      "pass": true
+    },
+    {
+      "name": "timeout blocks while request pending; late success wins",
+      "pass": true
+    },
+    {
+      "name": "timeout then explicit rejection unlocks retry",
+      "pass": true
+    },
+    {
+      "name": "known rejection unlocks; retains content; no automatic retry",
+      "pass": true
+    },
+    {
+      "name": "confirmed success one explicit POST only; privacy payload",
+      "pass": true
+    },
+    {
+      "name": "copy survives DOM currentTarget clearing after dispatch",
+      "pass": true
+    }
+  ],
+  "total": 15,
+  "pass": true
+}

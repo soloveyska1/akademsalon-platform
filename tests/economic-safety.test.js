@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 
-const root = path.resolve(__dirname, '..');
+const root = process.env.SALON_PUBLIC_ROOT || path.resolve(__dirname, '..');
 const read = (name) => fs.readFileSync(path.join(root, name), 'utf8');
 
 const deposit = read('deposit.html');
@@ -13,22 +13,17 @@ const refunds = read('refunds.html');
 const oferta = read('oferta.html');
 const extras = read('assets/js/extras.js');
 
-test('deposit keeps the original storefront, tiers, calculator and CTA', () => {
-  assert.match(deposit, /class="commerce-hero deposit-hero"/);
-  assert.match(deposit, /class="deposit-calculator" id="deposit-calc"/);
-  assert.match(deposit, /data-deposit-amount="20000" data-deposit-rate="8"/);
-  assert.match(deposit, /data-deposit-amount="30000" data-deposit-rate="10"/);
-  assert.match(deposit, /data-deposit-amount="45000" data-deposit-rate="12"/);
-  assert.match(deposit, /data-deposit-amount="60000" data-deposit-rate="15"/);
-  assert.match(deposit, /href="dashboard\.html#wallet">Перейти в кошелёк/);
-  assert.match(deposit, /AggregateOffer/);
-  assert.doesNotMatch(deposit, /временно (?:на паузе|недоступ)/i);
+test('deposit rebuilt calculator preserves published tiers and wallet route', () => {
+  assert.match(deposit,/data-deposit-lab/);
+  for(const [amount,rate] of [[20000,8],[30000,10],[45000,12],[60000,15]])assert.match(deposit,new RegExp('data-topup="'+amount+'"[^>]*><span>[^<]+</span><b>'+rate+'%'));
+  assert.match(deposit,/href="dashboard\.html#deposit"/);
+  assert.doesNotMatch(deposit,/временно (?:на паузе|недоступ)/i);
 });
 
 test('deposit copy promises an earned reserve, not immediately spendable points', () => {
-  assert.match(deposit, /Бонусный резерв/);
-  assert.match(deposit, /Резерв с использованной части становится скидкой после приёмки и 14-дневной проверки/);
-  assert.match(deposit, /после приёмки и 14-дневной проверки/);
+  assert.match(deposit, /бонусы за использование/i);
+  assert.match(deposit, /Резерв не доступен сразу/);
+  assert.match(deposit, /После приёмки и 14 дней/);
   assert.match(loyalty, /Бонусный резерв не является доступным балансом в момент пополнения/);
   assert.match(loyalty, /Кэшбэк и депозитная ставка <strong>не складываются<\/strong>/);
   assert.match(loyalty, /редакции 1\.11 с 1 сентября 2026 г/);

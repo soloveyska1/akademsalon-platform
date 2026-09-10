@@ -1,0 +1,27 @@
+{
+  "core_sha256": "1ce0a9152bc8ae665160ab3d3f01273e87e7724b9c0adba9b23af6dd77ab1bde",
+  "backend_sha256": "225f23dba32b25a8ac2381e28c255eed07b14a991362604938dc0ba61fe89c10",
+  "checks": [
+    {
+      "name": "A1",
+      "ok": true,
+      "changes": {}
+    },
+    {
+      "name": "A2",
+      "ok": true,
+      "changes": {}
+    },
+    {
+      "name": "B1",
+      "ok": true,
+      "changes": {}
+    },
+    {
+      "name": "B2",
+      "ok": true,
+      "changes": {}
+    }
+  ],
+  "synthetic_only": true
+}

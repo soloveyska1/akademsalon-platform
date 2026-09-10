@@ -1,0 +1,27 @@
+{
+  "state": "passed",
+  "proof_ready": true,
+  "counts": {
+    "cabinet_membership": 1,
+    "claim_exchange": 1,
+    "created_event": 1,
+    "files": 0,
+    "guest_session": 1,
+    "items": 0,
+    "marker": 1,
+    "order": 1,
+    "outbox": 1,
+    "receipt": 1
+  },
+  "outbox_state": "done",
+  "economic_guard_unchanged": true,
+  "cleanup": {
+    "active_zero": true,
+    "applied": true,
+    "economic_guard_unchanged": true,
+    "second_noop": true,
+    "tombstone_count": 1
+  },
+  "run_hash": "d40537ff19ee0569c99754876fd877d7452d39107569f632bc0db91874669e9d",
+  "order_ref_hash": "53cc73009b8478d45ff8aa4c6c9b15d43fed59a978188d3382b952f4bc7f28c8"
+}

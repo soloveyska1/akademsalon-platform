@@ -1,0 +1,8 @@
+active
+active
+active
+/var/www/academic_saloon/releases/release194-43d38501
+/var/www/academic_saloon/releases/release193-b2590b25
+4a008c0ed257d8614ef34698fe84dce01b6a64bd4c01c79cb74ef0724a76b621  /root/salon_bot/app/webapp.py
+61ab866d1c600893e05271e39eaf6c4ffbc865591c94d4cec701d7d180a71aee  /root/salon_bot/app/services/assistant.py
+1f428f3d708d3b23432757d7c387b4cf3b5b28418de77855cdd6c145ee9b75e5  /root/salon_bot/app/services/payments.py

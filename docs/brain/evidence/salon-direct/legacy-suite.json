@@ -1,0 +1,712 @@
+{
+  "tests": 666,
+  "pass": 490,
+  "fail": 176,
+  "interpretation": "Full historical suite is diagnostic, not all green. Retired wizard and facade DOM/copy assertions remain. New explicit direct-journey acceptance is validated separately. No public-domain release is claimed.",
+  "failures": [
+    {
+      "test": "комплексный submit строится только из SalonCart, без текущего незаписанного черновика",
+      "location": "tests/cart-regression.test.js:559:1"
+    },
+    {
+      "test": "approved catalog shell is the only rendered catalog composition",
+      "location": "tests/catalog-polish15-regression.test.js:50:1"
+    },
+    {
+      "test": "every approved service page keeps its physical URL and production integrations",
+      "location": "tests/catalog-polish15-regression.test.js:62:1"
+    },
+    {
+      "test": "service hub links only to real physical service pages",
+      "location": "tests/catalog-polish15-regression.test.js:79:1"
+    },
+    {
+      "test": "Question Zero stays an honest local diagnostic and hands off without URL text",
+      "location": "tests/commission-zero-regression.test.js:25:1"
+    },
+    {
+      "test": "Commission Zero is a real configurator service with exact work-based prices",
+      "location": "tests/commission-zero-regression.test.js:39:1"
+    },
+    {
+      "test": "flagship is discoverable as the final gate of the research case",
+      "location": "tests/commission-zero-regression.test.js:54:1"
+    },
+    {
+      "test": "catalog starts with one short promise and exposes all four situations on a phone",
+      "location": "tests/compact-client-journey.test.js:16:1"
+    },
+    {
+      "test": "service detail keeps proof and pricing while secondary price factors are on demand",
+      "location": "tests/compact-client-journey.test.js:28:1"
+    },
+    {
+      "test": "configurator exposes a live quote and keeps only three real actions",
+      "location": "tests/compact-client-journey.test.js:36:1"
+    },
+    {
+      "test": "configurator keeps tablet controls usable and reuses the primary above the software keyboard",
+      "location": "tests/compact-client-journey.test.js:59:1"
+    },
+    {
+      "test": "compact copy preserves trust-critical facts and actions",
+      "location": "tests/compact-client-journey.test.js:89:1"
+    },
+    {
+      "test": "context links preserve safe route codes and skip only resolved decisions",
+      "location": "tests/configurator-concept-mechanics.test.js:16:1"
+    },
+    {
+      "test": "approved wizard facade exposes the live quote and first cart action",
+      "location": "tests/configurator-concept-mechanics.test.js:34:1"
+    },
+    {
+      "test": "canonical work subtypes stay accepted and the first screen includes a clear catch-all option",
+      "location": "tests/configurator-concept-mechanics.test.js:55:1"
+    },
+    {
+      "test": "draft and comments routes start with a file review instead of a guessed full-edit price",
+      "location": "tests/configurator-concept-mechanics.test.js:73:1"
+    },
+    {
+      "test": "topic-only routes cannot bypass prerequisites for file-dependent results",
+      "location": "tests/configurator-concept-mechanics.test.js:94:1"
+    },
+    {
+      "test": "candidate diagnostic and specialist services use canonical offers and prices",
+      "location": "tests/configurator-concept-mechanics.test.js:105:1"
+    },
+    {
+      "test": "privacy-safe route telemetry is versioned and never includes free text fields",
+      "location": "tests/configurator-concept-mechanics.test.js:114:1"
+    },
+    {
+      "test": "multi-position flow returns to the visible concept wizard and keeps cart totals authoritative",
+      "location": "tests/configurator-concept-mechanics.test.js:124:1"
+    },
+    {
+      "test": "concept draft updates the saved cart row in place and current-only benefits are materialized",
+      "location": "tests/configurator-concept-mechanics.test.js:134:1"
+    },
+    {
+      "test": "authenticated customer can continue without retyping an already connected contact",
+      "location": "tests/configurator-concept-mechanics.test.js:143:1"
+    },
+    {
+      "test": "final handoff keeps Telegram as an optional status channel without a hidden legacy click proxy",
+      "location": "tests/configurator-concept-mechanics.test.js:158:1"
+    },
+    {
+      "test": "concept contact step uses the scoped Telegram bridge and cannot crash on render",
+      "location": "tests/configurator-concept-mechanics.test.js:172:1"
+    },
+    {
+      "test": "urgent homepage entry participates in saved-draft conflict handling",
+      "location": "tests/configurator-concept-mechanics.test.js:179:1"
+    },
+    {
+      "test": "pressed-button selectors use group semantics and support copy stays consistent",
+      "location": "tests/configurator-concept-mechanics.test.js:186:1"
+    },
+    {
+      "test": "universal contact field serializes obvious email, phone and messenger formats correctly",
+      "location": "tests/configurator-concept-mechanics.test.js:194:1"
+    },
+    {
+      "test": "autosave feedback is factual and never hard-coded into the mobile dock",
+      "location": "tests/configurator-concept-mechanics.test.js:216:1"
+    },
+    {
+      "test": "catalog handoff is acknowledged and the first estimate is visible before contact",
+      "location": "tests/configurator-concept-mechanics.test.js:233:1"
+    },
+    {
+      "test": "late journey keeps current price, reviewable details and contact-first mobile order",
+      "location": "tests/configurator-concept-mechanics.test.js:256:1"
+    },
+    {
+      "test": "required deadline precedes optional description fields on the materials screen",
+      "location": "tests/configurator-concept-mechanics.test.js:272:1"
+    },
+    {
+      "test": "production chrome switches to the approved mobile edition at 920px",
+      "location": "tests/configurator-concept-mechanics.test.js:302:1"
+    },
+    {
+      "test": "quote scope is an optional three-way preference with a safe default",
+      "location": "tests/configurator-conversion-package.test.js:13:1"
+    },
+    {
+      "test": "expanded scope never masquerades as a known total or adds a submission gate",
+      "location": "tests/configurator-conversion-package.test.js:27:1"
+    },
+    {
+      "test": "the visible price row explains the selected quote scope without inventing a total",
+      "location": "tests/configurator-conversion-package.test.js:37:1"
+    },
+    {
+      "test": "an explicit full-support route never labels its project range as a first-stage price",
+      "location": "tests/configurator-conversion-package.test.js:56:1"
+    },
+    {
+      "test": "eligible written diagnostics disclose one consistent fourteen-day credit",
+      "location": "tests/configurator-conversion-package.test.js:64:1"
+    },
+    {
+      "test": "contextual proof points only to published source messages",
+      "location": "tests/configurator-conversion-package.test.js:75:1"
+    },
+    {
+      "test": "new controls remain tappable, responsive and theme-aware",
+      "location": "tests/configurator-conversion-package.test.js:87:1"
+    },
+    {
+      "test": "cart refresh cannot recursively rerender the visible wizard",
+      "location": "tests/configurator-conversion-package.test.js:96:1"
+    },
+    {
+      "test": "легаси ищет свою полосу прогресса внутри реестра, а не первую в документе",
+      "location": "tests/configurator-legacy-isolation.test.js:23:1"
+    },
+    {
+      "test": "подпись шага пишется каждым движком только в свой узел",
+      "location": "tests/configurator-legacy-isolation.test.js:32:1"
+    },
+    {
+      "test": "легаси не наводит фокус и не прокручивает страницу, пока скрыт",
+      "location": "tests/configurator-legacy-isolation.test.js:48:1"
+    },
+    {
+      "test": "корзина переводит видимый визард, а не только скрытый реестр",
+      "location": "tests/configurator-legacy-isolation.test.js:56:1"
+    },
+    {
+      "test": "переход на контакты ищет шаг по ключу, а не по номеру",
+      "location": "tests/configurator-legacy-isolation.test.js:67:1"
+    },
+    {
+      "test": "реестр остаётся скрытым и не показывается по частям",
+      "location": "tests/configurator-legacy-isolation.test.js:73:1"
+    },
+    {
+      "test": "визард не полагается на видимые побочные эффекты легаси",
+      "location": "tests/configurator-legacy-isolation.test.js:79:1"
+    },
+    {
+      "test": "legacy local drafts scrub old private residue and never write it again",
+      "location": "tests/configurator-private-checkpoint.test.js:41:1"
+    },
+    {
+      "test": "one contact prerequisite predicate distinguishes lost source from valid resumes",
+      "location": "tests/configurator-private-checkpoint.test.js:82:1"
+    },
+    {
+      "test": "restored file-only requests return to materials without losing commercial intent",
+      "location": "tests/configurator-private-checkpoint.test.js:120:1"
+    },
+    {
+      "test": "the UI and conflict recovery state the same privacy boundary",
+      "location": "tests/configurator-private-checkpoint.test.js:148:1"
+    },
+    {
+      "test": "configurator records exposure and carried value once without changing the UI contract",
+      "location": "tests/configurator-quote-scope-analytics.test.js:139:1"
+    },
+    {
+      "test": "у каждого шага объявлен показанный номер или явный отказ от него",
+      "location": "tests/configurator-step-numbering.test.js:36:1"
+    },
+    {
+      "test": "показанные номера идут подряд с единицы и без пропусков",
+      "location": "tests/configurator-step-numbering.test.js:47:1"
+    },
+    {
+      "test": "последний шаг всегда пронумерован и всегда contact",
+      "location": "tests/configurator-step-numbering.test.js:58:1"
+    },
+    {
+      "test": "рекомендация живёт рядом с выбором и не добавляет скрытый экран",
+      "location": "tests/configurator-step-numbering.test.js:67:1"
+    },
+    {
+      "test": "в визарде не осталось нумерации, посчитанной от длины набора",
+      "location": "tests/configurator-step-numbering.test.js:75:1"
+    },
+    {
+      "test": "подписи собираются одной функцией, а не литералами",
+      "location": "tests/configurator-step-numbering.test.js:85:1"
+    },
+    {
+      "test": "индикатор прогресса обещает столько шагов, сколько показано",
+      "location": "tests/configurator-step-numbering.test.js:93:1"
+    },
+    {
+      "test": "статические подписи в разметке согласованы с показанным числом",
+      "location": "tests/configurator-step-numbering.test.js:104:1"
+    },
+    {
+      "test": "ступени сайдбара покрывают реальные индексы, а не показанные номера",
+      "location": "tests/configurator-step-numbering.test.js:111:1"
+    },
+    {
+      "test": "состояние и аналитика по-прежнему опираются на реальный индекс",
+      "location": "tests/configurator-step-numbering.test.js:121:1"
+    },
+    {
+      "test": "заявка отправляется по ключу шага, а не по его номеру",
+      "location": "tests/configurator-step-numbering.test.js:128:1"
+    },
+    {
+      "test": "исход отправки помечается до того, как экран станет видимым",
+      "location": "tests/configurator-submit-outcome.test.js:25:1"
+    },
+    {
+      "test": "визард различает успех и сбой, а не только видимость экрана",
+      "location": "tests/configurator-submit-outcome.test.js:38:1"
+    },
+    {
+      "test": "экран сбоя не выдаёт себя за принятую заявку",
+      "location": "tests/configurator-submit-outcome.test.js:47:1"
+    },
+    {
+      "test": "запасной ход переносится живым узлом, а не копируется разметкой",
+      "location": "tests/configurator-submit-outcome.test.js:58:1"
+    },
+    {
+      "test": "повтор отправки возвращает форму, а не оставляет экран сбоя",
+      "location": "tests/configurator-submit-outcome.test.js:67:1"
+    },
+    {
+      "test": "легаси по-прежнему строит запасной ход со всем необходимым",
+      "location": "tests/configurator-submit-outcome.test.js:75:1"
+    },
+    {
+      "test": "успешный экран честно подтверждает отправку и показывает номер заявки",
+      "location": "tests/configurator-submit-outcome.test.js:91:1"
+    },
+    {
+      "test": "успех переносит живой статус вложений, блокирует уход во время upload и использует точную claim-ссылку",
+      "location": "tests/configurator-submit-outcome.test.js:96:1"
+    },
+    {
+      "test": "успех является терминальным состоянием и не позволяет создать дубль через Back",
+      "location": "tests/configurator-submit-outcome.test.js:106:1"
+    },
+    {
+      "test": "черновик с вложениями очищается только после успешной загрузки каждого файла",
+      "location": "tests/configurator-submit-outcome.test.js:115:1"
+    },
+    {
+      "test": "вложения ограничены документами и изображениями до добавления в очередь",
+      "location": "tests/configurator-submit-outcome.test.js:122:1"
+    },
+    {
+      "test": "заявка объявляет ожидаемые вложения, а повтор upload использует стабильный client_file_id",
+      "location": "tests/configurator-submit-outcome.test.js:129:1"
+    },
+    {
+      "test": "success requires both a 2xx status and a valid confirmed order id",
+      "location": "tests/configurator-submit-outcome.test.js:137:1"
+    },
+    {
+      "test": "ambiguous retries keep one request id across reload until a definitive result",
+      "location": "tests/configurator-submit-outcome.test.js:151:1"
+    },
+    {
+      "test": "service success removes its stale resume concept without deleting unrelated cart data",
+      "location": "tests/configurator-submit-outcome.test.js:158:1"
+    },
+    {
+      "test": "fallback copy does not promise an impossible ten-second recovery",
+      "location": "tests/configurator-submit-outcome.test.js:169:1"
+    },
+    {
+      "test": "article CTAs ask the configurator to clarify publication type",
+      "location": "tests/context-route-regression.test.js:127:1"
+    },
+    {
+      "test": "semantic events use exact names and bounded dimensions instead of sanitizing PII",
+      "location": "tests/first-step-measurement-contract.test.js:382:1"
+    },
+    {
+      "test": "first input remains armed until analytics consent actually allows collection",
+      "location": "tests/first-step-measurement-contract.test.js:463:1"
+    },
+    {
+      "test": "all direct app consumers carry one atomic privacy cache wave",
+      "location": "tests/first-step-measurement-contract.test.js:490:1"
+    },
+    {
+      "test": "home begins with recognition, then one contextual action",
+      "location": "tests/home-council-redesign.test.js:17:1"
+    },
+    {
+      "test": "header reaches the visible desk and legacy handler does not hijack it",
+      "location": "tests/home-council-redesign.test.js:34:1"
+    },
+    {
+      "test": "dynamic dossier announces one atomic summary instead of the whole card",
+      "location": "tests/home-council-redesign.test.js:42:1"
+    },
+    {
+      "test": "trust contract stays honest with and without JavaScript",
+      "location": "tests/home-council-redesign.test.js:69:1"
+    },
+    {
+      "test": "browser chrome follows the redesigned black theme",
+      "location": "tests/home-dark-theme.test.js:28:1"
+    },
+    {
+      "test": "home limits each visible decision scene to two or three actions",
+      "location": "tests/home-guided-entry.test.js:9:1"
+    },
+    {
+      "test": "intro is a home-only layer before the existing content landmark",
+      "location": "tests/home-intro-regression.test.js:13:1"
+    },
+    {
+      "test": "intro fails open and respects repeat, calm and reduced-motion preferences",
+      "location": "tests/home-intro-regression.test.js:24:1"
+    },
+    {
+      "test": "intro supports both themes, mobile composition and accessible dismissal",
+      "location": "tests/home-intro-regression.test.js:41:1"
+    },
+    {
+      "test": "intro JavaScript is syntactically valid and has bounded cleanup",
+      "location": "tests/home-intro-regression.test.js:60:1"
+    },
+    {
+      "test": "home is an open editorial desk instead of a gated wizard or a long catalogue",
+      "location": "tests/home-no-scroll-flow.test.js:9:1"
+    },
+    {
+      "test": "editorial desk keeps normal scrolling, mobile flow and a persistent live choice",
+      "location": "tests/home-no-scroll-flow.test.js:30:1"
+    },
+    {
+      "test": "fresh visit waits for an explicit choice and restores only a real saved choice",
+      "location": "tests/home-no-scroll-flow.test.js:53:1"
+    },
+    {
+      "test": "configurator keeps the approved facade as its only visual page",
+      "location": "tests/legacy-visual-cleanup.test.js:13:1"
+    },
+    {
+      "test": "campaign assets are isolated, versioned and never preloaded for suppressed users",
+      "location": "tests/new-user-promo.test.js:101:1"
+    },
+    {
+      "test": "retention asks a finite reason, keeps return neutral and never networks during unload",
+      "location": "tests/new-user-promo.test.js:191:1"
+    },
+    {
+      "test": "remaining public and system routes use the final operations layer",
+      "location": "tests/operations-polish15-regression.test.js:27:1"
+    },
+    {
+      "test": "прямая заявка на разбор не подменяется ранее собранной корзиной",
+      "location": "tests/plan-service-regression.test.js:18:1"
+    },
+    {
+      "test": "черновик услуги изолирован от черновика полной работы",
+      "location": "tests/plan-service-regression.test.js:37:1"
+    },
+    {
+      "test": "формуляр показывает раздел 01 и не маскирует сетевой сбой под успех",
+      "location": "tests/plan-service-regression.test.js:42:1"
+    },
+    {
+      "test": "фирменная подпись прямого действия переживает перерисовку корзины",
+      "location": "tests/plan-service-regression.test.js:51:1"
+    },
+    {
+      "test": "выборы услуги и канала связи сообщают состояние вспомогательным технологиям",
+      "location": "tests/plan-service-regression.test.js:56:1"
+    },
+    {
+      "test": "practice page explains all three canonical scopes before contact",
+      "location": "tests/practice-price-trust.test.js:35:1"
+    },
+    {
+      "test": "each price is tied to a different entry condition and verifiable output",
+      "location": "tests/practice-price-trust.test.js:44:1"
+    },
+    {
+      "test": "14k support has one checkable result passport before the primary action",
+      "location": "tests/practice-price-trust.test.js:58:1"
+    },
+    {
+      "test": "one selected scope controls every continuation into the configurator",
+      "location": "tests/practice-price-trust.test.js:96:1"
+    },
+    {
+      "test": "practice selection also controls the mobile dock without stealing a saved draft",
+      "location": "tests/practice-price-trust.test.js:126:1"
+    },
+    {
+      "test": "explicit and history-restored scope choices override a saved-draft dock once",
+      "location": "tests/practice-price-trust.test.js:140:1"
+    },
+    {
+      "test": "three practice routes preserve scope codes while draft support stays supplied-material A1",
+      "location": "tests/practice-price-trust.test.js:261:1"
+    },
+    {
+      "test": "psychology page exposes four truthful levels with one action owner",
+      "location": "tests/psychology-vip-contract.test.js:9:1"
+    },
+    {
+      "test": "VIP price has one canonical service identity and bounded economics",
+      "location": "tests/psychology-vip-contract.test.js:25:1"
+    },
+    {
+      "test": "VIP remains A2 from configurator through cart and case context",
+      "location": "tests/psychology-vip-contract.test.js:38:1"
+    },
+    {
+      "test": "psychology materials are gated by explicit de-identification",
+      "location": "tests/psychology-vip-contract.test.js:58:1"
+    },
+    {
+      "test": "VIP configurator explains the package before asking for project details",
+      "location": "tests/psychology-vip-contract.test.js:71:1"
+    },
+    {
+      "test": "VIP choice remains the source of truth after browser back-forward cache restore",
+      "location": "tests/psychology-vip-contract.test.js:103:1"
+    },
+    {
+      "test": "research passport and search language cover the real psychology request",
+      "location": "tests/psychology-vip-contract.test.js:112:1"
+    },
+    {
+      "test": "манифест и мета установки есть на КАЖДОЙ странице",
+      "location": "tests/pwa-install.test.js:16:1"
+    },
+    {
+      "test": "версия воркера совпадает с ключом семьи shell",
+      "location": "tests/pwa-install.test.js:85:1"
+    },
+    {
+      "test": "stage tabs use an allowed tabpanel host and the review preview has intrinsic size",
+      "location": "tests/release-readiness-regression.test.js:9:1"
+    },
+    {
+      "test": "home follows the client decision sequence and keeps its brand concept durable",
+      "location": "tests/release-readiness-regression.test.js:19:1"
+    },
+    {
+      "test": "reviews use lightweight thumbnails while retaining full evidence for the lightbox",
+      "location": "tests/release-readiness-regression.test.js:49:1"
+    },
+    {
+      "test": "home loads only the reproducible release bundles",
+      "location": "tests/release-readiness-regression.test.js:143:1"
+    },
+    {
+      "test": "home interactions connect meaning instead of adding decorative motion",
+      "location": "tests/release-readiness-regression.test.js:155:1"
+    },
+    {
+      "test": "phone review link can deliberately preserve the desktop composition",
+      "location": "tests/release-readiness-regression.test.js:169:1"
+    },
+    {
+      "test": "privacy confirmation and saved progress never replace one another",
+      "location": "tests/release-readiness-regression.test.js:177:1"
+    },
+    {
+      "test": "services saved progress stays a single inline card at tablet widths",
+      "location": "tests/release-readiness-regression.test.js:197:1"
+    },
+    {
+      "test": "header and guided entry use one editorial hierarchy",
+      "location": "tests/release-readiness-regression.test.js:219:1"
+    },
+    {
+      "test": "order submission timeout never aborts an ambiguous POST mutation",
+      "location": "tests/release95-production-hardening.test.js:57:1"
+    },
+    {
+      "test": "contact step supports Enter without bypassing validation",
+      "location": "tests/release95-production-hardening.test.js:69:1"
+    },
+    {
+      "test": "deadline and contact feedback stay live without forcing a rerender",
+      "location": "tests/release98-audit-closure.test.js:55:1"
+    },
+    {
+      "test": "configurator defers valid consumption through draft choice and resolves both branches",
+      "location": "tests/remarks-handoff.test.js:130:1"
+    },
+    {
+      "test": "configurator never places remarks text in URL or telemetry",
+      "location": "tests/remarks-handoff.test.js:161:1"
+    },
+    {
+      "test": "home opens one calm guided entry before asking for contact",
+      "location": "tests/research-case-ecosystem.test.js:186:1"
+    },
+    {
+      "test": "quick situations open as an accessible functional side drawer",
+      "location": "tests/research-case-ecosystem.test.js:210:1"
+    },
+    {
+      "test": "safe route codes prefill the configurator and are removed from its address",
+      "location": "tests/research-case-ecosystem.test.js:387:1"
+    },
+    {
+      "test": "public service copy uses plain participation language while legal terms stay defined",
+      "location": "tests/research-case-ecosystem.test.js:446:1"
+    },
+    {
+      "test": "весь архив присутствует, но точный счётчик нигде не показывается",
+      "location": "tests/reviews-page-regression.test.js:12:1"
+    },
+    {
+      "test": "книга благодарностей повторяет финальную сетку без старых фильтров",
+      "location": "tests/reviews-page-regression.test.js:21:1"
+    },
+    {
+      "test": "каждый скриншот имеет полный просмотр с клавиатурным управлением",
+      "location": "tests/reviews-page-regression.test.js:29:1"
+    },
+    {
+      "test": "страница не имитирует общий рейтинг в schema",
+      "location": "tests/reviews-page-regression.test.js:41:1"
+    },
+    {
+      "test": "метаданные компактны, а CollectionPage JSON-LD валиден",
+      "location": "tests/reviews-page-regression.test.js:56:1"
+    },
+    {
+      "test": "legacy configurator cart reads the concept context without crossing script scope",
+      "location": "tests/runtime-p0-regression.test.js:9:1"
+    },
+    {
+      "test": "drawer close control is a labeled capsule with its own wax mark",
+      "location": "tests/scope-drawer-redesign.test.js:11:1"
+    },
+    {
+      "test": "gate 3: services has facets, while global search owns the only text query",
+      "location": "tests/search-catalog-clarity.test.js:74:1"
+    },
+    {
+      "test": "gate 2: every shared CSS consumer and the home CSS bundle use one cache wave",
+      "location": "tests/search-catalog-clarity.test.js:136:1"
+    },
+    {
+      "test": "gate 3: every shared JS consumer and the home JS bundle use one cache wave",
+      "location": "tests/search-catalog-clarity.test.js:158:1"
+    },
+    {
+      "test": "protected catalogue inventory remains physically unchanged",
+      "location": "tests/search-catalog-clarity.test.js:190:1"
+    },
+    {
+      "test": "primary landing pages show the canonical entry price and preserve schema bounds",
+      "location": "tests/seo-pricing-consistency.test.js:58:1"
+    },
+    {
+      "test": "discipline landing schema publishes only the visible entry price",
+      "location": "tests/seo-pricing-consistency.test.js:98:1"
+    },
+    {
+      "test": "article and short-text CTAs open the advertised editing tier",
+      "location": "tests/seo-pricing-consistency.test.js:142:1"
+    },
+    {
+      "test": "promo cache wave is atomic on both eligible entry routes",
+      "location": "tests/september-entry-readiness.test.js:30:1"
+    },
+    {
+      "test": "application entry and terminal promise use the current three-step contract",
+      "location": "tests/september-entry-readiness.test.js:40:1"
+    },
+    {
+      "test": "course detail sends one explicit, prefilled intent into the configurator",
+      "location": "tests/service-detail-journey.test.js:12:1"
+    },
+    {
+      "test": "course detail uses the shared dossier treatment in both themes and on mobile",
+      "location": "tests/service-detail-journey.test.js:22:1"
+    },
+    {
+      "test": "fresh services state requires one selected situation before one continuation",
+      "location": "tests/services-choice-contract.test.js:101:1"
+    },
+    {
+      "test": "saved progress owns the primary action and reveals a fresh selector secondarily",
+      "location": "tests/services-choice-contract.test.js:163:1"
+    },
+    {
+      "test": "configurator keeps an incoming route until explicit conflict resolution and restores focus",
+      "location": "tests/services-choice-contract.test.js:194:1"
+    },
+    {
+      "test": "catalog search includes discipline links before declaring an empty result",
+      "location": "tests/services-choice-contract.test.js:236:1"
+    },
+    {
+      "test": "physical catalog inventory and ItemList remain exact",
+      "location": "tests/services-choice-contract.test.js:247:1"
+    },
+    {
+      "test": "detail configurator actions carry one explicit allowlisted URL intent without draft mutation",
+      "location": "tests/services-choice-contract.test.js:261:1"
+    },
+    {
+      "test": "discipline detail routes preserve their canonical visible entry price",
+      "location": "tests/services-choice-contract.test.js:295:1"
+    },
+    {
+      "test": "hub promises match referat editing truth and practice rework carries full context",
+      "location": "tests/services-choice-contract.test.js:344:1"
+    },
+    {
+      "test": "all 24 catalog consumers use one OUT-005 cache key",
+      "location": "tests/services-choice-contract.test.js:360:1"
+    },
+    {
+      "test": "all 95 root documents resolve to one explicit delivery and shell family",
+      "location": "tests/shared-shell-contract.test.js:105:1"
+    },
+    {
+      "test": "saved theme is bootstrapped before app runtime on every public route",
+      "location": "tests/shared-shell-contract.test.js:132:1"
+    },
+    {
+      "test": "consent settings remain available on every public route and are truly modal",
+      "location": "tests/shared-shell-contract.test.js:145:1"
+    },
+    {
+      "test": "shared shell and OUT-005 runtime changes keep atomic cache waves and home parity",
+      "location": "tests/shared-shell-contract.test.js:203:1"
+    },
+    {
+      "test": "вспомогательные маршруты используют один изолированный финальный слой",
+      "location": "tests/supporting-pages-polish15.test.js:24:1"
+    },
+    {
+      "test": "книга благодарностей содержит весь исходный архив и доступный просмотр",
+      "location": "tests/supporting-pages-polish15.test.js:52:1"
+    },
+    {
+      "test": "home keeps the from-zero route without turning the first screen into a price catalog",
+      "location": "tests/zero-start-business-model-regression.test.js:9:1"
+    },
+    {
+      "test": "the brand promise now matches the research-case model",
+      "location": "tests/zero-start-business-model-regression.test.js:20:1"
+    },
+    {
+      "test": "calculator and configurator expose supported work without weakening authorship",
+      "location": "tests/zero-start-business-model-regression.test.js:24:1"
+    },
+    {
+      "test": "tariff catalog exposes all five promised entry prices and routes them to the full project tier",
+      "location": "tests/zero-start-business-model-regression.test.js:37:1"
+    }
+  ]
+}

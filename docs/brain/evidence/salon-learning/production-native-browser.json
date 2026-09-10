@@ -1,0 +1,15 @@
+{
+  "release": "release190-1940537d",
+  "source_commit": "1940537dc441f75551dbfde47274fd68ad13064b",
+  "browser": "Codex in-app browser",
+  "checks": {
+    "knowledge": "Live search практика immediately renders 3/3 matching articles; URL contains only release version, not search text.",
+    "check": "Built-in example 281 chars yields 35 words,2 sentences,5 concrete findings and copy/editor CTA. No customer input or submission."
+  },
+  "navigation_incident": "First native check navigation timed out and displayed existing offline fallback. Explicit Try again succeeded immediately; actual tool interaction then verified. Server readback and 14/14 smoke succeeded; cause not established. Do not count failed initial navigation as success.",
+  "limits": [
+    "No real bank charge, gift issuance or customer lead created.",
+    "Mobile and keyboard checked in emulated browser, not physical phone."
+  ],
+  "cleanup": "Own Playwright browser and all three preview servers 8771/8772/8773 stopped; SSH control connection closed; native output tab left on published check page."
+}

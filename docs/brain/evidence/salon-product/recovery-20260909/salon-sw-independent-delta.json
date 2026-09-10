@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "precacheReload": 5,
+  "apiBypass": [
+    "/api/health",
+    "/api/payment",
+    "/api/orders",
+    "/api/auth/session"
+  ],
+  "postAndCrossOriginBypass": true,
+  "privatePages": [
+    "/dashboard",
+    "/dashboard.html?order=synthetic",
+    "/admin",
+    "/admin-payments.html",
+    "/oplaceno.html?payment=synthetic"
+  ],
+  "privateNetworkWrites": 0,
+  "scopedLookupsOnly": true,
+  "publicNetworkCacheWrites": 1,
+  "sourceSha256": "598df2188c33707fcd7d2a8fadf9e99a6b82943969c542aacc9757a6aabc4e8d",
+  "matches": [
+    {
+      "url": "http://salon.test/about.html",
+      "cacheName": "salon-pages-20260806shell123"
+    },
+    {
+      "url": "/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "/offline.html",
+      "cacheName": "salon-shell-20260806shell123"
+    },
+    {
+      "url": "http://salon.test/assets/js/app.js?v=new",
+      "cacheName": "salon-shell-20260806shell123"
+    }
+  ],
+  "pwa_test": {
+    "passed": 6,
+    "failed": 2,
+    "failures": [
+      "manifest absent on referral.html/referral-rules.html",
+      "manifest/worker family assertion consequently fails"
+    ],
+    "baseline": "Both files byte-identical to HEAD and lack manifest there too; outside SW delta"
+  },
+  "scope_verdict": "GO for reviewed SW correction; whole raw-tree PWA suite is not green"
+}
