@@ -75,3 +75,11 @@
 - Validation: Salon28store/privacy tests PASS; Brain validation VALID. Kladovaya lint and332tests PASS. Fresh origin canonical e53d11 unchanged;0hard/0blocking,59disjoint terminal-worktree warnings explicitly accepted. Evidence root: /Users/saymurrbk.ru/Documents/ChatGPT/Кладовая ГИПСР/library-complete-2026-09-11.
 - Release plan: copy actual liveSalon207then overlay4files; Klad fresh built bundle and6exact free-download exceptions. Verify file hashes, preflight, atomic forward/rollback/forward, archive gate and real public readback. Do not restore commerce database or charge owner. Private Sites mirror unchanged; publication is separate from canonical main integration.
 - Next: deploy these validated exact bundles and record live/rollback results in this task evidence.
+
+## Current design and full library · production completed
+
+- Salon release208-store-current-0e05ce04 live:4overlaid files,454unrelated static files and all backend source byte-identical. Static forward/rollback/forward PASS; six current global assets independently match the verified modern reference.
+- Kladovaya 20260911-library-complete-378b05c live:919files hash-verified, preflight and source/config forward/rollback/forward PASS. Six exact free-file exceptions added; all10old/new public PDF/DOCX downloads verified without cookie; other download gate remains302. Search cache64items includes all3new work pages.
+- Public external readback:19static/free/preview hashes,3material pages,library,shop bridge,12paid previews PASS. Checkout enabled; complete4-product catalogue including prices and inventory exactly matches pre-release snapshot. Root live browser confirmed4buy buttons,reader,Escape-focus,0console errors/overflow/broken images. No purchase, invoice, payment or paid-state fixture created.
+- Evidence: library-complete-2026-09-11/qa/verification.json and deployment/{salon-result,klad-result,public-readback,shared-assets-readback}.json. Final documents8/9/11pages,28pages visual PASS. Source task branches pushed; frozen implementation0e05ce04 remains submitted, no canonical integration claimed.
+- Next: use real consented visit and order evidence to evaluate the new free-library entry path. No new scheduled task or revenue uplift claim.
