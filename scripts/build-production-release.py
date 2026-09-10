@@ -132,6 +132,14 @@ def build_overlay(repo, revision, baseline, output):
  for page in json.loads(knowledge_bytes)['pages']:
   if before.get(page['url'].lstrip('/'))!=page['sha256']:raise ValueError('knowledge is not from exact published baseline: '+page['url'])
  for name in patches:files[name]=subprocess.check_output(['git','show',commit+':'+name],cwd=repo)
+ # The standalone store previously omitted the shared helper and PWA shell metadata.
+ # Add only runtime entrypoints and installation metadata; preserve every body byte.
+ for name in ('shop.html','shop-terms.html'):
+  page=files[name].decode()
+  if re.search(r'<script[^>]+src=["\'][^"\']*assets/js/app.js',page):raise ValueError('store runtime already changed')
+  extra='<link rel="manifest" href="/manifest.webmanifest?v=20260806shell123"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Академсалон"><link rel="apple-touch-icon" href="/assets/img/icon-192.png"><script src="/assets/js/app.js?v=listik20260911" defer></script>'
+  if page.count('</head>')!=1:raise ValueError('unexpected store document')
+  files[name]=page.replace('</head>',extra+'</head>').encode()
  version='production-'+commit[:12]
  for name,data in list(files.items()):
   if PurePosixPath(name).suffix in ('.html','.js','.css','.webmanifest'):
@@ -151,7 +159,7 @@ def build_overlay(repo, revision, baseline, output):
  output.mkdir(parents=True)
  for name,data in files.items():
   dest=output/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
- manifest={'source_commit':commit,'baseline_archive_sha256':sha(baseline.read_bytes()),'baseline_release':'release207-store-design-36b11ec7','assistant_knowledge_sha256':sha(knowledge_bytes),'shell_version':version,'patches':patches,'before_files':before,'files':{n:sha(b) for n,b in sorted(files.items())},'transform':'six assistant assets; shared shell cache generation; HTML asset fingerprints only'}
+ manifest={'source_commit':commit,'baseline_archive_sha256':sha(baseline.read_bytes()),'baseline_release':'release207-store-design-36b11ec7','assistant_knowledge_sha256':sha(knowledge_bytes),'shell_version':version,'patches':patches,'before_files':before,'files':{n:sha(b) for n,b in sorted(files.items())},'transform':'six assistant assets; store helper/PWA head entrypoints; shared shell cache generation; HTML asset fingerprints'}
  receipt=output.with_suffix('.manifest.json');receipt.write_text(json.dumps(manifest,indent=2)+'\n')
  archive=output.with_suffix('.tar.gz')
  with tarfile.open(archive,'w:gz',format=tarfile.PAX_FORMAT) as tar:
