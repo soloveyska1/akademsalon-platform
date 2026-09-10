@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-c2f3182451894c5fad8c18f24493a68d",
   "slug": "salon-admin-rebuild",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-admin-rebuild",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
-  "result_sha": null,
+  "result_sha": "bb88f7d6c33c8f7fef91ba4be9c4d03b9def77ab",
   "outcome_ids": [
     "OUT-006"
   ],
@@ -1049,6 +1049,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "3b75a7418637dc43d63d39d142979b820b58ec2fde905650fff337f84a64a88b"
 }
