@@ -137,7 +137,7 @@ def build_overlay(repo, revision, baseline, output):
  for name in ('shop.html','shop-terms.html'):
   page=files[name].decode()
   if re.search(r'<script[^>]+src=["\'][^"\']*assets/js/app.js',page):raise ValueError('store runtime already changed')
-  extra='<link rel="manifest" href="/manifest.webmanifest?v=20260806shell123"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Академсалон"><link rel="apple-touch-icon" href="/assets/img/icon-192.png"><script src="/assets/js/app.js?v=listik20260911" defer></script>'
+  extra='<link rel="manifest" href="/manifest.webmanifest?v=20260806shell123"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Академсалон"><link rel="apple-touch-icon" href="/assets/img/icon-192.png"><script src="/assets/js/app.js?v=listik20260911" data-salon-assistant-only defer></script>'
   if page.count('</head>')!=1:raise ValueError('unexpected store document')
   files[name]=page.replace('</head>',extra+'</head>').encode()
  version='production-'+commit[:12]

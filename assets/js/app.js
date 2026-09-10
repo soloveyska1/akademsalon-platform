@@ -7,6 +7,7 @@
    ============================================================ */
 (function () {
   'use strict';
+  var ASSISTANT_ONLY = !!document.currentScript?.hasAttribute('data-salon-assistant-only');
   var docEl = document.documentElement;
   docEl.classList.add('has-js');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -28,7 +29,7 @@
      Так одна геометрия телефона побеждает поздние локальные правила
      главной, каталога, кабинета и конфигуратора. */
   (function mobileEdition() {
-    if (document.querySelector('link[data-mobile-edition]')) return;
+    if (ASSISTANT_ONLY || document.querySelector('link[data-mobile-edition]')) return;
     var link = document.createElement('link');
     var source = document.currentScript && document.currentScript.src;
     link.rel = 'stylesheet';
@@ -874,6 +875,7 @@
      ============================================================ */
   (function marginalia() {
     'use strict';
+    if (ASSISTANT_ONLY) return;
     var S = window.Salon || (window.Salon = {});
     var docEl = document.documentElement;
     var here = (location.pathname.split('/').pop() || 'index.html');
@@ -2374,7 +2376,7 @@
      бренд · Цены · Гарантии · Отзывы · Клуб · Полезные материалы · тема · «Рассчитать» · «Меню».
      На главной «Рассчитать» ведёт к смете на странице, дальше — в конфигуратор. */
   /* админка — рабочий стол мастера: маркетинговый каркас сайта там ни к чему */
-  var CHROME_OFF = here === 'admin.html' || here === 'admin-mock.html' || document.body.classList.contains('salon-workspace');
+  var CHROME_OFF = ASSISTANT_ONLY || here === 'admin.html' || here === 'admin-mock.html' || document.body.classList.contains('salon-workspace');
   if (!CHROME_OFF && !document.querySelector('.site-header')) {
     var header = document.createElement('header');
     var accountChrome = document.body.classList.contains('is-account-route');

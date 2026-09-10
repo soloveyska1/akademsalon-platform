@@ -45,6 +45,11 @@ class Concierge(unittest.TestCase):
         r=assistant.answer('Что дальше?',{'id':77,'status':'prepay','claimed':True});self.assertIn('Не оплачивай повторно',r['answer'])
     def test_unknown_has_specific_next_step(self):
         r=assistant.answer('Можете подготовить перевод с суахили?');self.assertTrue(r['handoff']);self.assertNotIn('можем перевести',r['answer'].lower())
+    def test_store_economics_remain_separate(self):
+        r=assistant.answer('Какие скидки есть?',context={'page':'/shop.html'})
+        self.assertEqual(r['source'],'store');self.assertNotIn('ПЕРВЫЙЛИСТ',r['answer']);self.assertIn('/shop-terms.html',[s['url'] for s in r['sources']])
+        self.assertEqual(assistant.answer('Где скачать купленные материалы?')['source'],'store')
+        self.assertEqual(assistant.answer('Получил чек, но платёж завис',context={'page':'/shop.html'})['source'],'payment_issue')
     def test_guarded_installer_roundtrip_and_source_drift(self):
         import tempfile,subprocess,importlib.util
         spec=importlib.util.spec_from_file_location('listik_installer',Path(__file__).resolve().parents[1]/'install_assistant_concierge.py')

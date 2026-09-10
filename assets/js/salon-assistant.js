@@ -98,7 +98,7 @@
     setBusy(true);const pending=entry('');pending.classList.add('sa-pending');pending.querySelector('p').innerHTML='<span class="sa-thinking" aria-label="Листик ищет ответ"><i></i><i></i><i></i></span>';
     let timer;
     try{
-      const body={question,context:{...context,intake_open:!!orderFrame}};if(requestedOrder)body.order_id=requestedOrder;
+      const body={question,context:{...context,intake_open:!!orderFrame,page:location.pathname}};if(requestedOrder)body.order_id=requestedOrder;
       const result=await Promise.race([A.post('/assistant/answer',body,authHeaders()),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('timeout')),25000);})]);
       if(generation!==epoch||requestedOrder!==currentOrder)return;
       pending.remove();
