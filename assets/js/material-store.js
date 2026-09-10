@@ -17,7 +17,27 @@
     send_failed:'Письмо не отправилось. Попробуй ещё раз или войди через Telegram.', csrf:'Сессия истекла. Начни вход через Telegram или обнови страницу.',
   };
   let products = [], authenticated = false, enabled = false, terms = '', selected = null, quote = null, requestKey = null;
-  let readerState=null, cardFilter='all';
+  let readerState=null, cardFilter='all', searchQuery='', displaySku='social-pedagogy';
+  const SAVED_KEY='salon_material_saved_v1';
+  let saved=new Set();try{const v=JSON.parse(localStorage.getItem(SAVED_KEY)||'[]');if(Array.isArray(v))saved=new Set(v.filter(x=>typeof x==='string'&&/^[a-z0-9-]{1,70}$/.test(x)).slice(0,50));}catch{}
+  const covers={
+    'social-pedagogy':{title:'Социальная\nпедагогика',kind:'14 заданий с разбором',tone:'violet',tab:'Педагогика'},
+    'social-work-tech':{title:'Технологии\nсоциальной\nработы',kind:'Комплект третьего семестра',tone:'lilac',tab:'Соцработа'},
+    'housing-first':{title:'Housing\nFirst',kind:'Социальная работа в Финляндии',tone:'green',tab:'Housing First'},
+    'psycholinguistics':{title:'Выготский.\nМысль\nи слово.',kind:'Основы психолингвистики',tone:'paper',tab:'Выготский'}
+  };
+  const coverFor=p=>covers[p.sku]||{title:p.title,kind:'Учебный комплект',tone:'paper',tab:p.title};
+  const normalize=v=>String(v).toLocaleLowerCase('ru-RU').replaceAll('ё','е');
+  function matchesProduct(p){const tokens=normalize(searchQuery).trim().split(/\s+/).filter(Boolean);const text=normalize([p.title,p.description,p.programme,...p.contents].join(' '));return tokens.every(x=>text.includes(x))&&(cardFilter==='all'||cardFilter==='saved'&&saved.has(p.sku)||cardFilter==='speech'&&p.programme.startsWith('44.')||cardFilter==='social'&&!p.programme.startsWith('44.'));}
+  function coverMarkup(p){const c=coverFor(p);return `<span class="ms-book-eyebrow">ГИПСР · ${esc(p.semester)} семестр</span><strong>${esc(c.title).replaceAll('\n','<br>')}</strong><span class="ms-book-kind">${esc(c.kind)}</span><span class="ms-book-signature">а. <small>Академический<br>Салон</small><span>PDF<br>+ Word</span></span>`;}
+  function renderShowcase(){
+    const p=products.find(x=>x.sku===displaySku)||products[0];if(!p){$('hero-preview').disabled=true;$('hero-preview').setAttribute('aria-label','Комплекты пока недоступны');$('feature-price').textContent='';$('feature-tabs').innerHTML='';$('feature-cover').innerHTML='<span class="ms-book-eyebrow">Учебная полка</span><strong>Готовим<br>материалы</strong>';$('feature-note').textContent='Новые комплекты появятся после проверки.';return;}displaySku=p.sku;
+    $('hero-preview').disabled=false;$('hero-preview').dataset.tone=coverFor(p).tone;$('hero-preview').setAttribute('aria-label','Полистать: '+p.title);
+    $('feature-cover').innerHTML=coverMarkup(p);$('feature-price').textContent=money(p.price);$('feature-note').textContent=p.page_label+' · PDF + Word';
+    $('feature-tabs').innerHTML=products.map(x=>`<button type="button" data-feature="${esc(x.sku)}" aria-pressed="${x.sku===displaySku}">${esc(coverFor(x).tab)}</button>`).join('');
+  }
+  function toggleSaved(sku){if(!products.some(p=>p.sku===sku))return;if(saved.has(sku))saved.delete(sku);else saved.add(sku);try{localStorage.setItem(SAVED_KEY,JSON.stringify([...saved]));}catch{notice('Полка сохранена до закрытия страницы: браузер не разрешил постоянное сохранение.');}renderCards();const b=[...document.querySelectorAll('[data-save]')].find(x=>x.dataset.save===sku);(b||$('store-search')).focus();}
+
   const PROMO_END=1790802000000;
   let checkoutGeneration=0, interactionGeneration=0, demandPending=false, demandKey=null;
   let telegramTimer = null, accountTimer = null, busy = false, quoteSequence = 0, catalogueSequence = 0, loginCompleting = false;
@@ -40,10 +60,13 @@
   const pagesFor=p=>(p.previews||[]).filter(x=>/^\/assets\/store\/[a-z0-9/_-]+\.(png|webp|jpg)$/.test(x.path));
   function renderCards() {
     const expanded=new Set([...document.querySelectorAll('.product-card:has(.card-details[open])')].map(x=>x.id));
-    const shown=products.filter(p=>cardFilter==='all'||(cardFilter==='speech')===p.programme.startsWith('44.'));
-    $('products').innerHTML=shown.map(p=>`<article class="product-card" id="${esc(p.sku)}"><button type="button" class="card-visual" data-preview="${esc(p.sku)}" aria-label="Посмотреть страницы: ${esc(p.title)}"><span class="visual-label">${p.programme.startsWith('44.')?'Логопедия':'Социальная работа'}<span>${esc(p.semester)} семестр</span></span><img src="${esc(pagesFor(p)[0]?.path||'')}" alt="Фрагмент: ${esc(p.title)}" loading="lazy"><span class="visual-open">Полистать ${pagesFor(p).length} фрагмента <span>↗</span></span></button><div class="card-body"><h3>${esc(p.title)}</h3><p class="meta">${esc(p.page_label)} · PDF + Word</p><details class="card-details" ${expanded.has(p.sku)?'open':''}><summary>Состав и требования</summary><p>${esc(p.description)}</p><ul>${p.contents.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p>${esc(p.requirements_label)}</p><a href="${esc(safeSource(p.source_url))}" target="_blank" rel="noopener">Открыть РПД ↗</a></details><div class="foot"><span class="price">${money(p.price)}</span><span class="stock">${p.available?`${p.available} из ${p.licences} лицензий доступны`:'Свободных лицензий сейчас нет'}${p.reserved?`<br>Сейчас в брони: ${p.reserved}`:''}</span></div><div class="card-actions"><button type="button" class="button secondary" data-preview="${esc(p.sku)}">Смотреть</button><button type="button" class="button" data-buy="${esc(p.sku)}" ${!enabled||!p.available?'disabled':''}>${!p.available?'Нет лицензий':'Выбрать комплект ↗'}</button></div><p class="card-note">Личная неэксклюзивная лицензия · скачивание в кабинете</p></div></article>`).join('');
-    $('hero-preview').disabled=!products.some(p=>p.sku==='social-pedagogy');
-    readerChoice();
+    const shown=products.filter(matchesProduct);
+    $('products').innerHTML=shown.map(p=>`<article class="product-card ms-card" id="${esc(p.sku)}" data-tone="${coverFor(p).tone}"><div class="ms-card-top"><button type="button" class="ms-mini-book" data-preview="${esc(p.sku)}" aria-label="Посмотреть страницы: ${esc(p.title)}">${coverMarkup(p)}<span class="ms-mini-open">Полистать ↗</span></button><div class="ms-card-summary"><div class="ms-card-tags"><span>${p.programme.startsWith('44.')?'Логопедия':'Социальная работа'} · ${esc(p.semester)} семестр</span><button class="ms-save" data-save="${esc(p.sku)}" type="button" aria-pressed="${saved.has(p.sku)}" aria-label="${saved.has(p.sku)?'Убрать с полки':'Сохранить на полку'}: ${esc(p.title)}"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z" fill="${saved.has(p.sku)?'currentColor':'none'}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button></div><h3>${esc(p.title)}</h3><p class="meta">${esc(p.page_label)} · PDF + Word</p><ul class="ms-contents">${p.contents.slice(0,3).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div><div class="ms-card-bottom"><details class="card-details" ${expanded.has(p.sku)?'open':''}><summary>Полный состав и требования</summary><p>${esc(p.description)}</p><ul>${p.contents.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p>${esc(p.requirements_label)}</p><p>У себя сверь точную тему, дополнительные указания преподавателя и срок.</p><a href="${esc(safeSource(p.source_url))}" target="_blank" rel="noopener">Открыть РПД ↗</a></details><div class="ms-price-row"><strong class="price">${money(p.price)}</strong><span class="stock">${p.available?'Доступен для покупки':'Свободных лицензий нет'}${p.sold>0?` · Продано лицензий: ${Number(p.sold)}`:''}</span></div><div class="card-actions"><button type="button" class="button secondary" data-preview="${esc(p.sku)}">Полистать</button><button type="button" class="button" data-buy="${esc(p.sku)}" ${!enabled||!p.available?'disabled':''}>${!enabled?'Оплата закрыта':!p.available?'Нет лицензий':`Выбрать за ${money(p.price)} ↗`}</button></div><p class="card-note">Личная неэксклюзивная лицензия · ${Number(p.available)} из ${Number(p.licences)} доступны${p.reserved?` · в брони ${Number(p.reserved)}`:''}</p></div></article>`).join('');
+    renderShowcase();readerChoice();
+    const savedCount=products.filter(x=>saved.has(x.sku)).length;$('saved-count').textContent=String(savedCount);
+    $('filter-result').textContent=cardFilter==='saved'?`На твоей полке: ${shown.length}. Сохраняется в этом браузере.`:`Найдено комплектов: ${shown.length}`;
+    $('reset-filters').hidden=cardFilter==='all'&&!searchQuery;$('catalogue-empty').hidden=shown.length>0||!products.length;
+    $('empty-title').textContent=cardFilter==='saved'&&!searchQuery?'Твоя полка пока пуста':'Пока нет такого комплекта';$('empty-copy').textContent=cardFilter==='saved'&&!searchQuery?'Нажми на закладку у подходящего комплекта. Он останется здесь, когда вернёшься с этого браузера.':'Попробуй другой запрос или загляни в бесплатную библиотеку. Свою тему можно передать Салону.';
     $('catalogue-status').hidden=enabled&&products.length>0;
     if(!enabled)$('catalogue-status').textContent='Оформление временно закрыто. Состав и предпросмотр доступны.';
     else if(!products.length)$('catalogue-status').textContent='Новые материалы проходят проверку. Загляни позже.';
@@ -124,7 +147,7 @@
     finally {loginCompleting=false;}
   }
   async function loadSession() { try {const d=await api('/api/auth/session');if(d.authenticated)await afterLogin();}catch{} }
-  $('products').addEventListener('click', e=>{const previewButton=e.target.closest('[data-preview]');const buy=e.target.closest('[data-buy]');if(previewButton)preview(previewButton.dataset.preview);if(buy)void choose(buy.dataset.buy);});
+  $('products').addEventListener('click', e=>{const save=e.target.closest('[data-save]');if(save){toggleSaved(save.dataset.save);return;}const previewButton=e.target.closest('[data-preview]');const buy=e.target.closest('[data-buy]');if(previewButton)preview(previewButton.dataset.preview);if(buy)void choose(buy.dataset.buy);});
   document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
   $('checkout-dialog').addEventListener('close',closeCheckout);
   $('checkout-dialog').addEventListener('cancel',closeCheckout);
@@ -167,8 +190,16 @@
   $('verify-code').addEventListener('click',async()=>{const b=$('verify-code');if(b.disabled)return;b.disabled=true;try{await api('/api/auth/email/verify',{email:$('email').value,code:$('code').value},{'X-Session-Mode':'cookie'});await afterLogin(true);}catch(e){$('login-status').textContent=e.message;}finally{b.disabled=false;}});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){void loadAccount();void loadCatalog();}});
   if(new URLSearchParams(location.search).has('Shp_store')) { history.replaceState(null,'',location.pathname+'#purchases'); $('account-status').textContent='Проверяем подтверждение оплаты. Войди тем же способом, которым оформлял покупку.'; }
-  $('hero-preview').addEventListener('click',()=>preview('social-pedagogy'));
-  $('shop-filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;cardFilter=b.dataset.filter;if(!['all','social','speech'].includes(cardFilter))return;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderCards();});
+  $('hero-preview').addEventListener('click',()=>preview(displaySku));
+  $('feature-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-feature]');if(!b||!products.some(p=>p.sku===b.dataset.feature))return;displaySku=b.dataset.feature;renderShowcase();[...document.querySelectorAll('[data-feature]')].find(x=>x.dataset.feature===displaySku)?.focus();});
+  $('store-search').addEventListener('input',()=>{searchQuery=$('store-search').value;renderCards();});
+  $('reset-filters').addEventListener('click',()=>{cardFilter='all';searchQuery='';$('store-search').value='';document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.filter==='all')));renderCards();$('store-search').focus();});
+  const proofLabels={'41':'О длительном сотрудничестве','43':'Об оперативности','47':'Впечатление после чтения'};let proofOpener=null;
+  $('store-reviews').addEventListener('click',e=>{const b=e.target.closest('[data-proof]'),id=b?.dataset.proof;if(!Object.hasOwn(proofLabels,id||''))return;proofOpener=b;$('proof-title').textContent=proofLabels[id];$('proof-image').src='/assets/img/reviews/review-'+id+'.webp';$('proof-dialog').showModal();});
+  $('proof-close').addEventListener('click',()=>$('proof-dialog').close());
+  $('proof-dialog').addEventListener('close',()=>{proofOpener?.focus();});
+
+  $('shop-filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;cardFilter=b.dataset.filter;if(!['all','social','speech','saved'].includes(cardFilter))return;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderCards();});
   $('preview-content').addEventListener('click',async e=>{const b=e.target.closest('[data-reader]');if(!b||!readerState)return;const action=b.dataset.reader;if(action==='prev')moveReader(-1);if(action==='next')moveReader(1);if(action==='zoom'){readerState.zoom=!readerState.zoom;readerPage();}if(action==='buy'&&!$('reader-buy').disabled){const sku=readerState.product.sku;$('preview-dialog').close();await choose(sku);}});
   $('preview-dialog').addEventListener('keydown',e=>{if(!readerState)return;if(readerState.zoom&&e.target===$('reader-page'))return;if(e.key==='ArrowRight'){e.preventDefault();moveReader(1);}if(e.key==='ArrowLeft'){e.preventDefault();moveReader(-1);}});
   $('preview-dialog').addEventListener('close',()=>{const opener=readerState?.opener,sku=readerState?.product.sku;readerState=null;if(!$('checkout-dialog').open){const fallback=[...document.querySelectorAll('[data-preview]')].find(b=>b.dataset.preview===sku);(opener?.isConnected?opener:fallback||$('hero-preview')).focus();}});
