@@ -1,12 +1,15 @@
 # Workstream handoff
 
-- Branch: `codex/material-catalogue-20260910`
-- Scope decision: preserve all existing release202 pages; deploy only additive shop files. Earlier unused declaration was abandoned because index.html overlaps active design branches.
-- Outcomes: `OUT-006`
-- Goal: launch original study-material catalogue with automatic Robokassa payment and private delivery; connect Kladovaya acquisition to the live Salon journey.
-- Acceptance: genuine finite licences; idempotent checkout and signed callback; account-bound private downloads; bounded purchase-funded bonuses; production preserves release202; preview never exposes full files.
-- Proof: SQLite concurrency and state-transition tests, authorization and replay fixtures, source/requirements and all-page document QA, independent payment and growth reviews, staged and live GET smoke, exact file hashes.
-- Changed: none yet.
-- Unverified: implementation not started.
-- Risks/rollback: additive backend module and private files; source backup and atomic static release based on live release202. Never restore a production database over newer payments. Do not publish checkout until provider configuration and automatic delivery are verified.
-- Next: commit declaration, check conflicts, implement additive module and storefront.
+- Branch: `codex/material-catalogue-20260910`; declared base `e53d11cea40055f2dae41a0f212cbbac4c79055f` (`origin/main`).
+- Outcome: OUT-006. Write owner: root. Prior overlapping index.html declaration was abandoned; all existing static files are preserved.
+- Live baseline re-read 10 September: release203-09ccfca4. Backend webapp SHA256 `5a02910a88f10db3b96accd3602534c8a9db60cc4175184bee429070d400c3ab`.
+- Changed: additive catalogue, protected page previews, existing email/Telegram account login, real finite licences, reservations, immutable quote/receipt, signed payment namespace, private downloads, durable delivery, capped bonus ledger and achievements, exact-source installer and host-only refund reconciliation.
+- Four original deliverables are QA-approved. Customer DOCX/PDF/ZIP files and private manifest are outside the public repository. Public assets contain only three selected rasters per product and product metadata.
+- Proof: 18 core tests; 19 independent HTTP/provider/CLI tests; Brain39 tests and validation PASS. Independent growth review reproduced and closed narrow-screen clipping, stale quote race, incorrect adaptation route and asynchronous hash navigation. Both payment and growth reviewers report no remaining confirmed P0/P1 in the reviewed scope.
+- Evidence root: `/Users/saymurrbk.ru/Documents/ChatGPT/Кладовая ГИПСР/store-launch-2026-09-10/` (payment-review, growth-review, products, research, deployment).
+- Economics: 1490/1190/790/690 RUB, five licences each. Combined applied discount <=10%; rewards <=5% of actual cash. Seasonal СЕМЕСТР5% through30September, repeatable on another purchase. No guaranteed grades, exclusive-copy claims, fabricated data or paid repackaging of the free library.
+- Closed launch gate: merchant production payments are configured, but refund Password3 and the isolated test password pair are absent. The one-off safe probe made zero invoice calls. Robokassa login is open in Yandex and awaits the account owner. No real money moved, no live purchase, and no promotional post published.
+- Checkout stays closed through runtime guards and manifest. Provider Indexjson with exact URL modifiers, real receipt/payment/delivery and real refund are not yet live-verified. External merchant-cabinet refunds require evidence because the provider lacks invoice-wide discovery; ambiguous Create is never retried automatically.
+- Deployment decision: install a closed catalogue and independently verified Kladovaya traffic/search improvements; preserve release203 by additive overlay. Do not advertise open sales before merchant readiness and an observed payment journey.
+- Rollback: source-only backup plus current static symlink; never restore SQLite over later payments. After checkout opens, retain handlers for existing invoices even if new checkout is closed.
+- Next: finish exact release checks, deploy closed catalogue, complete Robokassa configuration after owner login, verify payment and publish the prepared video/post.
