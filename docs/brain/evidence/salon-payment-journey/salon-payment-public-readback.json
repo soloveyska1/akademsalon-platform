@@ -1,0 +1,42 @@
+{
+  "source_commit": "09ccfca4477cc3fb0431f1c26e64e331d2230da6",
+  "checks": [
+    {
+      "path": "dashboard.html",
+      "match": true
+    },
+    {
+      "path": "assets/js/salon-workspace.js",
+      "match": true
+    },
+    {
+      "path": "assets/js/salon-payment-domain.js",
+      "match": true
+    },
+    {
+      "path": "assets/js/salon-order-domain.js",
+      "match": true
+    },
+    {
+      "path": "assets/css/salon-workspace.css",
+      "match": true
+    },
+    {
+      "path": "admin.html",
+      "match": true
+    },
+    {
+      "path": "configurator.html",
+      "match": true
+    }
+  ],
+  "health": {
+    "ok": true,
+    "uptime_s": 62,
+    "active_orders": 38,
+    "uploads": {
+      "pending": 0,
+      "delayed": 0
+    }
+  }
+}

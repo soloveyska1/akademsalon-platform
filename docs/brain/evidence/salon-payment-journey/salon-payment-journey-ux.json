@@ -1,0 +1,80 @@
+{
+  "decision": "GO",
+  "reviewed_at": "2026-09-10T01:33:47.762339+00:00",
+  "scope": "Independent frontend UX and synthetic checkout flow; no real API mutations, no payment provider or production settlement certification",
+  "source_root": "/Users/saymurrbk.ru/.codex/worktrees/salon-payment-journey",
+  "head": "09ccfca4477cc3fb0431f1c26e64e331d2230da6",
+  "sha256": {
+    "dashboard.html": "92715a6f363778b5c57388719134a87050a3f55ee268b151ea0976d0d5732fa3",
+    "assets/js/salon-payment-domain.js": "ac931664aa350a93a6de7acc2ecfb2a61671dd509a11cd335e2ab1505be53a32",
+    "assets/js/salon-order-domain.js": "22fb7c6bbcd452118846137e765315f93ccbe9604b717fe7406666906dd3194b",
+    "assets/js/salon-workspace.js": "194226f04a985bfaac47886db753eb88c4373c31c80a269e005abe947c50fc45",
+    "assets/css/salon-workspace.css": "8b3a8b3fb2f4066c575627011eb8bcc7ca251e9826ecddd6d1a00d0d531a2d2d"
+  },
+  "environment": {
+    "url": "http://127.0.0.1:8781/dashboard.html",
+    "browser": "Chromium, own salon-payment-ux session; fresh context serviceWorkers=block",
+    "fixtures": "/tmp/payment-ux-setup.js",
+    "mutations": "All external traffic blocked; local POSTs intercepted synthetic only; unknown POSTs denied"
+  },
+  "checks": {
+    "offer_geometry": "16 states: 320/390/768/1440, light/dark, savings closed/open; no horizontal overflow or page errors",
+    "offer_flow": "Invalid promo preserves input and displays reason; QA6000 changes 45000 to39000; bonus2000 to37000; explicit accept with revision and request_id; due18500 then18500; exact pay snapshot/hash/amount; provider-block error stays same order, no Telegram",
+    "state_matrix": "8 states: unfrozen, claimed, working, second stage, closed, non-owner, gift covered, missing amount. Buttons align with synthetic server eligibility; no forced payment for unknown/unfrozen/claimed/closed.",
+    "guards": "Stable nonce for identical failed retries; late success after hash change does not navigate; auth loss prevents late private UI resurrection; benefit refresh focuses total",
+    "cards": "8 states: 390/1440 light/dark home/orders; normalized number, next-year dates, long labels, separate arrows. Long freeform deadline now fully inside card."
+  },
+  "closed_findings": [
+    {
+      "id": "terms-accept",
+      "severity": "P1",
+      "resolution": "Only explicit offer acceptance form; legacy terms accept action removed"
+    },
+    {
+      "id": "refresh-locked",
+      "severity": "P1",
+      "resolution": "Refresh quote action gated by can_benefit; claimed and closed do not show it"
+    },
+    {
+      "id": "unfrozen-pay",
+      "severity": "P2",
+      "resolution": "Pay disabled until exact frozen snapshot or explicit legacy ready"
+    },
+    {
+      "id": "refresh-focus",
+      "severity": "P2",
+      "resolution": "Post-benefit refresh focuses .ws-checkout-total; guard evidence supersedes initial flow BODY focus"
+    },
+    {
+      "id": "number-prefix",
+      "severity": "P2",
+      "resolution": "P.number shared by folios/rows/passport/documents/dialog; browser № №901→№901"
+    },
+    {
+      "id": "freeform-date",
+      "severity": "P2",
+      "resolution": "Mobile status wraps, deadline normal white-space; right312.48 within cardRight371 at390, no clipping"
+    }
+  ],
+  "open_findings": [],
+  "evidence": {
+    "matrix": "/tmp/payment-ux-matrix.json",
+    "flow": "/tmp/payment-ux-flow.json",
+    "state_matrix": "/tmp/payment-ux-states.json",
+    "guards": "/tmp/payment-ux-guards.json",
+    "cards": "/tmp/payment-ux-cards.json",
+    "source_review": "/tmp/salon-payment-journey-ui-source-review.json",
+    "screenshots": [
+      "/tmp/payment-offer-390-light-closed.png",
+      "/tmp/payment-offer-390-dark-savings.png",
+      "/tmp/payment-offer-1440-light-closed.png",
+      "/tmp/payment-accepted-390-light.png",
+      "/tmp/payment-cards-home-390-light.png",
+      "/tmp/payment-cards-orders-390-dark.png"
+    ]
+  },
+  "limitations": [
+    "Synthetic fixtures prove frontend behavior only; backend concurrency, provider issuance, settlement, real bonus ledger and production readback remain root integration gates.",
+    "Initial flow evidence predates focus fix; subsequent guards evidence verifies corrected focus."
+  ]
+}
