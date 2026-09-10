@@ -116,6 +116,18 @@ def patch_gift(s):
  s=once(s,anchor,'    if await db.has_event(order_id,"gift_checkout_accepted"):\n        return prev  # accepted prepaid tender is fixed even after expiry\n'+anchor)
  return s+'\n'+MARKER+'\n'
 
+def patch_contract(s):
+ s=once(s,'    data_hash = canonical_hash(spec)','    settlement = (spec.get("pricing") or {}).get("settlement") or {}\n    full_gift = settlement.get("cash_rub") == 0 and settlement.get("gift_tender_rub", 0) > 0\n    data_hash = canonical_hash(spec)')
+ s=once(s,'      "платежа после получения этого файла означает принятие именно этой редакции.")','      "платежа после получения этого файла означает принятие именно этой редакции." if not full_gift else\n      "Заказ полностью покрыт сертификатом. Подтверждение состава, срока и зачёта "\n      "сертификата кнопкой на сайте означает принятие этой редакции без нового "\n      "денежного платежа. Подтверждение сохраняется в журнале заказа.")')
+ s=once(s,'("Твёрдая цена заказа",','("Стоимость работ",')
+ s=once(s,'("Первый платёж",','("Первый платёж" if not full_gift else "Покрыт сертификатом",')
+ s=once(s,'else "по графику ниже"),','else ("Без доплаты" if full_gift else "по графику ниже")),')
+ s=once(s,'"ИТОГО ПО ЗАКАЗУ", align="L",','"СТОИМОСТЬ РАБОТ", align="L",')
+ anchor='    titles = {\n        str(item.get("line_id")):'
+ block='    if settlement:\n        for label, key in [("Скидки", "discount_rub"), ("Списано бонусов", "bonus_rub"), ("Зачтено сертификатом", "gift_tender_rub")]:\n            field(label, f"{config.fmt_money(settlement.get(key) or 0)} руб.")\n        field("Итого деньгами", f"{config.fmt_money(settlement[\'cash_rub\'])} руб.")\n        if full_gift:\n            p("Доплата не требуется. Сертификат зачтён в оплату согласованного заказа; новый денежный платёж не создаётся.")\n'
+ s=once(s,anchor,block+anchor)
+ return s+'\n'+MARKER+'\n'
+
 def atomic(path,b):
  fd,name=tempfile.mkstemp(prefix='.checkout-',dir=path.parent)
  try:
@@ -125,7 +137,7 @@ def atomic(path,b):
   if os.path.exists(name):os.unlink(name)
 def prepare(root,reference,module):
  refs=json.loads(reference.read_text());result={}
- for rel,fn in [('app/webapp.py',patch_web),('app/db.py',patch_db),('app/services/autoquote.py',patch_quote),('app/services/economic_v2.py',patch_economics),('app/services/gift.py',patch_gift)]:
+ for rel,fn in [('app/webapp.py',patch_web),('app/db.py',patch_db),('app/services/autoquote.py',patch_quote),('app/services/economic_v2.py',patch_economics),('app/services/gift.py',patch_gift),('app/services/contract.py',patch_contract)]:
   raw=(root/rel).read_bytes()
   if sha(raw)!=refs[rel]:raise ValueError('source_changed:'+rel)
   patched=fn(raw.decode()).encode();compile(patched,rel,'exec');result[rel]=(raw,patched)

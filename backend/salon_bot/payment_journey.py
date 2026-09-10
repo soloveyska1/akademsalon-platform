@@ -32,6 +32,8 @@ async def state(order):
         due=payments.money_due(order);settlement=spec.get('pricing',{}).get('settlement')
         expected={'discount_rub':due['sub_discount']+due['promo_discount'],'bonus_rub':due['bonus_spent'],'gift_tender_rub':due['gift_amount'],'cash_rub':due['due_total']}
         if settlement is not None: document_matches=document_matches and all(settlement.get(k)==v for k,v in expected.items())
+        elif order['status'] in ('priced','prepay') and not any(p['status'] in ('paid','claimed','pending') for p in pays):
+            document_matches=document_matches and not any(expected[k] for k in ('discount_rub','bonus_rub','gift_tender_rub'))
         document_matches=document_matches and spec.get('pricing',{}).get('order_price_rub')==order['price']
         try:
             for stage in payments.stage_plan(order):autoquote.strict_receipt_lines(spec,stage['kind'],stage['amount'])
@@ -85,6 +87,10 @@ async def revise(order_id):
     revised=copy.deepcopy(original);revision=await db.specification_next_revision(order_id)
     revised.update(revision=revision,spec_id=f'AS-{order_id:06d}-R{revision:02d}',created_at=db.now_iso(),status='offered')
     revised['pricing']['settlement']={'discount_rub':due['sub_discount']+due['promo_discount'],'bonus_rub':due['bonus_spent'],'gift_tender_rub':due['gift_amount'],'cash_rub':due['due_total'],'source_snapshot_id':snap['id']}
+    if due['due_total']==0 and due['gift_amount']>0:
+        revised.setdefault('common_terms',{})['offer_acceptance']='подтверждение этой редакции и зачёта сертификата на сайте без нового денежного платежа'
+    else:
+        revised.setdefault('common_terms',{})['offer_acceptance']='оплата первого платежа после получения этой редакции'
     revised['payment_schedule']=[]
     for stage in payments.stage_plan(o):
         values=contract._allocate(stage['amount'],[x['price_rub'] for x in lines])

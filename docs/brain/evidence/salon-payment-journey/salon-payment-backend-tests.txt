@@ -13,8 +13,11 @@ test_promo_pdf_failure_rolls_back_claim_and_counter (__main__.Journey.test_promo
 test_second_order_firstpromo_rejected (__main__.Journey.test_second_order_firstpromo_rejected) ... ok
 test_stale_before_any_balance_write (__main__.Journey.test_stale_before_any_balance_write) ... ok
 test_unowned_guest_cannot_spend_logged_in_wallet (__main__.Journey.test_unowned_guest_cannot_spend_logged_in_wallet) ... ok
+test_online_invoice_reuse_exact_snapshot_and_all_plans (__main__.PaymentIntegration.test_online_invoice_reuse_exact_snapshot_and_all_plans) ... ok
+test_online_lost_provider_response_reuses_existing_invoice (__main__.PaymentIntegration.test_online_lost_provider_response_reuses_existing_invoice) ... ok
+test_deposit_actual_three_stages_confirm_exact_and_repeat (__main__.PaymentIntegration.test_deposit_actual_three_stages_confirm_exact_and_repeat) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 1.735s
+Ran 18 tests in 2.102s
 
 OK

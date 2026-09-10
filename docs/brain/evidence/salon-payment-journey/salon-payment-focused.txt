@@ -2,68 +2,68 @@ TAP version 13
 # Subtest: offer always precedes invoice even when first stage is due
 ok 1 - offer always precedes invoice even when first stage is due
   ---
-  duration_ms: 0.573625
+  duration_ms: 0.519542
   type: 'test'
   ...
 # Subtest: accepted offer exposes server due only
 ok 2 - accepted offer exposes server due only
   ---
-  duration_ms: 0.192167
+  duration_ms: 0.099959
   type: 'test'
   ...
 # Subtest: claimed suppresses new payment and benefits
 ok 3 - claimed suppresses new payment and benefits
   ---
-  duration_ms: 0.073834
+  duration_ms: 0.045958
   type: 'test'
   ...
 # Subtest: closed and paused orders cannot enter checkout
 ok 4 - closed and paused orders cannot enter checkout
   ---
-  duration_ms: 0.164291
+  duration_ms: 0.134084
   type: 'test'
   ...
 # Subtest: zero outstanding is settled and not unknown or pay
 ok 5 - zero outstanding is settled and not unknown or pay
   ---
-  duration_ms: 0.09025
+  duration_ms: 0.057667
   type: 'test'
   ...
 # Subtest: number accepts real API prefix once
 ok 6 - number accepts real API prefix once
   ---
-  duration_ms: 0.203959
+  duration_ms: 0.079583
   type: 'test'
   ...
 # Subtest: frozen specification takes precedence over request estimates
 ok 7 - frozen specification takes precedence over request estimates
   ---
-  duration_ms: 0.128833
+  duration_ms: 0.134625
   type: 'test'
   ...
 # Subtest: no final item price does not become free
 ok 8 - no final item price does not become free
   ---
-  duration_ms: 0.042709
+  duration_ms: 0.046834
   type: 'test'
   ...
 # Subtest: payment body pins exact amount revision and snapshot
 ok 9 - payment body pins exact amount revision and snapshot
   ---
-  duration_ms: 0.263625
+  duration_ms: 0.252667
   type: 'test'
   ...
 # Subtest: priced cannot bypass acceptance by constructing checkout body
 ok 10 - priced cannot bypass acceptance by constructing checkout body
   ---
-  duration_ms: 0.383167
+  duration_ms: 0.386666
   type: 'test'
   ...
 # Workspace contract: 17 passed, 0 failed
 # Subtest: tests/salon-workspace.test.js
 ok 2 - tests/salon-workspace.test.js
   ---
-  duration_ms: 57.878667
+  duration_ms: 46.228917
   type: 'test'
   ...
 1..11
@@ -74,4 +74,4 @@ ok 2 - tests/salon-workspace.test.js
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 65.336708
+# duration_ms 51.476625

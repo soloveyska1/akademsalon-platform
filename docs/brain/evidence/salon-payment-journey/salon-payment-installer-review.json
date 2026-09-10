@@ -1,14 +1,14 @@
 {
   "pass": true,
   "tests": [
-    "prepare all five transforms compile",
+    "prepare all six transforms compile",
     "apply hashes exact",
     "rollback refuses any changed afterhash before restoring anything",
-    "rollback restores four originals byte-for-byte, removes new module and retains exact standalone gift compatibility patch"
+    "rollback restores five originals byte-for-byte, removes new module and retains exact standalone gift compatibility patch"
   ],
   "source_hashes": {
-    "install_payment_journey.py": "7a1eca039798cb1ebd800c6172a6ad789b72d3d59e1ff162196cbded5d9a790d",
-    "payment_journey.py": "87ae411f8b33e60673aab1b8fa4774011157280fd196e369087d6bc0db1a9b51"
+    "install_payment_journey.py": "8595ceed757a8edbf4012f3c3c72f9b6af7bd11e7eba734779cddaeaa7420bed",
+    "payment_journey.py": "e737f63f737ce52d401392a2cbe5bd750f0ad4b631f1e135f5981d3a41001a93"
   },
   "limitation": "Source-only sandbox; no database and no post-deployment financial rows. Retained gift compatibility additionally exercised against synthetic accepted-gift DB in independent fixture."
 }
