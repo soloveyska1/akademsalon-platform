@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-c48355b64d194a6096aa4e5533118d1d",
+  "slug": "material-catalogue-20260910",
+  "status": "active",
+  "branch": "codex/material-catalogue-20260910",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/material-store.css",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/analytics-privacy-v2.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/js/material-store.js",
+        "match": "exact"
+      },
+      {
+        "path": "assets/store",
+        "match": "tree"
+      },
+      {
+        "path": "backend/salon_bot/install_material_store.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/material_store",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-c48355b64d194a6096aa4e5533118d1d/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "shop-terms.html",
+        "match": "exact"
+      },
+      {
+        "path": "shop.html",
+        "match": "exact"
+      },
+      {
+        "path": "tests/material-store.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:material-store"
+    },
+    {
+      "access": "write",
+      "key": "journey:material-purchase"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:material-store"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
