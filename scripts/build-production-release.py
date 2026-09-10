@@ -110,7 +110,7 @@ def build(repo, revision, legacy, output):
    import io
    tar.addfile(info,io.BytesIO(files[name]))
  return {'source_commit':commit,'output':str(output),'manifest':str(receipt),'archive':str(archive),'archive_sha256':sha(archive.read_bytes()),'file_count':len(files)}
-def build_overlay(repo, revision, baseline, output):
+def build_overlay(repo, revision, baseline, output, baseline_release='release207-store-design-36b11ec7'):
  """Bounded assistant overlay on a frozen published release, preserving concurrent work."""
  commit=subprocess.check_output(['git','rev-parse',revision+'^{commit}'],cwd=repo,text=True).strip()
  files={}
@@ -136,7 +136,7 @@ def build_overlay(repo, revision, baseline, output):
  # Add only runtime entrypoints and installation metadata; preserve every body byte.
  for name in ('shop.html','shop-terms.html'):
   page=files[name].decode()
-  if re.search(r'<script[^>]+src=["\'][^"\']*assets/js/app.js',page):raise ValueError('store runtime already changed')
+  if re.search(r'<script[^>]+src=["\'][^"\']*assets/js/app.js',page):continue
   extra='<link rel="manifest" href="/manifest.webmanifest?v=20260806shell123"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Академсалон"><link rel="apple-touch-icon" href="/assets/img/icon-192.png"><script src="/assets/js/app.js?v=listik20260911" data-salon-assistant-only defer></script>'
   if page.count('</head>')!=1:raise ValueError('unexpected store document')
   files[name]=page.replace('</head>',extra+'</head>').encode()
@@ -159,7 +159,7 @@ def build_overlay(repo, revision, baseline, output):
  output.mkdir(parents=True)
  for name,data in files.items():
   dest=output/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
- manifest={'source_commit':commit,'baseline_archive_sha256':sha(baseline.read_bytes()),'baseline_release':'release207-store-design-36b11ec7','assistant_knowledge_sha256':sha(knowledge_bytes),'shell_version':version,'patches':patches,'before_files':before,'files':{n:sha(b) for n,b in sorted(files.items())},'transform':'six assistant assets; store helper/PWA head entrypoints; shared shell cache generation; HTML asset fingerprints'}
+ manifest={'source_commit':commit,'baseline_archive_sha256':sha(baseline.read_bytes()),'baseline_release':baseline_release,'assistant_knowledge_sha256':sha(knowledge_bytes),'shell_version':version,'patches':patches,'before_files':before,'files':{n:sha(b) for n,b in sorted(files.items())},'transform':'six assistant assets; store helper/PWA head entrypoints; shared shell cache generation; HTML asset fingerprints'}
  receipt=output.with_suffix('.manifest.json');receipt.write_text(json.dumps(manifest,indent=2)+'\n')
  archive=output.with_suffix('.tar.gz')
  with tarfile.open(archive,'w:gz',format=tarfile.PAX_FORMAT) as tar:
@@ -169,8 +169,8 @@ def build_overlay(repo, revision, baseline, output):
  return {'source_commit':commit,'output':str(output),'manifest':str(receipt),'archive':str(archive),'archive_sha256':sha(archive.read_bytes()),'file_count':len(files)}
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--ref',required=True);p.add_argument('--legacy-referral',type=Path);p.add_argument('--baseline-archive',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
- if a.baseline_archive:result=build_overlay(a.repo,a.ref,a.baseline_archive,a.output)
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--ref',required=True);p.add_argument('--legacy-referral',type=Path);p.add_argument('--baseline-archive',type=Path);p.add_argument('--baseline-release',default='release207-store-design-36b11ec7');p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+ if a.baseline_archive:result=build_overlay(a.repo,a.ref,a.baseline_archive,a.output,a.baseline_release)
  elif a.legacy_referral:result=build(a.repo,a.ref,a.legacy_referral,a.output)
  else:p.error('a baseline archive or legacy referral is required')
  print(json.dumps(result))
