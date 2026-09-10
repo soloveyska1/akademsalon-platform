@@ -127,6 +127,41 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
     async def test_public_checkout_disabled_without_refund_key(self):
         with patch.object(provider,'refund_key',lambda:''):
             self.assertFalse(self.rt.enabled())
+    async def test_private_owner_gate_keeps_other_accounts_closed(self):
+        self.rt.settings={'checkout_enabled':False,'verification_owner_id':7}
+        with patch.object(provider,'refund_key',lambda:'synthetic-placeholder'):
+            self.assertFalse(self.rt.enabled())
+            self.assertFalse(self.rt.enabled({'id':8,'banned':0}))
+            self.assertFalse(self.rt.enabled({'id':7,'banned':1}))
+            self.assertFalse(self.rt.enabled({'id':7,'banned':0,'session_imp':1}))
+            self.assertTrue(self.rt.enabled({'id':7,'banned':0}))
+            self.rt.settings['verification_owner_id']='7'
+            self.assertFalse(self.rt.enabled({'id':7,'banned':0}))
+    async def test_private_owner_gate_cannot_bypass_provider_guards(self):
+        self.rt.settings={'checkout_enabled':False,'verification_owner_id':7}
+        owner={'id':7,'banned':0}
+        with patch.object(provider,'refund_key',lambda:''):
+            self.assertFalse(self.rt.enabled(owner))
+        with patch.object(provider,'refund_key',lambda:'synthetic-placeholder'):
+            with patch.object(conf,'ROBOKASSA_TEST',True):self.assertFalse(self.rt.enabled(owner))
+            with patch.object(conf,'robokassa_on',lambda:False):self.assertFalse(self.rt.enabled(owner))
+    async def test_private_owner_gate_rejects_other_checkout_before_invoice(self):
+        self.rt.settings={'checkout_enabled':False,'verification_owner_id':7}
+        async def identity(request):return {'id':8,'banned':0}
+        self.rt.identity=identity
+        with patch.object(provider,'refund_key',lambda:'synthetic-placeholder'):
+            with self.assertRaisesRegex(core.StoreError,'checkout_unavailable'):
+                await self.rt.checkout(types.SimpleNamespace())
+    async def test_private_owner_catalogue_does_not_disclose_owner_id(self):
+        self.rt.settings={'checkout_enabled':False,'verification_owner_id':7}
+        for user,enabled in [(None,False),({'id':8,'banned':0},False),({'id':7,'banned':0},True)]:
+            async def identity(request):return user
+            self.rt.identity=identity
+            with patch.object(provider,'refund_key',lambda:'synthetic-placeholder'),patch.object(web,'json_response',lambda data,**kw:data,create=True):
+                response=await self.rt.catalogue(types.SimpleNamespace())
+                self.assertEqual(response['checkout_enabled'],enabled)
+                self.assertNotIn('verification_owner_id',response)
+                self.assertNotIn('user_id',response)
     async def test_valid_callback_and_replay_owner_bound(self):
         p=buy(self.store,7);app={http.STATE_KEY:self.rt};fields={'Shp_store':str(p['id']),'Shp_scope':'material','EMail':'unsigned@example.invalid'}
         for _ in range(2):

@@ -16,7 +16,7 @@
     send_failed:'Письмо не отправилось. Попробуй ещё раз или войди через Telegram.', csrf:'Сессия истекла. Начни вход через Telegram или обнови страницу.',
   };
   let products = [], authenticated = false, enabled = false, terms = '', selected = null, quote = null, requestKey = null;
-  let telegramTimer = null, accountTimer = null, busy = false, quoteSequence = 0, initialHashHandled = false;
+  let telegramTimer = null, accountTimer = null, busy = false, quoteSequence = 0, catalogueSequence = 0, initialHashHandled = false;
   function notice(message) { $('toast').textContent = message; $('toast').hidden = false; window.setTimeout(() => {$('toast').hidden = true;}, 8000); }
   function csrf() { return document.cookie.split('; ').find(x => x.startsWith('__Host-salon_csrf='))?.split('=').slice(1).join('=') || ''; }
   async function api(path, body, headers = {}) {
@@ -35,9 +35,10 @@
     else if (!products.length) $('catalogue-status').textContent='Новые материалы проходят проверку. Загляни позже.';
   }
   async function loadCatalog() {
-    try { const d=await api('/api/store/catalogue'); products=d.products || []; enabled=d.checkout_enabled === true; terms=d.terms; renderCards();
+    const sequence=++catalogueSequence;
+    try { const d=await api('/api/store/catalogue'); if(sequence!==catalogueSequence)return; products=d.products || []; enabled=d.checkout_enabled === true; terms=d.terms; renderCards();
       if(!initialHashHandled){initialHashHandled=true;const sku=location.hash.slice(1);if(products.some(p=>p.sku===sku))requestAnimationFrame(()=>$(sku)?.scrollIntoView());} }
-    catch { $('catalogue-status').textContent='Не удалось проверить наличие. Обнови страницу, когда появится соединение.'; }
+    catch { if(sequence===catalogueSequence)$('catalogue-status').textContent='Не удалось проверить наличие. Обнови страницу, когда появится соединение.'; }
   }
   function preview(sku) {
     const p=products.find(x=>x.sku===sku); if (!p) return;
@@ -74,7 +75,7 @@
     else { clearInterval(accountTimer); accountTimer=null; }
   }
   async function loadAccount() { if (!authenticated || document.hidden) return; try { renderAccount(await api('/api/store/account')); } catch(e) { $('account-status').textContent=e.message; } }
-  async function afterLogin() { authenticated=true; $('login').hidden=true; $('account-content').hidden=false; $('account-status').textContent='Покупки закреплены за этим аккаунтом.'; clearInterval(telegramTimer); telegramTimer=null; await loadAccount(); if(selected) await choose(selected.sku); }
+  async function afterLogin() { authenticated=true; $('login').hidden=true; $('account-content').hidden=false; $('account-status').textContent='Покупки закреплены за этим аккаунтом.'; clearInterval(telegramTimer); telegramTimer=null; await Promise.all([loadAccount(),loadCatalog()]); if(selected) await choose(selected.sku); }
   async function loadSession() { try { const d=await api('/api/auth/session'); if(d.authenticated) await afterLogin(); } catch { /* Catalogue remains usable without sign-in. */ } }
   $('products').addEventListener('click', e=>{const previewButton=e.target.closest('[data-preview]');const buy=e.target.closest('[data-buy]');if(previewButton)preview(previewButton.dataset.preview);if(buy)void choose(buy.dataset.buy);});
   document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>{++quoteSequence;b.closest('dialog').close();}));

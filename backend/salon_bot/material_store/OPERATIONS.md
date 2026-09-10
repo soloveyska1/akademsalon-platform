@@ -18,6 +18,21 @@ The initial deployment is a closed catalogue; it contains no synthetic purchase,
 account, price, document or payment fixture. Real payment and receipt readback are
 still required before advertising an open shop.
 
+A private positive-integer `verification_owner_id` in that manifest allows only
+the matching existing account to complete this real purchase while public
+`checkout_enabled` remains false. Banned and impersonated sessions are excluded;
+all merchant, production-mode and refund-key guards still apply. The customer
+accepts the ordinary terms and pays the unchanged price through the ordinary UI.
+Do not synthesize consent, purchases, payments or entitlements in production.
+Remove this temporary owner field when opening checkout after the readback.
+To close all new payments again, set `checkout_enabled=false` and remove
+`verification_owner_id`; restart the service to reload the private manifest.
+
+The 10 September provider probe found that Indexjson signs raw Return URL values.
+The percent-encoded Index.aspx example produced error29 here; raw URL signatures
+were accepted and a Robokassa demo payment returned to `shop.html#purchases`.
+This proves test invoice and redirect behavior, not cash settlement or a receipt.
+
 ## Failure handling
 
 - Checkout and callback replay are idempotent. A late paid invoice either receives

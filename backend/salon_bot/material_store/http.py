@@ -50,8 +50,15 @@ class Runtime:
             raise StoreError("file_unavailable")
         return path
 
-    def enabled(self):
-        return bool(self.settings.get("checkout_enabled") and config.robokassa_on() and not config.ROBOKASSA_TEST and provider.refund_key())
+    def enabled(self, user=None):
+        # A private, temporary owner gate permits a real launch verification
+        # while anonymous visitors and other accounts retain the closed shelf.
+        owner_id = self.settings.get("verification_owner_id")
+        owner = bool(type(owner_id) is int and owner_id > 0 and user
+            and user["id"] == owner_id and not user["banned"]
+            and not ("session_imp" in user.keys() and user["session_imp"]))
+        return bool((self.settings.get("checkout_enabled") or owner)
+            and config.robokassa_on() and not config.ROBOKASSA_TEST and provider.refund_key())
 
     async def call(self, method, *args, **kwargs):
         return await asyncio.to_thread(getattr(self.store, method), *args, **kwargs)
@@ -65,8 +72,9 @@ class Runtime:
         return u
 
     async def catalogue(self, request):
+        user = await self.identity(request)
         return web.json_response({"ok": True, "products": await self.call("catalog"),
-            "checkout_enabled": self.enabled(), "terms": TERMS_VERSION,
+            "checkout_enabled": self.enabled(user), "terms": TERMS_VERSION,
             "rules": {"cashback_pct": 3, "achievement_pct": 2, "max_discount_pct": 10, "hold_minutes": 15}},
             headers={"Cache-Control": "no-store", "Access-Control-Allow-Origin": "https://studkladovaya.ru"})
 
@@ -89,7 +97,7 @@ class Runtime:
 
     async def checkout(self, request):
         u = await self.user(request)
-        if not self.enabled():
+        if not self.enabled(u):
             raise StoreError("checkout_unavailable")
         b = await self.body(request)
         if b.get("accept_terms") is not True:
@@ -112,7 +120,7 @@ class Runtime:
 
     async def resume(self, request):
         u = await self.user(request)
-        if not self.enabled():
+        if not self.enabled(u):
             raise StoreError("checkout_unavailable")
         p = await self.call("get", int(request.match_info["id"]), u["id"])
         p = await self.invoice(p, u)
