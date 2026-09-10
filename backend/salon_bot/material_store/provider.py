@@ -33,10 +33,10 @@ def invoice_form(p, receipt, *, encoded_receipt=False):
     inv_id = INV_OFFSET + p["id"]
     value = quote(receipt, safe="") if encoded_receipt else receipt
     shp = {"Shp_store": str(p["id"]), "Shp_scope": "material"}
-    # URL modifiers use the encoded representation in the signature, as in the
-    # official ReturnURL example; the POST fields contain the actual URL.
+    # Indexjson signs the raw POST values. The encoded-URL example for the
+    # browser Index.aspx endpoint does not apply here (verified with IsTest=1).
     sig = payments._robo_sig(config.ROBOKASSA_LOGIN, f"{p['cash']:.2f}", inv_id,
-        value, quote(RETURN_URL, safe=""), "GET", quote(RETURN_URL, safe=""), "GET",
+        value, RETURN_URL, "GET", RETURN_URL, "GET",
         config.robo_pass1(), *(f"{k}={v}" for k,v in sorted(shp.items())))
     expiry = datetime.fromtimestamp(p["expires_at"], timezone(timedelta(hours=3))).strftime("%Y-%m-%dT%H:%M")
     q = dict(MerchantLogin=config.ROBOKASSA_LOGIN, InvId=inv_id, OutSum=f"{p['cash']:.2f}",

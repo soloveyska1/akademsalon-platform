@@ -171,10 +171,12 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         for amount in ['999.99','NaN','Infinity','1000.000001','bad']:
             with self.assertRaises(core.StoreError):provider.verified_operation_amount({'fields':fields,'amount':amount},p)
         with self.assertRaises(core.StoreError):provider.verified_operation_amount({'fields':{},'amount':'1000'},p)
-    async def test_signature_static_order_does_not_prove_indexjson(self):
+    async def test_indexjson_signature_uses_raw_return_urls(self):
         p=buy(self.store,1);receipt=provider.receipt_for(p);form=provider.invoice_form(p,receipt)
-        expected=payments._robo_sig(conf.ROBOKASSA_LOGIN,f"{p['cash']:.2f}",core.INV_OFFSET+p['id'],receipt,quote(provider.RETURN_URL,safe=''),'GET',quote(provider.RETURN_URL,safe=''),'GET',conf.robo_pass1(),'Shp_scope=material',f"Shp_store={p['id']}")
+        expected=payments._robo_sig(conf.ROBOKASSA_LOGIN,f"{p['cash']:.2f}",core.INV_OFFSET+p['id'],receipt,provider.RETURN_URL,'GET',provider.RETURN_URL,'GET',conf.robo_pass1(),'Shp_scope=material',f"Shp_store={p['id']}")
+        rejected=payments._robo_sig(conf.ROBOKASSA_LOGIN,f"{p['cash']:.2f}",core.INV_OFFSET+p['id'],receipt,quote(provider.RETURN_URL,safe=''),'GET',quote(provider.RETURN_URL,safe=''),'GET',conf.robo_pass1(),'Shp_scope=material',f"Shp_store={p['id']}")
         self.assertEqual(form['SignatureValue'],expected)
+        self.assertNotEqual(form['SignatureValue'],rejected)
         self.assertEqual(form['Receipt'],receipt)
         self.assertEqual(form['SuccessUrl2'],provider.RETURN_URL)
     async def test_seasonal_coupon_repeat_and_cutoff(self):
