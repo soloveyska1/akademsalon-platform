@@ -7,6 +7,10 @@ class Tests(unittest.TestCase):
  def test_strict_no_pii(self):
   for key,val in [('contact','synthetic@example.invalid'),('url','https://example.invalid'),('event',[]),('consent',False),('sku','free-text')]:
    body={**self.body,key:val};self.assertFalse(m.validate(body))
+ def test_new_material_skus_are_exact_and_bounded(self):
+  for sku in ['digital-behaviour','speech-diagnostics','early-language','social-psychology-project','digital-practicum']:
+   self.assertTrue(m.validate({**self.body,'sku':sku}))
+   self.assertFalse(m.validate({**self.body,'sku':sku+'?email=x'}))
  def test_dedupe(self):
   m.record(self.path,self.body);m.record(self.path,self.body)
   with sqlite3.connect(self.path) as c:self.assertEqual(c.execute('select count(*) from store_events').fetchone()[0],1)

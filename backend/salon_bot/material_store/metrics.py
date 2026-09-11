@@ -10,7 +10,7 @@ from contextlib import closing
 import time
 
 EVENTS = frozenset(('shop_opened','preview_opened','product_selected','auth_started','auth_completed','quote_ready','checkout_submitted','payment_redirect'))
-SKUS = frozenset(('none','social-pedagogy','social-work-tech','housing-first','psycholinguistics'))
+SKUS = frozenset(('none','social-pedagogy','social-work-tech','housing-first','psycholinguistics','digital-behaviour','speech-diagnostics','early-language','social-psychology-project','digital-practicum'))
 
 
 def validate(body):

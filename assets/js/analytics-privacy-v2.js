@@ -20,7 +20,7 @@
   'use strict';
   const SESSION='salon_store_metrics_v1', PENDING='salon_store_metrics_delete_v1_';
   const EVENTS=new Set(['shop_opened','preview_opened','product_selected','auth_started','auth_completed','quote_ready','checkout_submitted','payment_redirect']);
-  const SKUS=new Set(['none','social-pedagogy','social-work-tech','housing-first','psycholinguistics']);
+  const SKUS=new Set(['none','social-pedagogy','social-work-tech','housing-first','psycholinguistics','digital-behaviour','speech-diagnostics','early-language','social-psychology-project','digital-practicum']);
   const $=id=>document.getElementById(id),sent=new Set();let controller=new AbortController(),revoking=false;
   const consent=window.Salon?.consent;if(!consent)return;
   function qa(){try{return new URLSearchParams(location.search).get('store_qa')==='1'||sessionStorage.getItem('salon_analytics_qa_session_v1')==='1'||sessionStorage.getItem('salon_imp')==='1'||Boolean(localStorage.getItem('salon_analytics_owner_device_v1'));}catch{return true;}}
