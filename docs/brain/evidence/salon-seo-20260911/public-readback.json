@@ -1,0 +1,524 @@
+[
+  {
+    "path": "/about.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/academic-integrity.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/audit-temy-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/avtorskiy-zakaz.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/benefits.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/check.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/deposit.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/diplomnaya-po-ekonomike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/diplomnaya-po-psihologii.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/diplomnaya-po-yurisprudencii.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/diplomnaya-rabota.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/dorabotka-otcheta-po-praktike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/dosie-nauchruka.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/gift.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guarantees.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-antiplagiat-ai.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-apellyaciya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-dnevnik-praktiki.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-harakteristika-s-praktiki.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-kursovaya-za-nedelyu.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-normocontrol.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-obekt-predmet-cel-zadachi.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-otchet-po-praktike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-otzyv-rukovoditelya-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-prakticheskaya-chast-kursovoy.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-prezentaciya-k-zashchite.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-prilozheniya-po-gost.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-recenziya-na-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-rech-na-zashchitu.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-rinc-statya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-skolko-stoit-diplomnaya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-skolko-stoit-kursovaya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-spisok-literatury.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-temy-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-titulnyj-list.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-vkr-struktura.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-vvedenie-kursovoy.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-zaklyuchenie-kursovoy.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-zaklyuchenie-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/guide-zashchita-diploma.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/index.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kandidatskaya-dissertaciya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/knowledge.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/komissiya-0.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-po-ekonomike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-po-informatike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-po-menedzhmentu.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-po-pedagogike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-po-psihologii.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-po-yurisprudencii.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/kursovaya-rabota.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/loyalty.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/magisterskaya-dissertaciya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/nauchnaya-statya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/normokontrol-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/oferta.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/oplata.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/otchet-po-praktike.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/plan.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/plus.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/privacy.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/priyomnaya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/prolog.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/proverka-istochnikov-vkr.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/razbor-zamechaniy-nauchruka.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/redaktura-posle-ii.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/referat.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/referral.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/refunds.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/requisites.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/reviews.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/samples.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/services.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/specifikaciya.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/terms.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/tools.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/vedenie.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/favicon.svg",
+    "status": 200,
+    "mime": "image/svg+xml",
+    "hash_match": true
+  },
+  {
+    "path": "/favicon.ico",
+    "status": 200,
+    "mime": "image/x-icon",
+    "hash_match": true
+  },
+  {
+    "path": "/assets/img/seo-20260911/icon-96.png",
+    "status": 200,
+    "mime": "image/png",
+    "hash_match": true
+  },
+  {
+    "path": "/assets/img/seo-20260911/og-home.png",
+    "status": 200,
+    "mime": "image/png",
+    "hash_match": true
+  },
+  {
+    "path": "/sw.js",
+    "status": 200,
+    "mime": "application/javascript",
+    "hash_match": true
+  },
+  {
+    "path": "/manifest.webmanifest",
+    "status": 200,
+    "mime": "application/manifest+json",
+    "hash_match": true
+  },
+  {
+    "path": "/configurator.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/dashboard.html",
+    "status": 200,
+    "mime": "text/html",
+    "hash_match": true
+  },
+  {
+    "path": "/assets/js/salon-order.js",
+    "status": 200,
+    "mime": "application/javascript",
+    "hash_match": true
+  },
+  {
+    "path": "/assets/js/salon-payment-domain.js",
+    "status": 200,
+    "mime": "application/javascript",
+    "hash_match": true
+  }
+]

@@ -1,0 +1,65 @@
+{
+  "observed_on": "2026-09-11",
+  "yandex": {
+    "added_pages": 40,
+    "search_pages": 25,
+    "metrika_crawl_enabled": true,
+    "robots_current_errors": 0,
+    "robots_recheck": "sent 2026-09-11; pending",
+    "robots_allowed_urls": [
+      "/",
+      "/kursovaya-rabota.html",
+      "/razbor-zamechaniy-nauchruka.html",
+      "/normokontrol-vkr.html",
+      "/guide-kursovaya-za-nedelyu.html"
+    ]
+  },
+  "google": {
+    "property": "https://akademsalon.ru/",
+    "index_report_updated": "2026-09-04",
+    "indexed": 16,
+    "not_indexed": 36,
+    "reasons": {
+      "redirect": 3,
+      "alternate_canonical": 3,
+      "not_found": 2,
+      "noindex": 1,
+      "discovered_not_indexed": 24,
+      "crawled_not_indexed": 3
+    },
+    "old_404_paths": [
+      "/orders",
+      "/quote/"
+    ],
+    "sitemap_before": {
+      "last_read": "2026-07-16",
+      "last_submitted": "2026-07-16",
+      "status": "success",
+      "discovered_pages": 40
+    },
+    "sitemap_resubmitted": {
+      "date": "2026-09-11",
+      "confirmation": "Файл Sitemap отправлен",
+      "new_processing_pending": true,
+      "last_read_still": "2026-07-16"
+    },
+    "url_inspections": [
+      {
+        "path": "/",
+        "before": "indexed",
+        "request": "accepted into priority crawl queue"
+      },
+      {
+        "path": "/razbor-zamechaniy-nauchruka.html",
+        "before": "unknown to Google, not indexed",
+        "request": "accepted into priority crawl queue"
+      },
+      {
+        "path": "/guide-kursovaya-za-nedelyu.html",
+        "before": "discovered, not indexed",
+        "request": "accepted into priority crawl queue"
+      }
+    ]
+  },
+  "method": "Authenticated browser UI; no cookies, credentials, identifiers or screenshots of account chrome retained."
+}

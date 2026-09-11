@@ -5,8 +5,8 @@ Run from the VPS after successful production readback.
 from pathlib import Path
 import argparse,json,re,urllib.request,urllib.error
 HOST='https://akademsalon.ru'
-def submit(root,manifest):
- key=(root/'.indexnow-key').read_text().strip()
+def submit(root,manifest,key_path=None):
+ key=(key_path or root/'.indexnow-key').read_text().strip()
  assert re.fullmatch('[A-Za-z0-9-]{8,128}',key)
  key_file=root/(key+'.txt')
  assert key_file.exists() and key_file.read_text().strip()==key
@@ -30,5 +30,5 @@ def submit(root,manifest):
  results.append({'endpoint':endpoint,'http_status':status,'submitted_urls':len(urls),'accepted':status in [200,202]})
  return {'urls':urls,'results':results,'meaning':'Accepted notification is not proof of indexing, rankings, traffic or orders.'}
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--manifest',type=Path,required=True);p.add_argument('--receipt',type=Path,required=True);a=p.parse_args()
- result=submit(a.root,json.loads(a.manifest.read_text()));a.receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result,ensure_ascii=False))
+ p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--manifest',type=Path,required=True);p.add_argument('--receipt',type=Path,required=True);p.add_argument('--key-file',type=Path);a=p.parse_args()
+ result=submit(a.root,json.loads(a.manifest.read_text()),a.key_file);a.receipt.write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result,ensure_ascii=False))

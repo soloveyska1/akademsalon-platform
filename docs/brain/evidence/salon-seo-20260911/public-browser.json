@@ -1,0 +1,167 @@
+{
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Курсовые, ВКР и помощь с учебными работами | Академический Салон",
+      "h1": [
+        "С учёбой\nможно проще."
+      ],
+      "width": 390,
+      "scrollWidth": 390,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ]
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Курсовые, ВКР и помощь с учебными работами | Академический Салон",
+      "h1": [
+        "С учёбой\nможно\nпроще."
+      ],
+      "width": 1440,
+      "scrollWidth": 1440,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ]
+    },
+    {
+      "path": "/razbor-zamechaniy-nauchruka.html",
+      "status": 200,
+      "title": "Разбор замечаний научрука и план правок — от 2 500 ₽",
+      "h1": [
+        "Разбор замечаний.\nПонятный план правок."
+      ],
+      "width": 390,
+      "scrollWidth": 390,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ]
+    },
+    {
+      "path": "/configurator.html?service=nm",
+      "status": 200,
+      "title": "Заказать работу | Академический Салон",
+      "h1": [
+        "Теперь твоя задача."
+      ],
+      "width": 390,
+      "scrollWidth": 390,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ],
+      "product": "service:norm",
+      "scope": "whole",
+      "discipline": "hum",
+      "label": "Оформление по методичке · нормоконтроль"
+    },
+    {
+      "path": "/configurator.html?service=df",
+      "status": 200,
+      "title": "Заказать работу | Академический Салон",
+      "h1": [
+        "Теперь твоя задача."
+      ],
+      "width": 390,
+      "scrollWidth": 390,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ],
+      "product": "service:defense",
+      "scope": "whole",
+      "discipline": "hum",
+      "label": "Подготовка к выступлению и защите"
+    },
+    {
+      "path": "/configurator.html?service=rv",
+      "status": 200,
+      "title": "Заказать работу | Академический Салон",
+      "h1": [
+        "Теперь твоя задача."
+      ],
+      "width": 390,
+      "scrollWidth": 390,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ],
+      "product": "service:review",
+      "scope": "whole",
+      "discipline": "hum",
+      "label": "Полный разбор черновика"
+    },
+    {
+      "path": "/configurator.html?product=course&result=editing&discipline=psychology",
+      "status": 200,
+      "title": "Заказать работу | Академический Салон",
+      "h1": [
+        "Теперь твоя задача."
+      ],
+      "width": 390,
+      "scrollWidth": 390,
+      "icons": [
+        "/favicon.svg",
+        "/assets/img/seo-20260911/icon-96.png",
+        "/favicon.ico",
+        "/assets/img/seo-20260911/icon-180.png"
+      ],
+      "product": "course",
+      "scope": "editing",
+      "discipline": "psychology",
+      "label": "Курсовая работа"
+    }
+  ],
+  "errors": [],
+  "mutations": [],
+  "api_requests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    }
+  ],
+  "fixtures": false,
+  "order_submitted": false,
+  "payment_attempted": false
+}

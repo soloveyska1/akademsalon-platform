@@ -1,0 +1,7 @@
+Independent read-only reviews, 2026-09-11
+
+SEO reviewer: P0=0, P1=0. P2 content/date discrepancy identified in article UI, schema and feed; corrected and independently covered by deterministic tests.
+
+Conversion reviewer, final visual readback: P0/P1/P2=0 in verified visual scope. Commission desktop dark layout centered; weekly guide mobile day column readable; home mobile block visible. 64 local checks have zero page errors, overflow and undersized new controls.
+
+Root is sole writer. Reviewer opinions complement, but do not replace, saved tests, screenshots, exact public hashes and production browser readback. No real order/payment claims.
