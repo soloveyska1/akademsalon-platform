@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: SEO overlay is declared independently of product HTML and runtime
+ok 1 - SEO overlay is declared independently of product HTML and runtime
+  ---
+  duration_ms: 1.553458
+  type: 'test'
+  ...
+# Subtest: all sitemap pages retain indexability, unique metadata and self canonical
+ok 2 - all sitemap pages retain indexability, unique metadata and self canonical
+  ---
+  duration_ms: 20.770084
+  type: 'test'
+  ...
+# Subtest: icons are square, sufficiently large and consistent across every HTML page
+ok 3 - icons are square, sufficiently large and consistent across every HTML page
+  ---
+  duration_ms: 15.944125
+  type: 'test'
+  ...
+# Subtest: all structured data parses and organization references have one identity
+ok 4 - all structured data parses and organization references have one identity
+  ---
+  duration_ms: 9.227833
+  type: 'test'
+  ...
+# Subtest: social images exist, match declared dimensions and use current identity
+ok 5 - social images exist, match declared dimensions and use current identity
+  ---
+  duration_ms: 10.443917
+  type: 'test'
+  ...
+# Subtest: previously isolated service pages and seven-day guide have visible incoming links
+ok 6 - previously isolated service pages and seven-day guide have visible incoming links
+  ---
+  duration_ms: 20.657417
+  type: 'test'
+  ...
+# Subtest: contextual order buttons preserve formatting and defense intent
+ok 7 - contextual order buttons preserve formatting and defense intent
+  ---
+  duration_ms: 0.684583
+  type: 'test'
+  ...
+# Subtest: existing local HTML and static asset references resolve
+ok 8 - existing local HTML and static asset references resolve
+  ---
+  duration_ms: 20.369125
+  type: 'test'
+  ...
+# Subtest: private flows, prices, backend and runtime are preserved; cache refresh is isolated
+ok 9 - private flows, prices, backend and runtime are preserved; cache refresh is isolated
+  ---
+  duration_ms: 41.295
+  type: 'test'
+  ...
+# Subtest: only substantive content changes update Article dates
+ok 10 - only substantive content changes update Article dates
+  ---
+  duration_ms: 3.903875
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 192.330875

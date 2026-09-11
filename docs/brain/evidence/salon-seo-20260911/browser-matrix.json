@@ -1,0 +1,849 @@
+{
+  "fixture": "local anonymous API; all API calls intercepted; no actual submit/payment",
+  "results": [
+    {
+      "file": "index.html",
+      "width": 360,
+      "theme": "light",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 360,
+      "theme": "dark",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 390,
+      "theme": "light",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 390,
+      "theme": "dark",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 768,
+      "theme": "light",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 768,
+      "theme": "dark",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 1024,
+      "theme": "light",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 1024,
+      "theme": "dark",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 1440,
+      "theme": "light",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "index.html",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 360,
+      "theme": "light",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 360,
+      "theme": "dark",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 390,
+      "theme": "light",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 390,
+      "theme": "dark",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 768,
+      "theme": "light",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 768,
+      "theme": "dark",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 1024,
+      "theme": "light",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 1024,
+      "theme": "dark",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 1440,
+      "theme": "light",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "services.html",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 360,
+      "theme": "light",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 18,
+        "right": 342,
+        "width": 324
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 360,
+      "theme": "dark",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 18,
+        "right": 342,
+        "width": 324
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "theme": "light",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 18,
+        "right": 372,
+        "width": 354
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "theme": "dark",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 18,
+        "right": 372,
+        "width": 354
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 768,
+      "theme": "light",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 32,
+        "right": 736,
+        "width": 704
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 768,
+      "theme": "dark",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 32,
+        "right": 736,
+        "width": 704
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 1024,
+      "theme": "light",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 32,
+        "right": 992,
+        "width": 960
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 1024,
+      "theme": "dark",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 32,
+        "right": 992,
+        "width": 960
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "theme": "light",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 100,
+        "right": 1340,
+        "width": 1240
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 100,
+        "right": 1340,
+        "width": 1240
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 360,
+      "theme": "light",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 18,
+        "right": 342,
+        "width": 324
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 360,
+      "theme": "dark",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 18,
+        "right": 342,
+        "width": 324
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 390,
+      "theme": "light",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 18,
+        "right": 372,
+        "width": 354
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 390,
+      "theme": "dark",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 18,
+        "right": 372,
+        "width": 354
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 768,
+      "theme": "light",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 32,
+        "right": 736,
+        "width": 704
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 768,
+      "theme": "dark",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 32,
+        "right": 736,
+        "width": 704
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 1024,
+      "theme": "light",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 32,
+        "right": 992,
+        "width": 960
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 1024,
+      "theme": "dark",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 32,
+        "right": 992,
+        "width": 960
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 1440,
+      "theme": "light",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 100,
+        "right": 1340,
+        "width": 1240
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "normokontrol-vkr.html",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 100,
+        "right": 1340,
+        "width": 1240
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 360,
+      "theme": "light",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 39,
+        "right": 321,
+        "width": 282
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 360,
+      "theme": "dark",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 39,
+        "right": 321,
+        "width": 282
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 390,
+      "theme": "light",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 39,
+        "right": 351,
+        "width": 312
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 390,
+      "theme": "dark",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 39,
+        "right": 351,
+        "width": 312
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 768,
+      "theme": "light",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 268,
+        "right": 712,
+        "width": 444
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 768,
+      "theme": "dark",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 268,
+        "right": 712,
+        "width": 444
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 1024,
+      "theme": "light",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 350,
+        "right": 945,
+        "width": 595
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 1024,
+      "theme": "dark",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 350,
+        "right": 945,
+        "width": 595
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 1440,
+      "theme": "light",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 470,
+        "right": 1241,
+        "width": 771
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "guide-kursovaya-za-nedelyu.html",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 470,
+        "right": 1241,
+        "width": 771
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 360,
+      "theme": "light",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 360,
+      "theme": "dark",
+      "viewport": 360,
+      "body": 360,
+      "section": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 390,
+      "theme": "light",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 390,
+      "theme": "dark",
+      "viewport": 390,
+      "body": 390,
+      "section": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 768,
+      "theme": "light",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 16,
+        "right": 752,
+        "width": 736
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 768,
+      "theme": "dark",
+      "viewport": 768,
+      "body": 768,
+      "section": {
+        "left": 16,
+        "right": 752,
+        "width": 736
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 1024,
+      "theme": "light",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 16,
+        "right": 1008,
+        "width": 992
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 1024,
+      "theme": "dark",
+      "viewport": 1024,
+      "body": 1024,
+      "section": {
+        "left": 16,
+        "right": 1008,
+        "width": 992
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 1440,
+      "theme": "light",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "tooSmall": []
+    },
+    {
+      "file": "komissiya-0.html",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": 1440,
+      "body": 1440,
+      "section": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "tooSmall": []
+    },
+    {
+      "service": "nm",
+      "product": "service:norm",
+      "label": "Оформление по методичке · нормоконтроль"
+    },
+    {
+      "service": "df",
+      "product": "service:defense",
+      "label": "Подготовка к выступлению и защите"
+    },
+    {
+      "service": "rv",
+      "product": "service:review",
+      "label": "Полный разбор черновика"
+    },
+    {
+      "editing": true,
+      "product": "course",
+      "scope": "editing",
+      "discipline": "psychology"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/session"
+    }
+  ]
+}
