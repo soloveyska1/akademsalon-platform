@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-bc025c158b8146fa94871dccbf9503a7",
+  "slug": "salon-seo-overlay-20260911",
+  "status": "active",
+  "branch": "codex/salon-seo-overlay-20260911",
+  "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/img/seo-20260911",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-seo-20260911",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-bc025c158b8146fa94871dccbf9503a7/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-seo",
+        "match": "tree"
+      },
+      {
+        "path": "tests/salon-seo.test.js",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:seo-search-entry"
+    },
+    {
+      "access": "write",
+      "key": "production:deploy"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:search-identity"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
