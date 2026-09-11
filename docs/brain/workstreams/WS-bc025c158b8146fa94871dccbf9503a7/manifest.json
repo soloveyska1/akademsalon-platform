@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-bc025c158b8146fa94871dccbf9503a7",
   "slug": "salon-seo-overlay-20260911",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-seo-overlay-20260911",
   "base_sha": "e53d11cea40055f2dae41a0f212cbbac4c79055f",
   "result_sha": "b58886d7195c00cc7dc711a0b36f05333664c1e6",
@@ -53,6 +53,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "1ffc52dd3aac83244a905751b0c1d14aed8b00576f62d51bd3bed4b4f73d42cc"
+  "manifest_revision": 3,
+  "base_manifest_hash": "7838add498b75ebdb2413fa03b58ca0002a95a2e0fbbe55aa389f6f74be89d7c"
 }

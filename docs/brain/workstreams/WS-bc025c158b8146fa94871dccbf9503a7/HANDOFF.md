@@ -38,3 +38,9 @@
 - Existing analytics consent behavior retained. Old Google 404 paths /orders and /quote/ are not sitemap entries and were not blanket-redirected. Broader legal-claims consistency remains separate existing debt; no legal text rewritten.
 - Singleton CURRENT-HANDOFF remains outside this reservation; durable result is this workstream handoff plus canonical source/evidence. Aggregate only after its existing owner releases the scope.
 - One next step: on 25 September compare complete 14-day organic query/page and confirmed-order data with previous 14 days, separating branded queries and own QA visits; use results to prioritize the next content/entry change. No follow-up automation was created.
+
+## Canonical integration and cleanup
+
+- Verified implementation/evidence result: b58886d7; submission revision: fe7f8c93. Both pushed to canonical main and task branch, then fetched back before the Brain integrated transition.
+- Terminal status set by Brain CLI after ancestry verification; result_sha was not edited manually.
+- Both task Playwright browsers and the localhost candidate server stopped. Public production stays active.
