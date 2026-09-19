@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-dc1b92bc9ee24060bda69c07a4eeeaff",
+  "slug": "salon-growth-overlay-20260920",
+  "status": "active",
+  "branch": "codex/salon-growth-overlay-20260920",
+  "base_sha": "22bb0f8f742630fd0654288b07125b0122fa758c",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "assets/css/growth-20260920",
+        "match": "tree"
+      },
+      {
+        "path": "assets/js/growth-20260920",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/evidence/salon-growth-20260920",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-dc1b92bc9ee24060bda69c07a4eeeaff/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-growth-20260920",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:growth-discovery-20260920"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:commission-redesign-20260920"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:home-service-discovery-20260920"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
