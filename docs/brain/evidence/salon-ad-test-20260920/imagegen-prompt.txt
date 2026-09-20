@@ -1,0 +1,12 @@
+Use case: ads-marketing.
+Create a polished Russian Telegram advertisement cover for the academic editing studio «Академический Салон». Brand style: editorial print studio, warm ivory paper, deep ink violet #4a347d, acid lime #d6ee88 as one small accent. Premium intentional graphic design, not a generic AI or tech poster. Portrait 4:5, approximately 1200 x 1500.
+Main image: beautifully lit tactile sheets of ivory paper on a solid violet backdrop, with precisely aligned dark text-like rules, a neat margin note, thin proofreading marks and a small metal binder clip. Clearly an editorial illustration, not a photo of an actual client file. The page symbolizes bringing a document into order. Elegant soft natural shadows and realistic paper fibers, plenty of space. The graphic feels like the modern Academic Salon website: large sharp typography, asymmetric grid, calm and confident. No people, graduation caps, robots, brains, fake chat UI, fake testimonials, fake claims, logos of universities, medical equipment or stock photo clichés.
+Typography: highly legible clean Cyrillic. Text is the hero. Exact text to render and no other prose:
+Small masthead: «АКАДЕМИЧЕСКИЙ САЛОН»
+Very large headline in 3 lines: «Текст готов.
+Осталось
+оформить.»
+Medium subline: «По методичке твоей кафедры»
+Bottom restrained price line: «Word + лист проверки · от 5 000 ₽»
+Small footer: «akademsalon.ru»
+A small clear «Реклама» label in a corner. Leave generous safe margins so all letters remain visible in a phone feed. Price must say «от 5 000 ₽» exactly. No invented guarantee of acceptance or deadline. Visually coherent typography and illustration, beautiful enough for a professional editorial brand.

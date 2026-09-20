@@ -1,0 +1,45 @@
+{
+  "as_of": "2026-09-20T01:47:13Z",
+  "source_type": "root_tool_observations",
+  "brain_validate": {
+    "command": "./bin/brain validate",
+    "exit_code": 0,
+    "records": 125,
+    "links": 263,
+    "manifests": 71
+  },
+  "brain_tests": {
+    "command": "python3 -m unittest discover -s tools/brain/tests",
+    "exit_code": 0,
+    "tests": 39,
+    "result": "OK"
+  },
+  "ui_receipts": {
+    "project": "https://telega.in/orders/order_channels?id=2501952",
+    "item": "4216163",
+    "status": "В ожидании",
+    "format": "2/48",
+    "price": 2097.9,
+    "balance": 902.1,
+    "date_window": "21.09–23.09",
+    "hours": "18:00–21:00 UTC+3",
+    "launched": true,
+    "published": false,
+    "paid_customer_order_confirmed": false
+  },
+  "creative": {
+    "image_attached": true,
+    "text_matched": true,
+    "price_matched": true,
+    "link_matched": true,
+    "marking_present": true
+  },
+  "journey": {
+    "short_link_redirect_verified": true,
+    "utm_preserved": true,
+    "runtime_service": "nm",
+    "runtime_price_from": 5000,
+    "submitted": false
+  },
+  "privacy": "No advertiser identifiers, contact data, private address, payment details or client files included in evidence."
+}

@@ -1,12 +1,20 @@
 # Workstream handoff
 
-- Branch: `codex/first-order-1000-20260920`
-- Outcomes: `OUT-006`
-- Goal: prepare and operate one acquisition experiment with an absolute 1,000 RUB all-in spending cap, aiming at one attributable paid order for an existing Salon service.
-- Base: `c1c5eb0d27e63c77f6d6f430a39d3579447f01fa`, fresh `origin/main`; clean isolated worktree. Desktop user changes are excluded.
-- Acceptance: one chosen audience and placement with verified current price/fees; honest existing-service offer; image and text ready; working tagged route; no fabricated results; publication, spending, inquiries and paid orders recorded separately. Actual acquisition success requires an attributable confirmed payment, not views or an order row.
-- Proof: dated primary-source research, UI receipts, public landing readback, deterministic package validation, two independent campaign reviews; `brain:validate` and `brain:test` for durable evidence.
-- Changed: none yet.
-- Unverified: implementation not started.
-- Risks/rollback: no result guarantee; small audience; moderation and first-payment minimum may block launch. Stop before any payment above 1,000 RUB total or an unverified placement. No auto-renewal or automatic replacement. No website/backend/pricing edits. Registration and acceptance of platform terms remain a user action. Withdraw an unsubmitted draft if the test fails preflight.
-- Next: commit this declaration, pass conflicts, prepare the placement package while the user signs into the advertising platform.
+- Branch: codex/first-order-1000-20260920
+- Outcome: OUT-006; WS-15ba56b915bb4a8db984ba7117617a7f remains active. Attributable paid customer order not achieved yet.
+- Goal: operate one acquisition test. User raised original 1,000 RUB cap to 3,000 RUB on 2026-09-20; this is the current absolute all-in ceiling.
+- Base: c1c5eb0d27e63c77f6d6f430a39d3579447f01fa from freshly fetched origin/main. Declaration: 86b8878ed1c92084296e6df377d01796f2d664db.
+- Sole writer: root. Two independent read-only reviewers. Desktop dirty files untouched; no site/backend/deploy changes.
+- Evidence: docs/brain/evidence/salon-ad-test-20260920/campaign.txt, ledger.json, validation.json, reviews.txt, scope-decision.txt, ad-copy.txt, imagegen-prompt.txt, salon-normokontrol-ad.png.
+- Implemented: selected @podslurggu, prepared a new photo and copy for existing normocontrol service from 5,000 RUB; launched project2501952/item4216163 with project template778281 (equivalent reference template778279). One2/48 placement,2,097.90 RUB, September21–23,18:00–21:00 MSK. User completed registration/address/funding. Confirmed balance3,000 before,902.10 after; reserve2,097.90, completed spend0 while awaiting owner.
+- Verified live: https://telega.in/orders/order_channels?id=2501952 shows «В ожидании». Exact date/time, price, photo, copy, marked caption and short link verified. https://tglink.io/3ea6135f0917f9 redirects to intended UTM landing; exclude one pre-publication QA click. Landing CTA selected service=nm at5,000 after JS; no client form submitted.
+- Unverified: owner acceptance, publication, real traffic, attributable paid order and final refund. ERID is not human moderation approval or publication.
+- Support: two inquiries accepted about offer/site moderation and refund902.10/fees; response promised within one working day, not received. User funded during preparation; campaign submitted through normal platform workflow. Preliminary inquiry is not approval.
+- Financial risk: inactivity fee500 RUB/month may apply under §13.5 unless contract exempts it; refund minimum/commission unknown and requested. Prepare residual-balance refund after test; user supplies any financial details in service. No additional purchases or replacements.
+- Duplicate: project2501950 is an unpaid draft from funding flow. Do not launch or count it as another placement.
+- Attribution: allowlist accepts telegram/cpc/services, drops arbitrary utm_content; fresh consent can lose attribution across navigation. Confirm source linked to real payment, store only aggregates.
+- Checks: brain validate PASS (125 records,263 links,71 manifests);39 Brain tests PASS; independent financial/measurement findings addressed; UI/readback evidence. RECORD_FILENAME fixed by using .txt for supporting artifacts.
+- Conflicts: hard0,62 terminal-presence warnings,9 disjoint info; root integration owner explicitly allowed only these warnings. --allow-warnings returned blocking0. No future dirty overlap waived.
+- Follow-up: automation-4 ACTIVE in this thread, every4h until2026-09-27T20:59:59Z; quiet unless meaningful change. Checks acceptance, publication, metrics and refund preparation; no new ad spending or client messages.
+- Recovery: if declined, verify release of reserved funds. Do not evade moderation. Awaiting task has cancellation UI but cancellation/refund not exercised or claimed.
+- Exact next step: check item4216163 for owner acceptance and support reply, then verify actual post when its URL appears. Keep workstream active until test result and balance-return state are recorded; launch alone is not paid-order success.

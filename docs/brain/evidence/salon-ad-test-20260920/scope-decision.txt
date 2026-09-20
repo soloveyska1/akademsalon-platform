@@ -1,0 +1,8 @@
+# Scope and warning decision
+
+OUT-006; WS-15ba56b915bb4a8db984ba7117617a7f. Base c1c5eb0d27e63c77f6d6f430a39d3579447f01fa. Declaration 86b8878ed1c92084296e6df377d01796f2d664db. Sole writer: root.
+
+User increased spending ceiling from 1,000 RUB to 3,000 RUB on 2026-09-20. Branch/workstream identifiers retain historical 1000 name; campaign.txt and ledger.json record current authority. No change to path or semantic scope; no site/backend changes or deployments.
+
+Strict conflict scan: hard=0, warnings=62, info=9. Integration owner reviewed warnings: all TERMINAL_WORKTREE_PRESENT from integrated/abandoned streams; Desktop dirty files are disjoint. Explicitly allow only these warnings for the unique evidence scope. brain conflicts --allow-warnings returned CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS / PROCEED_LOCAL_SNAPSHOT / blocking=0. This does not waive dirty overlaps or any release gate.
+

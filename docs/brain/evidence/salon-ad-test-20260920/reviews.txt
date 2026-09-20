@@ -1,0 +1,12 @@
+# Independent reviews, 2026-09-20
+
+source_type: model-review. Reviews are observations and do not establish publication, payment or a release hard-gate by themselves.
+
+Design reviewer /root/review_design: original oblong1122x1402 creative inspected with view_image. Offer/price5000 and Word+checklist aligned with live landing. P0/P1=0. P2: make CTA label clickable instead of raw140-character UTM URL; rename incorrectly labelled CAC formula. Both implemented: saved Telega.in template778279 has clickable CTA and separated paragraphs; campaign.txt formula corrected. Runtime form was verified separately by root: live exact ad URL → order service=nm, price5000, no submission.
+
+Contract reviewer /root/review_contract: first review found two P1. (1) Rules §13.5 monthly inactivity charge500 RUB means remaining balance is not inert; (2) analytics fresh consent fails to preserve campaign attribution across ordinary subsequent navigation. Root corrected campaign.txt and ledger, recording fees/refund uncertainty and mandatory manual source confirmation linked to actual payment for confirmed acquisition. Independent reread reported no remaining P0/P1/P2. Refund minimum and commission remain unverified (explicitly pending external evidence, not a claim of free withdrawal). §13.5 allows a separate contract to exempt the charge; no such exemption verified.
+
+Root evidence: live template saved and reloaded with image, text, exact URL; public landing path verified in UI; basket onepodslurggu2/48=2097.90; native Telegram samehandle4790subscribers with recent-looking active university conversations, observed postcounts1156–1582 cumulative, not measured24h cohort. User raised ceiling3000 and then balance0→3000 observed in refreshed authenticated template header. No advertisement spending or publication confirmed.
+
+Remaining operational checks: apply template to project2501952, final date/time, readable mandatory marking, click tracking, no automatic replacements/repeats, exact final invoice, moderation and refund terms. Template/campaign identifiers are internal pointers, not proof of completed placement.
+
