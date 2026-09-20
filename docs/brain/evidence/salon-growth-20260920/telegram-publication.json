@@ -1,0 +1,13 @@
+{
+  "verified_at": "2026-09-20T00:46:40.476714+00:00",
+  "post_url": "https://t.me/akademsalon/44",
+  "authorization": "User explicitly selected only Salon, then requested a picture for that post.",
+  "photo_confirmed": true,
+  "native_photo_dimensions": "1024x1280",
+  "original_cover_dimensions": "1122x1402",
+  "cover_sha256": "e4156229549894bbb5997ea1e7bac70a450b619c9e175c6dcd031b7d349cb599",
+  "destination_link": "https://akademsalon.ru/komissiya-0.html?utm_source=telegram&utm_medium=owned&utm_campaign=defense_trainer&utm_content=salon#rehearsal",
+  "method": "Native Telegram edit saved; public channel HTML exposes same post44 text, image and UTM link.",
+  "kladovaya_posted": false,
+  "traffic_or_leads_claimed": false
+}

@@ -57,7 +57,21 @@ deployment. This file does not certify publication before that receipt exists.
 
 Acquisition baseline: baseline.json contains consented aggregate sessions, not total traffic.
 New free rehearsal tool + existing article/home links create a useful entry point and preserve
-all indexed URLs. Launch messages are prepared in launch-copy.txt and are NOT published.
+all indexed URLs. The user subsequently authorized only the Salon announcement; post44 and its requested cover
+are published and independently read back. Kladovaya remains unpublished. See telegram-publication.json.
 No advertising purchased. Search notification acceptance is not indexing or traffic evidence.
 Evaluate external visits and confirmed enquiries over 14 complete days after distribution;
 do not count QA, downloads, copy-link clicks or an unqualified order row as a confirmed lead.
+
+Release completed: release217-growth-449b719f, source449b719f, 15/515 public files changed.
+production-receipt.json confirms apply -> rollback -> forward with live health/features and
+exact public hashes; previous current release216 retained, dist release203 unchanged.
+Fresh Chromium live-pages.json: 8/8 states at390/1440, zero errors/overflow/oldboxes/non-GET API.
+live-trainer.json: six questions, correct 3/6 result and real TXT download.
+live-booking.json: master Commission Zero 29,900 RUB, consumed handoff, no submit.
+IndexNow single notification accepted HTTP202 for12 canonical pages; no ranking claim.
+Post https://t.me/akademsalon/44 has the approved text, UTM URL and requested cover.
+No messages posted to Kladovaya, no ad spend. Browser session closed.
+
+Cleanup: own local preview8768 stopped; independent and live Chromium sessions closed.
+IAB viewport override reset and user-facing tab switched from localhost to the live Commission page.

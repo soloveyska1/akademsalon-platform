@@ -1,0 +1,78 @@
+{
+  "release": "release217-growth-449b719f",
+  "baseline_release": "release216-seo-c8ee0105",
+  "source_commit": "449b719fcb5d418aa588e0daa26a4ba6ceaa6f5f",
+  "old_dist": "release203-09ccfca4",
+  "dist_preserved": true,
+  "database_changed": false,
+  "backend_changed": false,
+  "steps": [
+    {
+      "action": "apply",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/assets/css/growth-20260920/discovery.css",
+        "/assets/js/growth-20260920/rehearsal.js",
+        "/guide-kursovaya-za-nedelyu.html",
+        "/guide-prezentaciya-k-zashchite.html",
+        "/guide-rech-na-zashchitu.html",
+        "/guide-vvedenie-kursovoy.html",
+        "/guide-zashchita-diploma.html",
+        "/",
+        "/komissiya-0.html",
+        "/kursovaya-po-psihologii.html",
+        "/kursovaya-rabota.html",
+        "/normokontrol-vkr.html",
+        "/razbor-zamechaniy-nauchruka.html",
+        "/services.html",
+        "/sitemap.xml",
+        "/services.html",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js",
+        "/manifest.webmanifest"
+      ]
+    },
+    {
+      "action": "rollback",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js"
+      ]
+    },
+    {
+      "action": "forward",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/assets/css/growth-20260920/discovery.css",
+        "/assets/js/growth-20260920/rehearsal.js",
+        "/guide-kursovaya-za-nedelyu.html",
+        "/guide-prezentaciya-k-zashchite.html",
+        "/guide-rech-na-zashchitu.html",
+        "/guide-vvedenie-kursovoy.html",
+        "/guide-zashchita-diploma.html",
+        "/",
+        "/komissiya-0.html",
+        "/kursovaya-po-psihologii.html",
+        "/kursovaya-rabota.html",
+        "/normokontrol-vkr.html",
+        "/razbor-zamechaniy-nauchruka.html",
+        "/services.html",
+        "/sitemap.xml",
+        "/services.html",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js",
+        "/manifest.webmanifest"
+      ]
+    }
+  ],
+  "final_files": 515,
+  "changed_files": 15
+}

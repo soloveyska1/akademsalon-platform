@@ -1,0 +1,25 @@
+{
+  "urls": [
+    "https://akademsalon.ru/",
+    "https://akademsalon.ru/guide-kursovaya-za-nedelyu.html",
+    "https://akademsalon.ru/guide-prezentaciya-k-zashchite.html",
+    "https://akademsalon.ru/guide-rech-na-zashchitu.html",
+    "https://akademsalon.ru/guide-vvedenie-kursovoy.html",
+    "https://akademsalon.ru/guide-zashchita-diploma.html",
+    "https://akademsalon.ru/komissiya-0.html",
+    "https://akademsalon.ru/kursovaya-po-psihologii.html",
+    "https://akademsalon.ru/kursovaya-rabota.html",
+    "https://akademsalon.ru/normokontrol-vkr.html",
+    "https://akademsalon.ru/razbor-zamechaniy-nauchruka.html",
+    "https://akademsalon.ru/services.html"
+  ],
+  "results": [
+    {
+      "endpoint": "https://yandex.com/indexnow",
+      "http_status": 202,
+      "submitted_urls": 12,
+      "accepted": true
+    }
+  ],
+  "meaning": "Accepted notification is not proof of indexing, rankings, traffic or orders."
+}

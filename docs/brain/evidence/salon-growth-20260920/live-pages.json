@@ -1,0 +1,139 @@
+{
+  "checkedAt": "2026-09-20T00:44:19.145Z",
+  "sourceCommit": "449b719fcb5d418aa588e0daa26a4ba6ceaa6f5f",
+  "rows": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Курсовые, ВКР и помощь с учебными работами | Академический Салон",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "С учёбой\nможно проще.",
+      "freeTool": false
+    },
+    {
+      "path": "/services.html",
+      "status": 200,
+      "title": "Курсовые, ВКР, рефераты: работы и цены | Академический Салон",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "Под твою задачу.",
+      "freeTool": false
+    },
+    {
+      "path": "/komissiya-0.html",
+      "status": 200,
+      "title": "Вопросы на защите ВКР: бесплатный тренажёр и репетиция | Салон",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "На защите ты\nуже это слышал.",
+      "freeTool": false
+    },
+    {
+      "path": "/razbor-zamechaniy-nauchruka.html",
+      "status": 200,
+      "title": "Разбор замечаний научрука и план правок — от 2 500 ₽",
+      "width": 390,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "Разбор замечаний.\nПонятный план правок.",
+      "freeTool": false
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Курсовые, ВКР и помощь с учебными работами | Академический Салон",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "С учёбой\nможно\nпроще.",
+      "freeTool": false
+    },
+    {
+      "path": "/services.html",
+      "status": 200,
+      "title": "Курсовые, ВКР, рефераты: работы и цены | Академический Салон",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "Под твою задачу.",
+      "freeTool": false
+    },
+    {
+      "path": "/komissiya-0.html",
+      "status": 200,
+      "title": "Вопросы на защите ВКР: бесплатный тренажёр и репетиция | Салон",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "На защите ты\nуже это слышал.",
+      "freeTool": false
+    },
+    {
+      "path": "/razbor-zamechaniy-nauchruka.html",
+      "status": 200,
+      "title": "Разбор замечаний научрука и план правок — от 2 500 ₽",
+      "width": 1440,
+      "theme": "light",
+      "overflow": false,
+      "oldBoxes": 0,
+      "newSections": 1,
+      "h1": "Разбор замечаний.\nПонятный план правок.",
+      "freeTool": false
+    }
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    },
+    {
+      "method": "GET",
+      "url": "https://akademsalon.ru/api/auth/session"
+    }
+  ],
+  "nonGetApi": [],
+  "expected": "200, no overflow, zero old boxes, new sections present; no submitted orders"
+}
