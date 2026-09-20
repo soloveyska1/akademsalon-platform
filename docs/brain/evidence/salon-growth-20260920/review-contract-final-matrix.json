@@ -1,0 +1,4994 @@
+{
+  "createdAt": "2026-09-20T00:24:17.163Z",
+  "regression": {
+    "pass": true,
+    "nextLabel": "Далее →"
+  },
+  "matrix": [
+    {
+      "page": "/",
+      "width": 360,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 282,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 56.2,
+          "width": 328,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 328,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 360,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 282,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 52,
+          "width": 282,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 56.2,
+          "width": 328,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 328,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 312,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 56.2,
+          "width": 358,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 358,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 312,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 52,
+          "width": 312,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 56.2,
+          "width": 358,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 358,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 199.33,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 56,
+          "width": 199.34,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 56,
+          "width": 199.34,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 56,
+          "width": 199.34,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 48,
+          "width": 315.27,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 145.39,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 199.33,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 56,
+          "width": 199.34,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 56,
+          "width": 199.34,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 56,
+          "width": 199.34,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 56,
+          "width": 199.33,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 48,
+          "width": 315.27,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 145.39,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 1024,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 48,
+          "width": 315.27,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 145.39,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 1024,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 51,
+          "width": 272.66,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 48,
+          "width": 315.27,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 145.39,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 362,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 48,
+          "width": 315.27,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 145.39,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Курсовая работа ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Дипломная работа и ВКР ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Отчёт по практике ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Ещё виды работ +",
+          "height": 51,
+          "width": 362,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Реферат ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Магистерская диссертация ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Научная статья ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Разбор замечаний научрука ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Оформление и нормоконтроль ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Доработка готового текста ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Тренажёр вопросов Бесплатно",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Репетиция со специалистом ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Презентация к защите ↗",
+          "height": 51,
+          "width": 362,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Курсовая за неделю План по дням, если делаешь самостоятельно↗",
+          "height": 48,
+          "width": 315.27,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Все работы и цены ↗",
+          "height": 48,
+          "width": 145.39,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": {
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(73, 52, 160)"
+      },
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 360,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 360,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 106,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 106,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 744,
+        "width": 720
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 118,
+          "width": 354,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 1024,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 1024,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 24,
+        "right": 1000,
+        "width": 976
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 132,
+          "width": 281.91,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/services.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Сразу отправить на доработку ↗",
+          "height": 44,
+          "width": 193.27,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "↳Замечания научрукаЧто исправить и с чего начать↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "¶Оформление и нормоконтрольСверить работу с методичкой↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "AaРедактура после ИИПроверить логику, факты и источники↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "?Подготовка к защитеТренажёр вопросов и живая репетиция↗",
+          "height": 132,
+          "width": 367.47,
+          "fontSize": 16,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 360,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 280,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 222.37,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 288,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 115.77,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 56,
+          "width": 286,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 286,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 286,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 56,
+          "width": 328,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 318,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 238,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 92.59,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 92.59,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 92.59,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 38.9,
+          "width": 300.56,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 360,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 344,
+        "width": 328
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 280,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 222.37,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 288,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 115.77,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 56,
+          "width": 286,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 286,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 286,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 56,
+          "width": 328,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 318,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 238,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 92.59,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 92.59,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 92.59,
+          "width": 328,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 38.9,
+          "width": 300.56,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 310,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 222.37,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 318,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 115.77,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 316,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 316,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 56,
+          "width": 358,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 348,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 268,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 92.59,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 92.59,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 92.59,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 15.5,
+          "width": 202.02,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 16,
+        "right": 374,
+        "width": 358
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 310,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 222.37,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 318,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 115.77,
+          "fontSize": 10,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 56,
+          "width": 316,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 316,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 316,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 56,
+          "width": 358,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 348,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 268,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 92.59,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 92.59,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 92.59,
+          "width": 358,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 15.5,
+          "width": 202.02,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 56,
+          "width": 346,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 39.1,
+          "fontSize": 10,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 20,
+        "right": 748,
+        "width": 728
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 234.12,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 242.59,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 371.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 132.45,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 57.5,
+          "width": 670,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 330,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 330,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 57.5,
+          "width": 728,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 182.34,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 276,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 121,
+          "width": 230.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 121,
+          "width": 230.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 121,
+          "width": 230.67,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 38.9,
+          "width": 378.95,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 38.9,
+          "width": 398.52,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 20,
+        "right": 748,
+        "width": 728
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 234.12,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 242.59,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 371.91,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 132.45,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 57.5,
+          "width": 670,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 330,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 330,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 57.5,
+          "width": 728,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 182.34,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 276,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 121,
+          "width": 230.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 121,
+          "width": 230.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 121,
+          "width": 230.67,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 38.9,
+          "width": 378.95,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 38.9,
+          "width": 398.52,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 57.5,
+          "width": 416.06,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 1024,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 40,
+        "right": 984,
+        "width": 944
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 234.12,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 242.59,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 181,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 132.45,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 57.5,
+          "width": 656,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 323,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 323,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 57.5,
+          "width": 944,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 182.34,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 321.64,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 98.59,
+          "width": 302.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 98.59,
+          "width": 302.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 98.59,
+          "width": 302.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 15.5,
+          "width": 202.02,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 1024,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 40,
+        "right": 984,
+        "width": 944
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 234.12,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 242.59,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 181,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 132.45,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 57.5,
+          "width": 656,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 323,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 323,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 57.5,
+          "width": 944,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 182.34,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 321.64,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 98.59,
+          "width": 302.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 98.59,
+          "width": 302.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 98.59,
+          "width": 302.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 15.5,
+          "width": 202.02,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 57.5,
+          "width": 520.23,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 234.12,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 242.59,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 203,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 132.45,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 57.5,
+          "width": 938,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 464,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 464,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 57.5,
+          "width": 1280,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 182.34,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 446.64,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 98.59,
+          "width": 414.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 98.59,
+          "width": 414.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 98.59,
+          "width": 414.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 38.9,
+          "width": 542.82,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/komissiya-0.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 80,
+        "right": 1360,
+        "width": 1280
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Попробовать бесплатно ↗",
+          "height": 52,
+          "width": 234.12,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Как проходит репетиция с редактором ↓",
+          "height": 44,
+          "width": 242.59,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "SELECT",
+          "label": "ВКР / дипломКурсоваяМагистерская",
+          "height": 48,
+          "width": 203,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "◷ Минута на ответ",
+          "height": 44,
+          "width": 132.45,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "На что опереться в ответе +",
+          "height": 57.5,
+          "width": 938,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Ответил уверенно ✓",
+          "height": 52,
+          "width": 464,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Нужно доработать ↗",
+          "height": 52,
+          "width": 464,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "← Назад",
+          "height": 44,
+          "width": 44.23,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Пропустить →",
+          "height": 44,
+          "width": 74.42,
+          "fontSize": 11,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Все вопросы одним списком +",
+          "height": 57.5,
+          "width": 1280,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Скопировать ссылку ↗",
+          "height": 48,
+          "width": 182.34,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Записаться на репетицию ↗",
+          "height": 52,
+          "width": 446.64,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Сначала задать вопрос ↗",
+          "height": 44,
+          "width": 149.1,
+          "fontSize": 12,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ДокладКак построить речь↗",
+          "height": 98.59,
+          "width": 414.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "СлайдыСтруктура презентации↗",
+          "height": 98.59,
+          "width": 414.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "ПроцедураЧто происходит на защите↗",
+          "height": 98.59,
+          "width": 414.66,
+          "fontSize": 16,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Тренажёр действительно бесплатный?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно прийти только с темой?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "письменного разбора",
+          "height": 15.5,
+          "width": 140.14,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Можно принести текст после ИИ?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Кто увидит материалы и будет ли запись?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "политике конфиденциальности",
+          "height": 38.9,
+          "width": 542.82,
+          "fontSize": 13,
+          "inlineLink": true
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Это гарантирует оценку или допуск?+",
+          "height": 57.5,
+          "width": 719.09,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Стоимость репетиции ↑",
+          "height": 44,
+          "width": 141.66,
+          "fontSize": 12,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [
+        {
+          "tag": "A",
+          "label": "Главная",
+          "height": 44,
+          "width": 43.02,
+          "fontSize": 11,
+          "inlineLink": false
+        }
+      ],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 360,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 18,
+        "right": 342,
+        "width": 324
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 72,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 72,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 72,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 78.3,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 360,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false,
+      "rootBounds": {
+        "left": 18,
+        "right": 342,
+        "width": 324
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 72,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 72,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 72,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 78.3,
+          "width": 324,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 18,
+        "right": 372,
+        "width": 354
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false,
+      "rootBounds": {
+        "left": 18,
+        "right": 372,
+        "width": 354
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 72,
+          "width": 354,
+          "fontSize": 13,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 32,
+        "right": 736,
+        "width": 704
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 76,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 76,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 76,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 83.39,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false,
+      "rootBounds": {
+        "left": 32,
+        "right": 736,
+        "width": 704
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 76,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 76,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 76,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 83.39,
+          "width": 346,
+          "fontSize": 14,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 1024,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 32,
+        "right": 992,
+        "width": 960
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 1024,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1024,
+      "scrollWidth": 1024,
+      "overflow": false,
+      "rootBounds": {
+        "left": 32,
+        "right": 992,
+        "width": 960
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 76,
+          "width": 474,
+          "fontSize": 14,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 100,
+        "right": 1340,
+        "width": 1240
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    },
+    {
+      "page": "/razbor-zamechaniy-nauchruka.html",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "csp": "connect-src 'self'",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false,
+      "rootBounds": {
+        "left": 100,
+        "right": 1340,
+        "width": 1240
+      },
+      "ownOverflow": [],
+      "controls": [
+        {
+          "tag": "A",
+          "label": "Заказать письменный разбор",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку курсовой",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Заказать доработку ВКР",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        },
+        {
+          "tag": "A",
+          "label": "Самостоятельно проверить цель и задачи",
+          "height": 76,
+          "width": 614,
+          "fontSize": 14,
+          "inlineLink": false
+        }
+      ],
+      "shortControls": [],
+      "narrowControls": [],
+      "smallMobileFields": [],
+      "defenseTitle": null,
+      "errors": []
+    }
+  ],
+  "shots": [
+    "output/playwright/review-contract-final-home-discovery-390-light.png",
+    "output/playwright/review-contract-final-home-discovery-390-dark.png",
+    "output/playwright/review-contract-final-home-discovery-1440-light.png",
+    "output/playwright/review-contract-final-home-discovery-1440-dark.png",
+    "output/playwright/review-contract-final-services-support-390-light.png",
+    "output/playwright/review-contract-final-services-support-1440-light.png",
+    "output/playwright/review-contract-final-commission-hero-390-light.png",
+    "output/playwright/review-contract-final-commission-trainer-390-light.png",
+    "output/playwright/review-contract-final-commission-hero-390-dark.png",
+    "output/playwright/review-contract-final-commission-trainer-390-dark.png",
+    "output/playwright/review-contract-final-commission-hero-1440-light.png",
+    "output/playwright/review-contract-final-commission-trainer-1440-light.png",
+    "output/playwright/review-contract-final-commission-hero-1440-dark.png",
+    "output/playwright/review-contract-final-commission-trainer-1440-dark.png",
+    "output/playwright/review-contract-final-remarks-related-390-light.png",
+    "output/playwright/review-contract-final-remarks-related-1440-light.png"
+  ],
+  "failures": [],
+  "scope": "Exact candidate at localhost8768; readonly DOM/screenshot; no form submission; independent Chromium",
+  "buildManifestSha256": "279ff3d4f80164e9f42be045bfd71443b433040e6744fbaf68db54fec1546e6e",
+  "candidateAssets": {
+    "assets/css/growth-20260920/discovery.css": "077237514b28649637d7ee6bdaaecc5d84211edc8d2fcddf2428bcce62185860",
+    "assets/js/growth-20260920/rehearsal.js": "146761a632f0838c205c6cb71c2e2717c472f994916aaab0ee818238c0f55074"
+  }
+}

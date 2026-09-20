@@ -1,0 +1,78 @@
+{
+  "createdAt": "2026-09-20T00:32:42.830885+00:00",
+  "scope": "Only breadcrumb44x44 delta after baseline 40-state matrix; no submit",
+  "rows": [
+    {
+      "page": "/komissiya-0.html",
+      "viewport": 390,
+      "width": 390,
+      "theme": "light",
+      "target": {
+        "label": "Главная",
+        "width": 44,
+        "height": 44,
+        "minWidth": "44px"
+      },
+      "scrollWidth": 390,
+      "overflow": false,
+      "pass": true
+    },
+    {
+      "page": "/komissiya-0.html",
+      "viewport": 390,
+      "width": 390,
+      "theme": "dark",
+      "target": {
+        "label": "Главная",
+        "width": 44,
+        "height": 44,
+        "minWidth": "44px"
+      },
+      "scrollWidth": 390,
+      "overflow": false,
+      "pass": true
+    },
+    {
+      "page": "/komissiya-0.html",
+      "viewport": 1440,
+      "width": 1440,
+      "theme": "light",
+      "target": {
+        "label": "Главная",
+        "width": 44,
+        "height": 44,
+        "minWidth": "44px"
+      },
+      "scrollWidth": 1440,
+      "overflow": false,
+      "pass": true
+    },
+    {
+      "page": "/komissiya-0.html",
+      "viewport": 1440,
+      "width": 1440,
+      "theme": "dark",
+      "target": {
+        "label": "Главная",
+        "width": 44,
+        "height": 44,
+        "minWidth": "44px"
+      },
+      "scrollWidth": 1440,
+      "overflow": false,
+      "pass": true
+    }
+  ],
+  "assets": {
+    "assets/css/growth-20260920/discovery.css": {
+      "source": "3a1d31a592155d8981405b9e4b05b82d6bd3c3a1468ccfa018883029ec32c489",
+      "candidate": "3a1d31a592155d8981405b9e4b05b82d6bd3c3a1468ccfa018883029ec32c489"
+    },
+    "assets/js/growth-20260920/rehearsal.js": {
+      "source": "146761a632f0838c205c6cb71c2e2717c472f994916aaab0ee818238c0f55074",
+      "candidate": "146761a632f0838c205c6cb71c2e2717c472f994916aaab0ee818238c0f55074"
+    }
+  },
+  "buildManifestSha256": "adb7efaa7aa60b0fd4c99c8a3f43dc25bb4c1de7c332e40c9fd3c5283fc6e311",
+  "pass": true
+}

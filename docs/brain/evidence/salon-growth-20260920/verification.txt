@@ -1,0 +1,63 @@
+Academic Salon growth and design, 2026-09-20
+
+Outcome OUT-006. One write owner; exact production overlay over release216-seo-c8ee0105.
+The user explicitly expanded the initial home/Commission request to all repeated old link boxes.
+
+Candidate: 15 changed files (12 HTML, 2 unique assets, sitemap), zero deletions.
+All original ten SEO boxes replaced; seven retained-content blocks preserve exact text,
+hrefs, captions, table cells. No shared brand asset, backend, DB, checkout or cabinet source changed.
+Exact before/after hashes: delta.json. Full private local inventory: output/growth/build.json.
+
+G0: canonical base 22bb0f8f742630fd0654288b07125b0122fa758c, declaration a615bd47.
+Original Desktop main has .claude/launch.json dirty, untouched. Unique worktree and scopes.
+Bootstrap conflict snapshot: hard=0, 61 existing dormant/terminal warnings explicitly inspected.
+Fresh fetch and another conflict check required before integration.
+
+G1: source regression 652 passed, 0 failed, 9 skipped (661 total); Brain 39 passed.
+Artifact validator: 857 link/asset/schema checks, 77 sitemap URLs, PASS.
+JS syntax, Python compile, diff whitespace checked. No new browser console/page/network errors.
+
+G2/G7: independent actual Chromium exercise: six mixed self-ratings -> correct 3/6 result;
+Back on answered question -> labelled continuation, no silent rating reinterpretation;
+real TXT download succeeded, UTF-8 BOM, all six questions and selected ratings;
+master -> existing Commission Zero order form selected correctly at 29,900 RUB.
+No order submission, contact entry, auth, payment or customer data used in browser smoke.
+Checkout retry/idempotency/submit behavior is unchanged and covered by existing source regression;
+this release does not claim a fresh production end-to-end order or payment acceptance test.
+No-JS retains six static questions and booking route. Clipboard-denied fallback has one link.
+
+G3/G4: auth/cabinet implementation and assets unchanged; existing regression applies.
+Live health, critical static files and a read-only booking smoke required after publication.
+
+G5: review-contract-final-matrix.json is 4 routes x 5 widths (360/390/768/1024/1440)
+x 2 themes = 40 states at normal viewport heights, zero horizontal overflow.
+Sixteen visually reviewed screenshots show sections wholly inside the viewport with additional
+height; no fixed chrome or image content hidden/edited. Capture dimensions and exact hashes
+are in review-contract-final-screenshots.json. They are not full-page mobile-scroll proofs.
+
+G6: visible keyboard focus, readable dark theme, reduced-motion rules checked.
+White defense-card H3 contrast 9.2:1, mobile select 16px. Matrix found one breadcrumb
+39.1px width. Final delta only adds min-width:44px; review-contract-final-touch-target.json
+confirms 44x44 at 390/1440 in both themes, no overflow, matching source/candidate hashes.
+Thus the 40-state matrix/16 screenshots document the candidate immediately before the
+isolated breadcrumb fix; final release SHA mapping is delta.json and touch-target JSON.
+
+G8: production contains no preview fixture. Preview server alone rewrites served app.js API
+fallback to localhost and applies connect-src self, POST403. Browser request logs confirm
+only local auth-session GETs, no external requests. This response-only rewrite never enters
+the release archive. Free trainer stores answers only in memory and does not transmit them.
+
+G9: two independent read-only reviews: review_contract and review_design. Both inspected
+reproducible source/browser evidence; root inspected home/services/Commission/remarks PNGs.
+Council fallback: Sonnet OAuth expired; Kimi provider returned 503. No model report substitutes
+for deterministic proof. P0/P1/P2 remaining: zero after the breadcrumb readback.
+
+G10: live apply/rollback/forward and exact public hash checks are recorded separately after
+deployment. This file does not certify publication before that receipt exists.
+
+Acquisition baseline: baseline.json contains consented aggregate sessions, not total traffic.
+New free rehearsal tool + existing article/home links create a useful entry point and preserve
+all indexed URLs. Launch messages are prepared in launch-copy.txt and are NOT published.
+No advertising purchased. Search notification acceptance is not indexing or traffic evidence.
+Evaluate external visits and confirmed enquiries over 14 complete days after distribution;
+do not count QA, downloads, copy-link clicks or an unqualified order row as a confirmed lead.

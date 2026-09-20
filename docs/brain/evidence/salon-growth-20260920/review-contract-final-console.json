@@ -1,0 +1,46 @@
+[
+  {
+    "page": "/",
+    "idleMillis": 3000,
+    "errors": [],
+    "requests": [
+      {
+        "url": "http://127.0.0.1:8768/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "page": "/services.html",
+    "idleMillis": 3000,
+    "errors": [],
+    "requests": [
+      {
+        "url": "http://127.0.0.1:8768/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "page": "/komissiya-0.html",
+    "idleMillis": 3000,
+    "errors": [],
+    "requests": [
+      {
+        "url": "http://127.0.0.1:8768/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "page": "/razbor-zamechaniy-nauchruka.html",
+    "idleMillis": 3000,
+    "errors": [],
+    "requests": [
+      {
+        "url": "http://127.0.0.1:8768/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  }
+]

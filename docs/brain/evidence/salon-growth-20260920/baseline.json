@@ -1,0 +1,35 @@
+{
+  "read_at": "2026-09-20",
+  "scope": "Analytics v2 consented sessions, bot=0. Own QA cannot be fully separated; not total traffic. Order records do not establish qualified leads or payments.",
+  "periods": [
+    {
+      "start": "2026-08-23",
+      "end_exclusive": "2026-09-06",
+      "sessions": 9,
+      "visitors": 4,
+      "pageviews": 23,
+      "source_sessions": {
+        "direct": 5,
+        "search": 4
+      },
+      "non_synthetic_non_deleted_order_records": {
+        "new": 1,
+        "prepay": 1,
+        "priced": 1
+      }
+    },
+    {
+      "start": "2026-09-06",
+      "end_exclusive": "2026-09-20",
+      "sessions": 4,
+      "visitors": 1,
+      "pageviews": 16,
+      "source_sessions": {
+        "direct": 4
+      },
+      "non_synthetic_non_deleted_order_records": {
+        "new": 1
+      }
+    }
+  ]
+}

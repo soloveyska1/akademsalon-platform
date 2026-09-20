@@ -1,0 +1,279 @@
+{
+  "shots": [
+    {
+      "path": "output/playwright/review-contract-final-home-discovery-390-light.png",
+      "width": 390,
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 1765
+      },
+      "bounds": {
+        "x": 16,
+        "y": 160.0625,
+        "width": 358,
+        "height": 1424.6015625
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "a69b71e303607144e5f4c3876405f7834fa04c3981c6752133ee1a5919f36785"
+    },
+    {
+      "path": "output/playwright/review-contract-final-home-discovery-390-dark.png",
+      "width": 390,
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 1765
+      },
+      "bounds": {
+        "x": 16,
+        "y": 160.0625,
+        "width": 358,
+        "height": 1424.6015625
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "3fac90bd12f7d8541cf877a57d68b1693544e942364333b1cde550512130e4ff"
+    },
+    {
+      "path": "output/playwright/review-contract-final-home-discovery-1440-light.png",
+      "width": 1440,
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 1085
+      },
+      "bounds": {
+        "x": 80,
+        "y": 159.859375,
+        "width": 1280,
+        "height": 744.203125
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "d19c8fd9db7541db02b81dee79457fd86e098127cc389485662f06cf8ab8a60e"
+    },
+    {
+      "path": "output/playwright/review-contract-final-home-discovery-1440-dark.png",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 1085
+      },
+      "bounds": {
+        "x": 80,
+        "y": 159.859375,
+        "width": 1280,
+        "height": 744.203125
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "87810eefae755989b20b2fbc1271eb52e3bb6845eb5bc7c160b4dbfa81094e50"
+    },
+    {
+      "path": "output/playwright/review-contract-final-services-support-390-light.png",
+      "width": 390,
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 1073
+      },
+      "bounds": {
+        "x": 16,
+        "y": 160.109375,
+        "width": 358,
+        "height": 732.390625
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "1b19676af646ef25999f840692fb6db3861b6d396cc5863e06e6b6807db98f25"
+    },
+    {
+      "path": "output/playwright/review-contract-final-services-support-1440-light.png",
+      "width": 1440,
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 653
+      },
+      "bounds": {
+        "x": 80,
+        "y": 159.78125,
+        "width": 1280,
+        "height": 313
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "e9051d319922cba16a10dbae8bb06d26e7d54761bce129555f336f96b3b59c43"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-hero-390-light.png",
+      "width": 390,
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 1124
+      },
+      "bounds": {
+        "x": 16,
+        "y": 127,
+        "width": 358,
+        "height": 783.6015625
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "90db6f2b4821e8c59b3ba03ec26bc3c9308c59fbe2d1f54f5b9ad8cfba80986e"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-trainer-390-light.png",
+      "width": 390,
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 1075
+      },
+      "bounds": {
+        "x": 16,
+        "y": 160.0390625,
+        "width": 358,
+        "height": 734.59375
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "fdfcc58e1dc05d60e1cc0a11687ae4dd623b6d44c2c2e8372e18996fbb8a1b82"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-hero-390-dark.png",
+      "width": 390,
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 1124
+      },
+      "bounds": {
+        "x": 16,
+        "y": 127,
+        "width": 358,
+        "height": 783.6015625
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "91f7067f275f4b3600a57acb5b9317a6904fd5246d044849b2bf8ddfad854438"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-trainer-390-dark.png",
+      "width": 390,
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 1075
+      },
+      "bounds": {
+        "x": 16,
+        "y": 160.0390625,
+        "width": 358,
+        "height": 734.59375
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "df56711d2fd741d0d8c2ab182774ad474d7e8a8c86a861906d3e70b34d5f09d9"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-hero-1440-light.png",
+      "width": 1440,
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 930
+      },
+      "bounds": {
+        "x": 80,
+        "y": 160,
+        "width": 1280,
+        "height": 590
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "1e553602d50d72bb400b0f5a9aaf388cd42d4d47daeff86495b3eb17540b3443"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-trainer-1440-light.png",
+      "width": 1440,
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 862
+      },
+      "bounds": {
+        "x": 80,
+        "y": 160.015625,
+        "width": 1280,
+        "height": 521.6796875
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "4ccedaad01c7e6dc5e675f39b0720d735af4cba56bdbbb07943dd622244e4fc5"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-hero-1440-dark.png",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 930
+      },
+      "bounds": {
+        "x": 80,
+        "y": 160,
+        "width": 1280,
+        "height": 590
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "1e22c50034f1916972e37ed67c72c3749c75d93a0ee58f1a0bcb56973aee9b38"
+    },
+    {
+      "path": "output/playwright/review-contract-final-commission-trainer-1440-dark.png",
+      "width": 1440,
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 862
+      },
+      "bounds": {
+        "x": 80,
+        "y": 160.015625,
+        "width": 1280,
+        "height": 521.6796875
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "2419f7dd3548848298b053f1f3aba20ea597760934e48d4d6f979952b3b0d55b"
+    },
+    {
+      "path": "output/playwright/review-contract-final-remarks-related-390-light.png",
+      "width": 390,
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 1350
+      },
+      "bounds": {
+        "x": 18,
+        "y": 159.8359375,
+        "width": 354,
+        "height": 1009.9921875
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "26acb4dbecd778cb7e1d0d950430825d0d6637181f3a50ab35fd8c83d608e269"
+    },
+    {
+      "path": "output/playwright/review-contract-final-remarks-related-1440-light.png",
+      "width": 1440,
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 1027
+      },
+      "bounds": {
+        "x": 100,
+        "y": 159.9609375,
+        "width": 1240,
+        "height": 686.84375
+      },
+      "method": "Section fully fits viewport; fixed chrome outside clip; no elements hidden or image edits",
+      "sha256": "4213d5fe077232ef2f876cfb23b33962e5ae74c9585845afe7fa698bef41c0fe"
+    }
+  ],
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+  "dpr": 1,
+  "createdFromBuildManifestSha256": "279ff3d4f80164e9f42be045bfd71443b433040e6744fbaf68db54fec1546e6e"
+}

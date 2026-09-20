@@ -1,0 +1,70 @@
+{
+  "baseline_release": "release216-seo-c8ee0105",
+  "baseline_file_count": 513,
+  "baseline_inventory_sha256": "547e03489a9f9b145137c5c7255a5c26649082461b962a7756e5fa9e584b222b",
+  "candidate_file_count": 515,
+  "changed": {
+    "assets/css/growth-20260920/discovery.css": {
+      "before": null,
+      "after": "3a1d31a592155d8981405b9e4b05b82d6bd3c3a1468ccfa018883029ec32c489"
+    },
+    "assets/js/growth-20260920/rehearsal.js": {
+      "before": null,
+      "after": "146761a632f0838c205c6cb71c2e2717c472f994916aaab0ee818238c0f55074"
+    },
+    "guide-kursovaya-za-nedelyu.html": {
+      "before": "d16d9deb18118d3866da531af123748f4d0ece1e72bb65322b5148fff0ce8e7f",
+      "after": "675b0397529feb7d3e3ae4d4bba4a122ac5bdaf458dc8ef6aa4ba8ed34e71bcd"
+    },
+    "guide-prezentaciya-k-zashchite.html": {
+      "before": "892bddaf8f44af7a9fc6db39fa4730a2a6fb394f9a0ebc8ed83cd003f5354f88",
+      "after": "a97ff09acb7d9515ab5d28f23ce0db52d1956cb257d97e2529c97380d46253ff"
+    },
+    "guide-rech-na-zashchitu.html": {
+      "before": "724c1a1d22d07db54ef241039c88a17d2dad07582eda111c34bb68ec4e7d00d9",
+      "after": "557c01f3df72bd38dbda823b207fd72956accec309c1fc6bfddef293dee2e1c4"
+    },
+    "guide-vvedenie-kursovoy.html": {
+      "before": "0ba78ea927642bffa5564c88f59ed48c0eea72f7ac1d0e60373a4b21899cd0c9",
+      "after": "4e001e02c11af22d0f9585e8425a17360340f5dcf3426bcb0137ddeff8f156a3"
+    },
+    "guide-zashchita-diploma.html": {
+      "before": "9f7339ca98984dc4260b0cb1933462a555629990f90c1841960a8eaf4d728f5b",
+      "after": "7b0ef1d5c79e933e3a8a8050f687dc1425612358b4209d0ade111f505dbf4f44"
+    },
+    "index.html": {
+      "before": "bfd1235a8f9a114bb11538e387e89840de96987d1b7197fd5ffd2c81c31d01f4",
+      "after": "b3b45d63fdb3d4796dc20a47065d4c8224552f76f89a52ee5ee804784fb9c89f"
+    },
+    "komissiya-0.html": {
+      "before": "7d25b58991247f65929b6c9cfce2ee47da6d9b54b3202b9740b7dbc52444ee69",
+      "after": "3e53c0c71a1ac8eac04c2ad56b96c20f361029033ee7482d77f7de9284d7b2b9"
+    },
+    "kursovaya-po-psihologii.html": {
+      "before": "c73677aea0e5b583629f10f354d8afb09cb476308f1f3119bac70234e9e9f930",
+      "after": "887e5beb0b9d2bc305cc50d726bf3775fe2e8b4dbe2b5c74a3f222331b2a7014"
+    },
+    "kursovaya-rabota.html": {
+      "before": "98cdb1fa925b969b7cc7352d5e93ec74b051dd88587eea14e0e69119edc13481",
+      "after": "bc26b74b5ec1dc2ad9d5500caf276595b7bf52388f5dfec052bb6506519a0c49"
+    },
+    "normokontrol-vkr.html": {
+      "before": "c7f51674ca7f5e978228936d53052c79399a9a5524b4a08c4bbd09dca5e4e0be",
+      "after": "850a0e33130286b962085600bc4aeef5fa96dbd362fc55e3335c845c81f2613d"
+    },
+    "razbor-zamechaniy-nauchruka.html": {
+      "before": "c36f8dd9ba092e354d5ba54f637ba97d161f32731219517b624c8429ecb6d01b",
+      "after": "d239208e9e18b4d8d414385dd9737cb4efbdc0a70f33ce23974c46b1d13a502a"
+    },
+    "services.html": {
+      "before": "d9647a30fa976f9874ccc565905e9e9e86fb93c789d6cd77b6265a7a0a50212d",
+      "after": "75defebb478f7b0dfc284d809777c0ac30377a5bfd6cbd68b32455a4ac7edff6"
+    },
+    "sitemap.xml": {
+      "before": "a509a91e0ee1fa99a2a77e45bfe383009d85f2fedc39250c577382a2aa34c17f",
+      "after": "e923fe7da3dd6614d984b3999e877f969b0c9f7d27a2e0b5268b6f9830a2de78"
+    }
+  },
+  "deleted": [],
+  "archive_sha256": "9c6bae000c3a02ae2ae94f1bd3929f7169a647cecec8f48565c996a1a0729d7c"
+}
