@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-09-20T17:52:56Z",
+  "source_type": "authenticated_browser_ui",
+  "code_head_before_observation": "d83dc15bdc6f86037580f5c2d041edfd60025f99",
+  "acceptance_criteria": [
+    "Read refreshed exact project/item status and publication URL if present",
+    "Verify current project price, allocation, completed spend and available balance",
+    "Expand both existing support threads and distinguish questions from replies",
+    "Update only declared evidence/handoff scope, without new spending or creative changes"
+  ],
+  "project_url": "https://telega.in/orders/order_channels?id=2501952",
+  "item_id": "4216163",
+  "owner_status": "В ожидании",
+  "owner_countdown_observed": "07:46:33",
+  "publication_url": null,
+  "publication_window": "2026-09-21 to 2026-09-23, 18:00-21:00 UTC+3",
+  "format": "2/48",
+  "currency": "RUB",
+  "reserved": 2097.9,
+  "completed_spend": 0,
+  "available_balance": 902.1,
+  "project_list_source": "https://telega.in/orders",
+  "project_counts": {
+    "awaiting": 1,
+    "in_progress": 0,
+    "completed": 0,
+    "drafts": 1,
+    "cancelled": 0
+  },
+  "unlaunched_draft": "2501950",
+  "support_source": "https://telega.in/feedback",
+  "support_threads_expanded": [
+    {
+      "subject": "Дополнение: готовый рекламный шаблон и возврат остатка",
+      "outgoing_message_time_msk": "2026-09-20 04:32",
+      "reply_visible": true,
+      "reply_time_msk": "2026-09-20 18:08",
+      "reply_summary": "Support asks to duplicate the request in its official Telegram bot https://t.me/telegamain_bot"
+    },
+    {
+      "subject": "Предварительная модерация: оформление готового текста в Word",
+      "outgoing_message_time_msk": "2026-09-20 04:11",
+      "reply_visible": true,
+      "reply_time_msk": "2026-09-20 18:08",
+      "reply_summary": "Support asks to duplicate the request in its official Telegram bot https://t.me/telegamain_bot"
+    }
+  ],
+  "support_note": "Both replies redirect to the official support bot. No substantive moderation decision or refund conditions were provided.",
+  "optional_email_banner_present": true,
+  "email_note": "Existing account reminder is not blocking campaign monitoring or reading support threads; no account contact data copied or changed.",
+  "actual_views": null,
+  "actual_clicks": null,
+  "new_tracked_qa_clicks": 0,
+  "confirmed_campaign_paid_orders": 0,
+  "customer_inbox_checked": false,
+  "campaign_success": false,
+  "meaningful_change": true,
+  "external_mutations": [],
+  "next_step": "Obtain explicit authorization for the new Telegram support conversation, then send the prepared inquiry. Continue owner/publication monitoring independently.",
+  "privacy": "No private identity, contact, payment or customer material stored. UI observations are reduced to campaign facts.",
+  "comparison_note": "Owner status and finances unchanged after fresh navigation. Two new support replies require a channel change for the support inquiry.",
+  "browser_recovery": {
+    "first_reload": "timeout_then_ERR_NAME_NOT_RESOLVED",
+    "recovery": "A fresh tab in the same selected browser loaded /feedback and /orders, then the exact project successfully",
+    "settings_changed": false,
+    "fresh_project_verified": true,
+    "handoff_tab": "11"
+  },
+  "support_followup": {
+    "recipient": "https://t.me/telegamain_bot",
+    "draft": "support-bot-draft-20260920.txt",
+    "state": "prepared_pending_user_authorization",
+    "sent": false,
+    "requested_scope": "Send this campaign inquiry and continue routine correspondence with this bot about moderation, placement and residual refund; no payment credentials or client materials"
+  }
+}

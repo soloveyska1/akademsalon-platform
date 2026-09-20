@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-20T13:48:54Z",
+  "as_of": "2026-09-20T17:52:56Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -37,11 +37,12 @@
     "attributed_paid_revenue": 0
   },
   "moderation": {
-    "state": "registered_in_platform_waiting_owner_and_support",
-    "proof": "Telega.in /success, response within one working day",
+    "state": "registered_waiting_owner_support_redirected_to_telegram",
+    "proof": "Both account support threads show replies at 2026-09-20 18:08 MSK directing the request to @telegamain_bot",
     "approved": false,
     "template_sent_for_preflight": true,
-    "support_requests_confirmed": 2
+    "support_requests_confirmed": 2,
+    "support_replies_confirmed": 2
   },
   "campaign_success": false,
   "non_advertising_fee_risk": {
@@ -75,22 +76,30 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-20T13:48:54Z",
+    "at": "2026-09-20T17:52:56Z",
     "source_type": "authenticated_browser_ui_after_reload",
-    "observation_file": "check-20260920T134854Z.json",
-    "state_changed": false,
+    "observation_file": "check-20260920T175256Z.json",
+    "state_changed": true,
     "owner_status": "В ожидании",
     "support_threads_expanded": 2,
-    "support_replies_visible": 0,
+    "support_replies_visible": 2,
     "customer_inbox_checked": false,
     "reason_inbox_not_checked": "No published campaign post or resulting traffic confirmed; campaign customer metrics remain confirmed-only aggregates.",
     "new_tracked_qa_clicks": 0,
-    "action_required": false
+    "action_required": true,
+    "action": "Authorize prepared inquiry and routine follow-up with official Telegram support bot"
   },
   "monitor": {
     "automation_id": "automation-4",
     "state": "ACTIVE",
     "interval_hours": 4,
     "until": "2026-09-27T20:59:59Z"
+  },
+  "support_followup": {
+    "recipient": "https://t.me/telegamain_bot",
+    "draft": "support-bot-draft-20260920.txt",
+    "state": "prepared_pending_user_authorization",
+    "sent": false,
+    "requested_scope": "Send this campaign inquiry and continue routine correspondence with this bot about moderation, placement and residual refund; no payment credentials or client materials"
   }
 }
