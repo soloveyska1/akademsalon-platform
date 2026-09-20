@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-15ba56b915bb4a8db984ba7117617a7f",
+  "slug": "first-order-1000-20260920",
+  "status": "active",
+  "branch": "codex/first-order-1000-20260920",
+  "base_sha": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-ad-test-20260920",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-15ba56b915bb4a8db984ba7117617a7f/HANDOFF.md",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:salon-first-order-1000-20260920"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
