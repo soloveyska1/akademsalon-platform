@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-20T17:52:56Z",
+  "as_of": "2026-09-20T20:06:44Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -76,18 +76,19 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-20T17:52:56Z",
-    "source_type": "authenticated_browser_ui_after_reload",
-    "observation_file": "check-20260920T175256Z.json",
+    "at": "2026-09-20T20:06:44Z",
+    "source_type": "authenticated_browser_ui_and_native_telegram",
+    "observation_file": "check-20260920T200644Z.json",
     "state_changed": true,
     "owner_status": "В ожидании",
-    "support_threads_expanded": 2,
-    "support_replies_visible": 2,
+    "support_threads_expanded": 0,
+    "support_replies_visible": null,
+    "support_reply_last_verified_at": "2026-09-20T17:52:56Z",
     "customer_inbox_checked": false,
     "reason_inbox_not_checked": "No published campaign post or resulting traffic confirmed; campaign customer metrics remain confirmed-only aggregates.",
     "new_tracked_qa_clicks": 0,
     "action_required": true,
-    "action": "Authorize prepared inquiry and routine follow-up with official Telegram support bot"
+    "action": "User authorization granted; waiting for Telegram to be free from simultaneous control before sending the prepared inquiry"
   },
   "monitor": {
     "automation_id": "automation-4",
@@ -98,8 +99,15 @@
   "support_followup": {
     "recipient": "https://t.me/telegamain_bot",
     "draft": "support-bot-draft-20260920.txt",
-    "state": "prepared_pending_user_authorization",
+    "state": "authorized_waiting_exclusive_telegram_control",
     "sent": false,
-    "requested_scope": "Send this campaign inquiry and continue routine correspondence with this bot about moderation, placement and residual refund; no payment credentials or client materials"
+    "requested_scope": "Send this campaign inquiry and continue routine correspondence with this bot about moderation, placement and residual refund; no payment credentials or client materials",
+    "user_authorization": "Explicit reply Да to the prepared inquiry and routine support correspondence request; no repeat permission needed",
+    "username_verified_in_native_profile": "telegamain_bot",
+    "bot_started": true,
+    "start_message_ui_time_msk": "2026-09-20 23:05",
+    "start_message_ui_receipt": "Просмотрено",
+    "inquiry_sent": false,
+    "control_note": "Telegram switched independently to other chats and a file search. Message body was not pasted or sent; user asked to make Telegram available. No unrelated messages sent."
   }
 }
