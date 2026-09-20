@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-20T01:47:13Z",
+  "as_of": "2026-09-20T05:48:42Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -74,6 +74,19 @@
   "actual_short_link": "https://tglink.io/3ea6135f0917f9",
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
+  "last_check": {
+    "at": "2026-09-20T05:48:42Z",
+    "source_type": "authenticated_browser_ui_after_reload",
+    "observation_file": "check-20260920T054842Z.json",
+    "state_changed": false,
+    "owner_status": "В ожидании",
+    "support_threads_expanded": 2,
+    "support_replies_visible": 0,
+    "customer_inbox_checked": false,
+    "reason_inbox_not_checked": "No published campaign post or resulting traffic confirmed; campaign customer metrics remain confirmed-only aggregates.",
+    "new_tracked_qa_clicks": 0,
+    "action_required": false
+  },
   "monitor": {
     "automation_id": "automation-4",
     "state": "ACTIVE",

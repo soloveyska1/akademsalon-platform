@@ -1,5 +1,8 @@
 # Workstream handoff
 
+- Latest heartbeat: 2026-09-20 08:48 MSK (05:48:42Z), observation check-20260920T054842Z.json. Refreshed item4216163 still «В ожидании»; no publication URL. Dates/time and price unchanged. Project list confirms one awaiting project and one unpaid draft; completed spend0, reserve2,097.90, balance902.10 RUB. Both support threads expanded in /feedback, only original outgoing messages visible, no reply. No new purchases, edits, messages or tracked QA clicks. Customer inbox not checked before publication; zero confirmed campaign orders is not a claim that the business received no other enquiries.
+- Session preflight: clean cbda2a89948cd22befda88ff38ffbaee859bfc0d; brain context/doctor and council doctor ready; fresh origin/main c1c5eb0d27e63c77f6d6f430a39d3579447f01fa. Strict conflicts hard0/warnings62/info9; all warnings remain TERMINAL_WORKTREE_PRESENT, explicitly re-allowed by root integration owner; allow-warnings blocking0. Evidence-only status refresh, no new design or customer-path change.
+
 - Branch: codex/first-order-1000-20260920
 - Outcome: OUT-006; WS-15ba56b915bb4a8db984ba7117617a7f remains active. Attributable paid customer order not achieved yet.
 - Goal: operate one acquisition test. User raised original 1,000 RUB cap to 3,000 RUB on 2026-09-20; this is the current absolute all-in ceiling.
