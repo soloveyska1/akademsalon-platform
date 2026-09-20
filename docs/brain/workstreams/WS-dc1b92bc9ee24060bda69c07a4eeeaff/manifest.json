@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-dc1b92bc9ee24060bda69c07a4eeeaff",
   "slug": "salon-growth-overlay-20260920",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-growth-overlay-20260920",
   "base_sha": "22bb0f8f742630fd0654288b07125b0122fa758c",
   "result_sha": "198fbadd2b8f322b0ceb8179ee20acc89267caa0",
@@ -53,6 +53,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "4eeba49beb8ffecb0337ea03d63f2244a51d883bf4ece530a2d1f1d91824b0b9"
+  "manifest_revision": 3,
+  "base_manifest_hash": "845167c72fb0786e4a03cc9db76b49e429a160f9324c7619227468e9b760866c"
 }
