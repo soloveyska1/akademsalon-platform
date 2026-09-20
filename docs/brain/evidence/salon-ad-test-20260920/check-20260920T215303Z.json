@@ -1,0 +1,82 @@
+{
+  "checked_at": "2026-09-20T21:53:03Z",
+  "source_type": "authenticated_browser_ui_and_native_telegram",
+  "code_head_before_observation": "3a2dfa4898c67482da1fb75766918a9d9d8330d8",
+  "acceptance_criteria": [
+    "Refresh exact project and distinguish waiting, acceptance and actual publication",
+    "Read support reply completely and separate confirmed rules from account-specific unknowns",
+    "Send only necessary authorized clarification and verify outgoing receipt",
+    "Reconcile finances and update only the declared evidence/handoff scope"
+  ],
+  "project_url": "https://telega.in/orders/order_channels?id=2501952",
+  "item_id": "4216163",
+  "owner_status": "В ожидании",
+  "owner_countdown_observed": "03:46:21",
+  "publication_url": null,
+  "publication_window": "2026-09-21 to2026-09-23,18:00–21:00 UTC+3",
+  "format": "2/48",
+  "currency": "RUB",
+  "reserved": 2097.9,
+  "completed_spend": 0,
+  "available_balance": 902.1,
+  "project_list_source": "https://telega.in/orders",
+  "project_counts": {
+    "awaiting": 1,
+    "in_progress": 0,
+    "completed": 0,
+    "drafts": 1,
+    "cancelled": 0
+  },
+  "unlaunched_draft": "2501950",
+  "support": {
+    "source": "https://t.me/telegamain_bot",
+    "reply_ui_time_msk": "2026-09-20 23:50",
+    "read_method": "Native AX plus screenshot at beginning and bottom of the full reply",
+    "creative_review": "Task4216163 passed to colleagues for additional review; approval and possible documents will be answered afterwards",
+    "refund_procedure": {
+      "url": "https://telega.in/payment_requests",
+      "steps": [
+        "Create withdrawal request after test",
+        "Download and sign application template",
+        "Upload signed application, fiscal receipt and bank payment receipt",
+        "Submit application through the account form"
+      ],
+      "executed": false
+    },
+    "inactivity_fee": "Support says500 RUB fee under13.5 does not apply to agency-scheme accounts; this exact account exemption not confirmed",
+    "placement_price": "Catalog prices are final and include agency remuneration and marking",
+    "support_reference": "https://telega.in/page/offer_at",
+    "refund_minimum_answered": false,
+    "refund_commission_answered": false,
+    "clarification": {
+      "file": "support-clarification-20260920T2151Z.txt",
+      "sent_once": true,
+      "ui_time_msk": "2026-09-21 00:51",
+      "ui_receipt": "Просмотрено",
+      "reply_confirmed": false
+    },
+    "prior_user_authorization": "Да for the prepared inquiry and ordinary subsequent correspondence with this official support bot"
+  },
+  "web_support_threads_refreshed": false,
+  "web_support_threads_last_verified_at": "2026-09-20T17:52:56Z",
+  "actual_views": null,
+  "actual_clicks": null,
+  "new_tracked_qa_clicks": 0,
+  "confirmed_campaign_paid_orders": 0,
+  "customer_inbox_checked": false,
+  "campaign_success": false,
+  "external_mutations": [
+    "One necessary support clarification sent; no ad purchase, creative edit or refund submission"
+  ],
+  "privacy": "Only reduced campaign facts stored; no identity details, private contacts, payment credentials, customer materials or unrelated Telegram conversation content retained.",
+  "preflight": {
+    "fresh_fetch_completed": true,
+    "canonical": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+    "hard_conflicts": 0,
+    "warnings": 62,
+    "warning_type": "TERMINAL_WORKTREE_PRESENT",
+    "root_integration_owner_decision": "Explicitly re-allow only unchanged terminal-presence warnings",
+    "allow_warnings_blocking": 0
+  },
+  "next_step": "Check owner decision after the remaining response window and read support conclusions; keep the same placement and registered creative, with no additional spending."
+}
