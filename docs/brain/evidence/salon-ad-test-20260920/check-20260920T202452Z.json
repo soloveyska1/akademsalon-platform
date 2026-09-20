@@ -1,0 +1,52 @@
+{
+  "checked_at": "2026-09-20T20:24:52Z",
+  "source_type": "native_telegram_ui",
+  "code_head_before_observation": "6e641c73495c164b3d5b08f7ea2664b957db534a",
+  "acceptance_criteria": [
+    "Reopen the verified official support bot after user releases native Telegram",
+    "Verify the complete approved draft in compose field, send it once and observe receipt",
+    "Distinguish automatic receipt from substantive moderation or refund decisions",
+    "Update only declared campaign evidence and current workstream handoff"
+  ],
+  "recipient": "https://t.me/telegamain_bot",
+  "user_authorization": "Explicit Да for the prepared inquiry and routine support correspondence; Свободен confirms native Telegram availability",
+  "approved_draft": "support-bot-draft-20260920.txt",
+  "approved_draft_sha256": "7e29c0ead7b90fe3affabc1684a76eb2d4128e1d3ddd458a759fcdd97a8fc6ea",
+  "full_draft_checked_in_compose_field": true,
+  "substantive_inquiries_sent_this_turn": 1,
+  "inquiry_ui_time_msk": "2026-09-20 23:24",
+  "inquiry_ui_receipt": "Просмотрено",
+  "compose_field_empty_after_send": true,
+  "automatic_acknowledgement": {
+    "confirmed": true,
+    "ui_time_msk": "2026-09-20 23:24",
+    "summary": "Bot explicitly confirms it received the message, gives a usual wait of15–45 minutes depending on load, and asks to wait for its reply before sending further messages"
+  },
+  "substantive_reply_confirmed": false,
+  "moderation_approved": false,
+  "refund_terms_verified": false,
+  "refund_request_submitted": false,
+  "project_id": "2501952",
+  "order_item_id": "4216163",
+  "project_and_finances_refreshed_this_turn": false,
+  "project_and_finances_last_verified_at": "2026-09-20T20:06:44Z",
+  "new_tracked_qa_clicks": 0,
+  "new_purchases": 0,
+  "creative_changed": false,
+  "campaign_success": false,
+  "confirmed_campaign_paid_orders": 0,
+  "external_mutations": [
+    "One approved inquiry sent to the official support bot"
+  ],
+  "privacy": "No personal contact, identity, payment credentials or customer material sent or stored; only approved campaign details. Unrelated Telegram content excluded.",
+  "preflight": {
+    "fresh_fetch_completed": true,
+    "canonical": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+    "hard_conflicts": 0,
+    "warnings": 62,
+    "warning_type": "TERMINAL_WORKTREE_PRESENT",
+    "root_integration_owner_decision": "Explicitly re-allow only the unchanged terminal-presence warnings",
+    "allow_warnings_blocking": 0
+  },
+  "next_step": "Read the substantive reply in this existing support bot conversation during campaign monitoring and continue ordinary correspondence as already authorized; do not duplicate the inquiry"
+}
