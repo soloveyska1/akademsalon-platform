@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-21T05:59:54Z",
+  "as_of": "2026-09-21T09:58:23Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -28,7 +28,7 @@
       "hour_to": 21,
       "timezone": "Europe/Moscow"
     },
-    "last_verified_at": "2026-09-21T05:59:54Z",
+    "last_verified_at": "2026-09-21T09:58:23Z",
     "cancellation_reason": "Проигнорировано владельцем канала",
     "cancellation_transaction_ui_time_msk": "2026-09-21 04:40",
     "publication_confirmed": false
@@ -48,12 +48,13 @@
     "support_requests_confirmed": 2,
     "support_replies_confirmed": 2,
     "support_requests_scope": "Web account feedback only; Telegram inquiry counted separately",
-    "telegram_inquiries_sent": 3,
+    "telegram_inquiries_sent": 4,
     "telegram_acknowledgements_confirmed": 1,
-    "substantive_support_replies_confirmed": 1,
+    "substantive_support_replies_confirmed": 2,
     "telegram_initial_inquiries_sent": 1,
     "telegram_clarifications_sent": 1,
-    "telegram_cancellation_updates_sent": 1
+    "telegram_cancellation_updates_sent": 1,
+    "telegram_account_identification_replies_sent": 1
   },
   "campaign_success": false,
   "non_advertising_fee_risk": {
@@ -92,27 +93,27 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-21T05:59:54Z",
+    "at": "2026-09-21T09:58:23Z",
     "source_type": "authenticated_browser_ui_and_native_telegram",
-    "observation_file": "check-20260921T055954Z.json",
-    "state_changed": false,
+    "observation_file": "check-20260921T095823Z.json",
+    "state_changed": true,
     "owner_status": "Отменен",
     "support_threads_expanded": 2,
-    "support_replies_visible": 1,
+    "support_replies_visible": 2,
     "customer_inbox_checked": false,
     "reason_inbox_not_checked": "Placement cancelled before any confirmed publication; no resulting campaign traffic or attributable order confirmed.",
     "new_tracked_qa_clicks": 0,
     "action_required": true,
     "action": "User to fill payer and original-card bank details in refund form and generate application; no sensitive data in chat or evidence",
-    "owner_status_last_verified_at": "2026-09-21T05:59:54Z",
-    "support_reply_type": "no_new_reply_after_cancellation_update",
-    "web_support_replies_last_verified_at": "2026-09-21T05:59:54Z",
+    "owner_status_last_verified_at": "2026-09-21T09:58:23Z",
+    "support_reply_type": "account_email_requested",
+    "web_support_replies_last_verified_at": "2026-09-21T09:58:23Z",
     "web_support_replies_visible": 2,
     "support_bot_checked": true,
-    "support_new_reply": false,
+    "support_new_reply": true,
     "new_user_action_requested": false,
-    "outgoing_support_messages": 0,
-    "native_access_issue_resolved": true
+    "outgoing_support_messages": 1,
+    "native_access_issue_encountered": false
   },
   "monitor": {
     "automation_id": "automation-4",
@@ -124,7 +125,7 @@
   "support_followup": {
     "recipient": "https://t.me/telegamain_bot",
     "draft": "support-bot-draft-20260920.txt",
-    "state": "placement_cancelled_full_refund_update_sent",
+    "state": "account_identification_requested_project_id_reply_sent",
     "sent": true,
     "requested_scope": "Send this campaign inquiry and continue routine correspondence with this bot about moderation, placement and residual refund; no payment credentials or client materials",
     "user_authorization": "Explicit reply Да to the prepared inquiry and routine support correspondence request; no repeat permission needed",
@@ -146,9 +147,10 @@
     },
     "substantive_reply_confirmed": true,
     "refund_request_submitted": false,
-    "substantive_reply_ui_time_msk": "2026-09-20 23:50",
-    "substantive_reply_checked_at": "2026-09-20T21:53:03Z",
+    "substantive_reply_ui_time_msk": "2026-09-21 08:59",
+    "substantive_reply_checked_at": "2026-09-21T09:58:23Z",
     "pending_topics": [
+      "Account identification by project 2501952 or confirmation that adding and verifying an email is required",
       "Refund minimum, commission and net amount for full 3000 RUB",
       "This exact account exemption from inactivity fee",
       "Additional creative review outcome; no replacement or relaunch authorized"
@@ -165,14 +167,34 @@
       "sent": true,
       "ui_time_msk": "2026-09-21 04:56",
       "ui_receipt": "Просмотрено",
-      "reply_confirmed": false,
-      "receipt_verified_at": "2026-09-21T05:59:54Z",
+      "reply_confirmed": true,
+      "receipt_verified_at": "2026-09-21T09:58:23Z",
       "supersedes_refund_amount_rub": 902.1,
-      "current_refund_amount_rub": 3000
+      "current_refund_amount_rub": 3000,
+      "response_kind": "account_identification_request",
+      "questions_resolved": false
     },
-    "last_checked_at": "2026-09-21T05:59:54Z"
+    "last_checked_at": "2026-09-21T09:58:23Z",
+    "procedure_reply_ui_time_msk": "2026-09-20 23:50",
+    "latest_reply": {
+      "ui_time_msk": "2026-09-21 08:59",
+      "kind": "account_email_requested",
+      "summary": "Support asked for the email of the account requesting the refund. No minimum, commission, net amount or exact-account inactivity exemption answered.",
+      "financial_conditions_resolved": false,
+      "private_contact_values_recorded": false
+    },
+    "account_identification_reply": {
+      "file": "support-account-identification-20260921T0957Z.txt",
+      "sent": true,
+      "ui_time_msk": "2026-09-21 12:57",
+      "ui_receipt": "Просмотрено",
+      "receipt_verified_at": "2026-09-21T09:58:23Z",
+      "reply_confirmed": false,
+      "private_email_or_bank_details_sent": false,
+      "reason": "New support request at 08:59; account UI still asks to add email; asked whether known project ID is sufficient."
+    }
   },
-  "financial_last_verified_at": "2026-09-21T05:59:54Z",
+  "financial_last_verified_at": "2026-09-21T09:58:23Z",
   "placement_pricing_support": {
     "catalog_price_final": true,
     "agency_remuneration_included": true,
@@ -219,8 +241,9 @@
     "policy_source": "https://telega.in/refund-policy",
     "published_processing_terms": "Applications processed next business day after creation; transfer within 1-3 banking days if documents pass verification. This is a published policy, not a case-specific promise.",
     "final_application_or_payment_documents_saved_in_evidence": false,
-    "last_checked_at": "2026-09-21T05:59:54Z",
-    "private_fields_empty": true
+    "last_checked_at": "2026-09-21T09:58:23Z",
+    "private_fields_empty": true,
+    "account_identification_pending": true
   },
   "financial_reconciliation": {
     "source": "https://telega.in/users/transactions",
