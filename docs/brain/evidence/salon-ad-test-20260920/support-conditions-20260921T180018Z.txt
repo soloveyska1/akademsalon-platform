@@ -1,0 +1,17 @@
+Telega.in support conditions verified on 2026-09-21 at approximately 21:00 MSK.
+Source: official https://t.me/telegamain_bot in native Telegram. Accessibility text and a transient on-screen screenshot were inspected; screenshot was not saved to evidence.
+
+Financial/account answer: September 21, 13:24 MSK.
+Support explained that Tbank ID generated the login automatically. Personal email must be added in the account because refund confirmation is sent by email.
+Support confirmed return of the entire discussed balance (3,000 RUB), no withdrawal commission, and only to the same original funding details.
+Support explicitly stated that the 500 RUB charge is not provided for this account; the charge concerns older accounts under an old arrangement.
+A general numeric minimum was not stated. The current 3,000 RUB full-balance refund is specifically supported, so a generic minimum is not an open blocker for this amount.
+These are provider-confirmed conditions, not evidence of bank receipt or a guaranteed completion date. The account still holds 3,000 RUB and no application has been submitted.
+
+Creative answer: September 21, 18:59 MSK.
+Support said the advertised service is permissible but requested clarification of the CTA so that readers understand it refers to formatting services, not the thesis itself.
+Suggested CTA terms: «состав услуг» or «состав работ по оформлению» instead of the ambiguous «состав работы».
+Registered creative is unchanged; the placement remains cancelled. No new launch, replacement, purchase, or creative edit was performed.
+
+Prepared user step: opened the empty Add Email popover on the existing refund tab. User was asked once to enter personal email directly in Telega.in, save it, and complete any confirmation offered by the service. Account email was not selected, entered, sent to support, or stored in evidence by the agent. Existing payer/bank form request was not repeated. Email confirmation, completed refund application, signature, document upload, final submission and bank receipt remain unverified.
+No support message was sent during this check; the two new substantive answers resolve earlier questions. Signature-only staff message is not counted as another substantive answer.
