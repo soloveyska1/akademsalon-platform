@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-09-20T21:53:03Z",
+  "as_of": "2026-09-21T01:56:28Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
   "budget_change_authority": "User: 3к тоже подойдет",
   "funded": 3000,
-  "reserved": 2097.9,
+  "reserved": 0,
   "spent": 0,
   "refunded": 0,
   "placement": {
@@ -14,7 +14,7 @@
     "format": "2/48",
     "catalog_price": 2097.9,
     "final_price": 2097.9,
-    "state": "launched_waiting_owner",
+    "state": "cancelled_owner_ignored",
     "post_url": null,
     "basket_price": 2097.9,
     "display_name_telegram": "Подслушано HUUE",
@@ -28,7 +28,10 @@
       "hour_to": 21,
       "timezone": "Europe/Moscow"
     },
-    "last_verified_at": "2026-09-20T21:53:03Z"
+    "last_verified_at": "2026-09-21T01:56:28Z",
+    "cancellation_reason": "Проигнорировано владельцем канала",
+    "cancellation_transaction_ui_time_msk": "2026-09-21 04:40",
+    "publication_confirmed": false
   },
   "metrics": {
     "views": null,
@@ -38,18 +41,19 @@
     "attributed_paid_revenue": 0
   },
   "moderation": {
-    "state": "additional_review_pending_owner",
+    "state": "additional_review_pending_placement_cancelled",
     "proof": "Support reply at2026-09-20 23:50 MSK states creative4216163 was sent for additional review; permission to place and extra-document requirements remain pending",
     "approved": false,
     "template_sent_for_preflight": true,
     "support_requests_confirmed": 2,
     "support_replies_confirmed": 2,
     "support_requests_scope": "Web account feedback only; Telegram inquiry counted separately",
-    "telegram_inquiries_sent": 2,
+    "telegram_inquiries_sent": 3,
     "telegram_acknowledgements_confirmed": 1,
     "substantive_support_replies_confirmed": 1,
     "telegram_initial_inquiries_sent": 1,
-    "telegram_clarifications_sent": 1
+    "telegram_clarifications_sent": 1,
+    "telegram_cancellation_updates_sent": 1
   },
   "campaign_success": false,
   "non_advertising_fee_risk": {
@@ -77,7 +81,7 @@
     "state": "saved_reloaded_verified",
     "launched_template_id": "778281"
   },
-  "available_balance": 902.1,
+  "available_balance": 3000,
   "marking": {
     "advertisement_label_present": true,
     "advertiser_matches_public_requisites": true,
@@ -88,32 +92,33 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-20T21:53:03Z",
+    "at": "2026-09-21T01:56:28Z",
     "source_type": "authenticated_browser_ui_and_native_telegram",
-    "observation_file": "check-20260920T215303Z.json",
+    "observation_file": "check-20260921T015628Z.json",
     "state_changed": true,
-    "owner_status": "В ожидании",
+    "owner_status": "Отменен",
     "support_threads_expanded": 0,
     "support_replies_visible": 1,
     "customer_inbox_checked": false,
-    "reason_inbox_not_checked": "No published campaign post or resulting traffic confirmed; campaign customer metrics remain confirmed-only aggregates.",
+    "reason_inbox_not_checked": "Placement cancelled before any confirmed publication; no resulting campaign traffic or attributable order confirmed.",
     "new_tracked_qa_clicks": 0,
-    "action_required": false,
-    "action": null,
-    "owner_status_last_verified_at": "2026-09-20T21:53:03Z",
-    "support_reply_type": "substantive_partial_answer",
+    "action_required": true,
+    "action": "User to fill payer and original-card bank details in refund form and generate application; no sensitive data in chat or evidence",
+    "owner_status_last_verified_at": "2026-09-21T01:56:28Z",
+    "support_reply_type": "no_new_reply_to_clarification",
     "web_support_replies_last_verified_at": "2026-09-20T17:52:56Z"
   },
   "monitor": {
     "automation_id": "automation-4",
     "state": "ACTIVE",
     "interval_hours": 4,
-    "until": "2026-09-27T20:59:59Z"
+    "until": "2026-09-27T20:59:59Z",
+    "phase": "cancelled_test_full_refund_followup"
   },
   "support_followup": {
     "recipient": "https://t.me/telegamain_bot",
     "draft": "support-bot-draft-20260920.txt",
-    "state": "partial_answer_received_clarifications_sent",
+    "state": "placement_cancelled_full_refund_update_sent",
     "sent": true,
     "requested_scope": "Send this campaign inquiry and continue routine correspondence with this bot about moderation, placement and residual refund; no payment credentials or client materials",
     "user_authorization": "Explicit reply Да to the prepared inquiry and routine support correspondence request; no repeat permission needed",
@@ -122,7 +127,7 @@
     "start_message_ui_time_msk": "2026-09-20 23:05",
     "start_message_ui_receipt": "Просмотрено",
     "inquiry_sent": true,
-    "control_note": "Read the complete support reply using native AX and two screenshot positions; one targeted clarification sent within prior authorization. No unrelated messages or client contact.",
+    "control_note": "Native window observation briefly failed after paste; rebound exact support window, verified draft and recipient, sent once and verified read receipt. No duplicate send or customer contact.",
     "inquiry_ui_time_msk": "2026-09-20 23:24",
     "inquiry_ui_receipt": "Просмотрено",
     "receipt_verified_at": "2026-09-20T20:24:52Z",
@@ -138,9 +143,9 @@
     "substantive_reply_ui_time_msk": "2026-09-20 23:50",
     "substantive_reply_checked_at": "2026-09-20T21:53:03Z",
     "pending_topics": [
-      "Additional creative review outcome",
-      "Refund minimum, commission and full902.10 RUB eligibility",
-      "This exact account exemption from inactivity fee"
+      "Refund minimum, commission and net amount for full 3000 RUB",
+      "This exact account exemption from inactivity fee",
+      "Additional creative review outcome; no replacement or relaunch authorized"
     ],
     "latest_clarification": {
       "file": "support-clarification-20260920T2151Z.txt",
@@ -148,9 +153,19 @@
       "ui_time_msk": "2026-09-21 00:51",
       "ui_receipt": "Просмотрено",
       "reply_confirmed": false
+    },
+    "cancellation_update": {
+      "file": "support-cancellation-update-20260921T0156Z.txt",
+      "sent": true,
+      "ui_time_msk": "2026-09-21 04:56",
+      "ui_receipt": "Просмотрено",
+      "reply_confirmed": false,
+      "receipt_verified_at": "2026-09-21T01:56:28Z",
+      "supersedes_refund_amount_rub": 902.1,
+      "current_refund_amount_rub": 3000
     }
   },
-  "financial_last_verified_at": "2026-09-20T21:53:03Z",
+  "financial_last_verified_at": "2026-09-21T01:56:28Z",
   "placement_pricing_support": {
     "catalog_price_final": true,
     "agency_remuneration_included": true,
@@ -161,19 +176,54 @@
     "note": "This is the support statement about catalog prices; it is separate from completed spend, refund charges and inactivity fees."
   },
   "refund_preparation": {
-    "state": "procedure_received_waiting_test_and_fee_clarification",
-    "request_url": "https://telega.in/payment_requests",
+    "state": "form_open_waiting_user_details_and_support_fee_clarification",
+    "request_url": "https://telega.in/payment_requests/refund_fl",
     "required_documents": [
       "Signed refund application",
       "Fiscal receipt",
       "Bank payment receipt"
     ],
     "transfer_method": "Upload documents through the withdrawal application form in the Telega.in account",
-    "target": "Original payment card after the test",
+    "target": "Full 3000 RUB on original payment card/account after cancelled placement",
     "request_created": false,
     "request_submitted": false,
     "documents_uploaded": false,
     "minimum_verified": false,
-    "commission_verified": false
+    "commission_verified": false,
+    "requested_amount_rub": 3000,
+    "amount_prefilled_by_service": true,
+    "funding_date_prefilled": "2026-09-20",
+    "template_generated": false,
+    "bank_refund_confirmed": false,
+    "user_action_requested": true,
+    "user_action_request_at": "2026-09-21T01:56:28Z",
+    "user_action": "Fill payer and original-card bank details directly in Telega.in; click Сформировать заявление and report ready. Signature and final submission remain later steps.",
+    "required_form_data": [
+      "Cardholder full name",
+      "Cardholder tax ID",
+      "Original payment card number",
+      "Card bank account",
+      "Correspondent bank account",
+      "Bank BIC",
+      "Bank name",
+      "Email from fiscal receipt",
+      "Phone used at registration"
+    ],
+    "policy_source": "https://telega.in/refund-policy",
+    "published_processing_terms": "Applications processed next business day after creation; transfer within 1-3 banking days if documents pass verification. This is a published policy, not a case-specific promise.",
+    "final_application_or_payment_documents_saved_in_evidence": false
+  },
+  "financial_reconciliation": {
+    "source": "https://telega.in/users/transactions",
+    "funding_rub": 3000,
+    "funding_ui_time_msk": "2026-09-20 04:22",
+    "project_debit_rub": 2097.9,
+    "project_debit_ui_time_msk": "2026-09-20 04:39",
+    "cancellation_credit_rub": 2097.9,
+    "cancellation_credit_ui_time_msk": "2026-09-21 04:40",
+    "all_three_statuses": "Завершено",
+    "net_advertising_debit_rub": 0,
+    "withdrawal_to_bank_rub": 0,
+    "note": "Cancellation credit releases the placement reserve to platform balance; it is not a bank/card refund."
   }
 }

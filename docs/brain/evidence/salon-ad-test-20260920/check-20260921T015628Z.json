@@ -1,0 +1,132 @@
+{
+  "at": "2026-09-21T01:56:28Z",
+  "workstream": "WS-15ba56b915bb4a8db984ba7117617a7f",
+  "branch": "codex/first-order-1000-20260920",
+  "head_before_check": "a090ec4fcafd7f4b078824afce390ba6f77c9c6f",
+  "canonical_after_fetch": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+  "source_type": "Authenticated Telega.in browser UI and official support bot in native Telegram",
+  "project": {
+    "url": "https://telega.in/orders/order_channels?id=2501952",
+    "id": "2501952",
+    "task": "4216163",
+    "channel": "podslurggu",
+    "state": "Отменен",
+    "reason": "Проигнорировано владельцем канала",
+    "post_url": null,
+    "publication_confirmed": false,
+    "repeat_or_replacement_clicked": false
+  },
+  "finance": {
+    "source": "https://telega.in/users/transactions",
+    "funding_rub": 3000,
+    "funding_ui_time_msk": "2026-09-20 04:22",
+    "project_debit_rub": 2097.9,
+    "project_debit_ui_time_msk": "2026-09-20 04:39",
+    "cancellation_credit_rub": 2097.9,
+    "cancellation_credit_ui_time_msk": "2026-09-21 04:40",
+    "all_three_statuses": "Завершено",
+    "net_advertising_debit_rub": 0,
+    "withdrawal_to_bank_rub": 0,
+    "note": "Cancellation credit releases the placement reserve to platform balance; it is not a bank/card refund."
+  },
+  "funded_rub": 3000,
+  "reserved_rub": 0,
+  "completed_ad_spend_rub": 0,
+  "available_platform_balance_rub": 3000,
+  "bank_refunded_rub": 0,
+  "metrics": {
+    "views": null,
+    "clicks": null,
+    "qualified_leads": 0,
+    "confirmed_paid_orders": 0,
+    "attributed_paid_revenue": 0
+  },
+  "confirmed_paid_order_goal_achieved": false,
+  "qa_clicks_total_before_publication": 1,
+  "qa_clicks_added": 0,
+  "support": {
+    "recipient": "https://t.me/telegamain_bot",
+    "new_substantive_reply": false,
+    "last_substantive_reply_ui_time_msk": "2026-09-20 23:50",
+    "new_update_file": "support-cancellation-update-20260921T0156Z.txt",
+    "update_ui_time_msk": "2026-09-21 04:56",
+    "update_sent_once": true,
+    "update_receipt": "Просмотрено",
+    "authorization": "Prior explicit Да permits ordinary correspondence about this campaign and refund",
+    "minimum_commission_and_account_exemption_confirmed": false,
+    "native_observation_issue": "Temporary capture failure after paste resolved by reacquiring the same app; draft verified before send."
+  },
+  "refund_form": {
+    "url": "https://telega.in/payment_requests/refund_fl",
+    "amount_prefilled_rub": 3000,
+    "date_prefilled": "2026-09-20",
+    "private_fields_empty": true,
+    "user_action_requested": true,
+    "application_created": false,
+    "application_submitted": false,
+    "documents_uploaded": false,
+    "private_data_or_client_materials_saved": false,
+    "required_data_types": [
+      "Cardholder full name",
+      "Cardholder tax ID",
+      "Original payment card number",
+      "Card bank account",
+      "Correspondent bank account",
+      "Bank BIC",
+      "Bank name",
+      "Email from fiscal receipt",
+      "Phone used at registration"
+    ],
+    "required_documents": [
+      "Signed refund application",
+      "Fiscal receipt",
+      "Bank payment receipt"
+    ]
+  },
+  "refund_policy": {
+    "url": "https://telega.in/refund-policy",
+    "next_business_day_application_processing": true,
+    "bank_transfer_days_after_document_check": [
+      1,
+      3
+    ],
+    "guaranteed_for_this_case": false,
+    "minimum_or_commission_listed": false
+  },
+  "preflight": {
+    "brain_context": "PASS",
+    "brain_doctor": "PASS; clean before edits",
+    "council_doctor": "kimi,sonnet,glm,opus,fable READY; no inference or background service",
+    "git_fetch_origin": "PASS",
+    "conflicts_strict": {
+      "hard": 0,
+      "warnings": 62,
+      "info": 9,
+      "blocking": 62
+    },
+    "warning_decision": "Root integration owner explicitly allows only unchanged TERMINAL_WORKTREE_PRESENT warnings for this evidence-only continuation; no dirty overlap waiver.",
+    "conflicts_allow_warnings": {
+      "hard": 0,
+      "warnings": 62,
+      "info": 9,
+      "blocking": 0
+    },
+    "snapshot": "dfb48355796eebfec862977e43b528121b4e28a9024087396d1dcf3c5501f8f5"
+  },
+  "next_step": "Wait for user to generate refund application and support to clarify full3000 RUB conditions; inspect concrete application without copying private data, prepare signing/document handoff; do not restart ads.",
+  "validation": {
+    "brain_validate_strict": "PASS: records125 links263 manifests71",
+    "git_diff_check": "PASS",
+    "financial_and_state_assertions": "PASS: exact Decimal reconciliation, cancellation separate from bank refund, confirmed-only paid metrics, QA click exclusion, one authorized support update, refund form not submitted",
+    "scope": "PASS: exactly five evidence/handoff files; no production/creative/private-data files",
+    "production_or_full_test_suite_rerun": false
+  },
+  "automation_update": {
+    "id": "automation-4",
+    "status": "ACTIVE",
+    "verified_tool_result": true,
+    "phase": "cancelled_test_full_refund_followup",
+    "schedule_unchanged": true,
+    "target_thread_unchanged": true
+  }
+}
