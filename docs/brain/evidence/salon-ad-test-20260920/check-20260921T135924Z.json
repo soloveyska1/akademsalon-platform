@@ -1,0 +1,139 @@
+{
+  "at": "2026-09-21T13:59:24Z",
+  "workstream": "WS-15ba56b915bb4a8db984ba7117617a7f",
+  "branch": "codex/first-order-1000-20260920",
+  "head_before_check": "18185f46a2811e7b98240c7ed3073d931ec206c3",
+  "canonical_after_fetch": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+  "source_type": "Authenticated Telega.in browser UI; native Telegram support check interrupted by user control",
+  "completion_criteria": [
+    "Verify canceled project, platform balance, transactions and pending refund form through authenticated UI",
+    "Inspect web feedback and attempt official bot check without interfering with user activity",
+    "If bot cannot be inspected, preserve last successful support timestamp and record unknown newer replies instead of asserting no reply",
+    "Update only scoped evidence/handoff; validate financial arithmetic, no new send, privacy boundaries and exact file scope"
+  ],
+  "state_changed": null,
+  "project": {
+    "url": "https://telega.in/orders/order_channels?id=2501952",
+    "id": "2501952",
+    "task": "4216163",
+    "channel": "podslurggu",
+    "state": "Отменен",
+    "reason": "Проигнорировано владельцем канала",
+    "post_url": null,
+    "publication_confirmed": false,
+    "repeat_or_replacement_clicked": false
+  },
+  "finance": {
+    "source": "https://telega.in/users/transactions",
+    "funding_rub": 3000,
+    "funding_ui_time_msk": "2026-09-20 04:22",
+    "project_debit_rub": 2097.9,
+    "project_debit_ui_time_msk": "2026-09-20 04:39",
+    "cancellation_credit_rub": 2097.9,
+    "cancellation_credit_ui_time_msk": "2026-09-21 04:40",
+    "all_three_statuses": "Завершено",
+    "net_advertising_debit_rub": 0,
+    "withdrawal_to_bank_rub": 0,
+    "note": "Cancellation credit releases the placement reserve to platform balance; it is not a bank/card refund."
+  },
+  "funded_rub": 3000,
+  "reserved_rub": 0,
+  "completed_ad_spend_rub": 0,
+  "available_platform_balance_rub": 3000,
+  "bank_refunded_rub": 0,
+  "transactions_visible": 3,
+  "new_transactions_since_previous_check": 0,
+  "metrics": {
+    "views": null,
+    "clicks": null,
+    "qualified_leads": 0,
+    "confirmed_paid_orders": 0,
+    "attributed_paid_revenue": 0
+  },
+  "confirmed_paid_order_goal_achieved": false,
+  "customer_inbox_checked": false,
+  "metrics_scope": "Confirmed attributable results only; no publication confirmed, no customer inbox audit; unavailable views and clicks remain null.",
+  "qa_clicks_total_before_publication": 1,
+  "qa_clicks_added": 0,
+  "support": {
+    "recipient": "https://t.me/telegamain_bot",
+    "bot_checked": false,
+    "new_substantive_reply": null,
+    "last_successful_check_at": "2026-09-21T09:58:23Z",
+    "last_known_human_reply_ui_time_msk": "2026-09-21 08:59",
+    "last_known_human_reply_kind": "account_email_requested",
+    "last_known_outgoing_message_ui_time_msk": "2026-09-21 12:57",
+    "last_known_outgoing_message_file": "support-account-identification-20260921T0957Z.txt",
+    "last_known_receipt": "Просмотрено",
+    "historical_receipt_reverified_this_check": false,
+    "messages_sent_this_check": 0,
+    "web_feedback_url": "https://telega.in/feedback",
+    "web_threads_expanded": 2,
+    "web_replies_visible": 2,
+    "web_replies_ui_time_msk": "2026-09-20 18:08",
+    "new_web_reply": false,
+    "web_reply_kind": "Both still redirect inquiry to the official support bot.",
+    "native_access_issue_encountered": true,
+    "native_issue": "Tool reported user changed Telegram during navigation. The required read-only recheck showed media viewer. No further native action or message was attempted.",
+    "unrelated_chat_content_or_contacts_saved": false,
+    "private_email_or_bank_details_sent": false,
+    "minimum_commission_net_refund_and_exact_account_exemption_confirmed": false,
+    "financial_conditions_status": "Not reverified in bot this check; previously unanswered."
+  },
+  "refund_form": {
+    "url": "https://telega.in/payment_requests/refund_fl",
+    "amount_prefilled_rub": 3000,
+    "date_prefilled": "2026-09-20",
+    "private_fields_empty": true,
+    "application_generated": false,
+    "application_created": false,
+    "application_submitted": false,
+    "documents_uploaded": false,
+    "signature_applied": false,
+    "private_data_or_client_materials_saved": false,
+    "user_action_request_already_pending": true,
+    "user_action_request_repeated": false,
+    "user_form_reloaded_or_edited": false,
+    "withdrawal_navigation_result": "Withdrawal link in fresh account UI leads to the same empty application-creation form; no application or document-upload confirmation visible."
+  },
+  "preflight": {
+    "brain_context": "PASS",
+    "brain_doctor": "PASS; clean before edits",
+    "council_doctor": "kimi,sonnet,glm,opus,fable READY; no inference or background service",
+    "git_fetch_origin": "PASS",
+    "conflicts_strict": {
+      "hard": 0,
+      "warnings": 62,
+      "info": 9,
+      "blocking": 62
+    },
+    "warning_decision": "Root integration owner explicitly allows only unchanged TERMINAL_WORKTREE_PRESENT warnings for this evidence-only continuation; no dirty overlap waiver.",
+    "conflicts_allow_warnings": {
+      "hard": 0,
+      "warnings": 62,
+      "info": 9,
+      "blocking": 0
+    },
+    "snapshot": "776e50d349608af819e64e1e1c37fc7e869fb0e0d414023e068dbecc32407388"
+  },
+  "next_step": "At the next scheduled check, read official bot only when native control is available; do not repeat the 12:57 project-identification inquiry. Continue refund preparation when the user generates the application; fees and bank return remain unconfirmed.",
+  "automation": {
+    "id": "automation-4",
+    "phase": "cancelled_test_full_refund_followup",
+    "configuration_changed_this_check": false,
+    "pause_not_due": "Refund follow-up remains open; test/refund summary due no later than 2026-09-27."
+  },
+  "validation": {
+    "brain_validate_strict": "PASS: records 125, links 263, manifests 71",
+    "git_diff_check": "PASS",
+    "financial_and_state_assertions": "PASS: Decimal reconciliation; cancellation separate from bank refund; no paid order claimed; QA exclusion; no new send/request; incomplete bot check explicitly unknown; prior support timestamps preserved; application not submitted",
+    "scope": "PASS: exact four-file evidence/handoff scope; no production, creative, account contact, receipt or customer-material changes",
+    "production_or_full_test_suite_rerun": false
+  },
+  "browser_cleanup": {
+    "temporary_check_tab_closed": true,
+    "existing_user_refund_form_preserved": true
+  },
+  "verified_campaign_financial_change": false,
+  "verification_complete": false
+}
