@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-22T14:04:07Z",
+  "as_of": "2026-09-22T18:05:03Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -28,7 +28,7 @@
       "hour_to": 21,
       "timezone": "Europe/Moscow"
     },
-    "last_verified_at": "2026-09-22T14:04:07Z",
+    "last_verified_at": "2026-09-22T18:05:03Z",
     "cancellation_reason": "Проигнорировано владельцем канала",
     "cancellation_transaction_ui_time_msk": "2026-09-21 04:40",
     "publication_confirmed": false
@@ -108,9 +108,9 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-22T14:04:07Z",
+    "at": "2026-09-22T18:05:03Z",
     "source_type": "authenticated_browser_ui_bot_check_skipped_due_to_existing_security_restriction",
-    "observation_file": "check-20260922T140407Z.json",
+    "observation_file": "check-20260922T180503Z.json",
     "state_changed": false,
     "owner_status": "Отменен",
     "support_threads_expanded": 2,
@@ -120,9 +120,9 @@
     "new_tracked_qa_clicks": 0,
     "action_required": true,
     "action": "Previously requested personal email and payer/bank application steps remain pending. No new request and no repeat reminder.",
-    "owner_status_last_verified_at": "2026-09-22T14:04:07Z",
+    "owner_status_last_verified_at": "2026-09-22T18:05:03Z",
     "support_reply_type": "bot_unverified_known_browser_security_restriction",
-    "web_support_replies_last_verified_at": "2026-09-22T14:04:07Z",
+    "web_support_replies_last_verified_at": "2026-09-22T18:05:03Z",
     "web_support_replies_visible": 2,
     "support_bot_checked": false,
     "support_new_reply": null,
@@ -242,10 +242,10 @@
       "disposition": "Stopped bot navigation; continued independently permitted finance, application and existing web-feedback checks",
       "new_bot_replies_known": false
     },
-    "last_skipped_check_at": "2026-09-22T14:04:07Z",
+    "last_skipped_check_at": "2026-09-22T18:05:03Z",
     "last_skip_reason": "Existing browser security restriction; no retry or alternate access to the bot."
   },
-  "financial_last_verified_at": "2026-09-22T14:04:07Z",
+  "financial_last_verified_at": "2026-09-22T18:05:03Z",
   "placement_pricing_support": {
     "catalog_price_final": true,
     "agency_remuneration_included": true,
@@ -292,7 +292,7 @@
     "policy_source": "https://telega.in/refund-policy",
     "published_processing_terms": "Applications processed next business day after creation; transfer within 1-3 banking days if documents pass verification. This is a published policy, not a case-specific promise.",
     "final_application_or_payment_documents_saved_in_evidence": false,
-    "last_checked_at": "2026-09-22T14:04:07Z",
+    "last_checked_at": "2026-09-22T18:05:03Z",
     "private_fields_empty": true,
     "account_identification_pending": false,
     "withdrawal_commission_rub": 0,
@@ -315,7 +315,7 @@
       "saved_or_confirmed": false,
       "user_request_accepted_by_input_tool": true,
       "form_panel_open_result": "queued in current task; existing tab retained",
-      "last_observed_at": "2026-09-22T14:04:07Z",
+      "last_observed_at": "2026-09-22T18:05:03Z",
       "request_repeated_this_check": false,
       "fresh_account_still_requests_email": true
     }
