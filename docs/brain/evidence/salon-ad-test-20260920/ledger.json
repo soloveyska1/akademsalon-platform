@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-21T21:59:50Z",
+  "as_of": "2026-09-22T02:02:27Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -28,7 +28,7 @@
       "hour_to": 21,
       "timezone": "Europe/Moscow"
     },
-    "last_verified_at": "2026-09-21T21:59:50Z",
+    "last_verified_at": "2026-09-22T02:02:27Z",
     "cancellation_reason": "Проигнорировано владельцем канала",
     "cancellation_transaction_ui_time_msk": "2026-09-21 04:40",
     "publication_confirmed": false
@@ -108,9 +108,9 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-21T21:59:50Z",
-    "source_type": "authenticated_browser_ui_with_native_support_check_deferred",
-    "observation_file": "check-20260921T215950Z.json",
+    "at": "2026-09-22T02:02:27Z",
+    "source_type": "authenticated_browser_ui_with_official_bot_navigation_blocked",
+    "observation_file": "check-20260922T020227Z.json",
     "state_changed": false,
     "owner_status": "Отменен",
     "support_threads_expanded": 2,
@@ -120,9 +120,9 @@
     "new_tracked_qa_clicks": 0,
     "action_required": true,
     "action": "Previously requested personal email and payer/bank application steps remain pending. No new request and no repeat reminder.",
-    "owner_status_last_verified_at": "2026-09-21T21:59:50Z",
-    "support_reply_type": "not_rechecked_preserve_unrelated_user_conversation",
-    "web_support_replies_last_verified_at": "2026-09-21T21:59:50Z",
+    "owner_status_last_verified_at": "2026-09-22T02:02:27Z",
+    "support_reply_type": "bot_unverified_after_browser_security_rejection",
+    "web_support_replies_last_verified_at": "2026-09-22T02:02:27Z",
     "web_support_replies_visible": 2,
     "support_bot_checked": false,
     "support_new_reply": null,
@@ -132,15 +132,18 @@
     "verified_campaign_financial_change": false,
     "verification_complete": false,
     "support_bot_last_successful_check_at": "2026-09-21T18:00:18Z",
-    "native_support_check_deferred": true,
-    "limitation": "Native Telegram was open on an unrelated user conversation; no navigation, typing or message sending was performed. Official support was not checked, so new bot replies are unknown. Last successful bot check remains September 21 18:00:18 UTC."
+    "native_support_check_deferred": false,
+    "limitation": "Browser security policy rejected the official bot navigation. No workaround attempted. New bot replies are unknown; last successful bot check remains September 21 18:00:18 UTC.",
+    "support_check_blocked": true,
+    "new_access_limitation": true
   },
   "monitor": {
     "automation_id": "automation-4",
     "state": "ACTIVE",
     "interval_hours": 4,
     "until": "2026-09-27T20:59:59Z",
-    "phase": "cancelled_test_refund_terms_confirmed_waiting_user_email"
+    "phase": "cancelled_test_refund_terms_confirmed_waiting_user_email",
+    "bot_access": "blocked_browser_navigation_no_workaround"
   },
   "support_followup": {
     "recipient": "https://t.me/telegamain_bot",
@@ -211,8 +214,8 @@
       "reason": "New support request at 08:59; account UI still asks to add email; asked whether known project ID is sufficient.",
       "reply_ui_time_msk": "2026-09-21 13:24"
     },
-    "last_check_attempt_at": "2026-09-21T21:59:50Z",
-    "last_attempt_state": "deferred_preserve_unrelated_user_conversation",
+    "last_check_attempt_at": "2026-09-22T02:02:27Z",
+    "last_attempt_state": "browser_security_policy_blocked_bot_navigation",
     "financial_reply": {
       "ui_time_msk": "2026-09-21 13:24",
       "evidence_file": "support-conditions-20260921T180018Z.txt",
@@ -224,9 +227,21 @@
       "personal_email_required_for_confirmation": true,
       "general_minimum_stated": false,
       "bank_refund_proven": false
+    },
+    "access_block": {
+      "at": "2026-09-22T02:02:27Z",
+      "action": "Follow official tg://resolve?domain=telegamain_bot support link from authenticated Telega.in transactions page",
+      "result": "Rejected by browser security policy; this was not a site-status decision or a user rejection",
+      "reason": "Browser Use is not permitted on the destination page",
+      "attempts": 1,
+      "workaround_attempted": false,
+      "native_telegram_opened_after_block": false,
+      "alternate_browser_or_direct_command_used": false,
+      "disposition": "Stopped bot navigation; continued independently permitted finance, application and existing web-feedback checks",
+      "new_bot_replies_known": false
     }
   },
-  "financial_last_verified_at": "2026-09-21T21:59:50Z",
+  "financial_last_verified_at": "2026-09-22T02:02:27Z",
   "placement_pricing_support": {
     "catalog_price_final": true,
     "agency_remuneration_included": true,
@@ -273,7 +288,7 @@
     "policy_source": "https://telega.in/refund-policy",
     "published_processing_terms": "Applications processed next business day after creation; transfer within 1-3 banking days if documents pass verification. This is a published policy, not a case-specific promise.",
     "final_application_or_payment_documents_saved_in_evidence": false,
-    "last_checked_at": "2026-09-21T21:59:50Z",
+    "last_checked_at": "2026-09-22T02:02:27Z",
     "private_fields_empty": true,
     "account_identification_pending": false,
     "withdrawal_commission_rub": 0,
@@ -296,7 +311,7 @@
       "saved_or_confirmed": false,
       "user_request_accepted_by_input_tool": true,
       "form_panel_open_result": "queued in current task; existing tab retained",
-      "last_observed_at": "2026-09-21T21:59:50Z",
+      "last_observed_at": "2026-09-22T02:02:27Z",
       "request_repeated_this_check": false,
       "fresh_account_still_requests_email": true
     }
