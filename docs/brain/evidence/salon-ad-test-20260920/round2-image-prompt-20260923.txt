@@ -1,0 +1,13 @@
+Use case: ads-marketing.
+Asset type: finished square Telegram ad image for the Russian service «Академический Салон», promoting paid formatting of an already written academic Word document. Target: university students.
+Primary request: create a distinctive editorial advertising cover, sophisticated and immediately readable in a Telegram feed. Warm ivory paper, very dark graphite type, deep brick-red/carmine accent; tactile paper and precise typographic print design. No generic AI look.
+Composition: large headline in upper half, beautifully arranged paper document and a single red editor's pencil in lower/right half. The paper illustration shows a crooked table and disconnected text lines becoming neatly aligned on a second sheet, a subtle visual metaphor for formatting. Keep all illustration text abstract, only main ad text legible. A small brick-red marginal bracket/editorial correction mark adds movement. Generous margins and confident hierarchy, not a web UI screenshot. Flat lay with realistic paper grain, restrained natural shadows. No people, gradients, futuristic icons, shiny 3D, fake testimonials, seals, urgency or grade guarantees.
+Exact Russian text, no extra words:
+Top small brand: «АКАДЕМИЧЕСКИЙ САЛОН»
+Large headline across 2–3 lines: «Текст готов.
+Оформление
+поехало?»
+Bottom strong service line: «Оформление в Word»
+Bottom price, clearly readable: «от 5 000 ₽»
+Small supporting line: «По требованиям вашей кафедры»
+Make the question visually compelling. Every Cyrillic letter must be correct. All text must stay inside safe margins. Portrait-ish square 1:1, high resolution.

@@ -1,0 +1,26 @@
+# OUT-006 — second creative, 23 September 2026
+
+## Authority and scope
+Direct user instruction: «Просто запусти новый креатив, все продумай и запусти, мне важно - чтобы у меня покупали работы, делали заказы студенты.» This supersedes earlier no-relaunch/refund-only instructions. Hard total funded cap remains 3,000 RUB. One new placement only; no subscription, extra funding or duplicate 2501950. Old project 2501952 and registered template remain historical and unchanged. Existing support-bot browser restriction remains in force; no retry or workaround.
+
+Only operational campaign assets/evidence and this workstream handoff are writable; no website/backend/deployment changes. Root is sole writer. Two independent read-only reviews before purchase.
+
+## Readiness criteria and proof
+- Honest paid service, supported by current landing price and scope; no invented discount, urgency, acceptance guarantee or outcomes.
+- Telega rules 2.1.1 prohibit writing attestation work. Advertise actual formatting of an already written document, which support allowed September 21 18:59 with clear wording. This is a real paid service, not camouflage for prohibited writing.
+- New copy, new image and new template, clearly referring to formatting services. From 5,000 RUB matches the live normocontrol landing.
+- Student channel, recent content, enough existing completed advertising orders and credible reviews; final mandatory-inclusive basket total <=3,000 RUB. Catalog views are historical estimates only.
+- Visible new template preview must match saved image/text/price/link; marketplace marking and recipient verified before launch.
+- Verify new project/item IDs and actual balance/reserve transition. Separate queued, owner accepted, published and paid customer order.
+- New tracking tag/link. Exclude QA clicks. Paid goal needs source + order + real payment, without private values in evidence.
+
+## Verified baseline
+September 23 about 13:45 MSK, authenticated transactions: available 3,000 RUB; only original funding, old booking debit and cancellation credit. Net ad spend/reserve/bank refund all zero. No second launch yet.
+Fresh preflight: brain context/doctor and council doctor PASS; git fetch origin complete. HEAD 495f3d4b7dc37e41640e10d472c96ef8c2a15be1; canonical c1c5eb0d27e63c77f6d6f430a39d3579447f01fa. Strict conflicts hard0/warnings62/info9. Integration owner permits only reviewed TERMINAL_WORKTREE_PRESENT warnings; allow-warnings passes, snapshot97c1dea8d9355e368bacf98950910503fb1d27be9f3ce97cd314fb73de4acc78.
+
+## Working hypothesis
+Students with a finished Word document and concrete formatting trouble have a specific paid need. Use a recognizable Word/table-of-contents problem, tangible deliverables and visible starting price. Direct landing CTA opens the matching service. No free tool or subscription CTA.
+Candidate: @citatnikrggu, 7.5K subscribers; marketplace historical mean 2,137 views at24h /2,476 at48h; 2posts/day,61 completed/15 repeat orders. 2/48 catalog2,377.62 RUB, leaving622.38 RUB. Candidate selection pending reviews and recent post inspection; no money committed.
+
+## Execution result
+Preparation state above is historical. Launched one project2505688/item4225247 at14:07MSK with verified registered creative and2,377.62RUB reservation;622.38RUB free. See round2-preflight-20260923.txt and launch-round2-20260923T110905Z.json. No publication or paid order confirmed.

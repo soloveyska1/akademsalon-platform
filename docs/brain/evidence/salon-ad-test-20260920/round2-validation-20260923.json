@@ -1,0 +1,42 @@
+{
+  "at": "2026-09-23T11:16:28.244543+00:00",
+  "result": "PASS",
+  "scope": "Campaign assets and operational evidence only, no website/backend/deploy change",
+  "checks": {
+    "brain_validate_strict": {
+      "exit_code": 0,
+      "records": 125,
+      "links": 263,
+      "manifests": 71
+    },
+    "git_diff_check": true,
+    "Decimal_balance_reconciliation": true,
+    "current_and_historical_campaign_separated": true,
+    "new_and_old_QA_click_exclusions": true,
+    "paid_result_not_claimed": true,
+    "known_support_block_no_retries_or_workarounds": true,
+    "scoped_paths_only": true,
+    "private_value_scan": true,
+    "automation_config_readback": {
+      "id": "automation-4",
+      "status": "ACTIVE",
+      "rrule": "FREQ=HOURLY;INTERVAL=4;UNTIL=20260927T205959Z",
+      "target_thread_id": "01a0bc14-96fd-7d50-81d0-d84b1b7fea92",
+      "current_project": "2505688",
+      "current_item": "4225247",
+      "new_tracking_exclusion_and_security_limits_present": true
+    }
+  },
+  "independent_reviews_file": "round2-preflight-20260923.txt",
+  "browser_proof_file": "launch-round2-20260923T110905Z.json",
+  "untested_or_pending": [
+    "Owner acceptance and actual Telegram publication",
+    "48-hour delivery",
+    "Actual campaign views/clicks/inquiries and real customer payment",
+    "Support bot new responses inaccessible under existing safety block",
+    "Residual return minimum/net amount and bank receipt"
+  ],
+  "new_application_tests_added": false,
+  "full_production_suite_run": false,
+  "reason": "No application source change; live ad, route and registration plus relevant evidence validation checked."
+}

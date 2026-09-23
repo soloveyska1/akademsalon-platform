@@ -1,0 +1,86 @@
+{
+  "checked_at": "2026-09-23T11:09:05Z",
+  "authority": "Direct user request September 23 for a new creative and launch, funded cap 3000 RUB",
+  "round": 2,
+  "project_id": "2505688",
+  "order_item_id": "4225247",
+  "project_url": "https://telega.in/orders/order_channels?id=2505688",
+  "launch_confirmation": "Кампания запущена",
+  "owner_status": "В ожидании",
+  "owner_acceptance_confirmed": false,
+  "publication_confirmed": false,
+  "post_url": null,
+  "channel": "citatnikrggu",
+  "format": "2/48",
+  "publication_window": {
+    "date_from": "2026-09-24",
+    "date_to": "2026-09-25",
+    "hour_from": 18,
+    "hour_to": 21,
+    "timezone": "Europe/Moscow"
+  },
+  "final_price_rub": 2377.62,
+  "available_balance_rub": 622.38,
+  "committed_reserve_rub": 2377.62,
+  "completed_ad_spend_rub": 0,
+  "bank_refund_rub": 0,
+  "payment_transaction": {
+    "round": 2,
+    "kind": "placement_payment",
+    "ui_time_msk": "2026-09-23 14:07",
+    "rub": -2377.62,
+    "status": "Завершено"
+  },
+  "template_id": "779942",
+  "media_id": "3650288",
+  "image": {
+    "path": "salon-word-round2-20260923.png",
+    "sha256": "2a0f1457342e9d274d20ca43ceea87e9e4187e7b64b85f7176195c0ab56df6f4",
+    "width": 1254,
+    "height": 1254,
+    "generation_mode": "builtin image_gen",
+    "ui_accepted": true
+  },
+  "creative_visual_qa": "Registered assignment preview inspected at image and caption/marking levels. New image preserved, Cyrillic headline, service and price visible; complete paragraphs, linked CTA and bottom marking present. No direct Telegram-mobile publication view because not yet published.",
+  "headline": "Текст готов. А оформление опять поехало?",
+  "advertised_start_price_rub": 5000,
+  "cta": "Посмотреть состав услуг и заказать оформление →",
+  "short_link": "https://tglink.io/4b542c7ff465f3",
+  "resolved_destination": "https://akademsalon.ru/normokontrol-vkr.html?utm_source=telegram&utm_medium=cpc&utm_campaign=services&utm_content=telega_citatnikrggu_20260923",
+  "qa_shortlink_clicks_excluded": 1,
+  "direct_utm_qa_visits_excluded": 1,
+  "old_round_shortlink_clicks_excluded": 1,
+  "marking": {
+    "advertisement_label_present": true,
+    "advertiser_present": true,
+    "advertiser_matches_existing_account": true,
+    "erid_present": true,
+    "erid": "2W5zFGREbdj",
+    "location": "caption_bottom",
+    "private_tax_id_saved": false
+  },
+  "landing_runtime": "Live Word formatting landing from 5000 RUB and JS-rendered configurator service=nm verified. No live order submission/payment.",
+  "launch_page_forecasts_excluded": {
+    "views": 2437,
+    "clicks": 23
+  },
+  "metric_caveats": [
+    "No actual post/publication proof.",
+    "Owner demographics and traffic quality not independently established; unresolved negative review recorded.",
+    "Site attribution incomplete; paid success requires source, order and actual payment."
+  ],
+  "independent_reviews": [
+    "/root/round2_creative_review",
+    "/root/round2_contract_review"
+  ],
+  "schedule_ui_issue_resolved": "Typing time inputs left display 01:00-24:00. Dragging slider updated actual channel card and registered assignment to18:00-21:00 before purchase.",
+  "new_support_bot_attempts": 0,
+  "security_block_bypassed": false,
+  "outgoing_support_messages": 0,
+  "customer_messages_sent": 0,
+  "new_funding_or_subscription": false,
+  "old_project_changed": false,
+  "old_duplicate_launched": false,
+  "personal_data_or_raw_screenshots_saved": false,
+  "next_step": "Monitor item4225247 owner acceptance. After real post exists verify post URL,image,fullcaption,price,marking,link and 2/48 delivery; count actual leads and confirmed payments."
+}
