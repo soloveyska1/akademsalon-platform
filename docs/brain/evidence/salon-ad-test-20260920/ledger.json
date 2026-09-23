@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-23T14:09:01Z",
+  "as_of": "2026-09-23T18:11:21Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -34,8 +34,8 @@
     "owner_acceptance_confirmed": false,
     "post_url": null,
     "launch_transaction_ui_time_msk": "2026-09-23 14:07",
-    "last_verified_at": "2026-09-23T14:09:01Z",
-    "owner_acceptance_countdown_observed": "20:58:23",
+    "last_verified_at": "2026-09-23T18:11:21Z",
+    "owner_acceptance_countdown_observed": "16:56:53",
     "automatic_additional_purchase_authorized": false
   },
   "metrics": {
@@ -131,12 +131,12 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-23T14:09:01Z",
+    "at": "2026-09-23T18:11:21Z",
     "source_type": "authenticated_browser_ui_refreshed_project_and_new_transactions_tab",
-    "observation_file": "check-20260923T140901Z.json",
+    "observation_file": "check-20260923T181121Z.json",
     "state_changed": false,
     "owner_status": "В ожидании",
-    "owner_status_last_verified_at": "2026-09-23T14:09:01Z",
+    "owner_status_last_verified_at": "2026-09-23T18:11:21Z",
     "customer_inbox_checked": false,
     "reason_inbox_not_checked": "Placement still awaiting owner before scheduled window; no verified publication. No conclusion about unrelated organic inquiries or payments.",
     "new_tracked_qa_clicks": 0,
@@ -261,10 +261,10 @@
       "disposition": "Stopped bot navigation; continued independently permitted finance, application and existing web-feedback checks",
       "new_bot_replies_known": false
     },
-    "last_skipped_check_at": "2026-09-23T14:09:01Z",
+    "last_skipped_check_at": "2026-09-23T18:11:21Z",
     "last_skip_reason": "Existing browser security restriction; no retry or alternate access to the bot."
   },
-  "financial_last_verified_at": "2026-09-23T14:09:01Z",
+  "financial_last_verified_at": "2026-09-23T18:11:21Z",
   "placement_pricing_support": {
     "catalog_price_final": true,
     "agency_remuneration_included": true,

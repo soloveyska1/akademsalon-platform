@@ -1,0 +1,123 @@
+{
+  "checked_at": "2026-09-23T18:11:21Z",
+  "recorded_at": "2026-09-23T18:12:06.343843+00:00",
+  "automation_id": "automation-4",
+  "round": 2,
+  "project_id": "2505688",
+  "order_item_id": "4225247",
+  "project_url": "https://telega.in/orders/order_channels?id=2505688",
+  "project_page_refreshed": true,
+  "owner_status": "В ожидании",
+  "owner_countdown_observed": "16:56:53",
+  "owner_acceptance_confirmed": false,
+  "publication_confirmed": false,
+  "post_url": null,
+  "format": "2/48",
+  "publication_window": {
+    "date_from": "2026-09-24",
+    "date_to": "2026-09-25",
+    "hour_from": 18,
+    "hour_to": 21,
+    "timezone": "Europe/Moscow"
+  },
+  "final_price_rub": 2377.62,
+  "finance_source": "https://telega.in/users/transactions",
+  "transaction_count": 4,
+  "transactions": [
+    {
+      "round": null,
+      "kind": "funding",
+      "ui_time_msk": "2026-09-20 04:22",
+      "rub": 3000,
+      "status": "Завершено"
+    },
+    {
+      "round": 1,
+      "kind": "placement_payment",
+      "ui_time_msk": "2026-09-20 04:39",
+      "rub": -2097.9,
+      "status": "Завершено"
+    },
+    {
+      "round": 1,
+      "kind": "cancellation_credit",
+      "ui_time_msk": "2026-09-21 04:40",
+      "rub": 2097.9,
+      "status": "Завершено"
+    },
+    {
+      "round": 2,
+      "kind": "placement_payment",
+      "ui_time_msk": "2026-09-23 14:07",
+      "rub": -2377.62,
+      "status": "Завершено"
+    }
+  ],
+  "funded_rub": 3000,
+  "available_balance_rub": 622.38,
+  "committed_reserve_rub": 2377.62,
+  "confirmed_completed_ad_spend_rub": 0,
+  "confirmed_bank_refund_rub": 0,
+  "financial_change": false,
+  "metrics_change": false,
+  "customer_inbox_checked": false,
+  "qualified_leads_confirmed": 0,
+  "paid_orders_confirmed": 0,
+  "actual_views": null,
+  "actual_clicks": null,
+  "new_qa_clicks": 0,
+  "qa_exclusions_preserved": true,
+  "registered_creative_changed": false,
+  "moderation_confirmation_new": false,
+  "new_placement_or_subscription_purchased": false,
+  "support_bot_checked": false,
+  "support_bot_new_replies_known": false,
+  "new_bot_navigation_attempts": 0,
+  "security_block_bypassed": false,
+  "support_bot_last_successful_check_at": "2026-09-21T18:00:18Z",
+  "old_refund_form_submitted": false,
+  "refund_state_change": false,
+  "user_requests_repeated": false,
+  "outgoing_support_or_customer_messages": 0,
+  "private_values_or_raw_screenshots_saved": false,
+  "temporary_finance_tab_closed": true,
+  "campaign_and_refund_tabs_retained": true,
+  "preflight": {
+    "branch": "codex/first-order-1000-20260920",
+    "head_before": "c73cc6330c54d08afed62cabb9f5309e5cbb6fae",
+    "canonical": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+    "git_fetch_completed": true,
+    "doctor_ready": true,
+    "council_providers_ready": 5,
+    "context_default_budget_exceeded": false,
+    "strict_conflicts": {
+      "hard": 0,
+      "warnings": 62,
+      "info": 8
+    },
+    "root_explicitly_allowed_only": "TERMINAL_WORKTREE_PRESENT",
+    "blocking_after_allow": 0,
+    "snapshot": "23bfc80129dee67c006817e76d6fa3274468924505963de516a489fd1027a888",
+    "command_recovery": "Conflicts strict and allow-warnings are mutually exclusive; reviewed strict output first, then successfully ran allow-warnings alone."
+  },
+  "validation": {
+    "state": "PASS",
+    "brain_validate_strict": {
+      "records": 125,
+      "links": 263,
+      "manifests": 71
+    },
+    "whitespace": true,
+    "Decimal_finance_reconciliation": true,
+    "unchanged_creative_metrics_history_and_refund": true,
+    "original_bot_block_and_last_successful_check_preserved": true,
+    "new_QA_clicks": 0,
+    "scope_files": 4,
+    "private_value_scan": true,
+    "private_scan_note": "Numeric substring in the verified conflict snapshot SHA was a false positive; excluding only that exact hash left no private-value matches.",
+    "default_context_budget": "PASS with OUT-006 seed"
+  },
+  "next_step": "Check item4225247 owner acceptance at next scheduled run; no automatic replacement or duplicate.",
+  "refund_form_refreshed": false,
+  "refund_state_limitation": "Existing deferred form retained without refreshing or editing; no fresh application-status claim from its stale header."
+}
