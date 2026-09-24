@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-3c1b84f7d7314927b53b393b5cb7b526",
   "slug": "salon-ease-20260924",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-ease-20260924",
   "base_sha": "42f2baa06fae28fc89940e22e43deb27392a9a67",
   "result_sha": "3d6228f0ce8000c482c62da949788388272bcd94",
@@ -37,6 +37,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "e5bebae86267fdbe24cb8809362c8e5fb4d33268318194e8d4c68568eb101fdd"
+  "manifest_revision": 3,
+  "base_manifest_hash": "5fa9a4611a36058190f81c2ea3fd7f10f85ac440ec85213e403184a9bc5faee9"
 }
