@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-ff2c79f749be41e8a87d7007a2a4cdc7",
+  "slug": "salon-intake-fix-20260924",
+  "status": "active",
+  "branch": "codex/salon-intake-fix-20260924",
+  "base_sha": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-funnel-20260924",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ff2c79f749be41e8a87d7007a2a4cdc7/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-funnel-20260924",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
