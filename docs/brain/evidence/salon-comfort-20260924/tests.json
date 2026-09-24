@@ -1,0 +1,15 @@
+{
+  "node": {
+    "passed": 652,
+    "skipped": 9,
+    "failed": 0,
+    "command": "node --test tests/*.test.js"
+  },
+  "brain": {
+    "passed": 39,
+    "failed": 0,
+    "command": "PYTHONPATH=tools/brain/tests:. python3 -m unittest discover -s tools/brain/tests"
+  },
+  "scope": "root regression static source; actual overlay tested by hermetic browser verification/regression",
+  "privateFixtures": "Synthetic only. No real client or contact data. Mock grant expiry follows controlled date clock."
+}

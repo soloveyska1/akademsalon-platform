@@ -1,0 +1,10 @@
+{
+  "release": "release218-funnel-5e860b3c",
+  "existing_file_remove": true,
+  "missing_behaviors": {
+    "file_drag_supported": false,
+    "undo_file_supported": false,
+    "quick_deadline_supported": false,
+    "details_autogrow_supported": false
+  }
+}

@@ -1,0 +1,29 @@
+/* Small comforts, using the current Salon palette and type. */
+.salon-intake .comfort-file{display:flex;align-items:center;gap:12px;padding:13px;margin:9px 0;border:1px solid var(--line);border-radius:12px;background:var(--sheet);min-width:0}
+.salon-intake .comfort-file-badge{position:relative;display:grid;place-items:center;flex:0 0 44px;width:44px;height:54px;border-radius:5px 11px 5px 5px;background:var(--soft);color:var(--accent);font-size:10px;font-weight:600;letter-spacing:.02em;overflow:hidden}
+.salon-intake .comfort-file-badge:after{content:'';position:absolute;right:0;top:0;width:10px;height:10px;background:var(--sheet);border-left:1px solid var(--line);border-bottom:1px solid var(--line);border-bottom-left-radius:3px}
+.salon-intake .comfort-file-badge img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--soft)}
+.salon-intake .comfort-file-copy{min-width:0;flex:1;display:grid;gap:5px}
+.salon-intake .comfort-file-name{display:block;font-size:12px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere}
+.salon-intake .comfort-file-meta{font-size:10px;line-height:1.5;color:var(--muted)}
+.salon-intake .comfort-file-remove{border:0;background:transparent;color:var(--muted);border-radius:9px;min-width:44px;min-height:44px;font-size:22px;padding:0}
+.salon-intake .comfort-file-remove:hover{background:var(--soft);color:var(--accent)}
+.salon-intake .comfort-file-undo{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 0;font-size:11px;color:var(--muted)}
+.salon-intake .comfort-file-undo>span{overflow-wrap:anywhere;min-width:0}
+.salon-intake .comfort-file-undo button,.salon-intake .comfort-dates button{min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--sheet);color:var(--ink);padding:9px 12px;font-size:11px;line-height:1.35;flex-shrink:0}
+.salon-intake .comfort-file-undo button{color:var(--accent);font-weight:500}
+.salon-intake .comfort-file-notice{font-size:11px;line-height:1.6;color:var(--muted);margin:7px 0 14px;white-space:pre-line;overflow-wrap:anywhere}
+.salon-intake .upload-box{transition:background-color .16s,border-color .16s}
+.salon-intake .upload-box.is-dragging{background:var(--soft);border:1px solid var(--accent);outline:2px solid var(--accent);outline-offset:3px}
+.salon-intake .upload-box.is-locked{cursor:default;opacity:.65}
+.salon-intake .comfort-dates{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 0}
+.salon-intake .comfort-dates button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.salon-intake .comfort-dates button[aria-pressed=true]{border-color:var(--accent);background:var(--soft);color:var(--accent)}
+.salon-intake .comfort-dates .comfort-date-clear{border-color:transparent;background:transparent;color:var(--muted);padding-inline:9px}
+.salon-intake .comfort-date-label{font-size:11px;line-height:1.5;color:var(--accent);margin:8px 0 0}
+.salon-intake #direct-order textarea.comfort-growing{min-height:140px;max-height:520px;resize:none;overflow-y:hidden;overflow-anchor:none}
+.salon-intake .comfort-dates button:disabled,.salon-intake .comfort-file-undo button:disabled,.salon-intake .comfort-file-remove:disabled{cursor:default}
+@media(max-width:480px){.salon-intake .comfort-file{gap:10px;padding:11px}.salon-intake .comfort-file-name{font-size:12px}.salon-intake .comfort-dates{gap:6px}.salon-intake .comfort-dates button{padding-inline:10px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.salon-intake .upload-box{transition:none}}
+
+.salon-intake .comfort-file-undo[hidden]{display:none}

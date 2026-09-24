@@ -1,0 +1,45 @@
+{
+  "checkoutHead": "9dc2aed4bbc16e93eb93e760bc7ab1100f0a4046",
+  "root": "/tmp/salon-comfort-20260924/candidate-v2",
+  "browser": "Chrome through Playwright",
+  "data": "synthetic only; all HTTP intercepted",
+  "screenshots": "/Users/saymurrbk.ru/.codex/worktrees/salon-comfort-20260924/output/playwright/salon-comfort-20260924",
+  "results": [
+    {
+      "name": "picker cards, safe long name, persistent undo, original ID and keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "name": "drop and picker share duplicate, count, size, extension limits; rejected names never suggest topic",
+      "status": "PASS"
+    },
+    {
+      "name": "local image previews clean up, malformed image falls back, undo recreates",
+      "status": "PASS"
+    },
+    {
+      "name": "real trusted desktop drop records first input once; synthetic drop never does",
+      "status": "PASS"
+    },
+    {
+      "name": "quick dates and clear use local calendar, quote and trusted keyboard measurement",
+      "status": "PASS"
+    },
+    {
+      "name": "open tab midnight updates min, urgency quote, chips and leap-year date correctly",
+      "status": "PASS"
+    },
+    {
+      "name": "undo retains file ID through uncertain submit and upload retry; all mutation actions locked",
+      "status": "PASS"
+    },
+    {
+      "name": "autogrow grows and shrinks after disclosure, keeps focus, caps long paste",
+      "status": "PASS"
+    },
+    {
+      "name": "all 10 viewport/theme states, reduced motion, 44px controls, focus, no private persistence",
+      "status": "PASS"
+    }
+  ]
+}
