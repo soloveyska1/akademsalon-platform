@@ -1,0 +1,986 @@
+{
+  "candidate": "/tmp/salon-ease-20260924/candidate9",
+  "results": [
+    {
+      "name": "header-settings-360-light",
+      "status": "PASS",
+      "data": {
+        "overflow": 0,
+        "menu": {
+          "x": 10,
+          "y": 10,
+          "width": 340,
+          "height": 880,
+          "top": 10,
+          "right": 350,
+          "bottom": 890,
+          "left": 10
+        },
+        "controls": [
+          {
+            "name": "Тема: Как на устройстве",
+            "box": {
+              "x": 25,
+              "y": 747.25,
+              "width": 310,
+              "height": 48,
+              "top": 747.25,
+              "right": 335,
+              "bottom": 795.25,
+              "left": 25
+            },
+            "color": "rgb(41, 37, 55)",
+            "bg": "rgb(255, 255, 255)"
+          },
+          {
+            "name": "Кнопка Листика: С подписью",
+            "box": {
+              "x": 25,
+              "y": 860.75,
+              "width": 310,
+              "height": 48,
+              "top": 860.75,
+              "right": 335,
+              "bottom": 908.75,
+              "left": 25
+            },
+            "color": "rgb(41, 37, 55)",
+            "bg": "rgb(255, 255, 255)"
+          }
+        ],
+        "summary": {
+          "x": 25,
+          "y": 639.75,
+          "width": 310,
+          "height": 60,
+          "top": 639.75,
+          "right": 335,
+          "bottom": 699.75,
+          "left": 25
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "header-settings-360-dark",
+      "status": "PASS",
+      "data": {
+        "overflow": 0,
+        "menu": {
+          "x": 10,
+          "y": 10,
+          "width": 340,
+          "height": 880,
+          "top": 10,
+          "right": 350,
+          "bottom": 890,
+          "left": 10
+        },
+        "controls": [
+          {
+            "name": "Тема: Как на устройстве",
+            "box": {
+              "x": 25,
+              "y": 747.25,
+              "width": 310,
+              "height": 48,
+              "top": 747.25,
+              "right": 335,
+              "bottom": 795.25,
+              "left": 25
+            },
+            "color": "rgb(242, 237, 249)",
+            "bg": "rgb(36, 32, 47)"
+          },
+          {
+            "name": "Кнопка Листика: С подписью",
+            "box": {
+              "x": 25,
+              "y": 860.75,
+              "width": 310,
+              "height": 48,
+              "top": 860.75,
+              "right": 335,
+              "bottom": 908.75,
+              "left": 25
+            },
+            "color": "rgb(242, 237, 249)",
+            "bg": "rgb(36, 32, 47)"
+          }
+        ],
+        "summary": {
+          "x": 25,
+          "y": 639.75,
+          "width": 310,
+          "height": 60,
+          "top": 639.75,
+          "right": 335,
+          "bottom": 699.75,
+          "left": 25
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "header-settings-390-light",
+      "status": "PASS",
+      "data": {
+        "overflow": 0,
+        "menu": {
+          "x": 10,
+          "y": 10,
+          "width": 370,
+          "height": 880,
+          "top": 10,
+          "right": 380,
+          "bottom": 890,
+          "left": 10
+        },
+        "controls": [
+          {
+            "name": "Тема: Как на устройстве",
+            "box": {
+              "x": 29,
+              "y": 749.25,
+              "width": 332,
+              "height": 48,
+              "top": 749.25,
+              "right": 361,
+              "bottom": 797.25,
+              "left": 29
+            },
+            "color": "rgb(41, 37, 55)",
+            "bg": "rgb(255, 255, 255)"
+          },
+          {
+            "name": "Кнопка Листика: С подписью",
+            "box": {
+              "x": 29,
+              "y": 862.75,
+              "width": 332,
+              "height": 48,
+              "top": 862.75,
+              "right": 361,
+              "bottom": 910.75,
+              "left": 29
+            },
+            "color": "rgb(41, 37, 55)",
+            "bg": "rgb(255, 255, 255)"
+          }
+        ],
+        "summary": {
+          "x": 29,
+          "y": 641.75,
+          "width": 332,
+          "height": 60,
+          "top": 641.75,
+          "right": 361,
+          "bottom": 701.75,
+          "left": 29
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "header-settings-390-dark",
+      "status": "PASS",
+      "data": {
+        "overflow": 0,
+        "menu": {
+          "x": 10,
+          "y": 10,
+          "width": 370,
+          "height": 880,
+          "top": 10,
+          "right": 380,
+          "bottom": 890,
+          "left": 10
+        },
+        "controls": [
+          {
+            "name": "Тема: Как на устройстве",
+            "box": {
+              "x": 29,
+              "y": 749.25,
+              "width": 332,
+              "height": 48,
+              "top": 749.25,
+              "right": 361,
+              "bottom": 797.25,
+              "left": 29
+            },
+            "color": "rgb(242, 237, 249)",
+            "bg": "rgb(36, 32, 47)"
+          },
+          {
+            "name": "Кнопка Листика: С подписью",
+            "box": {
+              "x": 29,
+              "y": 862.75,
+              "width": 332,
+              "height": 48,
+              "top": 862.75,
+              "right": 361,
+              "bottom": 910.75,
+              "left": 29
+            },
+            "color": "rgb(242, 237, 249)",
+            "bg": "rgb(36, 32, 47)"
+          }
+        ],
+        "summary": {
+          "x": 29,
+          "y": 641.75,
+          "width": 332,
+          "height": 60,
+          "top": 641.75,
+          "right": 361,
+          "bottom": 701.75,
+          "left": 29
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "header-settings-1440-light",
+      "status": "PASS",
+      "data": {
+        "overflow": 0,
+        "menu": {
+          "x": 300,
+          "y": 108,
+          "width": 1060,
+          "height": 768,
+          "top": 108,
+          "right": 1360,
+          "bottom": 876,
+          "left": 300
+        },
+        "controls": [
+          {
+            "name": "Тема: Как на устройстве",
+            "box": {
+              "x": 331,
+              "y": 759.375,
+              "width": 490,
+              "height": 48,
+              "top": 759.375,
+              "right": 821,
+              "bottom": 807.375,
+              "left": 331
+            },
+            "color": "rgb(41, 37, 55)",
+            "bg": "rgb(255, 255, 255)"
+          },
+          {
+            "name": "Кнопка Листика: С подписью",
+            "box": {
+              "x": 839,
+              "y": 759.375,
+              "width": 490,
+              "height": 48,
+              "top": 759.375,
+              "right": 1329,
+              "bottom": 807.375,
+              "left": 839
+            },
+            "color": "rgb(41, 37, 55)",
+            "bg": "rgb(255, 255, 255)"
+          }
+        ],
+        "summary": {
+          "x": 331,
+          "y": 650.375,
+          "width": 998,
+          "height": 60,
+          "top": 650.375,
+          "right": 1329,
+          "bottom": 710.375,
+          "left": 331
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "header-settings-1440-dark",
+      "status": "PASS",
+      "data": {
+        "overflow": 0,
+        "menu": {
+          "x": 300,
+          "y": 108,
+          "width": 1060,
+          "height": 768,
+          "top": 108,
+          "right": 1360,
+          "bottom": 876,
+          "left": 300
+        },
+        "controls": [
+          {
+            "name": "Тема: Как на устройстве",
+            "box": {
+              "x": 331,
+              "y": 759.375,
+              "width": 490,
+              "height": 48,
+              "top": 759.375,
+              "right": 821,
+              "bottom": 807.375,
+              "left": 331
+            },
+            "color": "rgb(242, 237, 249)",
+            "bg": "rgb(36, 32, 47)"
+          },
+          {
+            "name": "Кнопка Листика: С подписью",
+            "box": {
+              "x": 839,
+              "y": 759.375,
+              "width": 490,
+              "height": 48,
+              "top": 759.375,
+              "right": 1329,
+              "bottom": 807.375,
+              "left": 839
+            },
+            "color": "rgb(242, 237, 249)",
+            "bg": "rgb(36, 32, 47)"
+          }
+        ],
+        "summary": {
+          "x": 331,
+          "y": 650.375,
+          "width": 998,
+          "height": 60,
+          "top": 650.375,
+          "right": 1329,
+          "bottom": 710.375,
+          "left": 331
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "faq-collapsed-and-keyboard",
+      "status": "PASS",
+      "data": [
+        {
+          "route": "/",
+          "id": "answer-77501cae05",
+          "copy": "https://akademsalon.ru/#answer-77501cae05",
+          "active": "<button type=\"button\" class=\"se-faq-copy\" aria-label=\"Скопировать ссылку на ответ: …нужно уже завтра?\">Ссылка на ответ ↗</button>",
+          "top": 212.703125
+        },
+        {
+          "route": "/services.html",
+          "id": "answer-11385e1f21",
+          "copy": "https://akademsalon.ru/services.html#answer-11385e1f21",
+          "active": "<button type=\"button\" class=\"se-faq-copy\" aria-label=\"Скопировать ссылку на ответ: Что подготовить для заявки?\">Ссылка на ответ ↗</button>",
+          "top": 213.390625
+        },
+        {
+          "route": "/knowledge.html",
+          "count": 0
+        },
+        {
+          "route": "/guarantees.html",
+          "id": "answer-28c0d02e32",
+          "copy": "https://akademsalon.ru/guarantees.html#answer-28c0d02e32",
+          "active": "<button type=\"button\" class=\"se-faq-copy\" aria-label=\"Скопировать ссылку на ответ: Чем отличаются исправления и новые требования?\">Ссылка на ответ ↗</button>",
+          "top": 190.65625
+        }
+      ],
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "chips-reader-360",
+      "status": "PASS",
+      "data": {
+        "data": [
+          {
+            "route": "/knowledge.html",
+            "metrics": {
+              "w": 320,
+              "sw": 862,
+              "height": 66,
+              "wrap": "nowrap",
+              "buttons": [
+                {
+                  "text": "Все материалы",
+                  "box": {
+                    "x": 25,
+                    "y": 614.546875,
+                    "width": 124.59375,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 149.59375,
+                    "bottom": 658.546875,
+                    "left": 25
+                  }
+                },
+                {
+                  "text": "Начало",
+                  "box": {
+                    "x": 154.59375,
+                    "y": 614.546875,
+                    "width": 73.203125,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 227.796875,
+                    "bottom": 658.546875,
+                    "left": 154.59375
+                  }
+                },
+                {
+                  "text": "Исследование",
+                  "box": {
+                    "x": 232.796875,
+                    "y": 614.546875,
+                    "width": 118.828125,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 351.625,
+                    "bottom": 658.546875,
+                    "left": 232.796875
+                  }
+                },
+                {
+                  "text": "Источники",
+                  "box": {
+                    "x": 356.625,
+                    "y": 614.546875,
+                    "width": 95.5,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 452.125,
+                    "bottom": 658.546875,
+                    "left": 356.625
+                  }
+                },
+                {
+                  "text": "Оформление",
+                  "box": {
+                    "x": 457.125,
+                    "y": 614.546875,
+                    "width": 108.953125,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 566.078125,
+                    "bottom": 658.546875,
+                    "left": 457.125
+                  }
+                },
+                {
+                  "text": "Практика",
+                  "box": {
+                    "x": 571.078125,
+                    "y": 614.546875,
+                    "width": 87.5625,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 658.640625,
+                    "bottom": 658.546875,
+                    "left": 571.078125
+                  }
+                },
+                {
+                  "text": "Защита",
+                  "box": {
+                    "x": 663.640625,
+                    "y": 614.546875,
+                    "width": 73.984375,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 737.625,
+                    "bottom": 658.546875,
+                    "left": 663.640625
+                  }
+                },
+                {
+                  "text": "Статья",
+                  "box": {
+                    "x": 742.625,
+                    "y": 614.546875,
+                    "width": 68.78125,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 811.40625,
+                    "bottom": 658.546875,
+                    "left": 742.625
+                  }
+                },
+                {
+                  "text": "Цены",
+                  "box": {
+                    "x": 816.40625,
+                    "y": 614.546875,
+                    "width": 60.78125,
+                    "height": 44,
+                    "top": 614.546875,
+                    "right": 877.1875,
+                    "bottom": 658.546875,
+                    "left": 816.40625
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "route": "/services.html",
+            "metrics": {
+              "w": 328,
+              "sw": 458,
+              "height": 54,
+              "wrap": "nowrap",
+              "buttons": [
+                {
+                  "text": "Все",
+                  "box": {
+                    "x": 21,
+                    "y": 453.515625,
+                    "width": 39.921875,
+                    "height": 44,
+                    "top": 453.515625,
+                    "right": 60.921875,
+                    "bottom": 497.515625,
+                    "left": 21
+                  }
+                },
+                {
+                  "text": "Небольшие",
+                  "box": {
+                    "x": 64.921875,
+                    "y": 453.515625,
+                    "width": 82.328125,
+                    "height": 44,
+                    "top": 453.515625,
+                    "right": 147.25,
+                    "bottom": 497.515625,
+                    "left": 64.921875
+                  }
+                },
+                {
+                  "text": "Курсовые и ВКР",
+                  "box": {
+                    "x": 151.25,
+                    "y": 453.515625,
+                    "width": 108.609375,
+                    "height": 44,
+                    "top": 453.515625,
+                    "right": 259.859375,
+                    "bottom": 497.515625,
+                    "left": 151.25
+                  }
+                },
+                {
+                  "text": "Исследования",
+                  "box": {
+                    "x": 263.859375,
+                    "y": 453.515625,
+                    "width": 98.984375,
+                    "height": 44,
+                    "top": 453.515625,
+                    "right": 362.84375,
+                    "bottom": 497.515625,
+                    "left": 263.859375
+                  }
+                },
+                {
+                  "text": "Часть и правки",
+                  "box": {
+                    "x": 366.84375,
+                    "y": 453.515625,
+                    "width": 102.453125,
+                    "height": 44,
+                    "top": 453.515625,
+                    "right": 469.296875,
+                    "bottom": 497.515625,
+                    "left": 366.84375
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "sizes": {
+          "font": "19px",
+          "line": "40.85px"
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "chips-reader-1440",
+      "status": "PASS",
+      "data": {
+        "data": [
+          {
+            "route": "/knowledge.html",
+            "metrics": {
+              "w": 1128,
+              "sw": 1128,
+              "height": 69,
+              "wrap": "wrap",
+              "buttons": [
+                {
+                  "text": "Все материалы",
+                  "box": {
+                    "x": 156,
+                    "y": 665.453125,
+                    "width": 134.171875,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 290.171875,
+                    "bottom": 709.453125,
+                    "left": 156
+                  }
+                },
+                {
+                  "text": "Начало",
+                  "box": {
+                    "x": 295.171875,
+                    "y": 665.453125,
+                    "width": 78.828125,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 374,
+                    "bottom": 709.453125,
+                    "left": 295.171875
+                  }
+                },
+                {
+                  "text": "Исследование",
+                  "box": {
+                    "x": 379,
+                    "y": 665.453125,
+                    "width": 127.96875,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 506.96875,
+                    "bottom": 709.453125,
+                    "left": 379
+                  }
+                },
+                {
+                  "text": "Источники",
+                  "box": {
+                    "x": 511.96875,
+                    "y": 665.453125,
+                    "width": 102.84375,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 614.8125,
+                    "bottom": 709.453125,
+                    "left": 511.96875
+                  }
+                },
+                {
+                  "text": "Оформление",
+                  "box": {
+                    "x": 619.8125,
+                    "y": 665.453125,
+                    "width": 117.328125,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 737.140625,
+                    "bottom": 709.453125,
+                    "left": 619.8125
+                  }
+                },
+                {
+                  "text": "Практика",
+                  "box": {
+                    "x": 742.140625,
+                    "y": 665.453125,
+                    "width": 94.296875,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 836.4375,
+                    "bottom": 709.453125,
+                    "left": 742.140625
+                  }
+                },
+                {
+                  "text": "Защита",
+                  "box": {
+                    "x": 841.4375,
+                    "y": 665.453125,
+                    "width": 79.671875,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 921.109375,
+                    "bottom": 709.453125,
+                    "left": 841.4375
+                  }
+                },
+                {
+                  "text": "Статья",
+                  "box": {
+                    "x": 926.109375,
+                    "y": 665.453125,
+                    "width": 74.0625,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 1000.171875,
+                    "bottom": 709.453125,
+                    "left": 926.109375
+                  }
+                },
+                {
+                  "text": "Цены",
+                  "box": {
+                    "x": 1005.171875,
+                    "y": 665.453125,
+                    "width": 65.453125,
+                    "height": 44,
+                    "top": 665.453125,
+                    "right": 1070.625,
+                    "bottom": 709.453125,
+                    "left": 1005.171875
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "route": "/services.html",
+            "metrics": {
+              "w": 499,
+              "sw": 499,
+              "height": 44,
+              "wrap": "wrap",
+              "buttons": [
+                {
+                  "text": "Все",
+                  "box": {
+                    "x": 427,
+                    "y": 377,
+                    "width": 45.734375,
+                    "height": 44,
+                    "top": 377,
+                    "right": 472.734375,
+                    "bottom": 421,
+                    "left": 427
+                  }
+                },
+                {
+                  "text": "Небольшие",
+                  "box": {
+                    "x": 476.734375,
+                    "y": 377,
+                    "width": 91.984375,
+                    "height": 44,
+                    "top": 377,
+                    "right": 568.71875,
+                    "bottom": 421,
+                    "left": 476.734375
+                  }
+                },
+                {
+                  "text": "Курсовые и ВКР",
+                  "box": {
+                    "x": 572.71875,
+                    "y": 377,
+                    "width": 120.671875,
+                    "height": 44,
+                    "top": 377,
+                    "right": 693.390625,
+                    "bottom": 421,
+                    "left": 572.71875
+                  }
+                },
+                {
+                  "text": "Исследования",
+                  "box": {
+                    "x": 697.390625,
+                    "y": 377,
+                    "width": 110.171875,
+                    "height": 44,
+                    "top": 377,
+                    "right": 807.5625,
+                    "bottom": 421,
+                    "left": 697.390625
+                  }
+                },
+                {
+                  "text": "Часть и правки",
+                  "box": {
+                    "x": 811.5625,
+                    "y": 377,
+                    "width": 113.953125,
+                    "height": 44,
+                    "top": 377,
+                    "right": 925.515625,
+                    "bottom": 421,
+                    "left": 811.5625
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "sizes": {
+          "font": "19px",
+          "line": "40.85px"
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "listik-and-reduced-feedback",
+      "status": "PASS",
+      "data": {
+        "animations": 0,
+        "metrics": {
+          "box": {
+            "x": 34,
+            "y": 1566.1875,
+            "width": 60,
+            "height": 60,
+            "top": 1566.1875,
+            "right": 94,
+            "bottom": 1626.1875,
+            "left": 34
+          },
+          "parent": "polish-help-slot",
+          "label": "Открыть Листика, бота-помощника Салона"
+        }
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "pdf-loading-error-and-reopen",
+      "status": "PASS",
+      "data": {
+        "box": {
+          "x": 24,
+          "y": 260.1875,
+          "width": 342,
+          "height": 516.859375,
+          "top": 260.1875,
+          "right": 366,
+          "bottom": 777.046875,
+          "left": 24
+        },
+        "busy": "true",
+        "outlineHidden": "true"
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    }
+  ]
+}

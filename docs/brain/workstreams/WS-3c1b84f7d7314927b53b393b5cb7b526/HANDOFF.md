@@ -10,3 +10,21 @@
 - Unverified: implementation not started; no live mutations.
 - Risks/rollback: shared shell/theme and dynamic assistant integration; fail-closed deploy against exact release221 hash inventory, atomic current-pointer rollback; compatibility dist stays untouched.
 - Next: commit manifest/handoff, inspect strict conflicts, then captured runtime and implement bounded overlay.
+
+- Integration-owner exception: inspected all 65 warnings, exclusively terminal integrated/abandoned worktrees. Hard conflicts 0; foreign dirty files are disjoint. Accepted this exact snapshot with `--allow-warnings`; rerun before integration.
+
+## Verified implementation before publication
+
+- All eight features implemented as exact release221 overlay; 101 changed paths,
+  3 new assets, 524 output files, no deletions. 91 shell pages, 32 FAQ pages, 25 guides.
+- Candidate10 inventory and reproducible scripts in own evidence/scope.
+- Chrome22/22 functional/visual; routes91; return18/18; form9/9; Node652 pass/9 skips;
+  Brain39; strict validation; two independent GO, P0/P1/P2 new open=0.
+- Fixed review findings: failed-write persisted-pageshow handling, custom-select
+  visible cross-tab labels, finite reader notification, FAQ inset and calm motion.
+- Existing hover y2px produced one test artifact; baseline/candidate layout and
+  click/validation equivalence independently proven; unmodified suite rerun passes.
+- Publication/health/rollback still pending. No backend, DB, analytics/pricing
+  or private data change. All browser API requests so far synthetic.
+- Next: freeze implementation; byte-identical clean build; atomic release222,
+  health/static readback, actual rollback/forward, live browser smoke.

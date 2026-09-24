@@ -1,0 +1,116 @@
+{
+  "candidate": "/tmp/salon-ease-20260924/candidate10",
+  "results": [
+    {
+      "name": "theme-cross-tab-visible-label",
+      "status": "PASS",
+      "data": {
+        "choice": "light",
+        "visible": "Светлая",
+        "root": "light"
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "reading-notice-clears",
+      "status": "PASS",
+      "data": {
+        "text": ""
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "calm-feedback",
+      "status": "PASS",
+      "data": {
+        "saveAnimations": 0
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    },
+    {
+      "name": "faq-calm-fix-focus-inset-and-settings",
+      "status": "PASS",
+      "data": {
+        "inset": 17,
+        "paragraphLeft": 1,
+        "animations": 0,
+        "computed": [
+          {
+            "tag": "SUMMARY",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "SPAN",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "DIV",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "P",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "DIV",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "BUTTON",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "P",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "LABEL",
+            "animation": "none",
+            "transition": "0s"
+          },
+          {
+            "tag": "INPUT",
+            "animation": "none",
+            "transition": "0s"
+          }
+        ]
+      },
+      "api": [
+        {
+          "method": "GET",
+          "url": "/api/auth/session"
+        }
+      ],
+      "blocked": []
+    }
+  ]
+}

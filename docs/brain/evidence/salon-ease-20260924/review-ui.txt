@@ -1,0 +1,42 @@
+GO — independent read-only UI/accessibility review, exact candidate10.
+Candidate: /tmp/salon-ease-20260924/candidate10
+Reviewer: /root/comfort_ui_review
+Runtime: installed Chrome headless, real DOM/keyboard/mouse flows, 360/390/1440 widths, light/dark. Every network request intercepted; local files only, synthetic API GET only; non-GET API and outside origin blocked. No production writes, telemetry submissions, or repo edits. All reviewer browser processes closed.
+
+Evidence chain:
+- final9/results.json: 11/11 PASS, independent full eight-feature matrix.
+- hashes.json: candidate9 -> candidate10 asset difference is only salon-ease.css (two scoped reduced-motion/calm FAQ rules). HTML differences are asset cache hashes.
+- final10/results.json: 4/4 PASS on exact candidate10, including all three previously observed P2 corrections and the FAQ calm CSS delta.
+- contrast10/results.json: 2/2 PASS on exact candidate10; real keyboard manual/system selection and live OS scheme changes; measured settings text contrast 5.80 minimum light, 8.24 minimum dark.
+- Scripts: review9.cjs, final10.cjs, contrast10.cjs; hashes.json records exact eight relevant final assets.
+
+Confirmed:
+1. Header search: visible non-overlapping controls at 360/390/1440 light/dark; keyboard/mouse opening, actual search results, Escape restores header focus.
+2. Theme/settings: real enhanced select keyboard operation in light/dark; OS-following system choice, manual override, and visible label synchronization across tabs. Two settings controls meet 44px target minimum.
+3. Reading: size 19px, roomy line-height 40.85px, aria-pressed and settings persist into another guide and reload; no body overflow. Reading notice clears by 4.4 seconds.
+4. Chips: mobile horizontal overflow/reveal of last selected/focused chip; desktop flex wrap retained without horizontal overflow.
+5. FAQ: controls hidden while collapsed; keyboard expand; clipboard link and hash open/focus on home, services, and guarantees; knowledge correctly has no matching FAQ. Boxed home FAQ copy link inset now 16px at 360, aligned with answer. No calm-mode subtree animations.
+6. Listik: single launcher, compact 60x60 preference; preserved aria-label, open/close focus and form inline-slot behavior. Exact10 selected compact with actual mouse/popover, correct visible label.
+7. PDF: slow mocked loading skeleton; loading close then Enter reopen; successful rendered PDF; synthetic 503 error hides skeleton and retains retry; retry succeeds. Decorative skeleton aria-hidden, page aria-busy changes.
+8. Motion: reduced-motion save feedback no animations; data-calm save and FAQ no animations; static content and focus remain available.
+
+Closed findings:
+- P2 stale visible custom-select theme label across tabs — fixed and reproduced as PASS in final10/theme-data.json and theme-stale-label.png (filename retained from regression).
+- P2 persistent reading toast — fixed and PASS in final10/reader-notice-after4400.png.
+- P2 home boxed FAQ copy link at border/clipped focus — fixed and PASS in final10/faq-inset-calm-dark.png.
+
+No open P0/P1 or actionable P2 from this review.
+
+Initial harness false failures explicitly withdrawn:
+- candidate3 settings test measured intentionally hidden native select, rather than visible salon-select-trigger; corrected real keyboard checks all passed.
+- Immediate same-page hash focus and immediate emulateMedia assertions ran before browser rAF/media change dispatch. Waiting for actual settled state passes; screenshots already showed correct state. These were timing artifacts, not product issues.
+
+Useful visual evidence:
+- final9/settings-360-light.png, settings-360-dark.png, settings-1440-light.png, settings-1440-dark.png
+- final9/search-390-dark.png
+- final9/reader-360-large-roomy.png, chips-1440-knowledgehtml.png
+- final9/pdf-loading-dark.png, pdf-ready-dark.png, pdf-error-dark.png
+- final10/faq-inset-calm-dark.png, settings-compact-dark.png
+- final10/theme-stale-label.png, reader-notice-after4400.png
+
+Limits: Chrome viewport testing, not Safari/iOS hardware or screen-reader certification. This review does not claim production deployment/health/rollback, all-route coverage, or backend behavior; integration owner retains those gates. Header frames captured during preexisting homepage intro are used for fixed header assessment only; settled settings/PDF/FAQ images are reviewed separately.

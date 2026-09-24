@@ -1,0 +1,45 @@
+{
+  "checkoutHead": "d567516c3b30c7ba7c3363f4d1dcca7ccd5e3c4f",
+  "root": "/tmp/salon-ease-20260924/candidate10",
+  "browser": "Chrome through Playwright",
+  "data": "synthetic only; all HTTP intercepted",
+  "screenshots": "/tmp/salon-ease-20260924/form-recheck",
+  "results": [
+    {
+      "name": "pristine quiet, contact blur error linked locally, correction and cleared required value without focus theft",
+      "status": "PASS"
+    },
+    {
+      "name": "channel hints do not change contact or native constraints, send nothing and are not first input",
+      "status": "PASS"
+    },
+    {
+      "name": "all four original contact formats remain accepted across mismatched hint modes; VK numeric profile detected as VK",
+      "status": "PASS"
+    },
+    {
+      "name": "one submit validation event, adjacent error and immediate clean correction, date error is local",
+      "status": "PASS"
+    },
+    {
+      "name": "first invalid native field focuses visible select, descriptions/checkbox linked and dynamic service errors cleaned",
+      "status": "PASS"
+    },
+    {
+      "name": "uncertain state locks channel controls, retry IDs and value stable; rejected server message survives editing",
+      "status": "PASS"
+    },
+    {
+      "name": "near-limit UTF16 counters, unchanged over-limit prefill, real paste maxlength, quiet threshold announcements",
+      "status": "PASS"
+    },
+    {
+      "name": "held pointer submit is never lost on blur; cancel flushes; inline helper stays available without overlap",
+      "status": "PASS"
+    },
+    {
+      "name": "10 viewport/theme states, field/chip focus, no clipping, private data stays off storage and analytics",
+      "status": "PASS"
+    }
+  ]
+}

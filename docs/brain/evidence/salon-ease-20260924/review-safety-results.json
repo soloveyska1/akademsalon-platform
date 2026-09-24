@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "error": null,
+  "source": "d567516c3b30c7ba7c3363f4d1dcca7ccd5e3c4f",
+  "network": "all requests fulfilled locally or aborted; no production traffic",
+  "browser": "Chrome headless",
+  "hashes": {
+    "assets/js/salon-ease-preferences.js": "5a942a9aa3bc2c7074ec0423aaf2dd8174d17fe766a5dab2386054d35754bd0a",
+    "assets/js/salon-ease.js": "83e9512c4b10f452176544e41a34da7f3ad3eb2bc8f720f56c7924628767cc2c",
+    "assets/css/salon-ease.css": "a67fa9394ef705e053808e825bb07220f5c0524b450f3ee0f781efbc6f169349",
+    "assets/js/app.js": "ef3b279b8812bbf18953807bcadffccb7cd467f8031e02912b6f324cca091f7b",
+    "assets/js/salon-shell.js": "5682e9a1756cbdb48e80c69af5f5dfc416a026854e33a8876fddb0bde7c46967",
+    "assets/js/salon-experience.js": "7de7f013e78181e998233dbcbd2c58f73cbf5f5052eefae8e480b3c2f39476e6",
+    "assets/js/salon-library.js": "1607c254d077af57a0769e1c20f61060639fce6ff3b7b6861a8fa2179dae179b",
+    "assets/js/salon-portfolio.js": "b870c2cb5789dfc4dd9767f7dd1cecd371f586dafe0cf2ea52998d6daf886817"
+  },
+  "checks": [
+    "PASS malformed preference enums rejected; saved record contains only finite schema",
+    "PASS header search text does not enter local/session storage",
+    "PASS deferred consumer, cross-tab preference and manual/system theme sync",
+    "PASS asynchronously mounted compact helper keeps same launcher and focus",
+    "PASS reduced motion disables saved/FAQ feedback",
+    "PASS skeleton slow-load close/reopen, aria-busy teardown, old close guard and reduced PDF animation",
+    "PASS PDF failure hides skeleton and retains visible fallback",
+    "PASS no JS errors or API mutations",
+    "PASS denied writes keep in-tab manual theme and reading choice through system changes",
+    "PASS persisted pageshow keeps failed-write theme and reading preferences",
+    "PASS data-calm alone suppresses new saved, FAQ, PDF motion without OS reduce"
+  ],
+  "observations": []
+}

@@ -1,0 +1,192 @@
+{
+  "root": "/tmp/salon-ease-20260924/baseline",
+  "status": "PASS",
+  "error": null,
+  "records": [
+    {
+      "hoverWait": 0,
+      "before": {
+        "y": 477.90625,
+        "layoutTop": 1850,
+        "rectDocumentTop": 1849.90625,
+        "normalizedDocumentTop": 1849.90625,
+        "scroll": 1372,
+        "offsets": [
+          {
+            "tag": "BUTTON",
+            "id": "send-order",
+            "top": 1850
+          },
+          {
+            "tag": "BODY",
+            "id": "",
+            "top": 0
+          }
+        ],
+        "transform": "none",
+        "hover": false,
+        "active": false,
+        "errorVisible": false
+      },
+      "hover": {
+        "y": 477.90625,
+        "layoutTop": 1850,
+        "rectDocumentTop": 1849.90625,
+        "normalizedDocumentTop": 1849.90625,
+        "scroll": 1372,
+        "offsets": [
+          {
+            "tag": "BUTTON",
+            "id": "send-order",
+            "top": 1850
+          },
+          {
+            "tag": "BODY",
+            "id": "",
+            "top": 0
+          }
+        ],
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "hover": true,
+        "active": false,
+        "errorVisible": false
+      },
+      "held": {
+        "y": 477.90625,
+        "layoutTop": 1850,
+        "rectDocumentTop": 1849.90625,
+        "normalizedDocumentTop": 1849.90625,
+        "scroll": 1372,
+        "offsets": [
+          {
+            "tag": "BUTTON",
+            "id": "send-order",
+            "top": 1850
+          },
+          {
+            "tag": "BODY",
+            "id": "",
+            "top": 0
+          }
+        ],
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "hover": true,
+        "active": true,
+        "errorVisible": false
+      },
+      "hit": true,
+      "trace": [
+        {
+          "name": "pointerdown",
+          "target": "send-order",
+          "trusted": true
+        },
+        {
+          "name": "pointerup",
+          "target": "send-order",
+          "trusted": true
+        },
+        {
+          "name": "click",
+          "target": "send-order",
+          "trusted": true
+        }
+      ],
+      "validationEvents": 1,
+      "status": "PASS"
+    },
+    {
+      "hoverWait": 400,
+      "before": {
+        "y": 477.90625,
+        "layoutTop": 1850,
+        "rectDocumentTop": 1849.90625,
+        "normalizedDocumentTop": 1849.90625,
+        "scroll": 1372,
+        "offsets": [
+          {
+            "tag": "BUTTON",
+            "id": "send-order",
+            "top": 1850
+          },
+          {
+            "tag": "BODY",
+            "id": "",
+            "top": 0
+          }
+        ],
+        "transform": "none",
+        "hover": false,
+        "active": false,
+        "errorVisible": false
+      },
+      "hover": {
+        "y": 475.90625,
+        "layoutTop": 1850,
+        "rectDocumentTop": 1847.90625,
+        "normalizedDocumentTop": 1849.90625,
+        "scroll": 1372,
+        "offsets": [
+          {
+            "tag": "BUTTON",
+            "id": "send-order",
+            "top": 1850
+          },
+          {
+            "tag": "BODY",
+            "id": "",
+            "top": 0
+          }
+        ],
+        "transform": "matrix(1, 0, 0, 1, 0, -2)",
+        "hover": true,
+        "active": false,
+        "errorVisible": false
+      },
+      "held": {
+        "y": 477.90625,
+        "layoutTop": 1850,
+        "rectDocumentTop": 1849.90625,
+        "normalizedDocumentTop": 1849.90625,
+        "scroll": 1372,
+        "offsets": [
+          {
+            "tag": "BUTTON",
+            "id": "send-order",
+            "top": 1850
+          },
+          {
+            "tag": "BODY",
+            "id": "",
+            "top": 0
+          }
+        ],
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "hover": true,
+        "active": true,
+        "errorVisible": false
+      },
+      "hit": true,
+      "trace": [
+        {
+          "name": "pointerdown",
+          "target": "send-order",
+          "trusted": true
+        },
+        {
+          "name": "pointerup",
+          "target": "send-order",
+          "trusted": true
+        },
+        {
+          "name": "click",
+          "target": "send-order",
+          "trusted": true
+        }
+      ],
+      "validationEvents": 1,
+      "status": "PASS"
+    }
+  ],
+  "network": "all requests fulfilled locally; no production traffic"
+}

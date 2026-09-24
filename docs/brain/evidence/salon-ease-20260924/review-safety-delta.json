@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "error": null,
+  "results": [
+    "PASS cross-tab updates visible custom-select label without trusted commit",
+    "PASS own reading notice clears",
+    "PASS reading notice timer preserves later unrelated message"
+  ],
+  "network": "all requests fulfilled locally or aborted; no production traffic"
+}

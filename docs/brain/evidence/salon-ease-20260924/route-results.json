@@ -1,0 +1,736 @@
+{
+  "source": "d567516c3b30c7ba7c3363f4d1dcca7ccd5e3c4f",
+  "root": "/tmp/salon-ease-20260924/candidate10",
+  "viewport": "360x900",
+  "theme": "system-dark",
+  "results": [
+    {
+      "name": "about.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "academic-integrity.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "audit-temy-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "avtorskiy-zakaz.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "benefits.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "check.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "configurator.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "consent-analytics.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "consent-marketing.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "consent-publication.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "consent-request.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "consent.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "deposit.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "diplomnaya-po-ekonomike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "diplomnaya-po-psihologii.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "diplomnaya-po-yurisprudencii.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "diplomnaya-rabota.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "dorabotka-otcheta-po-praktike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "dosie-nauchruka.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 5,
+      "status": "PASS"
+    },
+    {
+      "name": "expertise.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "gift.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guarantees.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-antiplagiat-ai.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-apellyaciya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-dnevnik-praktiki.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-harakteristika-s-praktiki.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-kursovaya-za-nedelyu.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-normocontrol.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-obekt-predmet-cel-zadachi.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-otchet-po-praktike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-otzyv-rukovoditelya-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-prakticheskaya-chast-kursovoy.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-prezentaciya-k-zashchite.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-prilozheniya-po-gost.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-recenziya-na-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-rech-na-zashchitu.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-rinc-statya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-skolko-stoit-diplomnaya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-skolko-stoit-kursovaya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-spisok-literatury.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-temy-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-titulnyj-list.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-vkr-struktura.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-vvedenie-kursovoy.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-zaklyuchenie-kursovoy.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-zaklyuchenie-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "guide-zashchita-diploma.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "index.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 5,
+      "status": "PASS"
+    },
+    {
+      "name": "kandidatskaya-dissertaciya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "knowledge.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "komissiya-0.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 5,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-po-ekonomike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-po-informatike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-po-menedzhmentu.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-po-pedagogike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-po-psihologii.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-po-yurisprudencii.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "kursovaya-rabota.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "loyalty.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "magisterskaya-dissertaciya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "nauchnaya-statya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "normokontrol-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "oferta.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "oplaceno.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "oplata.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "otchet-po-praktike.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "plan.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "plus.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "privacy.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "priyomnaya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "prolog.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 5,
+      "status": "PASS"
+    },
+    {
+      "name": "proverka-istochnikov-vkr.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "razbor-zamechaniy-nauchruka.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "redaktura-posle-ii.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 4,
+      "status": "PASS"
+    },
+    {
+      "name": "referat.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "referral-rules.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "referral.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "refunds.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "requisites.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "reviews.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "samples.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "services.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 3,
+      "status": "PASS"
+    },
+    {
+      "name": "shop-terms.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "shop.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 6,
+      "status": "PASS"
+    },
+    {
+      "name": "specifikaciya.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "start.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "tariffs.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 6,
+      "status": "PASS"
+    },
+    {
+      "name": "terms.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "tools.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "vedenie.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "zayavka.html",
+      "overflow": 0,
+      "settings": 1,
+      "search": 1,
+      "faqs": 0,
+      "status": "PASS"
+    }
+  ]
+}

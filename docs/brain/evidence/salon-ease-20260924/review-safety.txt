@@ -1,0 +1,52 @@
+# Independent safety/reliability review — candidate10
+
+Verdict: GO. No open P0/P1 or actionable new safety/reliability finding in the reviewed scope.
+
+Candidate: `/tmp/salon-ease-20260924/candidate10`
+Base: exact release221 from `/tmp/salon-ease-20260924/baseline`.
+Reviewer: comfort_safety_review; read-only repository review. All test artifacts are in `/tmp/salon-ease-safety-review`. No repository or production writes.
+
+## Reproducible evidence
+
+- `probe10.mjs` → `results10.json`: 11 browser checks PASS.
+- `delta10-probe.mjs` → `delta10-results.json`: 3 additional delta checks PASS.
+- `static-check.py` → `static10.json`: 91 public shell consumers verified, including unique early preference/runtime/style/header-search tags and matching byte hash query parameters.
+- Browser: local Chrome headless. Every request fulfilled from the exact candidate or aborted; synthetic API responses only; no non-GET API requests; no JavaScript errors; all contexts/browser closed.
+
+## What the independent probes prove
+
+- Preference storage is restricted to finite enums; corrupted values are rejected; next successful save discards extraneous fields.
+- Header search input is absent from localStorage/sessionStorage.
+- Manual/system theme and appearance preferences sync across tabs, including deferred shop-terms fallback theme API. The visible custom-select label updates without emitting a trusted select-commit.
+- Denied writes preserve current page choice across OS changes and the persisted-pageshow handler. This pageshow handler test dispatches an explicit persisted PageTransitionEvent; it does not claim native BFcache admission.
+- Async compact assistant preserves the same single launcher and close-focus target.
+- OS reduced-motion and the data-calm attribute suppress enhanced saved/FAQ/PDF feedback.
+- Slow PDF loads show the skeleton and busy state; close clears busy/loading; reopen and old-close-event guard survive; errors hide skeleton and leave fallback reachable.
+- Reading notice expires, but its timer does not clear a later unrelated status.
+
+## Fixed findings confirmed
+
+- Candidate3 overwrote failed-write in-memory preferences on persisted pageshow. Candidate10 retains unsaved preferences/theme; reproduction now PASS.
+- Candidate6 enhanced FAQ tools inherited 200ms motion under data-calm. Candidate10 targeted CSS disables that inherited animation/transition; reproduction now PASS.
+- Candidate6 declared unused toast timer and old copy. Candidate10 expiry and honest current-page text are present and tested.
+
+## Exact hashes
+
+- `assets/js/salon-ease-preferences.js`: `5a942a9aa3bc2c7074ec0423aaf2dd8174d17fe766a5dab2386054d35754bd0a`
+- `assets/js/salon-ease.js`: `83e9512c4b10f452176544e41a34da7f3ad3eb2bc8f720f56c7924628767cc2c`
+- `assets/css/salon-ease.css`: `a67fa9394ef705e053808e825bb07220f5c0524b450f3ee0f781efbc6f169349`
+- `assets/js/app.js`: `ef3b279b8812bbf18953807bcadffccb7cd467f8031e02912b6f324cca091f7b`
+- `assets/js/salon-shell.js`: `5682e9a1756cbdb48e80c69af5f5dfc416a026854e33a8876fddb0bde7c46967`
+- `assets/js/salon-experience.js`: `7de7f013e78181e998233dbcbd2c58f73cbf5f5052eefae8e480b3c2f39476e6`
+- `assets/js/salon-library.js`: `1607c254d077af57a0769e1c20f61060639fce6ff3b7b6861a8fa2179dae179b`
+- `assets/js/salon-portfolio.js`: `b870c2cb5789dfc4dd9767f7dd1cecd371f586dafe0cf2ea52998d6daf886817`
+
+## Commands
+
+```sh
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-ease-safety-review/probe10.mjs /tmp/salon-ease-20260924/candidate10 /tmp/salon-ease-safety-review
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-ease-safety-review/delta10-probe.mjs /tmp/salon-ease-20260924/candidate10 /tmp/salon-ease-safety-review
+python3 /tmp/salon-ease-safety-review/static-check.py /tmp/salon-ease-20260924/candidate10 /tmp/salon-ease-safety-review/static10.json
+```
+
+Scope limits: this is the independent candidate safety/reliability review. It does not assert deployment, live production verification, full visual QA, native Safari behavior, or replacement of the root full return/intake regression suite.

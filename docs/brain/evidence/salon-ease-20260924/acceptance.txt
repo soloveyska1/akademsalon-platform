@@ -1,0 +1,54 @@
+OUT-003 — all eight user-approved comforts, 2026-09-24
+Write owner root; WS-3c1b84f7d7314927b53b393b5cb7b526.
+Base canonical 42f2baa06fae28fc89940e22e43deb27392a9a67, release221-return-4ee1f306.
+Original user dirty .claude/launch.json untouched. Pinned baseline 521 / candidate 524.
+All 101changed paths enumerated in tested-manifest.json; no deletion.
+Full tested inventory digest (json.dumps sort_keys SHA256):
+fcff7247045e43ff355b19b4f0d312770e2a89dd0e9266e2bbe9fc4b142586cb
+
+Functional proof: comfort-results.json 22/22 PASS; all 91 public shell routes
+route-results.json PASS, 32 FAQ routes/counts exact, mobile 360 zero body overflow.
+25 reader pages use early persistent size/spacing. Header/system preferences
+cover 91 shell pages; app bridge is inactive on private admin/dashboard consumers
+which receive only refreshed cache URL for the same shared app asset.
+
+G0: canonical/base/dirty, generated committed manifest, reviewed hard 0, warnings 65.
+G1: Node 652 pass, 9 existing skips, 0 fail; Brain 39 PASS; strictvalidate; all 8 JS syntax.
+G2/G7: existing return 18/18; intake regression recorded separately. No transport
+changes. Real user order/payment/chat not sent. Synthetic fixture success/error,
+uncertain/requestID/native-validation contracts used; no auth credentials read.
+G3/G4: no auth/cabinet/controller/transport change; app legacy branches retained
+without new preference API. Actual provider authorization was not repeated.
+G5/G6: 360/390/768/1024/1440 light/dark; keyboard, 44px controls, no overflow;
+clipboard fallback; manual/system/cross-tab/deniedstorage; reduced + calm motion.
+Independent settings text contrast 5.80 minimum light, 8.24 dark.
+G8: privacy-safe finite enum storage only; search/task/contact/file/chat text
+not persisted by new code, canonicalFAQ links strip query, no analytics events.
+G9: tests bind exact candidate 10 full inventory; source commit filled during
+clean release build only after byte-for-byte comparison to tested inventory.
+G10: two independent GO with exact hashes; production receipt/smoke added after
+actual atomic apply/rollback/forward. No P0/P1 or new unowned P2 remains.
+
+Independent UI: matrix 11, exact delta 4, theme/contrast 2 PASS; reports + hashes.
+Independent safety: core 11, delta 3, static 91 PASS; reports + runnable probes.
+Review fixes proved: unpersisted preference retained across persisted-pageshow
+handler, custom-select visible cross-tab label, finite toast expiry that cannot
+clear another notice, boxed FAQ focus inset, inherited calm-mode motion.
+Native BFcache admission and Safari/iOS hardware/screen-reader certification
+are not claimed; persisted handler exercised using PageTransitionEvent.
+
+Test corrections: system-media/hash follow-up waits for dispatched state;
+article resume compares saved section+fraction (wheel can leave intra-section
+position), not guessed heading top. Header interactions use physical mouse.
+No frontend changes made to compensate for locator-induced page scroll.
+
+Release gate scope: bounded public UI overlay, same API/backend/DB/Nginx/prices;
+compatibility dist stays release203. StaticHTTP exact readback + intercepted-API
+live browser smoke proves UI publication, not organic conversion or revenue.
+
+Final intake rerun: 9/9 PASS on exact candidate10. First final run stopped on
+rounded visual button y476vs478. Independent baseline/candidate pointer proof
+4/4 shows identical existing hover translateY(-2), stable layoutTop1850 and
+scrollY1372, one trusted click and one validation_error, no order write.
+The BCR-only failure was presentation timing; product code was not changed.
+Raw failed log, passing rerun and baseline/candidate pointer JSON retained.

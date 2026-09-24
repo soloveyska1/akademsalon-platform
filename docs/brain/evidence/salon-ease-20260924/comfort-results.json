@@ -1,0 +1,96 @@
+{
+  "source": "d567516c3b30c7ba7c3363f4d1dcca7ccd5e3c4f",
+  "root": "/tmp/salon-ease-20260924/candidate10",
+  "browser": "Chrome headless",
+  "network": "all routed, no production requests",
+  "results": [
+    {
+      "name": "search-single-dialog-and-focus",
+      "status": "PASS"
+    },
+    {
+      "name": "system-theme-manual-cross-tab",
+      "status": "PASS"
+    },
+    {
+      "name": "settings-keyboard-and-cross-tab-visible-label",
+      "status": "PASS"
+    },
+    {
+      "name": "reading-prefs-before-resume",
+      "status": "PASS"
+    },
+    {
+      "name": "chips-reveal-and-no-page-jump",
+      "status": "PASS"
+    },
+    {
+      "name": "faq-canonical-copy-hash-and-fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "compact-listik-one-launcher-across-pages",
+      "status": "PASS"
+    },
+    {
+      "name": "storage-denied-manual-and-reader",
+      "status": "PASS"
+    },
+    {
+      "name": "denied-write-bfcache-preserves-page-choice",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-loading-success-error-retry-reopen",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-360-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-360-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-390-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-390-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-768-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-768-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1024-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1024-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1440-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1440-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "calm-faq-no-inherited-motion",
+      "status": "PASS"
+    },
+    {
+      "name": "deferred-store-shell-init",
+      "status": "PASS"
+    }
+  ]
+}
