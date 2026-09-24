@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-12e03bf925e9442ebb34b9177fd0b47d",
+  "slug": "salon-form-polish-20260924",
+  "status": "active",
+  "branch": "codex/salon-form-polish-20260924",
+  "base_sha": "5e1cb620c1f670cd90a2015e458a2027e4a381cf",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-form-polish-20260924",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-12e03bf925e9442ebb34b9177fd0b47d/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-form-polish-20260924",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
