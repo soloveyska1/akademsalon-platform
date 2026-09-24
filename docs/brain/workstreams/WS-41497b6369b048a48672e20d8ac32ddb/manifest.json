@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-41497b6369b048a48672e20d8ac32ddb",
   "slug": "salon-return-20260924",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-return-20260924",
   "base_sha": "5682dd77ea3251c3e444c8e3adbeb3a6d99ec665",
   "result_sha": "e8f9c993e1e16474ea13f4d845981b3e6ae508a0",
@@ -37,6 +37,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "60a7467631f28ab9a955d44d10b9fa34af039b8e7997881098ab32ee92347065"
+  "manifest_revision": 3,
+  "base_manifest_hash": "260fd74c2577f0b7b7f73365d7d7961ed69d728124a41f942f46e8c60e8df6bb"
 }
