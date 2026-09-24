@@ -52,3 +52,12 @@ rounded visual button y476vs478. Independent baseline/candidate pointer proof
 scrollY1372, one trusted click and one validation_error, no order write.
 The BCR-only failure was presentation timing; product code was not changed.
 Raw failed log, passing rerun and baseline/candidate pointer JSON retained.
+
+G10 completed: release222-ease-fa5ea915, real apply/rollback221/forward222,
+health200 and exact static readback106 forward checks each; existing301 verified
+explicitly. Live Chrome390/1440 both themes4/4, eight asset hashes per profile,
+no JS error or real API write. UI inventory remains identical to candidate10.
+Live select harness separates actual focus/scroll from ArrowDown by two frames
+to avoid its own asynchronous focus scroll closing the legacy popover. No
+frontend change was made for this harness issue. API traffic is synthetic even
+on live smoke; real orders, provider auth, payments, chats and growth unmeasured.

@@ -41,3 +41,21 @@
 - Eight deterministic fail-closed contract tests and live baseline GET proof pass.
 - Next: freeze readback correction, rebuild identical UI, deploy unique release
   with repeated apply/rollback/forward and live smoke.
+
+## Verified production result
+
+- Live release222-ease-fa5ea915; source fa5ea9156fbd1315cb48412367af5860b059aa6e,
+  exact524-file output equals candidate10 full inventory. UI implementation b264e4f2.
+- Actual apply→rollback221→forward222 passes health and 106HTTP checks each forward,
+  including the explicit existing expertise301; compatibility dist stays release203.
+- Real-static Chrome390/1440 light/dark4/4 PASS: all8 changed runtime/CSS hashes,
+  search/focus, real settings keyboard, theme, assistant, FAQ, reading, catalog,
+  PDF resume and preserved inline intake helper. JS errors0, API writes0.
+- Live smoke now scrolls/focuses the select trigger and waits two frames before
+  ArrowDown; simultaneous synthetic focus+open previously let its own scroll close
+  the existing select popover. No product change for this harness timing artifact.
+- Backend/DB/prices/analytics/order payload untouched; no real order/payment/chat.
+- All test contexts closed; no server/watcher started. Original dirty launch.json
+  remains untouched. Independent scoped P0/P1/P2 open=0; no new unresolved debt.
+- Next: freeze verified result, submit manifest, fresh canonical/conflict check,
+  integrate and let sequential owner record release222 in CURRENT-HANDOFF.
