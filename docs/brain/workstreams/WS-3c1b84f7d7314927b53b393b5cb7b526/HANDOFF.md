@@ -59,3 +59,15 @@
   remains untouched. Independent scoped P0/P1/P2 open=0; no new unresolved debt.
 - Next: freeze verified result, submit manifest, fresh canonical/conflict check,
   integrate and let sequential owner record release222 in CURRENT-HANDOFF.
+
+## Canonical integration owner closeout
+
+- Fresh origin/main and strict conflict gate before integration: hard0, same65
+  reviewed terminal-worktree warnings accepted explicitly; no added warnings.
+- Verified result3d6228f0 submitted separately, proved ancestor of fresh
+  origin/main, then integrated terminal revisionb88df473fcd8bb8b4ce13008f447bf9a14231785.
+- Task branch remains parked at its terminal revision. This sequential main
+  documentation update records current release222 and preserves release221 history.
+- All eight approved features published and verified. No remaining scoped work.
+- Exact next step: daily monitor reads the next complete consented measurement
+  day against the actual current release; no new feature or conversion claim inferred.
