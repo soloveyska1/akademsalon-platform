@@ -11,6 +11,7 @@
 - Production verified: current release223-reading-9876e933 from source9876e9336b2c815c1c75e3b2baf6715cf83a3a56. Actual apply/rollback222/forward pass health and exact hashes. Live Chrome4/4 at390/1440 light/dark;10static hashes each, all new paths plus prior features; JSerrors0/APIwrites0. Compatibility dist release203 untouched.
 - Unverified limits: physical devices, native Safari, real OS sharing/delivery and conversion uplift. No new debt; independent findings fixed and rechecked.
 - Risks/rollback: shared public search and PDF lifecycle; use current immutable release222-ease-fa5ea915 as static rollback, preserve compatibility dist release203. Backend, DB, prices, order/auth/analytics/service-worker bytes remain outside scope.
-- Next: submit verified result, integrate canonical, then sequential integration owner records current production in CURRENT-HANDOFF.
+- Integrated: frozen verified result90616e5a is in fresh canonical; terminal720bdb4d. Sequential owner recorded production in CURRENT-HANDOFF on main. Keep task branch parked at terminal.
+- Next: existing daily readonly monitor inspects next complete consented day and actual release; no further UI expansion without a new user request.
 
 - Bootstrap v1 was abandoned before implementation because a mutable read dependency on CURRENT-HANDOFF intersected another dirty worktree. This workstream uses the fixed canonical snapshot and immutable release222 runtime, not that mutable file.
