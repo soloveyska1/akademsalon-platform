@@ -14,4 +14,4 @@ Review: two independent read-only GO. TruePDFclose/reopenrace fixed and
 failing-first independent reproduction retained. Cataloguefalsealarm retired:
 Playwright locator auto-scroll moved a visible sticky control beforepointerdown;
 physicalmouse check passes exact finalf31c, no unnecessaryworkaround retained.
-G10 pending publication, full hash readback, actual rollback/forward and live smoke.
+G10 PASS: release221-return-4ee1f306 from 4ee1f306baa13f77b477f16dddf50a470583eaac; actual apply -> rollback220 -> forward221 passed health and all changed public file hashes. Live Chrome390/1440 light/dark4/4, all four comforts plus existing form controls, exact assets, errors0/APIwrites0. Backend/DB unchanged; dist203 preserved.

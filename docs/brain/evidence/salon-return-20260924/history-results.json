@@ -1,0 +1,12 @@
+{
+  "source": "4ee1f306baa13f77b477f16dddf50a470583eaac",
+  "root": "/tmp/salon-return-20260924/release",
+  "browser": "Chrome",
+  "network": "all requests routed; no API writes",
+  "results": [
+    {
+      "name": "catalogue-back-forward-back",
+      "status": "PASS"
+    }
+  ]
+}
