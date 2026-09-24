@@ -15,4 +15,5 @@
 - Not claimed: real new client submissions, lead quality, revenue or conversion uplift; these need prospective consented observations. Nine existing tests requiring their external fixtures remain skipped.
 - Risks/rollback: canonical static sources differ from production. Build starts from full immutable live snapshot and fails on hash drift; deploy only delta with immediate pointer rollback and no DB restore.
 - Conflict decision: first canonical-guide declaration was abandoned because of active historical reservations. Overlay owns only unique directories; hard=0, 62 historical warnings consciously accepted by root as integration owner.
-- Next: submit the verified result, integrate into fresh canonical main, then have the existing daily monitor compare prospective open/input/validation/attempt/failure/success observations without synthetic traffic.
+- Lifecycle: verified result `60041f1d` is an ancestor of freshly fetched canonical main; Brain status is integrated. Integration owner updated CURRENT-HANDOFF sequentially. Daily automation-5 remains ACTIVE at 10:00 Europe/Moscow and now includes release218 plus the measurement-coverage caveat.
+- Next: at the next daily run, check the next full-day consented sample for event freshness and the observed open/input/attempt/success path without synthetic traffic.

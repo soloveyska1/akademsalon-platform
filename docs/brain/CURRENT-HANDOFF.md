@@ -1,6 +1,18 @@
 # Current handoff
 
-## Canonical and production truth
+## Verified current state — 24 September 2026
+
+Sequential integration-owner update; the historical records below are not current release pointers.
+
+- Production `current` is `release218-funnel-5e860b3c`, from verified implementation `5e860b3c0b4b35702971462861cf12456ccdf84c`. It overlays six files on `release217-growth-449b719f`, preserving the 515-file tree. Compatibility `dist` intentionally remains `release203-09ccfca4`; never align it by assumption or rebuild live from the older root HTML.
+- Direct intake now emits existing consented open/input/validation/failure events. Custom-select search and programmatic prefills do not count as first input; actual pointer/keyboard choices do. The guide about a course paper in a week opens the existing plan service for a course paper, including with a saved unrelated draft. Pricing and order submission contracts are unchanged.
+- Authoritative analytics contract readback is 2.5.0. New coverage begins with this release: historical missing events must not be presented as zero visitors or a subsequent increase in traffic. No uplift in qualified leads or revenue is claimed.
+- Verified: 652 public Node tests passed, 9 skipped; Brain 39 passed; strict validation; isolated browser privacy/error/retry/upload/keyboard scenarios and 10 viewport/theme combinations; two independent final GO reviews. Actual production apply -> rollback to release217 -> forward passed health and exact public hashes. Live GET-only Chrome at 390/1440 light/dark passed. No real test order, payment or analytics event was sent.
+- Exact evidence: `docs/brain/evidence/salon-funnel-20260924/`; workstream `WS-ff2c79f749be41e8a87d7007a2a4cdc7` is integrated, frozen result `60041f1d`. Rollback is the static current-pointer switch back to release217, with no database restore.
+- Existing daily monitor `automation-5` remains active at 10:00 Europe/Moscow and now knows this release and coverage change. It stays quiet on unchanged/non-actionable state. Next action: inspect the next full-day consented sample and verify event freshness, open -> input -> attempt -> confirmed success, and meaningful new aggregate lead/payment changes.
+- The original user change in `.claude/launch.json` remains outside all commits.
+
+## Historical canonical and production records (superseded pointers)
 
 - REL-0180 is live from authoritative implementation
   `98973234c142abf2aed9e0dba8281566786d0c4a`. Production `current` and
