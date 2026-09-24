@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-da0a31bda1434828b2b651bb2e975810",
   "slug": "salon-comfort-20260924",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-comfort-20260924",
   "base_sha": "d1b33ce819f6cfab3429446f03a9f2e7c03032f5",
   "result_sha": "8799978d75ef8633b5362bee555af35c8795bddd",
@@ -32,6 +32,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "74e37a8b648c2e590d1bd6b35aebcbad0ba95ae5139b7cb43f75f5aed3e93fba"
+  "manifest_revision": 3,
+  "base_manifest_hash": "9b2ea1339d3477caf56aac504c5747036ce3a7d5b133139769364fd18d540363"
 }
