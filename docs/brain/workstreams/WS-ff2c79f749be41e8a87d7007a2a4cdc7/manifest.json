@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-ff2c79f749be41e8a87d7007a2a4cdc7",
   "slug": "salon-intake-fix-20260924",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-intake-fix-20260924",
   "base_sha": "c1c5eb0d27e63c77f6d6f430a39d3579447f01fa",
   "result_sha": "60041f1d6129e3fd8800daf86b19543111255092",
@@ -32,6 +32,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "ccc1091f65702772ba509c1637fac11d3de68438a35cc7ccad07e1dc8f970350"
+  "manifest_revision": 3,
+  "base_manifest_hash": "db45bba5521ae78a0441b3636d07e12818e160bfb1acd717cd09026532d3906f"
 }
