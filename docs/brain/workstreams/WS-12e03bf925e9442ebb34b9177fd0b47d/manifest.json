@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-12e03bf925e9442ebb34b9177fd0b47d",
   "slug": "salon-form-polish-20260924",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-form-polish-20260924",
   "base_sha": "5e1cb620c1f670cd90a2015e458a2027e4a381cf",
   "result_sha": "dca8642cd3240e354a2d5fdf276a244a6b458e0d",
@@ -32,6 +32,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "e3b29e0e320b7c92bdc018e5c48d363b83204cc9018551043dc9c1a10b1a66be"
+  "manifest_revision": 3,
+  "base_manifest_hash": "69e1b9a3698220326caedb34374706122a426f9743b43f3ef4388bd770b77de5"
 }
