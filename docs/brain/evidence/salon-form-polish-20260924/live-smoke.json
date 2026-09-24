@@ -1,0 +1,95 @@
+{
+  "release": "release220-polish-9f987a75",
+  "browser": "Chrome",
+  "data": "new context; consent=false; owner+QA excluded; all API mocked, only public static GET allowed",
+  "results": [
+    {
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "route": "guide -> plan/course -> local file/date/autogrow + contact hints/errors/counter + helper open/close -> plan/master",
+      "prices": [
+        3000,
+        5000
+      ],
+      "errors": [],
+      "blocked": [
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        }
+      ],
+      "submitted": false
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "route": "guide -> plan/course -> local file/date/autogrow + contact hints/errors/counter + helper open/close -> plan/master",
+      "prices": [
+        3000,
+        5000
+      ],
+      "errors": [],
+      "blocked": [
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        }
+      ],
+      "submitted": false
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "route": "guide -> plan/course -> local file/date/autogrow + contact hints/errors/counter + helper open/close -> plan/master",
+      "prices": [
+        3000,
+        5000
+      ],
+      "errors": [],
+      "blocked": [
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        }
+      ],
+      "submitted": false
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "route": "guide -> plan/course -> local file/date/autogrow + contact hints/errors/counter + helper open/close -> plan/master",
+      "prices": [
+        3000,
+        5000
+      ],
+      "errors": [],
+      "blocked": [
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        },
+        {
+          "method": "GET",
+          "path": "/api/auth/session"
+        }
+      ],
+      "submitted": false
+    }
+  ]
+}
