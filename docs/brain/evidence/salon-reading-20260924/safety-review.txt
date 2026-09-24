@@ -1,0 +1,29 @@
+Independent safety/search/PDF review — final candidate9
+
+Verdict: GO within reviewed scope; P0=0, P1=0, P2=0 outstanding.
+
+Delta from reviewed candidate8: only assets/js/salon-reading.js changed among five runtime assets. Its sheet dismissal now closes and cleans up scroll/focus synchronously; done flag makes queued native close idempotent; native cancel is prevented and follows same dismissal path. No search/PDF link/motion/CSS delta.
+
+Fresh candidate9 Chrome proof: 10/10 PASS across qa9/results.json (6), delta9/results.json (2), close9/results.json (2).
+- Denied clipboard nested PDF fallback retains active viewer and restores sharing-button focus.
+- Tab/Shift+Tab remain trapped in table/manual-copy dialogs; two Escape presses close nested sheet then PDF safely.
+- Old queued native close cannot remove new sheet's scroll lock or steal its focus.
+- Rapid double Escape from contents sheet in reading mode restores the same reading position and exits mode with correct trigger focus.
+- Adversarial search/privacy, PDF direct-over-bookmark, deferred paint race, close-during-load/document switch, malformed hashes and clean guide heading/share URL checks passed again.
+- Reduced motion/calm/motionoff and immediate native menu navigation passed again.
+
+Prior candidate8 history2/2 remains bound to unchanged portfolio asset: Browser Back/Forward base↔PDF and PDF A↔B, non-PDF destination hash preservation, ordinary card-open behavior. Candidate5 P2 fixed, no outstanding regression.
+
+All static resources fulfilled from exact local candidate; API synthetic, no non-GET API operations and no production traffic. No repository writes. Native OS share UI simulated; full visuals/release gates owned by root and UI reviewer.
+
+Reproduction:
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-reading-safety-review/probe5.mjs /tmp/salon-reading-20260924/candidate9 /tmp/salon-reading-safety-review/qa9
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-reading-safety-review/delta8.mjs /tmp/salon-reading-20260924/candidate9 /tmp/salon-reading-safety-review/delta9
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-reading-safety-review/close9.mjs /tmp/salon-reading-20260924/candidate9 /tmp/salon-reading-safety-review/close9
+
+Final changed-asset SHA256 binding:
+assets/css/salon-reading.css 738299ca2359647395ea1674bb94fd245357c35abaad014c1a52f5197d128030
+assets/js/salon-experience.js 6a12075d0acce860afb89495efe481e823dc338c657e8d5a44c2c37621edce61
+assets/js/salon-library.js 2a1d6ac849424b6272335d8bd6e6445d1b22f3bf4c5f0d2725bf3a0fe1d7e20e
+assets/js/salon-portfolio.js 1db103769466a8b1b88b2b3dc942008c2c69b50521d9e874613006ea322adf63
+assets/js/salon-reading.js 44047cb58b4fda8ee5180a0774f58579b497176208d8a93510de6e41f75cd10b

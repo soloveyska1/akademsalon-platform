@@ -1,0 +1,285 @@
+{
+  "hashes": {
+    "assets/js/salon-reading.js": "44047cb58b4fda8ee5180a0774f58579b497176208d8a93510de6e41f75cd10b",
+    "assets/css/salon-reading.css": "738299ca2359647395ea1674bb94fd245357c35abaad014c1a52f5197d128030"
+  },
+  "checks": [
+    {
+      "width": 360,
+      "theme": "light",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "name": "contents-position",
+      "boxes": [
+        {
+          "s": ".sx-contents",
+          "visible": true,
+          "x": 18,
+          "y": 831.203125,
+          "w": 113.765625,
+          "h": 46.796875
+        },
+        {
+          "s": ".sa-launch",
+          "visible": true,
+          "x": 285,
+          "y": 822,
+          "w": 60,
+          "h": 60
+        }
+      ]
+    },
+    {
+      "width": 360,
+      "theme": "light",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": -0.34375,
+      "tableKeyboardScroll": 40,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "name": "contents-position",
+      "boxes": [
+        {
+          "s": ".sx-contents",
+          "visible": true,
+          "x": 18,
+          "y": 831.203125,
+          "w": 113.765625,
+          "h": 46.796875
+        },
+        {
+          "s": ".sa-launch",
+          "visible": true,
+          "x": 285,
+          "y": 822,
+          "w": 60,
+          "h": 60
+        }
+      ]
+    },
+    {
+      "width": 360,
+      "theme": "dark",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": -0.34375,
+      "tableKeyboardScroll": 40,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "name": "contents-position",
+      "boxes": [
+        {
+          "s": ".sx-contents",
+          "visible": true,
+          "x": 18,
+          "y": 831.203125,
+          "w": 113.765625,
+          "h": 46.796875
+        },
+        {
+          "s": ".sa-launch",
+          "visible": true,
+          "x": 315,
+          "y": 822,
+          "w": 60,
+          "h": 60
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": 0.3333333333333428,
+      "tableKeyboardScroll": 40,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "name": "contents-position",
+      "boxes": [
+        {
+          "s": ".sx-contents",
+          "visible": true,
+          "x": 18,
+          "y": 831.203125,
+          "w": 113.765625,
+          "h": 46.796875
+        },
+        {
+          "s": ".sa-launch",
+          "visible": true,
+          "x": 315,
+          "y": 822,
+          "w": 60,
+          "h": 60
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": 0.3333333333333428,
+      "tableKeyboardScroll": 40,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": 0.04166666666665719,
+      "tableKeyboardScroll": 0,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": 0.04166666666665719,
+      "tableKeyboardScroll": 0,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": 0.1875,
+      "tableKeyboardScroll": 0,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "name": "dialog-shift-tab-boundary",
+      "boundary": {
+        "tag": "A",
+        "cls": "",
+        "hasFocus": true,
+        "inside": true
+      }
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "name": "independent-focus-dialog-table-empty",
+      "status": "PASS",
+      "focusDrift": 0.1875,
+      "tableKeyboardScroll": 0,
+      "apiMethods": [
+        "GET",
+        "GET"
+      ]
+    }
+  ],
+  "findings": []
+}

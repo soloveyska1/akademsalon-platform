@@ -1,0 +1,14 @@
+{
+  "source": "aa1a5df07996476788935c7251292806effd1232",
+  "root": "/tmp/salon-reading-20260924/candidate9",
+  "results": [
+    {
+      "name": "safety-dialog-tab-loop-and-native-navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-motion-reduce-and-no-snapshot-css",
+      "status": "PASS"
+    }
+  ]
+}

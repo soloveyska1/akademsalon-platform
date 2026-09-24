@@ -1,0 +1,35 @@
+Independent safety/search/PDF review — final candidate8
+
+Verdict: GO within reviewed scope; P0=0, P1=0, P2=0 outstanding.
+Candidate: /tmp/salon-reading-20260924/candidate8
+Writer: root only. Reviewer changed no repository files and made no production requests/mutations.
+
+Evidence: 10/10 independent real Chrome scenarios passed. All static resources were fulfilled from the exact candidate; all API paths were synthetic and no non-GET API requests were made. Pageerror lists remained empty.
+
+Verified:
+- Bounded typo/alias search, markup escaping, deduplicated result links, no query text in local/session storage, adversarial long strings.
+- Saved PDF page8/manual2.3 overridden by direct link page3 and fit mode.
+- Native share cancellation causes no clipboard/fallback; denied clipboard opens selectable canonical URL with nested-dialog focus restoration.
+- Deferred TextLayer paint races do not enable stale sharing; only latest successful page is shared.
+- Close during blocked document loading then switch document cannot expose old document/page sharing state.
+- Malformed, negative, padded, exponential, huge, fractional/duplicate/unknown and extraneous-field hashes rejected.
+- Guide headings and TOC labels remain unpolluted; shared URLs omit arbitrary query text.
+- Browser Back/Forward base↔PDF and PDF A↔B, preserving destination non-PDF hash and ordinary card-open behavior.
+- Explicit Tab loop for expanded table and manual-copy dialog; Escape returns trigger focus.
+- Immediate header menu interaction after navigation works; arrival animation obeys reduced motion/calm/motionoff and is absent on back_forward navigation. Native View Transition CSS removed.
+
+Resolved finding: candidate5 P2 — hash-driven PDF stayed open after Browser Back removed hash. Candidate8 history probes prove closure/Forward restoration and no destination URL rewriting.
+
+Limitations: native OS share UI was stubbed to verify success/cancel/failure branches; no live production traffic or order submission was used. Full visual matrix and sitewide release gates are owned by root/other independent reviewer.
+
+Reproduction (cwd active worktree):
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-reading-safety-review/probe5.mjs /tmp/salon-reading-20260924/candidate8 /tmp/salon-reading-safety-review/qa8
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-reading-safety-review/history-next.mjs /tmp/salon-reading-20260924/candidate8 /tmp/salon-reading-safety-review/history8
+SALON_NODE_DEPS=/Users/saymurrbk.ru/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules node /tmp/salon-reading-safety-review/delta8.mjs /tmp/salon-reading-20260924/candidate8 /tmp/salon-reading-safety-review/delta8
+
+Final changed-asset SHA256 binding:
+assets/css/salon-reading.css 738299ca2359647395ea1674bb94fd245357c35abaad014c1a52f5197d128030
+assets/js/salon-experience.js 6a12075d0acce860afb89495efe481e823dc338c657e8d5a44c2c37621edce61
+assets/js/salon-library.js 2a1d6ac849424b6272335d8bd6e6445d1b22f3bf4c5f0d2725bf3a0fe1d7e20e
+assets/js/salon-portfolio.js 1db103769466a8b1b88b2b3dc942008c2c69b50521d9e874613006ea322adf63
+assets/js/salon-reading.js cebca8995ad6bd37f4d5ee388d778917a35e299db99e2f42296aec188f9b8c73

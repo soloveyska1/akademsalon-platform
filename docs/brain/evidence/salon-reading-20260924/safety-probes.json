@@ -1,0 +1,32 @@
+{
+  "source": "aa1a5df07996476788935c7251292806effd1232",
+  "root": "/tmp/salon-reading-20260924/candidate9",
+  "browser": "Chrome headless",
+  "network": "all routed locally; API synthetic",
+  "results": [
+    {
+      "name": "safety-search-corpus-and-storage",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-pdf-bookmark-direct-fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-pdf-rapid-paint-shares-latest",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-pdf-close-during-load-and-switch-document",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-pdf-invalid-hash-storage",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-guide-copy-names-and-cancel",
+      "status": "PASS"
+    }
+  ]
+}

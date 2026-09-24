@@ -1,0 +1,92 @@
+{
+  "source": "aa1a5df07996476788935c7251292806effd1232",
+  "root": "/tmp/salon-reading-20260924/candidate9",
+  "browser": "Chrome headless",
+  "network": "all routed, no production requests",
+  "results": [
+    {
+      "name": "search-typos-aliases-ranking-safe",
+      "status": "PASS"
+    },
+    {
+      "name": "library-search-and-empty-art",
+      "status": "PASS"
+    },
+    {
+      "name": "focus-reading-position-and-dialog-escape",
+      "status": "PASS"
+    },
+    {
+      "name": "mobile-contents-navigate-focus",
+      "status": "PASS"
+    },
+    {
+      "name": "table-dialog-preserves-source-and-focus",
+      "status": "PASS"
+    },
+    {
+      "name": "curated-example-copy-and-manual-fallback",
+      "status": "PASS"
+    },
+    {
+      "name": "section-share-canonical-native-abort-and-roundtrip",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-direct-link-success-only-and-roundtrip",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-browser-back-and-forward",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-loading-error-retry-share-disabled",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-360-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-360-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-390-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-390-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-768-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-768-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1024-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1024-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1440-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1440-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "motion-guard-and-private-exclusion",
+      "status": "PASS"
+    }
+  ]
+}

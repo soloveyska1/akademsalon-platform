@@ -1,0 +1,14 @@
+{
+  "source": "aa1a5df07996476788935c7251292806effd1232",
+  "root": "/tmp/salon-reading-20260924/candidate8",
+  "results": [
+    {
+      "name": "safety-pdf-back-forward-valid-and-base",
+      "status": "PASS"
+    },
+    {
+      "name": "safety-pdf-normal-card-open-survives-unrelated-hash",
+      "status": "PASS"
+    }
+  ]
+}
