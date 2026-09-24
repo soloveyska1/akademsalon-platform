@@ -1,0 +1,85 @@
+CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS
+decision: PROCEED_LOCAL_SNAPSHOT
+counts: hard=0 warnings=64 info=9 blocking=0 inspected=265
+warning-policy: allow-explicit
+canonical: 5682dd77ea3251c3e444c8e3adbeb3a6d99ec665
+head: 82110f929a087c48eff2475213bd847370443146
+manifest: WS-41497b6369b048a48672e20d8ac32ddb
+WARN TERMINAL_WORKTREE_PRESENT: claude/mobile-shell:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/admin-analytics-master-parity-release:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/admin-analytics-master-parity:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/analytics-v2-dbip-attribution:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/incident-404-scanner-noise:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/incident-502-vhost-isolation:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/incident-admin-auth-recovery-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/incident-admin-auth-recovery-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/listik-review-studio:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-001-authoritative-contract-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-001-synthetic-e2e:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-analytics-truth-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-analytics-truth-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-analytics-truth-v3:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-analytics-v2-core:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-analytics-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-conversion-package-v1:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-form-engagement-truth-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-new-user-promo-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-new-user-promo-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-new-user-promo-v3:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-practice-price-trust-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-practice-price-trust-v3:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-practice-result-passport-v1:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-practice-support-continuity-v4:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-promo-value-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-prospective-readback-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-006-quote-scope-measurement-v1:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-008-keyboard-action-shelf-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-008-keyboard-action-shelf-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-008-mobile-action-reachability-v1:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-008-mobile-action-reachability-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-008-private-checkpoint-v1:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-008-september-entry:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out-009-practice-back-parity:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out001-installer-migrations-layout:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out001-installer-parent-layout:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out001-table-xinfo-links-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/out001-table-xinfo-links:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release103-production:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release157-analytics-v2-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release157-analytics-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release158-analytics-master-parity:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release159-quote-scope-measurement-v2:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release159-quote-scope-measurement:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release160-practice-price-trust:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release161-practice-continuity:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release162-practice-passport:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release163-practice-dock:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release164-practice-back-parity:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release165-keyboard-shelf:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release166-private-checkpoint:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release168-first-order-promo:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release169-promo-value:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release171-economic-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release174-out001-final:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/release174-out001-synthetic-v2:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release174-out001-synthetic-v3:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/release174-out001-synthetic:abandoned
+WARN TERMINAL_WORKTREE_PRESENT: codex/salon-comfort-20260924:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/salon-form-polish-20260924:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/salon-growth-overlay-20260920:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/salon-seo-overlay-20260911:integrated
+WARN TERMINAL_WORKTREE_PRESENT: codex/september-economic-safety:integrated
+INFO DETACHED_WORKTREE_PRESENT: /Users/saymurrbk.ru/.codex/worktrees/out-006-owner-launcher-layout-v1
+INFO DETACHED_WORKTREE_PRESENT: /Users/saymurrbk.ru/.codex/worktrees/salon-direct-orders
+INFO DETACHED_WORKTREE_PRESENT: /Users/saymurrbk.ru/.codex/worktrees/salon-funnel-20260924
+INFO DETACHED_WORKTREE_PRESENT: /Users/saymurrbk.ru/Desktop/Сайт для заказов/.claude/worktrees/intelligent-stonebraker-2bbd87
+INFO DETACHED_WORKTREE_PRESENT: /Users/saymurrbk.ru/Desktop/Сайт для заказов/.claude/worktrees/relaxed-cannon-9da84d
+INFO FOREIGN_DIRTY_DISJOINT: /Users/saymurrbk.ru/Desktop/Сайт для заказов
+INFO FOREIGN_DIRTY_DISJOINT: /Users/saymurrbk.ru/Desktop/Сайт для заказов/.claude/worktrees/fervent-noether-da89f1
+INFO HISTORY_UNRELATED: 9 refs: codex/fix-drawer-close; codex/fix-drawer-close-hover; codex/header-glass-deploy; codex/menu-readability-preview; codex/redesign-dark-theme; codex/redesign-search-overlay; codex/refine-proof-copy; codex/scope-drawer-redesign
+INFO SEMANTICS_UNKNOWN: 33 refs: claude/comfort-rework; codex/admin-analytics-master-parity; codex/fix-intent-lockout; codex/home-production-release; codex/incident-admin-auth-recovery-v1; codex/listik-review-studio; codex/out-001-contract-plan; codex/out-006-analytics-truth-v1
+snapshot: 28a60d400ade0255241ba2dd4342e479f882e42cbe00f3b1ad32c0bb81437c13
+LIMIT: no fetch or remote lease
+LIMIT: unfetched, unpushed and undeclared semantic work is unknown
+LIMIT: re-run on exact SHAs before integration
+NEXT: re-run this local snapshot immediately before integration.

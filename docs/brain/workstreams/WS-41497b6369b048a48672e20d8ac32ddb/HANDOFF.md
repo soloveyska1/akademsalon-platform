@@ -15,4 +15,5 @@
 - Risks/rollback: local resume must not hijack explicit navigation or poison state on initial render; bounded validated stored IDs and explicit resume affordance. Fail-closed deploy verifies full baseline, atomically switches current, verifies rollback and forward; no backend migration.
 - Conflict decision: integration owner inspected 64 terminal-worktree warnings, hard0 and dirty paths disjoint; allowed warnings for this unique overlay scope, evidence retained.
 - Rollback: current static pointer to immutable release220-polish-9f987a75, already exercised; no DB restore. No new unresolved UX debt; original service/SEO/brand/form layers retained.
-- Next: submit the clean verified result and integrate against freshly fetched canonical main; then update CURRENT-HANDOFF sequentially as integration owner.
+- Integration: frozen verified result `e8f9c993` is on canonical main; terminal revision `f1a8afe97f22e0a9b2796510f1520851034c7285`. Main receives this sequential integration-owner metadata update; task branch must remain at its terminal revision. Fresh integration conflict gate: hard0, unchanged64 terminal-worktree warnings consciously accepted after scope review.
+- Next: inspect the next complete daily monitor sample against actual release221 and the preserved funnel measurement contract; do not infer conversion growth from this UI release.
