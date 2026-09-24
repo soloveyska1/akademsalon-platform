@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-3c1b84f7d7314927b53b393b5cb7b526",
+  "slug": "salon-ease-20260924",
+  "status": "active",
+  "branch": "codex/salon-ease-20260924",
+  "base_sha": "42f2baa06fae28fc89940e22e43deb27392a9a67",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-ease-20260924",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-3c1b84f7d7314927b53b393b5cb7b526/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-ease-20260924",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:public-ease-v1"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
