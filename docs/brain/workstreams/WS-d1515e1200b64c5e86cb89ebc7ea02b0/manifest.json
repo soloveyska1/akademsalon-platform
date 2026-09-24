@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-d1515e1200b64c5e86cb89ebc7ea02b0",
+  "slug": "salon-reading-v2-20260924",
+  "status": "active",
+  "branch": "codex/salon-reading-v2-20260924",
+  "base_sha": "55bb28fd9561dfece859beede0969e3c735ce80c",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-reading-20260924",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-d1515e1200b64c5e86cb89ebc7ea02b0/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-reading-20260924",
+        "match": "tree"
+      }
+    ],
+    "read": [
+      {
+        "path": "scripts/salon-ease-20260924",
+        "match": "tree"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "shared-runtime:portfolio"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:reader"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:salon-reading"
+    },
+    {
+      "access": "write",
+      "key": "shared-runtime:search"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
