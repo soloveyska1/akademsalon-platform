@@ -1,0 +1,72 @@
+--- release217/assets/js/app.js
++++ candidate/assets/js/app.js
+@@ -463 +463 @@
+-  ('cta_click tg_open config_open step_view submit_attempt submit_fail first_input ' +
++  ('cta_click tg_open config_open step_view submit_attempt submit_fail first_input validation_error ' +
+@@ -491 +491 @@
+-    if (name === 'config_open' || name === 'submit_attempt' || name === 'first_input') {
++    if (name === 'config_open' || name === 'submit_attempt' || name === 'first_input' || name === 'validation_error') {
+--- release217/assets/js/salon-order.js
++++ candidate/assets/js/salon-order.js
+@@ -160,0 +161,4 @@
++// Explicit plan landing intent takes precedence over an unrelated saved draft.
++if(service?.id==='plan'&&['course','diplom','master','candidate'].includes(params.get('work'))){
++ $('service-work').value=params.get('work');serviceAnswers.work=params.get('work');
++}
+@@ -161,0 +166,29 @@
++// Existing analytics contract only. No field values, names, files or order IDs.
++// Consent acquired later starts a new observation; pre-consent input is not replayed.
++let measurementOpened=false,measurementInput=false;
++const measurementCta=()=>service?'service:'+service.code:'calculator';
++function measure(name,cta){
++ try{if(!S.consent?.allowed())return false;S.visit?.event?.(name,{cta});return true}catch(_){return false}
++}
++function measureOpen(){
++ if(!measurementOpened)measurementOpened=measure('config_open',measurementCta());
++}
++function measureValidation(){measureOpen();measure('validation_error',measurementCta())}
++function measureInput(e){
++ const field=e.target;
++ // The enhanced select's search box is not a submitted field.
++ if(measurementInput||!field.id||!field.matches('input,select,textarea')||['consent','website'].includes(field.id))return;
++ const trusted=e.isTrusted||(e.type==='salon:select-commit'&&field.tagName==='SELECT'&&e.detail?.inputEvent?.isTrusted===true);
++ if(!trusted)return;
++ // Let the form apply the selected service before reading its finite CTA code.
++ queueMicrotask(()=>{if(measurementInput)return;measureOpen();if(measurementOpened)measurementInput=measure('first_input',measurementCta())});
++}
++form.addEventListener('input',measureInput,true);
++form.addEventListener('change',measureInput,true);
++form.addEventListener('salon:select-commit',measureInput);
++document.addEventListener('salon:consent',e=>{
++ if(e.detail?.analytics===true)measureOpen();
++ else{measurementOpened=false;measurementInput=false}
++});
++measureOpen();
++
+@@ -227,4 +260,4 @@
+-  for(const id of ['topic','contact']){$(id).removeAttribute('aria-invalid');if(!$(id).value.trim()){message(id==='topic'?'Напишите тему или коротко опишите задачу.':'Укажите контакт для расчёта.',false);$(id).setAttribute('aria-invalid','true');$(id).focus();return}}
+-  if(S.valid?.contact&&!S.valid.contact($('contact').value.trim())){message('Укажите корректный @ник Telegram, email, телефон или ссылку VK.',false);$('contact').setAttribute('aria-invalid','true');$('contact').focus();return}
+-  if($('deadline').value&&$('deadline').value<isoDate(today)){message('Дата уже прошла. Выберите сегодняшнюю или будущую дату.',false);$('deadline').focus();return}
+-  if(!form.reportValidity())return;
++  for(const id of ['topic','contact']){$(id).removeAttribute('aria-invalid');if(!$(id).value.trim()){measureValidation();message(id==='topic'?'Напишите тему или коротко опишите задачу.':'Укажите контакт для расчёта.',false);$(id).setAttribute('aria-invalid','true');$(id).focus();return}}
++  if(S.valid?.contact&&!S.valid.contact($('contact').value.trim())){measureValidation();message('Укажите корректный @ник Telegram, email, телефон или ссылку VK.',false);$('contact').setAttribute('aria-invalid','true');$('contact').focus();return}
++  if($('deadline').value&&$('deadline').value<isoDate(today)){measureValidation();message('Дата уже прошла. Выберите сегодняшнюю или будущую дату.',false);$('deadline').focus();return}
++  if(!form.reportValidity()){measureValidation();return;}
+@@ -233 +266 @@
+- if(S.visit?.event)S.visit.event('submit_attempt',{cta:service?'service:'+service.code:'calculator'});busy=true;assistantState('sending');freeze(true);$('send-order').disabled=true;$('send-order').textContent='Отправляем…';$('form-message').hidden=true;
++ measureOpen();measure('submit_attempt',measurementCta());busy=true;assistantState('sending');freeze(true);$('send-order').disabled=true;$('send-order').textContent='Отправляем…';$('form-message').hidden=true;
+@@ -237 +270,2 @@
+- const kind=S.orderContract.classify(attempt),error=attempt.r?.error;assistantState(['definitive_rejection','local_blocked'].includes(kind)?'rejected':'uncertain');
++ const kind=S.orderContract.classify(attempt),error=attempt.r?.error;
++ measure('submit_fail',kind==='conflict'?'request_conflict':['definitive_rejection','local_blocked'].includes(kind)?'server_rejected':'network_fallback');assistantState(['definitive_rejection','local_blocked'].includes(kind)?'rejected':'uncertain');
+--- release217/assets/js/salon-select.js
++++ candidate/assets/js/salon-select.js
+@@ -17 +17 @@
+- function render(){const q=fold(search.value);options=[...select.options].filter(o=>!o.hidden&&!o.disabled&&fold(o.textContent).includes(q));list.replaceChildren();options.forEach((o,i)=>{const row=document.createElement('div');row.id=id+'-option-'+i;row.setAttribute('role','option');row.className='salon-select-option';row.textContent=o.textContent;row.addEventListener('pointerdown',e=>e.preventDefault());row.onclick=()=>choose(i);list.append(row)});active=options.findIndex(o=>o.value===select.value);if(active<0&&options.length)active=0;status.textContent=options.length?'Вариантов: '+options.length:'Ничего не найдено. Попробуй короче.';paintActive();position()}
++ function render(){const q=fold(search.value);options=[...select.options].filter(o=>!o.hidden&&!o.disabled&&fold(o.textContent).includes(q));list.replaceChildren();options.forEach((o,i)=>{const row=document.createElement('div');row.id=id+'-option-'+i;row.setAttribute('role','option');row.className='salon-select-option';row.textContent=o.textContent;row.addEventListener('pointerdown',e=>e.preventDefault());row.onclick=e=>choose(i,e);list.append(row)});active=options.findIndex(o=>o.value===select.value);if(active<0&&options.length)active=0;status.textContent=options.length?'Вариантов: '+options.length:'Ничего не найдено. Попробуй короче.';paintActive();position()}
+@@ -20 +20 @@
+- function choose(i){if(select.disabled||!isOpen||!options[i])return;const value=options[i].value;if([...select.options].find(o=>o.value===value)?.disabled)return;select.value=value;trigger.removeAttribute('aria-invalid');select.dispatchEvent(new Event('input',{bubbles:true}));select.dispatchEvent(new Event('change',{bubbles:true}));close();sync()}
++ function choose(i,inputEvent){if(select.disabled||!isOpen||!options[i])return;const value=options[i].value;if([...select.options].find(o=>o.value===value)?.disabled)return;const changed=select.value!==value;select.value=value;trigger.removeAttribute('aria-invalid');select.dispatchEvent(new Event('input',{bubbles:true}));select.dispatchEvent(new Event('change',{bubbles:true}));close();sync();if(changed&&inputEvent?.isTrusted)select.dispatchEvent(new CustomEvent('salon:select-commit',{bubbles:true,detail:{inputEvent}}))}
+@@ -22 +22 @@
+- search.oninput=render;search.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();return}if(e.key==='Tab'){close(false);return}if(['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();active=options.length?(active+(e.key==='ArrowDown'?1:-1)+options.length)%options.length:-1;paintActive()}if(e.key==='Enter'){e.preventDefault();choose(active)}};
++ search.oninput=render;search.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();return}if(e.key==='Tab'){close(false);return}if(['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();active=options.length?(active+(e.key==='ArrowDown'?1:-1)+options.length)%options.length:-1;paintActive()}if(e.key==='Enter'){e.preventDefault();choose(active,e)}};

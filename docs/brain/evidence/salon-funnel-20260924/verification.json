@@ -1,0 +1,60 @@
+{
+  "root": "/tmp/salon-funnel-20260924/candidate",
+  "browser": "Chrome through Playwright",
+  "data": "synthetic only; all HTTP intercepted",
+  "screenshots": "/Users/saymurrbk.ru/.codex/worktrees/salon-funnel-20260924/output/playwright/salon-funnel-20260924",
+  "results": [
+    {
+      "name": "fresh and saved guide intent, selection and submitted service payload",
+      "status": "PASS"
+    },
+    {
+      "name": "open once, no programmatic prefill engagement, trusted input once, private validation",
+      "status": "PASS"
+    },
+    {
+      "name": "custom select search is not input; committed pointer and keyboard changes are input",
+      "status": "PASS"
+    },
+    {
+      "name": "no consent, owner and QA produce no new analytics-v2 events",
+      "status": "PASS"
+    },
+    {
+      "name": "late consent and revoke/regrant never replay earlier input",
+      "status": "PASS"
+    },
+    {
+      "name": "400 rejection, 409 conflict, 503 uncertainty, malformed 2xx and network failure classify truthfully",
+      "status": "PASS"
+    },
+    {
+      "name": "double submit, confirmed success and upload retry retain single order/file identities",
+      "status": "PASS"
+    },
+    {
+      "name": "work calculator route remains work with keyboard Enter submission",
+      "status": "PASS"
+    },
+    {
+      "name": "browser back-forward preserves explicit plan choice",
+      "status": "PASS"
+    },
+    {
+      "name": "light/dark at 360,390,768,1024,1440: no overflow, visible errors and CTA",
+      "status": "PASS"
+    }
+  ],
+  "checkout_head_at_test": "23ea3a44d56a7526674011fc5ad54dcc293d52f1",
+  "tested_state": "uncommitted implementation over declared workstream HEAD; exact built hashes below",
+  "candidate_hashes": {
+    "assets/js/app.js": "601098a65a20cb9514428c861c4e7d5f723481b0813de5559f7a3bbd4e883721",
+    "assets/js/salon-order.js": "8a4dec27f0054029b42f918284aeb25cf15cc24200e4bf51c26e848182d4e5a0",
+    "assets/js/salon-select.js": "49c3322c048f29c20a643742cad0d422549a0b51bd2cfc59307600937e5e39b4",
+    "configurator.html": "1d6186bc9bafede0d78ce385bc00f0a54c60ef6e3ffacbf04f128f9efa1eff99",
+    "guide-kursovaya-za-nedelyu.html": "b396e3b6ae193c00124229e5ba656f6fdbd104f70c42f2c1364ac7aa5941f7ab",
+    "sitemap.xml": "a0619a967158ba51e86f8ef9c9e90f8693c03590c3806af208fb7fffdb8295c7"
+  },
+  "expected": "all named scenarios pass, no production requests",
+  "actual": "all scenarios passed with route-all isolation"
+}

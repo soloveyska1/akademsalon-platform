@@ -1,0 +1,80 @@
+{
+  "contract_version": "2.5.0",
+  "sha256": "d69d30244635f3ab6fe8c4cd0d895354c315f78bb954d883853bbf68a04966dd",
+  "server_module_sha256": "82b9eae452fa74abb7e89fec6207e1c94fc525212984d5b78ee17b5272994317",
+  "existing_events": {
+    "config_open": {
+      "label": "Открытие конфигуратора",
+      "group": "progress"
+    },
+    "first_input": {
+      "label": "Первое изменение поля заявки",
+      "group": "progress"
+    },
+    "validation_error": {
+      "label": "Ошибка проверки формы",
+      "group": "error"
+    },
+    "submit_attempt": {
+      "label": "Попытка отправить заявку",
+      "group": "progress"
+    },
+    "submit_fail": {
+      "label": "Неудачная отправка заявки",
+      "group": "error"
+    },
+    "submit_success": {
+      "label": "Заявка успешно отправлена",
+      "group": "conversion"
+    }
+  },
+  "funnel": [
+    {
+      "id": "view",
+      "label": "Просмотрели страницу",
+      "events": [
+        "page_view"
+      ]
+    },
+    {
+      "id": "interest",
+      "label": "Проявили интерес",
+      "events": [
+        "cta_click",
+        "home_desk_continue",
+        "case_route_open",
+        "tg_open"
+      ]
+    },
+    {
+      "id": "config",
+      "label": "Открыли конфигуратор",
+      "events": [
+        "config_open",
+        "cta_configurator"
+      ]
+    },
+    {
+      "id": "input",
+      "label": "Изменили поле заявки",
+      "events": [
+        "first_input"
+      ]
+    },
+    {
+      "id": "attempt",
+      "label": "Попытались отправить",
+      "events": [
+        "submit_attempt"
+      ]
+    },
+    {
+      "id": "success",
+      "label": "Отправили заявку",
+      "events": [
+        "submit_success"
+      ]
+    }
+  ],
+  "privacy": "Only existing finite CTA values; no fields/values, query, filenames, order IDs or tokens."
+}

@@ -1,0 +1,26 @@
+{
+  "root": "/tmp/salon-funnel-20260924/baseline",
+  "product": "course",
+  "events": [
+    {
+      "event": "page_view"
+    },
+    {
+      "event": "cta_configurator"
+    },
+    {
+      "event": "cta_click",
+      "cta": "configurator"
+    },
+    {
+      "event": "page_view"
+    }
+  ],
+  "errors": [],
+  "api": [
+    "/api/visit",
+    "/api/auth/session",
+    "/api/analytics/grant",
+    "/api/analytics/events"
+  ]
+}

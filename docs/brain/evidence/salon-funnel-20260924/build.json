@@ -1,0 +1,1 @@
+{"status": "PASS", "changed": ["assets/js/app.js", "assets/js/salon-order.js", "assets/js/salon-select.js", "configurator.html", "guide-kursovaya-za-nedelyu.html", "sitemap.xml"], "baseline_files": 515, "candidate_files": 515}

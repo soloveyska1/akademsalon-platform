@@ -1,0 +1,38 @@
+{
+  "root": "/tmp/salon-funnel-20260924/candidate",
+  "product": "service:plan",
+  "events": [
+    {
+      "event": "page_view"
+    },
+    {
+      "event": "cta_configurator"
+    },
+    {
+      "event": "cta_click",
+      "cta": "configurator:pl"
+    },
+    {
+      "event": "page_view"
+    },
+    {
+      "event": "config_open",
+      "cta": "service:pl"
+    },
+    {
+      "event": "first_input",
+      "cta": "service:pl"
+    },
+    {
+      "event": "validation_error",
+      "cta": "service:pl"
+    }
+  ],
+  "errors": [],
+  "api": [
+    "/api/visit",
+    "/api/auth/session",
+    "/api/analytics/grant",
+    "/api/analytics/events"
+  ]
+}

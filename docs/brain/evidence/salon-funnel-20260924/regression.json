@@ -1,0 +1,32 @@
+{
+  "node_tests": {
+    "pass": 652,
+    "fail": 0,
+    "skip": 9,
+    "total": 661
+  },
+  "brain_tests": {
+    "pass": 39,
+    "fail": 0
+  },
+  "brain_validation": "VALID records=125 links=263 manifests=71",
+  "js_syntax": "PASS for changed JS",
+  "public_baseline_files": 515,
+  "changed_files": 6,
+  "deleted_files": 0,
+  "visual_review": [
+    "360 light full page",
+    "1440 dark full page"
+  ],
+  "browser_viewports": [
+    360,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ]
+}
