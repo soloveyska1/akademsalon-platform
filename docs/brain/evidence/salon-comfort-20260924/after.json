@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "implementation": "08c202c1d5a2b3ee3ae0e04d14c364d4b51ce61c",
+  "release": "release219-comfort-08c202c1",
+  "runtime_equal_to_reviewed_candidate": true,
+  "targeted_browser_suites": 9,
+  "inherited_browser_suites": 10,
+  "live_browser_scenarios": 4,
+  "node_pass": 652,
+  "node_skip": 9,
+  "brain_pass": 39,
+  "reviews_go": 2,
+  "P0": 0,
+  "P1": 0,
+  "real_orders_sent": 0,
+  "real_analytics_sent": 0,
+  "rollback_verified": true,
+  "backend_changed": false
+}
