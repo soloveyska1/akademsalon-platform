@@ -1,0 +1,21 @@
+Independent UI/accessibility review: GO. P0=0, P1=0, P2=0 open findings.
+Candidate: /tmp/salon-return-20260924/candidate. Exact runtime hashes in hashes.json.
+
+Verified in Chrome with all HTTP routed locally and external hosts blocked; no production calls or API writes.
+- Article: real wheel + section reading, persisted section, explicit resume with Enter, heading focus and ~130 px header clearance. Recent menu, clear-history focus and Escape return. Visual review at 360/390 px in both themes; new action sizes >=44 px, no overflow or JS errors.
+- PDF: page5 persisted and reopened after reload, manual zoom persistence observed. Confirmed a real delayed native close-event race: immediate keyboard reopening could cancel the new load. Root fixed close cleanup with dialog.open guard; exact close -> immediate Enter on first-page action now passes.
+- Catalogue: actual physical mouse click on visible sticky menu preserves science facet and viewport y638 through navigation and Back. Menu close leaves y638; real wheel -200 updates viewport and stored state to y438.
+- Desktop menu: settled 1440 px light/dark, opacity1, no overflow, visible solid keyboard focus. Scoped menu palette now matches shell: #5736bd light / #c6b2ff dark. Computed contrast links 7.80:1 / 8.86:1, notes 5.80:1 / 8.24:1.
+
+Withdrawn false alarm: locator.click on an already visible sticky menu performed Playwright auto-scroll before pointerdown (638 -> 199). This was a test artifact, not a catalogue runtime defect. Reproduced with event logging; physical mouse passed both original exact f31c818b asset and temporary freeze version. Root reverted unnecessary freeze code; final candidate catalogue is exact f31c818b.
+
+Reproducible evidence:
+- probe-physical-before.mjs / probe-physical-before-results.json: exact original catalogue served as route override; four PASS checks.
+- catalogue-before-freeze.js: exact f31c818b3f1e2408abb9269414c6172afc4d9c328f3c765f87233479abf84ab8, matches final candidate.
+- probe-close-wheel.mjs / probe-close-wheel-results.json: five PASS checks including normal scroll after menu close.
+- probe-events.mjs: diagnostic for withdrawn locator artifact; not a product gate.
+- article-{360,390}-{light,dark}.png and menu-{360,390}-{light,dark}.png: mobile visuals.
+- menu-final-light.png and menu-final-dark.png: settled final desktop visuals.
+- pdf-key-reset.png: before-fix PDF race screenshot; regression now PASS.
+
+Review changed no repository or production files. Temporary browsers were closed.

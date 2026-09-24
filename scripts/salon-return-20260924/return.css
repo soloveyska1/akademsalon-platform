@@ -1,0 +1,24 @@
+/* Uses the approved page palette; the menu remains a compact disclosure. */
+.sr-recent{margin:16px 0 0;border-top:1px solid var(--line,#dfdbe8);color:var(--ink,#292537)}
+.sr-recent[hidden],.sr-reading-return[hidden],.sr-pdf-start[hidden]{display:none!important}
+.sr-recent summary{cursor:pointer;min-height:48px;padding:13px 0;font-size:14px;box-sizing:border-box}
+.sr-recent-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 22px}
+.sr-recent-links a{display:flex;align-items:center;min-height:44px;padding:9px 0;color:var(--accent,#5136b5);font-size:13px;line-height:1.45;overflow-wrap:anywhere;text-decoration:none;box-sizing:border-box}
+.sr-recent-links a:hover{text-decoration:underline;text-underline-offset:4px}
+.sr-return-note{font-size:12px!important;line-height:1.5!important;color:var(--muted,#6b6579);margin:8px 0}
+.sr-return-note:empty{display:none}
+.sr-return-button,.sr-pdf-start{font:inherit;font-size:13px;line-height:1.4;min-height:44px;min-width:44px;padding:10px 13px;border:1px solid var(--line,#dfdbe8);border-radius:8px;background:transparent;color:var(--accent,#5136b5);cursor:pointer}
+.sr-return-button:hover,.sr-pdf-start:hover{background:var(--soft,#eeeafa)}
+.sr-return-button:disabled{opacity:.6;cursor:default}
+.sr-recent .sr-return-button{margin-bottom:8px}
+.sr-reading-return{display:flex;justify-content:space-between;align-items:center;gap:20px;background:var(--soft,#eeeafa);border-left:3px solid var(--accent,#5136b5);padding:17px 20px;margin:6px 0 24px;border-radius:0 10px 10px 0}
+.sr-reading-return>div:first-child{min-width:0}
+.sr-reading-return strong{display:block;font-weight:500;font-size:14px;line-height:1.5;margin-top:5px;overflow-wrap:anywhere}
+.sr-return-eyebrow{font-size:10px;letter-spacing:.07em;color:var(--muted,#6b6579)}
+.sr-return-actions{display:flex;align-items:center;gap:8px;flex:none}
+.sr-return-actions .sr-return-button:first-child{background:var(--sheet,#fff)}
+.sr-pdf-start{display:block;margin-top:8px}
+.sr-return-button:focus-visible,.sr-recent summary:focus-visible,.sr-recent a:focus-visible,.sr-pdf-start:focus-visible{outline:2px solid var(--accent,#5136b5);outline-offset:3px}
+@media(max-width:760px){.sr-reading-return{align-items:flex-start;flex-direction:column;gap:12px;padding:15px}.sr-return-actions{flex-wrap:wrap}.sr-recent-links{grid-template-columns:1fr}}
+/* The shared menu owns its own palette, independent of the page below it. */
+.sh-dialog .sr-recent{--ink:var(--sh-ink,#252033);--muted:var(--sh-muted,#696271);--accent:var(--sh-accent,#5736bd);--line:var(--sh-line,#ded8e7);--soft:var(--sh-soft,#eae3ff);--sheet:var(--sh-sheet,#fffefa)}

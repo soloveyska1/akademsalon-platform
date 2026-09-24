@@ -1,0 +1,14 @@
+# Independent final delta safety review
+
+Verdict: GO. Open P0=0, P1=0, P2=0 in reviewed public return-context scope.
+
+Reviewed latest close guard and public label spacing delta. The guard only ignores an old queued close event when the same dialog is already open again. The new load has already incremented epoch/searchEpoch, cancelled prior render/load work, disconnected thumbnails, cleared prior page nodes and set new opener/current document. A genuine final close still runs teardown and returns focus to the current opener. No persistence, payload, network or analytics changes were introduced by the guard.
+
+Reproduced the original P1 in real Chrome by removing only the guard in the isolated routed JS response: native close plus immediate reopen in one event-loop turn left the new dialog open, loading indefinitely, and removed portfolio-reading. Exact candidate passed the same sequence, page navigation, final teardown/focus, and the real keyboard Enter reopen scenario. Browser closed; all requests fulfilled locally or aborted; no production traffic or API mutations.
+
+Evidence: delta-probe.mjs and delta-results.json in this directory. Previous broader independent storage/history/PDF checks are in probe.mjs and results.json; that earlier result records its own previous hashes and is not mislabeled as the final artifact.
+
+Final SHA256:
+- assets/js/salon-return.js: 70a2aa64f2919b93d9e5b325c29fdb793db02c2b452902a1de806b4c32939aac
+- assets/js/salon-portfolio.js: decc30fccfa30c89ce32c506bc1824dab9d8fab8d82542fa194d5cff3555dadd
+- assets/js/salon-catalogue.js: f31c818b3f1e2408abb9269414c6172afc4d9c328f3c765f87233479abf84ab8

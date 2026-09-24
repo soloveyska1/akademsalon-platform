@@ -1,0 +1,257 @@
+{
+  "root": "/tmp/salon-return-20260924/candidate",
+  "override": "catalogue-before-freeze.js f31c818b3f1e2408abb9269414c6172afc4d9c328f3c765f87233479abf84ab8",
+  "checks": [
+    {
+      "name": "menu close then real wheel updates catalogue state",
+      "status": "PASS",
+      "afterClose": {
+        "y": 638,
+        "visible": [
+          {
+            "id": "master",
+            "top": -75.84375,
+            "bottom": 146.96875
+          },
+          {
+            "id": "rinc",
+            "top": 156.96875,
+            "bottom": 354.265625
+          },
+          {
+            "id": "kandidat",
+            "top": 364.265625,
+            "bottom": 587.078125
+          }
+        ],
+        "saved": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "rinc",
+          "top": 156.96875,
+          "y": 638,
+          "at": 1790264820843
+        },
+        "session": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "rinc",
+          "top": 156.96875,
+          "y": 638,
+          "at": 1790264820843
+        }
+      },
+      "afterWheel": {
+        "y": 438,
+        "visible": [
+          {
+            "id": "master",
+            "top": 124.15625,
+            "bottom": 346.96875
+          },
+          {
+            "id": "rinc",
+            "top": 356.96875,
+            "bottom": 554.265625
+          },
+          {
+            "id": "kandidat",
+            "top": 564.265625,
+            "bottom": 787.078125
+          }
+        ],
+        "saved": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "master",
+          "top": 124.15625,
+          "y": 438,
+          "at": 1790264821730
+        },
+        "session": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "master",
+          "top": 124.15625,
+          "y": 438,
+          "at": 1790264821730
+        }
+      }
+    },
+    {
+      "name": "catalogue science card return through menu",
+      "status": "PASS",
+      "before": {
+        "y": 638,
+        "visible": [
+          {
+            "id": "master",
+            "top": -75.84375,
+            "bottom": 146.96875
+          },
+          {
+            "id": "rinc",
+            "top": 156.96875,
+            "bottom": 354.265625
+          },
+          {
+            "id": "kandidat",
+            "top": 364.265625,
+            "bottom": 587.078125
+          }
+        ],
+        "saved": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "kandidat",
+          "top": 364.265625,
+          "y": 638,
+          "at": 1790264820640
+        },
+        "session": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "kandidat",
+          "top": 364.265625,
+          "y": 638,
+          "at": 1790264820640
+        }
+      },
+      "menu": {
+        "y": 638,
+        "visible": [
+          {
+            "id": "master",
+            "top": -75.84375,
+            "bottom": 146.96875
+          },
+          {
+            "id": "rinc",
+            "top": 156.96875,
+            "bottom": 354.265625
+          },
+          {
+            "id": "kandidat",
+            "top": 364.265625,
+            "bottom": 587.078125
+          }
+        ],
+        "saved": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "kandidat",
+          "top": 364.265625,
+          "y": 638,
+          "at": 1790264820640
+        },
+        "session": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "kandidat",
+          "top": 364.265625,
+          "y": 638,
+          "at": 1790264820640
+        }
+      },
+      "left": {
+        "v": 1,
+        "filter": "science",
+        "speed": "standard",
+        "product": "rinc",
+        "top": 156.96875,
+        "y": 638,
+        "at": 1790264820843
+      },
+      "back": {
+        "y": 638,
+        "visible": [
+          {
+            "id": "master",
+            "top": -75.84375,
+            "bottom": 146.96875
+          },
+          {
+            "id": "rinc",
+            "top": 156.96875,
+            "bottom": 354.265625
+          },
+          {
+            "id": "kandidat",
+            "top": 364.265625,
+            "bottom": 587.078125
+          }
+        ],
+        "saved": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "rinc",
+          "top": 156.96875,
+          "y": 638,
+          "at": 1790264820843
+        },
+        "session": {
+          "v": 1,
+          "filter": "science",
+          "speed": "standard",
+          "product": "rinc",
+          "top": 156.96875,
+          "y": 638,
+          "at": 1790264820843
+        }
+      },
+      "errors": [],
+      "nonGet": []
+    },
+    {
+      "name": "PDF immediate close and keyboard start",
+      "status": "PASS",
+      "errors": [],
+      "nonGet": []
+    },
+    {
+      "name": "settled menu light",
+      "status": "PASS",
+      "view": {
+        "opacity": "1",
+        "overflow": 0,
+        "focus": "A",
+        "outline": "solid",
+        "accent": "rgb(87, 54, 189)",
+        "shellAccent": "#5736bd",
+        "muted": "rgb(105, 98, 113)"
+      },
+      "errors": [],
+      "nonGet": []
+    },
+    {
+      "name": "settled menu dark",
+      "status": "PASS",
+      "view": {
+        "opacity": "1",
+        "overflow": 0,
+        "focus": "A",
+        "outline": "solid",
+        "accent": "rgb(198, 178, 255)",
+        "shellAccent": "#c6b2ff",
+        "muted": "rgb(189, 178, 206)"
+      },
+      "errors": [],
+      "nonGet": []
+    }
+  ],
+  "hashes": {
+    "assets/js/salon-return.js": "70a2aa64f2919b93d9e5b325c29fdb793db02c2b452902a1de806b4c32939aac",
+    "assets/css/salon-return.css": "8ebb25231f99d2195059b66f8fe09530f82e694c7d02f6bff653711cd6d25056",
+    "assets/js/salon-portfolio.js": "decc30fccfa30c89ce32c506bc1824dab9d8fab8d82542fa194d5cff3555dadd",
+    "assets/js/salon-catalogue.js": "74883bf14817ee93d01d0a9bcd1d8ee73845b3c5ba53f610afcc875cada6840f"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "error": null,
+  "source": "f44026fb6f1bd01adcb79dfb4ef2700aa19413d4",
+  "network": "all requests fulfilled locally or aborted; before variant changed only in route response",
+  "browser": "Chrome headless",
+  "hashes": {
+    "assets/js/salon-return.js": "70a2aa64f2919b93d9e5b325c29fdb793db02c2b452902a1de806b4c32939aac",
+    "assets/js/salon-portfolio.js": "decc30fccfa30c89ce32c506bc1824dab9d8fab8d82542fa194d5cff3555dadd",
+    "assets/js/salon-catalogue.js": "f31c818b3f1e2408abb9269414c6172afc4d9c328f3c765f87233479abf84ab8"
+  },
+  "checks": [
+    "REPRODUCED old close event tears down newly opened PDF when guard removed in isolated route",
+    "PASS guard preserves new load/page navigation and final close restores opener focus",
+    "PASS exact immediate keyboard Enter start-from-first after close",
+    "PASS candidate unchanged, no JS errors, no API mutations"
+  ]
+}

@@ -1,0 +1,3976 @@
+TAP version 13
+# Subtest: account home is a compact command centre with a dedicated full register
+ok 1 - account home is a compact command centre with a dedicated full register
+  ---
+  duration_ms: 0.847792
+  type: 'test'
+  ...
+# Subtest: account live refresh preserves work in progress and reading position
+ok 2 - account live refresh preserves work in progress and reading position
+  ---
+  duration_ms: 0.236041
+  type: 'test'
+  ...
+# Subtest: admin restores all live queues and keeps the order drawer stateful
+ok 3 - admin restores all live queues and keeps the order drawer stateful
+  ---
+  duration_ms: 0.538833
+  type: 'test'
+  ...
+# Subtest: admin mobile editions use list-detail clients and order cards
+ok 4 - admin mobile editions use list-detail clients and order cards
+  ---
+  duration_ms: 0.439042
+  type: 'test'
+  ...
+# Subtest: account production page uses the final concept shell
+ok 5 - account production page uses the final concept shell
+  ---
+  duration_ms: 1.109584
+  type: 'test'
+  ...
+# Subtest: разделы кабинета не показывают один и тот же экран
+ok 6 - разделы кабинета не показывают один и тот же экран
+  ---
+  duration_ms: 0.158042
+  type: 'test'
+  ...
+# Subtest: дело разложено по разделам, а не одной лентой
+ok 7 - дело разложено по разделам, а не одной лентой
+  ---
+  duration_ms: 0.222166
+  type: 'test'
+  ...
+# Subtest: падение шаблона раздела не оставляет пустой экран
+ok 8 - падение шаблона раздела не оставляет пустой экран
+  ---
+  duration_ms: 0.35575
+  type: 'test'
+  ...
+# Subtest: служебный текст кабинета не мельче 11px на десктопе
+ok 9 - служебный текст кабинета не мельче 11px на десктопе
+  ---
+  duration_ms: 7.803958
+  type: 'test'
+  ...
+# Subtest: account authentication and live order mechanics remain bound
+ok 10 - account authentication and live order mechanics remain bound
+  ---
+  duration_ms: 3.8165
+  type: 'test'
+  ...
+# Subtest: Telegram is a primary login independent from email and unfinished OAuth providers
+ok 11 - Telegram is a primary login independent from email and unfinished OAuth providers
+  ---
+  duration_ms: 0.848333
+  type: 'test'
+  ...
+# Subtest: critical production actions survive background refreshes and expired sessions
+ok 12 - critical production actions survive background refreshes and expired sessions
+  ---
+  duration_ms: 0.89875
+  type: 'test'
+  ...
+# Subtest: account mobile edition is bounded and motion-safe
+ok 13 - account mobile edition is bounded and motion-safe
+  ---
+  duration_ms: 0.35425
+  type: 'test'
+  ...
+# Subtest: admin production page uses the final concept workspace
+ok 14 - admin production page uses the final concept workspace
+  ---
+  duration_ms: 0.954583
+  type: 'test'
+  ...
+# Subtest: admin API actions and operational hooks remain present
+ok 15 - admin API actions and operational hooks remain present
+  ---
+  duration_ms: 0.440958
+  type: 'test'
+  ...
+# Subtest: handoff keeps staged billing and every delivery path reachable
+ok 16 - handoff keeps staged billing and every delivery path reachable
+  ---
+  duration_ms: 0.3125
+  type: 'test'
+  ...
+# Subtest: admin workspace supports light, dark and compact mobile layouts
+ok 17 - admin workspace supports light, dark and compact mobile layouts
+  ---
+  duration_ms: 0.083083
+  type: 'test'
+  ...
+# Subtest: full case history stays collapsed until the client asks for it
+ok 18 - full case history stays collapsed until the client asks for it
+  ---
+  duration_ms: 1.108792
+  type: 'test'
+  ...
+# Subtest: case help is a compact utility row with both contact paths intact
+ok 19 - case help is a compact utility row with both contact paths intact
+  ---
+  duration_ms: 0.505
+  type: 'test'
+  ...
+# Subtest: desktop case uses one internal workspace scroll
+ok 20 - desktop case uses one internal workspace scroll
+  ---
+  duration_ms: 0.841167
+  type: 'test'
+  ...
+# Subtest: mobile case returns to one natural document flow
+ok 21 - mobile case returns to one natural document flow
+  ---
+  duration_ms: 0.674542
+  type: 'test'
+  ...
+# Subtest: mobile case keeps its active section visible and compresses the dossier title
+ok 22 - mobile case keeps its active section visible and compresses the dossier title
+  ---
+  duration_ms: 0.288542
+  type: 'test'
+  ...
+# Subtest: mobile horizontal routes reveal hidden destinations without a permanent overlay
+ok 23 - mobile horizontal routes reveal hidden destinations without a permanent overlay
+  ---
+  duration_ms: 0.249917
+  type: 'test'
+  ...
+# Subtest: terms use a desktop dossier spread and collapse to one mobile column
+ok 24 - terms use a desktop dossier spread and collapse to one mobile column
+  ---
+  duration_ms: 0.315667
+  type: 'test'
+  ...
+# Subtest: documents form a compact card index with one toolbar
+ok 25 - documents form a compact card index with one toolbar
+  ---
+  duration_ms: 0.151417
+  type: 'test'
+  ...
+# Subtest: desktop conversation pins the composer and owns a single message scroll
+ok 26 - desktop conversation pins the composer and owns a single message scroll
+  ---
+  duration_ms: 0.468417
+  type: 'test'
+  ...
+# Subtest: payment separates the current action from the payment journal
+ok 27 - payment separates the current action from the payment journal
+  ---
+  duration_ms: 0.413667
+  type: 'test'
+  ...
+# Subtest: payment keeps no more than three equal method buttons and demotes help to a link
+ok 28 - payment keeps no more than three equal method buttons and demotes help to a link
+  ---
+  duration_ms: 0.142958
+  type: 'test'
+  ...
+# Subtest: settled payment state says clearly that no payment is due
+ok 29 - settled payment state says clearly that no payment is due
+  ---
+  duration_ms: 0.2025
+  type: 'test'
+  ...
+# Subtest: case comfort assets are cache-busted
+ok 30 - case comfort assets are cache-busted
+  ---
+  duration_ms: 0.0345
+  type: 'test'
+  ...
+# Subtest: browser history restores both the case URL and its orders workspace
+ok 31 - browser history restores both the case URL and its orders workspace
+  ---
+  duration_ms: 0.2075
+  type: 'test'
+  ...
+# Subtest: case tabs implement roving keyboard navigation
+ok 32 - case tabs implement roving keyboard navigation
+  ---
+  duration_ms: 0.10725
+  type: 'test'
+  ...
+# Subtest: case return label reflects the route it was opened from
+ok 33 - case return label reflects the route it was opened from
+  ---
+  duration_ms: 0.132125
+  type: 'test'
+  ...
+# Subtest: one pure resolver distinguishes explicit payment truth from unknown context
+ok 34 - one pure resolver distinguishes explicit payment truth from unknown context
+  ---
+  duration_ms: 1.053375
+  type: 'test'
+  ...
+# Subtest: literal action matrix never invents payment or masks a proven due
+ok 35 - literal action matrix never invents payment or masks a proven due
+  ---
+  duration_ms: 22.940666
+  type: 'test'
+  ...
+# Subtest: priority card uses one summary snapshot and keeps a stable focus target
+ok 36 - priority card uses one summary snapshot and keeps a stable focus target
+  ---
+  duration_ms: 1.417333
+  type: 'test'
+  ...
+# Subtest: claimed, transfer and pause bands never expose a second payment action
+ok 37 - claimed, transfer and pause bands never expose a second payment action
+  ---
+  duration_ms: 1.014833
+  type: 'test'
+  ...
+# Subtest: payment workspace follows checking, due, paused and unknown phases literally
+ok 38 - payment workspace follows checking, due, paused and unknown phases literally
+  ---
+  duration_ms: 1.246459
+  type: 'test'
+  ...
+# Subtest: payment handlers recheck the current case context before any API mutation
+ok 39 - payment handlers recheck the current case context before any API mutation
+  ---
+  duration_ms: 3.180417
+  type: 'test'
+  ...
+# Subtest: overview and opening destination agree with the resolved action owner
+ok 40 - overview and opening destination agree with the resolved action owner
+  ---
+  duration_ms: 0.709375
+  type: 'test'
+  ...
+# Subtest: shared consumers call the context resolver instead of reclassifying money
+ok 41 - shared consumers call the context resolver instead of reclassifying money
+  ---
+  duration_ms: 0.272458
+  type: 'test'
+  ...
+# Subtest: list signature covers every context-only field and refreshes home
+ok 42 - list signature covers every context-only field and refreshes home
+  ---
+  duration_ms: 3.560291
+  type: 'test'
+  ...
+# Subtest: case return restores the exact priority trigger after a live-safe rerender
+ok 43 - case return restores the exact priority trigger after a live-safe rerender
+  ---
+  duration_ms: 0.79625
+  type: 'test'
+  ...
+# Subtest: one-time claim keeps the exact returned case and malformed identity fails open
+ok 44 - one-time claim keeps the exact returned case and malformed identity fails open
+  ---
+  duration_ms: 1.161375
+  type: 'test'
+  ...
+# Subtest: dark priority CTA reaches WCAG AA and changed assets are cache-busted
+ok 45 - dark priority CTA reaches WCAG AA and changed assets are cache-busted
+  ---
+  duration_ms: 1.2005
+  type: 'test'
+  ...
+# Subtest: opening Club no longer expands the plan catalogue automatically
+ok 46 - opening Club no longer expands the plan catalogue automatically
+  ---
+  duration_ms: 0.69875
+  type: 'test'
+  ...
+# Subtest: the explicit plus deep link still opens the catalogue
+ok 47 - the explicit plus deep link still opens the catalogue
+  ---
+  duration_ms: 0.574542
+  type: 'test'
+  ...
+# Subtest: active, inactive and pending membership states have distinct shells
+ok 48 - active, inactive and pending membership states have distinct shells
+  ---
+  duration_ms: 0.443625
+  type: 'test'
+  ...
+# Subtest: plan management is one shelf with ready plans and a custom blank
+ok 49 - plan management is one shelf with ready plans and a custom blank
+  ---
+  duration_ms: 0.672708
+  type: 'test'
+  ...
+# Subtest: one period controls both ready plans and custom total
+ok 50 - one period controls both ready plans and custom total
+  ---
+  duration_ms: 0.29475
+  type: 'test'
+  ...
+# Subtest: custom builder is an inline blank instead of a second deposit calculator
+ok 51 - custom builder is an inline blank instead of a second deposit calculator
+  ---
+  duration_ms: 0.115166
+  type: 'test'
+  ...
+# Subtest: custom blank has a stable direct preview route
+ok 52 - custom blank has a stable direct preview route
+  ---
+  duration_ms: 0.500666
+  type: 'test'
+  ...
+# Subtest: club uses a horizontal snap shelf on phones and keeps the blank touchable
+ok 53 - club uses a horizontal snap shelf on phones and keeps the blank touchable
+  ---
+  duration_ms: 0.305291
+  type: 'test'
+  ...
+# Subtest: club desk assets are cache-busted
+ok 54 - club desk assets are cache-busted
+  ---
+  duration_ms: 0.250333
+  type: 'test'
+  ...
+# Subtest: session curator is a compact planner rather than a generic account panel
+ok 55 - session curator is a compact planner rather than a generic account panel
+  ---
+  duration_ms: 1.132625
+  type: 'test'
+  ...
+# Subtest: planner keeps milestone actions and hides the add form behind one disclosure
+ok 56 - planner keeps milestone actions and hides the add form behind one disclosure
+  ---
+  duration_ms: 0.279458
+  type: 'test'
+  ...
+# Subtest: opened curator appears before the plan catalogue and scrolls into view
+ok 57 - opened curator appears before the plan catalogue and scrolls into view
+  ---
+  duration_ms: 0.395875
+  type: 'test'
+  ...
+# Subtest: curator has a stable direct preview route
+ok 58 - curator has a stable direct preview route
+  ---
+  duration_ms: 1.545791
+  type: 'test'
+  ...
+# Subtest: planner has branded desktop composition and one-column mobile controls
+ok 59 - planner has branded desktop composition and one-column mobile controls
+  ---
+  duration_ms: 0.659125
+  type: 'test'
+  ...
+# Subtest: curator planner assets are cache-busted
+ok 60 - curator planner assets are cache-busted
+  ---
+  duration_ms: 0.058083
+  type: 'test'
+  ...
+# Subtest: filled cabinet fixture is explicitly local, synthetic, and noindex
+ok 61 - filled cabinet fixture is explicitly local, synthetic, and noindex
+  ---
+  duration_ms: 0.529375
+  type: 'test'
+  ...
+# Subtest: demo cabinet intercepts every mutation and keeps navigation interactive
+ok 62 - demo cabinet intercepts every mutation and keeps navigation interactive
+  ---
+  duration_ms: 0.109959
+  type: 'test'
+  ...
+# Subtest: filled demo exposes both VK unlinked and linked account states
+ok 63 - filled demo exposes both VK unlinked and linked account states
+  ---
+  duration_ms: 0.054542
+  type: 'test'
+  ...
+# Subtest: demo bootstrap loads before cabinet and has a permanent visible marker
+ok 64 - demo bootstrap loads before cabinet and has a permanent visible marker
+  ---
+  duration_ms: 0.121125
+  type: 'test'
+  ...
+# Subtest: demo marker stays in document flow on phones instead of covering controls
+ok 65 - demo marker stays in document flow on phones instead of covering controls
+  ---
+  duration_ms: 3.989709
+  type: 'test'
+  ...
+# Subtest: signed-out entry fixture is local and never starts real authentication
+ok 66 - signed-out entry fixture is local and never starts real authentication
+  ---
+  duration_ms: 0.18175
+  type: 'test'
+  ...
+# Subtest: document library starts with a compact factual summary
+ok 67 - document library starts with a compact factual summary
+  ---
+  duration_ms: 5.107417
+  type: 'test'
+  ...
+# Subtest: files are grouped into a two-column case folder library
+ok 68 - files are grouped into a two-column case folder library
+  ---
+  duration_ms: 0.442792
+  type: 'test'
+  ...
+# Subtest: payment confirmations live in the library side journal
+ok 69 - payment confirmations live in the library side journal
+  ---
+  duration_ms: 0.263709
+  type: 'test'
+  ...
+# Subtest: document library collapses cleanly on tablets and keeps a compact phone summary
+ok 70 - document library collapses cleanly on tablets and keeps a compact phone summary
+  ---
+  duration_ms: 0.343
+  type: 'test'
+  ...
+# Subtest: document library assets are cache-busted
+ok 71 - document library assets are cache-busted
+  ---
+  duration_ms: 0.055459
+  type: 'test'
+  ...
+# Subtest: entry presents Telegram as the only immediate authentication action
+ok 72 - entry presents Telegram as the only immediate authentication action
+  ---
+  duration_ms: 0.53325
+  type: 'test'
+  ...
+# Subtest: all enabled login methods are visible while single-case access stays compact
+ok 73 - all enabled login methods are visible while single-case access stays compact
+  ---
+  duration_ms: 0.440959
+  type: 'test'
+  ...
+# Subtest: entry copy explains the client route instead of listing technical providers
+ok 74 - entry copy explains the client route instead of listing technical providers
+  ---
+  duration_ms: 0.070417
+  type: 'test'
+  ...
+# Subtest: pending Telegram state communicates its step and keeps an escape route
+ok 75 - pending Telegram state communicates its step and keeps an escape route
+  ---
+  duration_ms: 0.3265
+  type: 'test'
+  ...
+# Subtest: phone entry puts the action before the editorial story and preserves touch targets
+ok 76 - phone entry puts the action before the editorial story and preserves touch targets
+  ---
+  duration_ms: 0.522542
+  type: 'test'
+  ...
+# Subtest: loading and connection failure remain branded, named and motion-safe
+ok 77 - loading and connection failure remain branded, named and motion-safe
+  ---
+  duration_ms: 0.357292
+  type: 'test'
+  ...
+# Subtest: entry assets are cache-busted
+ok 78 - entry assets are cache-busted
+  ---
+  duration_ms: 0.100875
+  type: 'test'
+  ...
+# Subtest: financial screens use one live three-destination route
+ok 79 - financial screens use one live three-destination route
+  ---
+  duration_ms: 1.4175
+  type: 'test'
+  ...
+# Subtest: payments pair the current bill with a compact confirmation journal
+ok 80 - payments pair the current bill with a compact confirmation journal
+  ---
+  duration_ms: 0.702709
+  type: 'test'
+  ...
+# Subtest: deposit keeps the calculator primary and bonuses in a compact side account
+ok 81 - deposit keeps the calculator primary and bonuses in a compact side account
+  ---
+  duration_ms: 0.490459
+  type: 'test'
+  ...
+# Subtest: financial hall keeps one compact route and one content column on phones
+ok 82 - financial hall keeps one compact route and one content column on phones
+  ---
+  duration_ms: 0.596458
+  type: 'test'
+  ...
+# Subtest: filled client demo includes payment confirmations for the journal
+ok 83 - filled client demo includes payment confirmations for the journal
+  ---
+  duration_ms: 0.075708
+  type: 'test'
+  ...
+# Subtest: financial hall assets are cache-busted
+ok 84 - financial hall assets are cache-busted
+  ---
+  duration_ms: 0.0455
+  type: 'test'
+  ...
+# Subtest: account overview separates work, client decisions, and new events
+ok 85 - account overview separates work, client decisions, and new events
+  ---
+  duration_ms: 0.680792
+  type: 'test'
+  ...
+# Subtest: one priority sheet leads the next client action
+ok 86 - one priority sheet leads the next client action
+  ---
+  duration_ms: 0.233417
+  type: 'test'
+  ...
+# Subtest: cabinet uses one stroke-icon navigation alphabet and compact home register
+ok 87 - cabinet uses one stroke-icon navigation alphabet and compact home register
+  ---
+  duration_ms: 3.026875
+  type: 'test'
+  ...
+# Subtest: hall dark theme is deep, branded, and cache-busted
+ok 88 - hall dark theme is deep, branded, and cache-busted
+  ---
+  duration_ms: 1.940125
+  type: 'test'
+  ...
+# Subtest: overview has one priority area paired with a short agenda
+ok 89 - overview has one priority area paired with a short agenda
+  ---
+  duration_ms: 0.831042
+  type: 'test'
+  ...
+# Subtest: overview has an honest calm state when no client action is pending
+ok 90 - overview has an honest calm state when no client action is pending
+  ---
+  duration_ms: 0.387375
+  type: 'test'
+  ...
+# Subtest: quiet and paused cases never invent a priority action from a deadline
+ok 91 - quiet and paused cases never invent a priority action from a deadline
+  ---
+  duration_ms: 16.756041
+  type: 'test'
+  ...
+# Subtest: action class is strict and deadline only breaks ties inside one class
+ok 92 - action class is strict and deadline only breaks ties inside one class
+  ---
+  duration_ms: 5.587834
+  type: 'test'
+  ...
+# Subtest: zero-like and negative counters are not new files or messages
+ok 93 - zero-like and negative counters are not new files or messages
+  ---
+  duration_ms: 1.425167
+  type: 'test'
+  ...
+# Subtest: overview ends with exactly three useful destinations instead of a card stack
+ok 94 - overview ends with exactly three useful destinations instead of a card stack
+  ---
+  duration_ms: 0.714292
+  type: 'test'
+  ...
+# Subtest: dark luminous materials keep saved drafts on the same surface as live cases
+ok 95 - dark luminous materials keep saved drafts on the same surface as live cases
+  ---
+  duration_ms: 0.45325
+  type: 'test'
+  ...
+# Subtest: overview collapses cleanly without a narrow desktop side column
+ok 96 - overview collapses cleanly without a narrow desktop side column
+  ---
+  duration_ms: 0.433083
+  type: 'test'
+  ...
+# Subtest: overview assets are cache-busted
+ok 97 - overview assets are cache-busted
+  ---
+  duration_ms: 0.634334
+  type: 'test'
+  ...
+# Subtest: case register groups work by client priority
+ok 98 - case register groups work by client priority
+  ---
+  duration_ms: 2.123625
+  type: 'test'
+  ...
+# Subtest: full register uses compact horizontal rows while mobile stays stacked
+ok 99 - full register uses compact horizontal rows while mobile stays stacked
+  ---
+  duration_ms: 0.826667
+  type: 'test'
+  ...
+# Subtest: message index is a conversation list sorted by unread state
+ok 100 - message index is a conversation list sorted by unread state
+  ---
+  duration_ms: 1.942167
+  type: 'test'
+  ...
+# Subtest: conversation rows expose case, state, preview, date and unread count
+ok 101 - conversation rows expose case, state, preview, date and unread count
+  ---
+  duration_ms: 0.683958
+  type: 'test'
+  ...
+# Subtest: register and messages assets are cache-busted
+ok 102 - register and messages assets are cache-busted
+  ---
+  duration_ms: 0.153875
+  type: 'test'
+  ...
+# Subtest: help starts with two clear contact contexts
+ok 103 - help starts with two clear contact contexts
+  ---
+  duration_ms: 1.471542
+  type: 'test'
+  ...
+# Subtest: help groups the six durable references into a compact guide index
+ok 104 - help groups the six durable references into a compact guide index
+  ---
+  duration_ms: 0.492333
+  type: 'test'
+  ...
+# Subtest: settings exposes profile, theme, motion and notification status
+ok 105 - settings exposes profile, theme, motion and notification status
+  ---
+  duration_ms: 0.33925
+  type: 'test'
+  ...
+# Subtest: settings distinguishes connected methods from actions and keeps OAuth linking functional
+ok 106 - settings distinguishes connected methods from actions and keeps OAuth linking functional
+  ---
+  duration_ms: 0.2265
+  type: 'test'
+  ...
+# Subtest: support and settings collapse without losing controls on phones
+ok 107 - support and settings collapse without losing controls on phones
+  ---
+  duration_ms: 0.517666
+  type: 'test'
+  ...
+# Subtest: support and settings assets are cache-busted
+ok 108 - support and settings assets are cache-busted
+  ---
+  duration_ms: 0.045792
+  type: 'test'
+  ...
+# Subtest: OAuth navigation accepts only the exact provider authorization surfaces
+ok 109 - OAuth navigation accepts only the exact provider authorization surfaces
+  ---
+  duration_ms: 1.335291
+  type: 'test'
+  ...
+# Subtest: settings uses explicit connected, pending, success and conflict states
+ok 110 - settings uses explicit connected, pending, success and conflict states
+  ---
+  duration_ms: 0.6645
+  type: 'test'
+  ...
+# Subtest: link-start is single-action, visibly busy and validates the returned URL
+ok 111 - link-start is single-action, visibly busy and validates the returned URL
+  ---
+  duration_ms: 0.69225
+  type: 'test'
+  ...
+# Subtest: linked callback is verified against fresh account data before success is shown
+ok 112 - linked callback is verified against fresh account data before success is shown
+  ---
+  duration_ms: 0.478041
+  type: 'test'
+  ...
+# Subtest: access rows remain compact and usable on dark mobile screens
+ok 113 - access rows remain compact and usable on dark mobile screens
+  ---
+  duration_ms: 1.019917
+  type: 'test'
+  ...
+# Subtest: cabinet exposes one ordered route with compact section identity
+ok 114 - cabinet exposes one ordered route with compact section identity
+  ---
+  duration_ms: 3.068792
+  type: 'test'
+  ...
+# Subtest: the messages badge counts messages, not files from another section
+ok 115 - the messages badge counts messages, not files from another section
+  ---
+  duration_ms: 0.123625
+  type: 'test'
+  ...
+# Subtest: desktop navigation has a strong current state without changing routes
+ok 116 - desktop navigation has a strong current state without changing routes
+  ---
+  duration_ms: 0.246916
+  type: 'test'
+  ...
+# Subtest: new matter is primary only where creation belongs to the route
+ok 117 - new matter is primary only where creation belongs to the route
+  ---
+  duration_ms: 2.204875
+  type: 'test'
+  ...
+# Subtest: mobile navigation keeps three core routes stable and groups the rest
+ok 118 - mobile navigation keeps three core routes stable and groups the rest
+  ---
+  duration_ms: 1.396458
+  type: 'test'
+  ...
+# Subtest: mobile route does not jump horizontally when the current section changes
+ok 119 - mobile route does not jump horizontally when the current section changes
+  ---
+  duration_ms: 0.282
+  type: 'test'
+  ...
+# Subtest: wayfinding assets are cache-busted
+ok 120 - wayfinding assets are cache-busted
+  ---
+  duration_ms: 0.115042
+  type: 'test'
+  ...
+# Subtest: admin analytics is Russian, source-backed and explicit about coverage
+ok 121 - admin analytics is Russian, source-backed and explicit about coverage
+  ---
+  duration_ms: 2.469458
+  type: 'test'
+  ...
+# Subtest: analytics UI has no raw identity or third-party IP disclosure
+ok 122 - analytics UI has no raw identity or third-party IP disclosure
+  ---
+  duration_ms: 0.296584
+  type: 'test'
+  ...
+# Subtest: approximate geography visibly attributes the local DB-IP dataset
+ok 123 - approximate geography visibly attributes the local DB-IP dataset
+  ---
+  duration_ms: 0.168167
+  type: 'test'
+  ...
+# Subtest: private panel uses a read-only same-origin client without public analytics shell
+ok 124 - private panel uses a read-only same-origin client without public analytics shell
+  ---
+  duration_ms: 0.297583
+  type: 'test'
+  ...
+# Subtest: dashboard is responsive, keyboard-visible and does not encode meaning by colour alone
+ok 125 - dashboard is responsive, keyboard-visible and does not encode meaning by colour alone
+  ---
+  duration_ms: 0.132125
+  type: 'test'
+  ...
+# Subtest: analytics projects the canonical master shell without loading its operational controller
+ok 126 - analytics projects the canonical master shell without loading its operational controller
+  ---
+  duration_ms: 0.239917
+  type: 'test'
+  ...
+# Subtest: analytics navigation mirrors every master group and deep-links back to real cabinet sections
+ok 127 - analytics navigation mirrors every master group and deep-links back to real cabinet sections
+  ---
+  duration_ms: 0.144875
+  type: 'test'
+  ...
+# Subtest: analytics shell remains strict-CSP compatible and uses one fresh asset wave
+ok 128 - analytics shell remains strict-CSP compatible and uses one fresh asset wave
+  ---
+  duration_ms: 0.230916
+  type: 'test'
+  ...
+# Subtest: pagination and details are bound to one immutable applied query
+ok 129 - pagination and details are bound to one immutable applied query
+  ---
+  duration_ms: 0.329208
+  type: 'test'
+  ...
+# Subtest: every analytics controller hook exists in the static shell and remains read-only
+ok 130 - every analytics controller hook exists in the static shell and remains read-only
+  ---
+  duration_ms: 0.886958
+  type: 'test'
+  ...
+# Subtest: authorization loss purges every read path and exposes one focused login action
+ok 131 - authorization loss purges every read path and exposes one focused login action
+  ---
+  duration_ms: 0.393292
+  type: 'test'
+  ...
+# Subtest: cabinet deep links override a stale saved tab before navigation
+ok 132 - cabinet deep links override a stale saved tab before navigation
+  ---
+  duration_ms: 0.068291
+  type: 'test'
+  ...
+# Subtest: master search controls and shortcut hand focus to the real cabinet search
+ok 133 - master search controls and shortcut hand focus to the real cabinet search
+  ---
+  duration_ms: 0.322959
+  type: 'test'
+  ...
+# Subtest: hidden pagination stays hidden and the authenticated master identity is projected
+ok 134 - hidden pagination stays hidden and the authenticated master identity is projected
+  ---
+  duration_ms: 0.062916
+  type: 'test'
+  ...
+# Subtest: the changed master controller has a fresh immutable URL in the cabinet
+ok 135 - the changed master controller has a fresh immutable URL in the cabinet
+  ---
+  duration_ms: 0.05025
+  type: 'test'
+  ...
+# Subtest: owner workbench stays inside the protected master cabinet
+ok 136 - owner workbench stays inside the protected master cabinet
+  ---
+  duration_ms: 3.280666
+  type: 'test'
+  ...
+# Subtest: workbench exposes the actionable signals and a priority queue
+ok 137 - workbench exposes the actionable signals and a priority queue
+  ---
+  duration_ms: 0.575583
+  type: 'test'
+  ...
+# Subtest: workbench distinguishes fresh, loading, calm and stale data
+ok 138 - workbench distinguishes fresh, loading, calm and stale data
+  ---
+  duration_ms: 0.976792
+  type: 'test'
+  ...
+# Subtest: workbench is responsive, keyboard-visible and motion-safe
+ok 139 - workbench is responsive, keyboard-visible and motion-safe
+  ---
+  duration_ms: 0.325542
+  type: 'test'
+  ...
+# Subtest: admin uses the canonical light workspace palette without replacing the sign
+ok 140 - admin uses the canonical light workspace palette without replacing the sign
+  ---
+  duration_ms: 1.274625
+  type: 'test'
+  ...
+# Subtest: admin operational typography and navigation keep the reference readability floor
+ok 141 - admin operational typography and navigation keep the reference readability floor
+  ---
+  duration_ms: 0.530125
+  type: 'test'
+  ...
+# Subtest: mobile admin controls remain 44px and order rows scroll as a table
+ok 142 - mobile admin controls remain 44px and order rows scroll as a table
+  ---
+  duration_ms: 0.629583
+  type: 'test'
+  ...
+# Subtest: settings, content and cover shells keep production mechanics in reference geometry
+ok 143 - settings, content and cover shells keep production mechanics in reference geometry
+  ---
+  duration_ms: 0.784334
+  type: 'test'
+  ...
+# Subtest: workbench and live order register use the canonical structural hierarchy
+ok 144 - workbench and live order register use the canonical structural hierarchy
+  ---
+  duration_ms: 2.971959
+  type: 'test'
+  ...
+# Subtest: client workspace keeps the canonical directory and profile around live actions
+ok 145 - client workspace keeps the canonical directory and profile around live actions
+  ---
+  duration_ms: 1.369208
+  type: 'test'
+  ...
+# Subtest: settings are live summary plus canonical panels without invented reference data
+ok 146 - settings are live summary plus canonical panels without invented reference data
+  ---
+  duration_ms: 4.640916
+  type: 'test'
+  ...
+# Subtest: arbitrary UTM-like text is neither stored nor attached to an order page
+ok 147 - arbitrary UTM-like text is neither stored nor attached to an order page
+  ---
+  duration_ms: 2.29675
+  type: 'test'
+  ...
+# Subtest: published campaign enums remain measurable and legacy values are recanonicalized
+ok 148 - published campaign enums remain measurable and legacy values are recanonicalized
+  ---
+  duration_ms: 0.793084
+  type: 'test'
+  ...
+# Subtest: revocation purges attribution and blocks same-document recapture
+ok 149 - revocation purges attribution and blocks same-document recapture
+  ---
+  duration_ms: 0.30425
+  type: 'test'
+  ...
+# Subtest: strict attribution precedes analytics v2 on every measured public page
+ok 150 - strict attribution precedes analytics v2 on every measured public page
+  ---
+  duration_ms: 43.918333
+  type: 'test'
+  ...
+# Subtest: v2 boundary disables legacy visit hooks after loading
+ok 151 - v2 boundary disables legacy visit hooks after loading
+  ---
+  duration_ms: 0.85225
+  type: 'test'
+  ...
+# Subtest: consented page creates one idempotent page view with cookieless delivery
+ok 152 - consented page creates one idempotent page view with cookieless delivery
+  ---
+  duration_ms: 9.831417
+  type: 'test'
+  ...
+# Subtest: without consent no analytics event is sent
+ok 153 - without consent no analytics event is sent
+  ---
+  duration_ms: 0.464084
+  type: 'test'
+  ...
+# Subtest: a pre-confirmed owner device and session QA never start collection
+ok 154 - a pre-confirmed owner device and session QA never start collection
+  ---
+  duration_ms: 2.700458
+  type: 'test'
+  ...
+# Subtest: owner retention preview is GET-only and leaves seeded analytics identity untouched
+ok 155 - owner retention preview is GET-only and leaves seeded analytics identity untouched
+  ---
+  duration_ms: 1.692833
+  type: 'test'
+  ...
+# Subtest: excluded bootstrap drains an older pending deletion before revoking current identity
+ok 156 - excluded bootstrap drains an older pending deletion before revoking current identity
+  ---
+  duration_ms: 4.049166
+  type: 'test'
+  ...
+# Subtest: late authenticated owner confirmation revokes the anonymous identity and stays silent
+ok 157 - late authenticated owner confirmation revokes the anonymous identity and stays silent
+  ---
+  duration_ms: 1.623042
+  type: 'test'
+  ...
+# Subtest: native owner marker from another tab revokes and stops vendor analytics
+ok 158 - native owner marker from another tab revokes and stops vendor analytics
+  ---
+  duration_ms: 1.892083
+  type: 'test'
+  ...
+# Subtest: arbitrary UTM text never becomes a stored campaign dimension
+ok 159 - arbitrary UTM text never becomes a stored campaign dimension
+  ---
+  duration_ms: 1.432542
+  type: 'test'
+  ...
+# Subtest: revocation sends only deletion proof, clears queue and rotates identity
+ok 160 - revocation sends only deletion proof, clears queue and rotates identity
+  ---
+  duration_ms: 2.202125
+  type: 'test'
+  ...
+# Subtest: 21 page navigations reuse one session grant and preserve client order
+ok 161 - 21 page navigations reuse one session grant and preserve client order
+  ---
+  duration_ms: 18.273875
+  type: 'test'
+  ...
+# Subtest: expired consent still revokes by the durable visitor and deletion-secret pair
+ok 162 - expired consent still revokes by the durable visitor and deletion-secret pair
+  ---
+  duration_ms: 0.463833
+  type: 'test'
+  ...
+# Subtest: revocation aborts an in-flight grant and late response cannot restore or send
+ok 163 - revocation aborts an in-flight grant and late response cannot restore or send
+  ---
+  duration_ms: 5.177167
+  type: 'test'
+  ...
+# Subtest: two identities revoked during one in-flight request are both sent in order
+ok 164 - two identities revoked during one in-flight request are both sent in order
+  ---
+  duration_ms: 0.758958
+  type: 'test'
+  ...
+# Subtest: failed pending-revoke storage keeps durable proof and still sends it directly
+ok 165 - failed pending-revoke storage keeps durable proof and still sends it directly
+  ---
+  duration_ms: 0.481292
+  type: 'test'
+  ...
+# Subtest: grant budget exhaustion clears cached token and the queued event gets a fresh grant
+ok 166 - grant budget exhaustion clears cached token and the queued event gets a fresh grant
+  ---
+  duration_ms: 0.502833
+  type: 'test'
+  ...
+# Subtest: v2 contract is one explicit privacy-safe source of truth
+ok 167 - v2 contract is one explicit privacy-safe source of truth
+  ---
+  duration_ms: 1.9905
+  type: 'test'
+  ...
+# Subtest: every event already emitted by app.js exists in v2 contract
+ok 168 - every event already emitted by app.js exists in v2 contract
+  ---
+  duration_ms: 0.381208
+  type: 'test'
+  ...
+# Subtest: client and backend pin the exact contract fingerprint and safe routes
+ok 169 - client and backend pin the exact contract fingerprint and safe routes
+  ---
+  duration_ms: 1.005625
+  type: 'test'
+  ...
+# Subtest: all public app pages load v2 after the shared application runtime
+ok 170 - all public app pages load v2 after the shared application runtime
+  ---
+  duration_ms: 35.695292
+  type: 'test'
+  ...
+# Subtest: addCurrent обязательно вызывает validateCurrent и не сохраняет невалидную позицию
+ok 171 - addCurrent обязательно вызывает validateCurrent и не сохраняет невалидную позицию
+  ---
+  duration_ms: 3.469958
+  type: 'test'
+  ...
+# Subtest: одна текущая позиция сразу даёт ориентир в смете без скрытого сохранения
+ok 172 - одна текущая позиция сразу даёт ориентир в смете без скрытого сохранения
+  ---
+  duration_ms: 2.240083
+  type: 'test'
+  ...
+# Subtest: materializeCurrent сохраняет единственную позицию и bonus intent в одном payload
+ok 173 - materializeCurrent сохраняет единственную позицию и bonus intent в одном payload
+  ---
+  duration_ms: 1.713542
+  type: 'test'
+  ...
+# Subtest: three practice scopes keep their exact result contract while generic vip remains A2
+ok 174 - three practice scopes keep their exact result contract while generic vip remains A2
+  ---
+  duration_ms: 2.008334
+  type: 'test'
+  ...
+# Subtest: psychology VIP materializes one exact 91k A2 package with scope and three payment stages
+ok 175 - psychology VIP materializes one exact 91k A2 package with scope and three payment stages
+  ---
+  duration_ms: 1.213875
+  type: 'test'
+  ...
+# Subtest: psychology VIP keeps the existing best-of discount and 25 percent combined-benefit floor
+ok 176 - psychology VIP keeps the existing best-of discount and 25 percent combined-benefit floor
+  ---
+  duration_ms: 0.727291
+  type: 'test'
+  ...
+# Subtest: редактирование current с тем же sourceId обновляет строку без дубля
+ok 177 - редактирование current с тем же sourceId обновляет строку без дубля
+  ---
+  duration_ms: 1.147917
+  type: 'test'
+  ...
+# Subtest: валидация перед отправкой блокирует старую незаполненную допуслугу
+ok 178 - валидация перед отправкой блокирует старую незаполненную допуслугу
+  ---
+  duration_ms: 1.279667
+  type: 'test'
+  ...
+# Subtest: одна и та же услуга различается по parentId и сохраняет обе связи в payload
+ok 179 - одна и та же услуга различается по parentId и сохраняет обе связи в payload
+  ---
+  duration_ms: 2.052625
+  type: 'test'
+  ...
+# Subtest: при нескольких работах выбор parent создаёт отдельную услугу для каждой работы
+ok 180 - при нескольких работах выбор parent создаёт отдельную услугу для каждой работы
+  ---
+  duration_ms: 0.903916
+  type: 'test'
+  ...
+# Subtest: самостоятельная услуга добавляется без фиктивной основной работы
+ok 181 - самостоятельная услуга добавляется без фиктивной основной работы
+  ---
+  duration_ms: 0.500708
+  type: 'test'
+  ...
+# Subtest: plan priceFor и optional answers одинаково работают при добавлении и редактировании standalone
+ok 182 - plan priceFor и optional answers одинаково работают при добавлении и редактировании standalone
+  ---
+  duration_ms: 0.349542
+  type: 'test'
+  ...
+# Subtest: benefit badge считает только реально совместимые выгоды, explicit zero не заменяется максимумом
+ok 183 - benefit badge считает только реально совместимые выгоды, explicit zero не заменяется максимумом
+  ---
+  duration_ms: 0.293541
+  type: 'test'
+  ...
+# Subtest: ПЕРВЫЙЛИСТ выигрывает best-of, а бонусы не пробивают общий потолок 25%
+ok 184 - ПЕРВЫЙЛИСТ выигрывает best-of, а бонусы не пробивают общий потолок 25%
+  ---
+  duration_ms: 0.232625
+  type: 'test'
+  ...
+# Subtest: storage round-trip сохраняет состав, ответы и parentId без сетевых вызовов
+ok 185 - storage round-trip сохраняет состав, ответы и parentId без сетевых вызовов
+  ---
+  duration_ms: 0.289542
+  type: 'test'
+  ...
+# Subtest: комплексный submit строится только из SalonCart, без текущего незаписанного черновика
+ok 186 - комплексный submit строится только из SalonCart, без текущего незаписанного черновика
+  ---
+  duration_ms: 0.391875
+  type: 'test'
+  ...
+# Subtest: корзина, собранная до редизайна (прошлая версия), при чтении отбрасывается
+ok 187 - корзина, собранная до редизайна (прошлая версия), при чтении отбрасывается
+  ---
+  duration_ms: 1.061583
+  type: 'test'
+  ...
+# Subtest: просроченный черновик корзины отбрасывается и стирается из хранилища
+ok 188 - просроченный черновик корзины отбрасывается и стирается из хранилища
+  ---
+  duration_ms: 4.097208
+  type: 'test'
+  ...
+# Subtest: свежая корзина текущей версии по-прежнему восстанавливается
+ok 189 - свежая корзина текущей версии по-прежнему восстанавливается
+  ---
+  duration_ms: 22.469625
+  type: 'test'
+  ...
+# Subtest: смета не прячет тему и сворачивает необязательные способы выгоды
+ok 190 - смета не прячет тему и сворачивает необязательные способы выгоды
+  ---
+  duration_ms: 0.148542
+  type: 'test'
+  ...
+# Subtest: approved catalog shell is the only rendered catalog composition
+ok 191 - approved catalog shell is the only rendered catalog composition
+  ---
+  duration_ms: 1.745
+  type: 'test'
+  ...
+# Subtest: every approved service page keeps its physical URL and production integrations
+ok 192 - every approved service page keeps its physical URL and production integrations
+  ---
+  duration_ms: 14.971917
+  type: 'test'
+  ...
+# Subtest: service hub links only to real physical service pages
+ok 193 - service hub links only to real physical service pages
+  ---
+  duration_ms: 0.903083
+  type: 'test'
+  ...
+# Subtest: catalog behavior preserves global search ownership, routing and legacy-widget isolation
+ok 194 - catalog behavior preserves global search ownership, routing and legacy-widget isolation
+  ---
+  duration_ms: 2.243666
+  type: 'test'
+  ...
+# Subtest: приглушение недоступных сочетаний совпадает с матрицей прайса
+ok 195 - приглушение недоступных сочетаний совпадает с матрицей прайса
+  ---
+  duration_ms: 18.075958
+  type: 'test'
+  ...
+# Subtest: flagship page explains the category, result, price and legal boundary
+ok 196 - flagship page explains the category, result, price and legal boundary
+  ---
+  duration_ms: 2.431625
+  type: 'test'
+  ...
+# Subtest: Question Zero stays an honest local diagnostic and hands off without URL text
+ok 197 - Question Zero stays an honest local diagnostic and hands off without URL text
+  ---
+  duration_ms: 4.812292
+  type: 'test'
+  ...
+# Subtest: Commission Zero is a real configurator service with exact work-based prices
+ok 198 - Commission Zero is a real configurator service with exact work-based prices
+  ---
+  duration_ms: 5.916958
+  type: 'test'
+  ...
+# Subtest: flagship is discoverable as the final gate of the research case
+ok 199 - flagship is discoverable as the final gate of the research case
+  ---
+  duration_ms: 3.120667
+  type: 'test'
+  ...
+# Subtest: public documents define Commission Zero as A1 and preserve the non-official boundary
+ok 200 - public documents define Commission Zero as A1 and preserve the non-official boundary
+  ---
+  duration_ms: 0.851292
+  type: 'test'
+  ...
+# Subtest: minimum public work price is 2,500 rubles in the canonical calculator
+ok 201 - minimum public work price is 2,500 rubles in the canonical calculator
+  ---
+  duration_ms: 2.48675
+  type: 'test'
+  ...
+# Subtest: Commission Zero mobile treatment is explicit and never hidden at narrow widths
+ok 202 - Commission Zero mobile treatment is explicit and never hidden at narrow widths
+  ---
+  duration_ms: 0.900417
+  type: 'test'
+  ...
+# Subtest: catalog starts with one short promise and exposes all four situations on a phone
+ok 203 - catalog starts with one short promise and exposes all four situations on a phone
+  ---
+  duration_ms: 13.860709
+  type: 'test'
+  ...
+# Subtest: service detail keeps proof and pricing while secondary price factors are on demand
+ok 204 - service detail keeps proof and pricing while secondary price factors are on demand
+  ---
+  duration_ms: 0.172833
+  type: 'test'
+  ...
+# Subtest: configurator exposes a live quote and keeps only three real actions
+ok 205 - configurator exposes a live quote and keeps only three real actions
+  ---
+  duration_ms: 1.526708
+  type: 'test'
+  ...
+# Subtest: desktop wizard does not apply the sidebar offset twice
+ok 206 - desktop wizard does not apply the sidebar offset twice
+  ---
+  duration_ms: 3.840542
+  type: 'test'
+  ...
+# Subtest: configurator keeps tablet controls usable and reuses the primary above the software keyboard
+ok 207 - configurator keeps tablet controls usable and reuses the primary above the software keyboard
+  ---
+  duration_ms: 1.238792
+  type: 'test'
+  ...
+# Subtest: compact copy preserves trust-critical facts and actions
+ok 208 - compact copy preserves trust-critical facts and actions
+  ---
+  duration_ms: 0.437708
+  type: 'test'
+  ...
+# Subtest: context links preserve safe route codes and skip only resolved decisions
+ok 209 - context links preserve safe route codes and skip only resolved decisions
+  ---
+  duration_ms: 1.08
+  type: 'test'
+  ...
+# Subtest: approved wizard facade exposes the live quote and first cart action
+ok 210 - approved wizard facade exposes the live quote and first cart action
+  ---
+  duration_ms: 0.529708
+  type: 'test'
+  ...
+# Subtest: canonical work subtypes stay accepted and the first screen includes a clear catch-all option
+ok 211 - canonical work subtypes stay accepted and the first screen includes a clear catch-all option
+  ---
+  duration_ms: 0.659709
+  type: 'test'
+  ...
+# Subtest: draft and comments routes start with a file review instead of a guessed full-edit price
+ok 212 - draft and comments routes start with a file review instead of a guessed full-edit price
+  ---
+  duration_ms: 0.597791
+  type: 'test'
+  ...
+# Subtest: topic-only routes cannot bypass prerequisites for file-dependent results
+ok 213 - topic-only routes cannot bypass prerequisites for file-dependent results
+  ---
+  duration_ms: 0.385584
+  type: 'test'
+  ...
+# Subtest: candidate diagnostic and specialist services use canonical offers and prices
+ok 214 - candidate diagnostic and specialist services use canonical offers and prices
+  ---
+  duration_ms: 0.21225
+  type: 'test'
+  ...
+# Subtest: privacy-safe route telemetry is versioned and never includes free text fields
+ok 215 - privacy-safe route telemetry is versioned and never includes free text fields
+  ---
+  duration_ms: 0.364125
+  type: 'test'
+  ...
+# Subtest: multi-position flow returns to the visible concept wizard and keeps cart totals authoritative
+ok 216 - multi-position flow returns to the visible concept wizard and keeps cart totals authoritative
+  ---
+  duration_ms: 0.737833
+  type: 'test'
+  ...
+# Subtest: concept draft updates the saved cart row in place and current-only benefits are materialized
+ok 217 - concept draft updates the saved cart row in place and current-only benefits are materialized
+  ---
+  duration_ms: 0.733917
+  type: 'test'
+  ...
+# Subtest: authenticated customer can continue without retyping an already connected contact
+ok 218 - authenticated customer can continue without retyping an already connected contact
+  ---
+  duration_ms: 1.52875
+  type: 'test'
+  ...
+# Subtest: final handoff keeps Telegram as an optional status channel without a hidden legacy click proxy
+ok 219 - final handoff keeps Telegram as an optional status channel without a hidden legacy click proxy
+  ---
+  duration_ms: 0.888125
+  type: 'test'
+  ...
+# Subtest: concept contact step uses the scoped Telegram bridge and cannot crash on render
+ok 220 - concept contact step uses the scoped Telegram bridge and cannot crash on render
+  ---
+  duration_ms: 0.159375
+  type: 'test'
+  ...
+# Subtest: urgent homepage entry participates in saved-draft conflict handling
+ok 221 - urgent homepage entry participates in saved-draft conflict handling
+  ---
+  duration_ms: 0.1265
+  type: 'test'
+  ...
+# Subtest: pressed-button selectors use group semantics and support copy stays consistent
+ok 222 - pressed-button selectors use group semantics and support copy stays consistent
+  ---
+  duration_ms: 0.181083
+  type: 'test'
+  ...
+# Subtest: universal contact field serializes obvious email, phone and messenger formats correctly
+ok 223 - universal contact field serializes obvious email, phone and messenger formats correctly
+  ---
+  duration_ms: 0.09525
+  type: 'test'
+  ...
+# Subtest: mobile cart access cannot be covered by the contextual task bar
+ok 224 - mobile cart access cannot be covered by the contextual task bar
+  ---
+  duration_ms: 0.156875
+  type: 'test'
+  ...
+# Subtest: autosave feedback is factual and never hard-coded into the mobile dock
+ok 225 - autosave feedback is factual and never hard-coded into the mobile dock
+  ---
+  duration_ms: 0.371875
+  type: 'test'
+  ...
+# Subtest: catalog handoff is acknowledged and the first estimate is visible before contact
+ok 226 - catalog handoff is acknowledged and the first estimate is visible before contact
+  ---
+  duration_ms: 0.352417
+  type: 'test'
+  ...
+# Subtest: late journey keeps current price, reviewable details and contact-first mobile order
+ok 227 - late journey keeps current price, reviewable details and contact-first mobile order
+  ---
+  duration_ms: 1.287125
+  type: 'test'
+  ...
+# Subtest: required deadline precedes optional description fields on the materials screen
+ok 228 - required deadline precedes optional description fields on the materials screen
+  ---
+  duration_ms: 0.321208
+  type: 'test'
+  ...
+# Subtest: 1024px keeps the canonical two-column choices and readable contact width
+ok 229 - 1024px keeps the canonical two-column choices and readable contact width
+  ---
+  duration_ms: 0.284958
+  type: 'test'
+  ...
+# Subtest: home begins directly after the in-flow desktop header and mobile appbar offset
+ok 230 - home begins directly after the in-flow desktop header and mobile appbar offset
+  ---
+  duration_ms: 0.2095
+  type: 'test'
+  ...
+# Subtest: production chrome switches to the approved mobile edition at 920px
+ok 231 - production chrome switches to the approved mobile edition at 920px
+  ---
+  duration_ms: 0.328
+  type: 'test'
+  ...
+# Subtest: quote scope is an optional three-way preference with a safe default
+ok 232 - quote scope is an optional three-way preference with a safe default
+  ---
+  duration_ms: 1.132416
+  type: 'test'
+  ...
+# Subtest: expanded scope never masquerades as a known total or adds a submission gate
+ok 233 - expanded scope never masquerades as a known total or adds a submission gate
+  ---
+  duration_ms: 0.304667
+  type: 'test'
+  ...
+# Subtest: the visible price row explains the selected quote scope without inventing a total
+ok 234 - the visible price row explains the selected quote scope without inventing a total
+  ---
+  duration_ms: 0.607208
+  type: 'test'
+  ...
+# Subtest: an explicit full-support route never labels its project range as a first-stage price
+ok 235 - an explicit full-support route never labels its project range as a first-stage price
+  ---
+  duration_ms: 0.260291
+  type: 'test'
+  ...
+# Subtest: eligible written diagnostics disclose one consistent fourteen-day credit
+ok 236 - eligible written diagnostics disclose one consistent fourteen-day credit
+  ---
+  duration_ms: 0.347459
+  type: 'test'
+  ...
+# Subtest: contextual proof points only to published source messages
+ok 237 - contextual proof points only to published source messages
+  ---
+  duration_ms: 0.691375
+  type: 'test'
+  ...
+# Subtest: new controls remain tappable, responsive and theme-aware
+ok 238 - new controls remain tappable, responsive and theme-aware
+  ---
+  duration_ms: 0.197875
+  type: 'test'
+  ...
+# Subtest: cart refresh cannot recursively rerender the visible wizard
+ok 239 - cart refresh cannot recursively rerender the visible wizard
+  ---
+  duration_ms: 0.331625
+  type: 'test'
+  ...
+# Subtest: легаси ищет свою полосу прогресса внутри реестра, а не первую в документе
+ok 240 - легаси ищет свою полосу прогресса внутри реестра, а не первую в документе
+  ---
+  duration_ms: 0.535375
+  type: 'test'
+  ...
+# Subtest: подпись шага пишется каждым движком только в свой узел
+ok 241 - подпись шага пишется каждым движком только в свой узел
+  ---
+  duration_ms: 0.176292
+  type: 'test'
+  ...
+# Subtest: легаси не наводит фокус и не прокручивает страницу, пока скрыт
+ok 242 - легаси не наводит фокус и не прокручивает страницу, пока скрыт
+  ---
+  duration_ms: 0.064083
+  type: 'test'
+  ...
+# Subtest: корзина переводит видимый визард, а не только скрытый реестр
+ok 243 - корзина переводит видимый визард, а не только скрытый реестр
+  ---
+  duration_ms: 0.136417
+  type: 'test'
+  ...
+# Subtest: переход на контакты ищет шаг по ключу, а не по номеру
+ok 244 - переход на контакты ищет шаг по ключу, а не по номеру
+  ---
+  duration_ms: 0.11775
+  type: 'test'
+  ...
+# Subtest: реестр остаётся скрытым и не показывается по частям
+ok 245 - реестр остаётся скрытым и не показывается по частям
+  ---
+  duration_ms: 0.26125
+  type: 'test'
+  ...
+# Subtest: визард не полагается на видимые побочные эффекты легаси
+ok 246 - визард не полагается на видимые побочные эффекты легаси
+  ---
+  duration_ms: 0.173291
+  type: 'test'
+  ...
+# Subtest: one unmodified activation stays native while rapid repeats are blocked before telemetry
+ok 247 - one unmodified activation stays native while rapid repeats are blocked before telemetry
+  ---
+  duration_ms: 1.014584
+  type: 'test'
+  ...
+# Subtest: pageshow restores the original control and modified clicks remain untouched
+ok 248 - pageshow restores the original control and modified clicks remain untouched
+  ---
+  duration_ms: 1.257291
+  type: 'test'
+  ...
+# Subtest: owner and QA bootstrap analytics preview only during shared-runtime startup
+ok 249 - owner and QA bootstrap analytics preview only during shared-runtime startup
+  ---
+  duration_ms: 1.746958
+  type: 'test'
+  ...
+# Subtest: owner and QA bootstrap keeps strict attribution silent before URL restore
+ok 250 - owner and QA bootstrap keeps strict attribution silent before URL restore
+  ---
+  duration_ms: 0.77425
+  type: 'test'
+  ...
+# Subtest: every analytics-enabled page boots exclusion guard before shared runtime and analytics
+ok 251 - every analytics-enabled page boots exclusion guard before shared runtime and analytics
+  ---
+  duration_ms: 14.880542
+  type: 'test'
+  ...
+# Subtest: legacy local drafts scrub old private residue and never write it again
+ok 252 - legacy local drafts scrub old private residue and never write it again
+  ---
+  duration_ms: 0.86225
+  type: 'test'
+  ...
+# Subtest: one contact prerequisite predicate distinguishes lost source from valid resumes
+ok 253 - one contact prerequisite predicate distinguishes lost source from valid resumes
+  ---
+  duration_ms: 0.790709
+  type: 'test'
+  ...
+# Subtest: restored file-only requests return to materials without losing commercial intent
+ok 254 - restored file-only requests return to materials without losing commercial intent
+  ---
+  duration_ms: 0.674334
+  type: 'test'
+  ...
+# Subtest: the UI and conflict recovery state the same privacy boundary
+ok 255 - the UI and conflict recovery state the same privacy boundary
+  ---
+  duration_ms: 0.294292
+  type: 'test'
+  ...
+# Subtest: contract adds only bounded quote-scope progress events outside the strict funnel
+ok 256 - contract adds only bounded quote-scope progress events outside the strict funnel
+  ---
+  duration_ms: 1.738792
+  type: 'test'
+  ...
+# Subtest: consented quote-scope helper accepts two fixed stages and three fixed values only
+ok 257 - consented quote-scope helper accepts two fixed stages and three fixed values only
+  ---
+  duration_ms: 2.970666
+  type: 'test'
+  ...
+# Subtest: quote-scope helper remains silent without analytics consent
+ok 258 - quote-scope helper remains silent without analytics consent
+  ---
+  duration_ms: 1.58925
+  type: 'test'
+  ...
+# Subtest: configurator records exposure and carried value once without changing the UI contract
+ok 259 - configurator records exposure and carried value once without changing the UI contract
+  ---
+  duration_ms: 0.314625
+  type: 'test'
+  ...
+# Subtest: installer pins the expanded contract bytes for a backend-first release
+ok 260 - installer pins the expanded contract bytes for a backend-first release
+  ---
+  duration_ms: 0.337375
+  type: 'test'
+  ...
+# Subtest: у каждого шага объявлен показанный номер или явный отказ от него
+ok 261 - у каждого шага объявлен показанный номер или явный отказ от него
+  ---
+  duration_ms: 0.647375
+  type: 'test'
+  ...
+# Subtest: показанные номера идут подряд с единицы и без пропусков
+ok 262 - показанные номера идут подряд с единицы и без пропусков
+  ---
+  duration_ms: 0.422209
+  type: 'test'
+  ...
+# Subtest: последний шаг всегда пронумерован и всегда contact
+ok 263 - последний шаг всегда пронумерован и всегда contact
+  ---
+  duration_ms: 0.124958
+  type: 'test'
+  ...
+# Subtest: рекомендация живёт рядом с выбором и не добавляет скрытый экран
+ok 264 - рекомендация живёт рядом с выбором и не добавляет скрытый экран
+  ---
+  duration_ms: 0.213833
+  type: 'test'
+  ...
+# Subtest: в визарде не осталось нумерации, посчитанной от длины набора
+ok 265 - в визарде не осталось нумерации, посчитанной от длины набора
+  ---
+  duration_ms: 0.263791
+  type: 'test'
+  ...
+# Subtest: подписи собираются одной функцией, а не литералами
+ok 266 - подписи собираются одной функцией, а не литералами
+  ---
+  duration_ms: 0.520583
+  type: 'test'
+  ...
+# Subtest: индикатор прогресса обещает столько шагов, сколько показано
+ok 267 - индикатор прогресса обещает столько шагов, сколько показано
+  ---
+  duration_ms: 0.39525
+  type: 'test'
+  ...
+# Subtest: статические подписи в разметке согласованы с показанным числом
+ok 268 - статические подписи в разметке согласованы с показанным числом
+  ---
+  duration_ms: 0.335
+  type: 'test'
+  ...
+# Subtest: ступени сайдбара покрывают реальные индексы, а не показанные номера
+ok 269 - ступени сайдбара покрывают реальные индексы, а не показанные номера
+  ---
+  duration_ms: 0.48275
+  type: 'test'
+  ...
+# Subtest: состояние и аналитика по-прежнему опираются на реальный индекс
+ok 270 - состояние и аналитика по-прежнему опираются на реальный индекс
+  ---
+  duration_ms: 0.282458
+  type: 'test'
+  ...
+# Subtest: заявка отправляется по ключу шага, а не по его номеру
+ok 271 - заявка отправляется по ключу шага, а не по его номеру
+  ---
+  duration_ms: 0.1705
+  type: 'test'
+  ...
+# Subtest: исход отправки помечается до того, как экран станет видимым
+ok 272 - исход отправки помечается до того, как экран станет видимым
+  ---
+  duration_ms: 1.284833
+  type: 'test'
+  ...
+# Subtest: визард различает успех и сбой, а не только видимость экрана
+ok 273 - визард различает успех и сбой, а не только видимость экрана
+  ---
+  duration_ms: 0.2965
+  type: 'test'
+  ...
+# Subtest: экран сбоя не выдаёт себя за принятую заявку
+ok 274 - экран сбоя не выдаёт себя за принятую заявку
+  ---
+  duration_ms: 0.186792
+  type: 'test'
+  ...
+# Subtest: запасной ход переносится живым узлом, а не копируется разметкой
+ok 275 - запасной ход переносится живым узлом, а не копируется разметкой
+  ---
+  duration_ms: 1.537333
+  type: 'test'
+  ...
+# Subtest: повтор отправки возвращает форму, а не оставляет экран сбоя
+ok 276 - повтор отправки возвращает форму, а не оставляет экран сбоя
+  ---
+  duration_ms: 0.356
+  type: 'test'
+  ...
+# Subtest: легаси по-прежнему строит запасной ход со всем необходимым
+ok 277 - легаси по-прежнему строит запасной ход со всем необходимым
+  ---
+  duration_ms: 0.187708
+  type: 'test'
+  ...
+# Subtest: экран сбоя отличим от успеха визуально, а не только текстом
+ok 278 - экран сбоя отличим от успеха визуально, а не только текстом
+  ---
+  duration_ms: 0.471625
+  type: 'test'
+  ...
+# Subtest: успешный экран честно подтверждает отправку и показывает номер заявки
+ok 279 - успешный экран честно подтверждает отправку и показывает номер заявки
+  ---
+  duration_ms: 0.168625
+  type: 'test'
+  ...
+# Subtest: успех переносит живой статус вложений, блокирует уход во время upload и использует точную claim-ссылку
+ok 280 - успех переносит живой статус вложений, блокирует уход во время upload и использует точную claim-ссылку
+  ---
+  duration_ms: 0.723959
+  type: 'test'
+  ...
+# Subtest: успех является терминальным состоянием и не позволяет создать дубль через Back
+ok 281 - успех является терминальным состоянием и не позволяет создать дубль через Back
+  ---
+  duration_ms: 0.939875
+  type: 'test'
+  ...
+# Subtest: черновик с вложениями очищается только после успешной загрузки каждого файла
+ok 282 - черновик с вложениями очищается только после успешной загрузки каждого файла
+  ---
+  duration_ms: 0.340834
+  type: 'test'
+  ...
+# Subtest: вложения ограничены документами и изображениями до добавления в очередь
+ok 283 - вложения ограничены документами и изображениями до добавления в очередь
+  ---
+  duration_ms: 0.135333
+  type: 'test'
+  ...
+# Subtest: заявка объявляет ожидаемые вложения, а повтор upload использует стабильный client_file_id
+ok 284 - заявка объявляет ожидаемые вложения, а повтор upload использует стабильный client_file_id
+  ---
+  duration_ms: 0.139417
+  type: 'test'
+  ...
+# Subtest: success requires both a 2xx status and a valid confirmed order id
+ok 285 - success requires both a 2xx status and a valid confirmed order id
+  ---
+  duration_ms: 0.420292
+  type: 'test'
+  ...
+# Subtest: ambiguous retries keep one request id across reload until a definitive result
+ok 286 - ambiguous retries keep one request id across reload until a definitive result
+  ---
+  duration_ms: 0.224
+  type: 'test'
+  ...
+# Subtest: service success removes its stale resume concept without deleting unrelated cart data
+ok 287 - service success removes its stale resume concept without deleting unrelated cart data
+  ---
+  duration_ms: 0.158291
+  type: 'test'
+  ...
+# Subtest: fallback copy does not promise an impossible ten-second recovery
+ok 288 - fallback copy does not promise an impossible ten-second recovery
+  ---
+  duration_ms: 0.097208
+  type: 'test'
+  ...
+# Subtest: page routes use the same pl/rv/nm/df service taxonomy as the home route
+ok 289 - page routes use the same pl/rv/nm/df service taxonomy as the home route
+  ---
+  duration_ms: 3.048417
+  type: 'test'
+  ...
+# Subtest: special routes keep dedicated services and candidate diagnostics out of generic review
+ok 290 - special routes keep dedicated services and candidate diagnostics out of generic review
+  ---
+  duration_ms: 0.31275
+  type: 'test'
+  ...
+# Subtest: case routes serialize only allowlisted state codes
+ok 291 - case routes serialize only allowlisted state codes
+  ---
+  duration_ms: 0.414916
+  type: 'test'
+  ...
+# Subtest: specialized page context reaches the correct dedicated or neutral route
+ok 292 - specialized page context reaches the correct dedicated or neutral route
+  ---
+  duration_ms: 5.358458
+  type: 'test'
+  ...
+# Subtest: article CTAs ask the configurator to clarify publication type
+ok 293 - article CTAs ask the configurator to clarify publication type
+  ---
+  duration_ms: 0.260958
+  type: 'test'
+  ...
+# Subtest: integrity boundary ends with two non-binding allowed next steps
+ok 294 - integrity boundary ends with two non-binding allowed next steps
+  ---
+  duration_ms: 0.06725
+  type: 'test'
+  ...
+# Subtest: guide taxonomy keeps course, practice and publication formats distinct
+ok 295 - guide taxonomy keeps course, practice and publication formats distinct
+  ---
+  duration_ms: 0.192833
+  type: 'test'
+  ...
+# Subtest: formatting and defense guides enter their dedicated service at the right stage
+ok 296 - formatting and defense guides enter their dedicated service at the right stage
+  ---
+  duration_ms: 0.281875
+  type: 'test'
+  ...
+# Subtest: Commission Zero cannot start from a topic-only source
+ok 297 - Commission Zero cannot start from a topic-only source
+  ---
+  duration_ms: 0.543083
+  type: 'test'
+  ...
+# Subtest: injected desktop and mobile chrome preserves the skip link as body first child
+ok 298 - injected desktop and mobile chrome preserves the skip link as body first child
+  ---
+  duration_ms: 0.369375
+  type: 'test'
+  ...
+# Subtest: mobile brand uses its visible text as the accessible name
+ok 299 - mobile brand uses its visible text as the accessible name
+  ---
+  duration_ms: 0.190209
+  type: 'test'
+  ...
+# Subtest: saved draft cannot replace a contextual mobile route
+ok 300 - saved draft cannot replace a contextual mobile route
+  ---
+  duration_ms: 0.122291
+  type: 'test'
+  ...
+# Subtest: library copy does not promise to persist a page filter
+ok 301 - library copy does not promise to persist a page filter
+  ---
+  duration_ms: 0.198875
+  type: 'test'
+  ...
+# Subtest: deposit page has complete indexable metadata
+ok 302 - deposit page has complete indexable metadata
+  ---
+  duration_ms: 0.616791
+  type: 'test'
+  ...
+# Subtest: calculator mirrors the four live wallet top-ups and loyalty rates
+ok 303 - calculator mirrors the four live wallet top-ups and loyalty rates
+  ---
+  duration_ms: 27.357417
+  type: 'test'
+  ...
+# Subtest: page keeps money and bonuses separate and states the approved limits
+ok 304 - page keeps money and bonuses separate and states the approved limits
+  ---
+  duration_ms: 0.152292
+  type: 'test'
+  ...
+# Subtest: public CTA opens the existing wallet and never initiates payment
+ok 305 - public CTA opens the existing wallet and never initiates payment
+  ---
+  duration_ms: 0.203167
+  type: 'test'
+  ...
+# Subtest: structured data describes only visible page entities
+ok 306 - structured data describes only visible page entities
+  ---
+  duration_ms: 0.317875
+  type: 'test'
+  ...
+# Subtest: crawl surfaces include the production deposit page
+ok 307 - crawl surfaces include the production deposit page
+  ---
+  duration_ms: 0.514125
+  type: 'test'
+  ...
+# Subtest: deposit keeps the original storefront, tiers, calculator and CTA
+ok 308 - deposit keeps the original storefront, tiers, calculator and CTA
+  ---
+  duration_ms: 1.20475
+  type: 'test'
+  ...
+# Subtest: deposit copy promises an earned reserve, not immediately spendable points
+ok 309 - deposit copy promises an earned reserve, not immediately spendable points
+  ---
+  duration_ms: 0.1885
+  type: 'test'
+  ...
+# Subtest: cash refund remains exact and never deducts an already used discount
+ok 310 - cash refund remains exact and never deducts an already used discount
+  ---
+  duration_ms: 0.077209
+  type: 'test'
+  ...
+# Subtest: referral storefront stays active and advertises exactly fixed 200 once
+ok 311 - referral storefront stays active and advertises exactly fixed 200 once
+  ---
+  duration_ms: 0.108958
+  type: 'test'
+  ...
+# Subtest: invite dialog rejects generic URLs without inventing a service pause
+ok 312 - invite dialog rejects generic URLs without inventing a service pause
+  ---
+  duration_ms: 0.13175
+  type: 'test'
+  ...
+# Subtest: invite dialog is keyboard-modal without changing page geometry
+ok 313 - invite dialog is keyboard-modal without changing page geometry
+  ---
+  duration_ms: 0.053583
+  type: 'test'
+  ...
+# Subtest: общая навигация повторяет финальный концепт
+ok 314 - общая навигация повторяет финальный концепт
+  ---
+  duration_ms: 3.747125
+  type: 'test'
+  ...
+# Subtest: мобильная шапка показывает название текущего раздела, как в концепте
+ok 315 - мобильная шапка показывает название текущего раздела, как в концепте
+  ---
+  duration_ms: 0.327125
+  type: 'test'
+  ...
+# Subtest: главная и библиотека не возвращают блоки старого варианта
+ok 316 - главная и библиотека не возвращают блоки старого варианта
+  ---
+  duration_ms: 0.969166
+  type: 'test'
+  ...
+# Subtest: каталоги используют те же desktop и mobile лимиты, что финальное превью
+ok 317 - каталоги используют те же desktop и mobile лимиты, что финальное превью
+  ---
+  duration_ms: 0.505958
+  type: 'test'
+  ...
+# Subtest: админка заменена новым рабочим столом, а не публичным или старым визуальным каркасом
+ok 318 - админка заменена новым рабочим столом, а не публичным или старым визуальным каркасом
+  ---
+  duration_ms: 1.865666
+  type: 'test'
+  ...
+# Subtest: футер — только финальная композиция с физическими ссылками
+ok 319 - футер — только финальная композиция с физическими ссылками
+  ---
+  duration_ms: 1.205791
+  type: 'test'
+  ...
+# Subtest: Atom feed имеет валидные абсолютные метаданные канала
+ok 320 - Atom feed имеет валидные абсолютные метаданные канала
+  ---
+  duration_ms: 0.723667
+  type: 'test'
+  ...
+# Subtest: feed содержит ровно все публичные tracked guide-страницы
+ok 321 - feed содержит ровно все публичные tracked guide-страницы
+  ---
+  duration_ms: 1.476125
+  type: 'test'
+  ...
+# Subtest: title, description и даты читаются из исходных HTML без потерь
+ok 322 - title, description и даты читаются из исходных HTML без потерь
+  ---
+  duration_ms: 0.194583
+  type: 'test'
+  ...
+# Subtest: дата канала равна самой свежей дате материалов
+ok 323 - дата канала равна самой свежей дате материалов
+  ---
+  duration_ms: 0.061542
+  type: 'test'
+  ...
+# Subtest: экранирование XML покрывает служебные символы и HTML-сущности
+ok 324 - экранирование XML покрывает служебные символы и HTML-сущности
+  ---
+  duration_ms: 5.015916
+  type: 'test'
+  ...
+# Subtest: генератор детерминирован и feed.xml не устарел
+ok 325 - генератор детерминирован и feed.xml не устарел
+  ---
+  duration_ms: 98.254542
+  type: 'test'
+  ...
+# Subtest: analytics page identity accepts only canonical public routes
+ok 326 - analytics page identity accepts only canonical public routes
+  ---
+  duration_ms: 1.092875
+  type: 'test'
+  ...
+# Subtest: visit beacon is anonymous and silent on private or operational contours
+ok 327 - visit beacon is anonymous and silent on private or operational contours
+  ---
+  duration_ms: 8.523666
+  type: 'test'
+  ...
+# Subtest: reject, revoke and expiry purge browser id and attribution
+ok 328 - reject, revoke and expiry purge browser id and attribution
+  ---
+  duration_ms: 4.762291
+  type: 'test'
+  ...
+# Subtest: private contours and same-document regrant cannot capture attribution
+ok 329 - private contours and same-document regrant cannot capture attribution
+  ---
+  duration_ms: 8.063916
+  type: 'test'
+  ...
+# Subtest: beacon is best-effort and cannot retry after a network failure
+ok 330 - beacon is best-effort and cannot retry after a network failure
+  ---
+  duration_ms: 1.424708
+  type: 'test'
+  ...
+# Subtest: legacy marks collapse to a fixed non-PII enum allowlist
+ok 331 - legacy marks collapse to a fixed non-PII enum allowlist
+  ---
+  duration_ms: 0.495416
+  type: 'test'
+  ...
+# Subtest: semantic events use exact names and bounded dimensions instead of sanitizing PII
+ok 332 - semantic events use exact names and bounded dimensions instead of sanitizing PII
+  ---
+  duration_ms: 2.641084
+  type: 'test'
+  ...
+# Subtest: question payload never links PII to the analytics browser id
+ok 333 - question payload never links PII to the analytics browser id
+  ---
+  duration_ms: 1.226458
+  type: 'test'
+  ...
+# Subtest: OUT-006 adds no production measurement milestone before server authority
+ok 334 - OUT-006 adds no production measurement milestone before server authority
+  ---
+  duration_ms: 0.63625
+  type: 'test'
+  ...
+# Subtest: first input remains armed until analytics consent actually allows collection
+ok 335 - first input remains armed until analytics consent actually allows collection
+  ---
+  duration_ms: 0.331083
+  type: 'test'
+  ...
+# Subtest: only an authenticated admin overview can persist the owner-device exclusion
+ok 336 - only an authenticated admin overview can persist the owner-device exclusion
+  ---
+  duration_ms: 0.119125
+  type: 'test'
+  ...
+# Subtest: all direct app consumers carry one atomic privacy cache wave
+ok 337 - all direct app consumers carry one atomic privacy cache wave
+  ---
+  duration_ms: 35.3115
+  type: 'test'
+  ...
+# Subtest: growth pages have unique indexable metadata and valid schema
+ok 338 - growth pages have unique indexable metadata and valid schema
+  ---
+  duration_ms: 5.857917
+  type: 'test'
+  ...
+# Subtest: free tools make explicit privacy and epistemic limitations
+ok 339 - free tools make explicit privacy and epistemic limitations
+  ---
+  duration_ms: 0.554542
+  type: 'test'
+  ...
+# Subtest: DOI checker is bounded, concurrency-safe and renders metadata as text
+ok 340 - DOI checker is bounded, concurrency-safe and renders metadata as text
+  ---
+  duration_ms: 0.277959
+  type: 'test'
+  ...
+# Subtest: topic audit stays on-device and does not inject user HTML
+ok 341 - topic audit stays on-device and does not inject user HTML
+  ---
+  duration_ms: 1.448958
+  type: 'test'
+  ...
+# Subtest: growth pages lead into the approved configurator without restoring the old home CTA block
+ok 342 - growth pages lead into the approved configurator without restoring the old home CTA block
+  ---
+  duration_ms: 2.878125
+  type: 'test'
+  ...
+# Subtest: sitemap and hub expose every new growth page
+ok 343 - sitemap and hub expose every new growth page
+  ---
+  duration_ms: 2.880541
+  type: 'test'
+  ...
+# Subtest: style checker has crawlable guidance and truthful application schema
+ok 344 - style checker has crawlable guidance and truthful application schema
+  ---
+  duration_ms: 0.568834
+  type: 'test'
+  ...
+# Subtest: HTML preload matches the active core Cyrillic font instead of double-loading legacy WOFF2
+ok 345 - HTML preload matches the active core Cyrillic font instead of double-loading legacy WOFF2
+  ---
+  duration_ms: 9.300375
+  type: 'test'
+  ...
+# Subtest: shared header stays opaque so its colour never depends on the page beneath
+ok 346 - shared header stays opaque so its colour never depends on the page beneath
+  ---
+  duration_ms: 1.736958
+  type: 'test'
+  ...
+# Subtest: header popover stays opaque and readable above page content
+ok 347 - header popover stays opaque and readable above page content
+  ---
+  duration_ms: 0.326416
+  type: 'test'
+  ...
+# Subtest: brand lockup keeps one calm editorial descriptor
+ok 348 - brand lockup keeps one calm editorial descriptor
+  ---
+  duration_ms: 2.3815
+  type: 'test'
+  ...
+# Subtest: header actions share one control geometry and account mode removes duplicate acquisition actions
+ok 349 - header actions share one control geometry and account mode removes duplicate acquisition actions
+  ---
+  duration_ms: 2.06525
+  type: 'test'
+  ...
+# Subtest: desktop search trigger has no reachability gap after the mobile breakpoint
+ok 350 - desktop search trigger has no reachability gap after the mobile breakpoint
+  ---
+  duration_ms: 2.737958
+  type: 'test'
+  ...
+# Subtest: shared menu uses the same CTA vocabulary and drawn close mark as the header
+ok 351 - shared menu uses the same CTA vocabulary and drawn close mark as the header
+  ---
+  duration_ms: 0.141083
+  type: 'test'
+  ...
+# Subtest: cabinet skip link precedes chrome and points to the live workspace
+ok 352 - cabinet skip link precedes chrome and points to the live workspace
+  ---
+  duration_ms: 0.619417
+  type: 'test'
+  ...
+# Subtest: mobile appbar inherits the same translucent material
+ok 353 - mobile appbar inherits the same translucent material
+  ---
+  duration_ms: 0.186292
+  type: 'test'
+  ...
+# Subtest: home begins with recognition, then one contextual action
+ok 354 - home begins with recognition, then one contextual action
+  ---
+  duration_ms: 0.535166
+  type: 'test'
+  ...
+# Subtest: header reaches the visible desk and legacy handler does not hijack it
+ok 355 - header reaches the visible desk and legacy handler does not hijack it
+  ---
+  duration_ms: 0.18075
+  type: 'test'
+  ...
+# Subtest: dynamic dossier announces one atomic summary instead of the whole card
+ok 356 - dynamic dossier announces one atomic summary instead of the whole card
+  ---
+  duration_ms: 0.08225
+  type: 'test'
+  ...
+# Subtest: mobile home exposes three destinations and prioritises the situation picker
+ok 357 - mobile home exposes three destinations and prioritises the situation picker
+  ---
+  duration_ms: 0.273916
+  type: 'test'
+  ...
+# Subtest: light and dark palettes meet the warm editorial direction
+ok 358 - light and dark palettes meet the warm editorial direction
+  ---
+  duration_ms: 0.055792
+  type: 'test'
+  ...
+# Subtest: trust contract stays honest with and without JavaScript
+ok 359 - trust contract stays honest with and without JavaScript
+  ---
+  duration_ms: 1.49375
+  type: 'test'
+  ...
+# Subtest: dark theme uses a true black canvas with warm high-contrast type
+ok 360 - dark theme uses a true black canvas with warm high-contrast type
+  ---
+  duration_ms: 0.486
+  type: 'test'
+  ...
+# Subtest: home-owned surfaces and the situation drawer share the dark palette
+ok 361 - home-owned surfaces and the situation drawer share the dark palette
+  ---
+  duration_ms: 0.285334
+  type: 'test'
+  ...
+# Subtest: browser chrome follows the redesigned black theme
+ok 362 - browser chrome follows the redesigned black theme
+  ---
+  duration_ms: 0.220292
+  type: 'test'
+  ...
+# Subtest: site-wide dark canvas stays the canonical one, not the home black
+ok 363 - site-wide dark canvas stays the canonical one, not the home black
+  ---
+  duration_ms: 0.174583
+  type: 'test'
+  ...
+# Subtest: home limits each visible decision scene to two or three actions
+ok 364 - home limits each visible decision scene to two or three actions
+  ---
+  duration_ms: 1.844333
+  type: 'test'
+  ...
+# Subtest: guided home keeps the brand and responsive dark visual contract
+ok 365 - guided home keeps the brand and responsive dark visual contract
+  ---
+  duration_ms: 2.614791
+  type: 'test'
+  ...
+# Subtest: intro is a home-only layer before the existing content landmark
+ok 366 - intro is a home-only layer before the existing content landmark
+  ---
+  duration_ms: 0.586375
+  type: 'test'
+  ...
+# Subtest: intro fails open and respects repeat, calm and reduced-motion preferences
+ok 367 - intro fails open and respects repeat, calm and reduced-motion preferences
+  ---
+  duration_ms: 0.173959
+  type: 'test'
+  ...
+# Subtest: intro supports both themes, mobile composition and accessible dismissal
+ok 368 - intro supports both themes, mobile composition and accessible dismissal
+  ---
+  duration_ms: 0.142542
+  type: 'test'
+  ...
+# Subtest: intro JavaScript is syntactically valid and has bounded cleanup
+ok 369 - intro JavaScript is syntactically valid and has bounded cleanup
+  ---
+  duration_ms: 0.243125
+  type: 'test'
+  ...
+# Subtest: home is an open editorial desk instead of a gated wizard or a long catalogue
+ok 370 - home is an open editorial desk instead of a gated wizard or a long catalogue
+  ---
+  duration_ms: 0.730875
+  type: 'test'
+  ...
+# Subtest: editorial desk keeps normal scrolling, mobile flow and a persistent live choice
+ok 371 - editorial desk keeps normal scrolling, mobile flow and a persistent live choice
+  ---
+  duration_ms: 3.158667
+  type: 'test'
+  ...
+# Subtest: fresh visit waits for an explicit choice and restores only a real saved choice
+ok 372 - fresh visit waits for an explicit choice and restores only a real saved choice
+  ---
+  duration_ms: 0.468625
+  type: 'test'
+  ...
+# Subtest: a new mobile choice overrides a stale draft route without deleting the draft
+ok 373 - a new mobile choice overrides a stale draft route without deleting the draft
+  ---
+  duration_ms: 0.172083
+  type: 'test'
+  ...
+# Subtest: home light scene uses one adjacent paper palette
+ok 374 - home light scene uses one adjacent paper palette
+  ---
+  duration_ms: 2.857625
+  type: 'test'
+  ...
+# Subtest: trust strip is a warm bridge instead of a pasted black band
+ok 375 - trust strip is a warm bridge instead of a pasted black band
+  ---
+  duration_ms: 0.489125
+  type: 'test'
+  ...
+# Subtest: dark chapters keep the graphite base and add deliberate oxblood scenes
+ok 376 - dark chapters keep the graphite base and add deliberate oxblood scenes
+  ---
+  duration_ms: 0.224458
+  type: 'test'
+  ...
+# Subtest: home uses one explicit three-font hierarchy
+ok 377 - home uses one explicit three-font hierarchy
+  ---
+  duration_ms: 1.388875
+  type: 'test'
+  ...
+# Subtest: home metadata, supporting copy and actions share stable scales
+ok 378 - home metadata, supporting copy and actions share stable scales
+  ---
+  duration_ms: 0.372542
+  type: 'test'
+  ...
+# Subtest: mobile type scale stays compact without becoming microscopic
+ok 379 - mobile type scale stays compact without becoming microscopic
+  ---
+  duration_ms: 0.1885
+  type: 'test'
+  ...
+# Subtest: хаб содержит полный уникальный каталог и обычные crawlable-ссылки
+ok 380 - хаб содержит полный уникальный каталог и обычные crawlable-ссылки
+  ---
+  duration_ms: 4.341042
+  type: 'test'
+  ...
+# Subtest: поиск и фильтры доступны и сохраняют состояние в URL
+ok 381 - поиск и фильтры доступны и сохраняют состояние в URL
+  ---
+  duration_ms: 0.212625
+  type: 'test'
+  ...
+# Subtest: финальный каталог компактен и раскрывает оставшиеся материалы по запросу
+ok 382 - финальный каталог компактен и раскрывает оставшиеся материалы по запросу
+  ---
+  duration_ms: 0.164958
+  type: 'test'
+  ...
+# Subtest: старый журнал и прежняя композиция не попадают в финальный интерфейс
+ok 383 - старый журнал и прежняя композиция не попадают в финальный интерфейс
+  ---
+  duration_ms: 0.197084
+  type: 'test'
+  ...
+# Subtest: «Ляссе» — единый фирменный и доступный расчётный лист
+ok 384 - «Ляссе» — единый фирменный и доступный расчётный лист
+  ---
+  duration_ms: 0.35375
+  type: 'test'
+  ...
+# Subtest: метаданные хаба компактны, canonical и CollectionPage согласованы
+ok 385 - метаданные хаба компактны, canonical и CollectionPage согласованы
+  ---
+  duration_ms: 0.40425
+  type: 'test'
+  ...
+# Subtest: каждый гайд подключает финальный читательский слой и полную Article-разметку
+ok 386 - каждый гайд подключает финальный читательский слой и полную Article-разметку
+  ---
+  duration_ms: 5.245625
+  type: 'test'
+  ...
+# Subtest: правовые страницы используют тот же финальный runtime без старой оболочки
+ok 387 - правовые страницы используют тот же финальный runtime без старой оболочки
+  ---
+  duration_ms: 2.287042
+  type: 'test'
+  ...
+# Subtest: читательский runtime создаёт оглавление, якоря, прогресс, таблицы и печать
+ok 388 - читательский runtime создаёт оглавление, якоря, прогресс, таблицы и печать
+  ---
+  duration_ms: 0.324208
+  type: 'test'
+  ...
+# Subtest: спецификация совпадает с отдельным утверждённым экраном
+ok 389 - спецификация совпадает с отдельным утверждённым экраном
+  ---
+  duration_ms: 0.418709
+  type: 'test'
+  ...
+# Subtest: редакционные исправления убирают самые рискованные обещания и фиктивные советы
+ok 390 - редакционные исправления убирают самые рискованные обещания и фиктивные советы
+  ---
+  duration_ms: 0.617584
+  type: 'test'
+  ...
+# Subtest: новый JavaScript синтаксически валиден
+ok 391 - новый JavaScript синтаксически валиден
+  ---
+  duration_ms: 1.074375
+  type: 'test'
+  ...
+# Subtest: configurator keeps the approved facade as its only visual page
+ok 392 - configurator keeps the approved facade as its only visual page
+  ---
+  duration_ms: 2.704833
+  type: 'test'
+  ...
+# Subtest: application page has one main and a non-visual payment registry
+ok 393 - application page has one main and a non-visual payment registry
+  ---
+  duration_ms: 0.570917
+  type: 'test'
+  ...
+# Subtest: reference and production share the exact light and dark logo optics
+ok 394 - reference and production share the exact light and dark logo optics
+  ---
+  duration_ms: 7.840334
+  type: 'test'
+  ...
+# Subtest: all logo implementations retain the canonical BIMI palette
+ok 395 - all logo implementations retain the canonical BIMI palette
+  ---
+  duration_ms: 0.179958
+  type: 'test'
+  ...
+# Subtest: logo motion is delicate and respects every opt-out
+ok 396 - logo motion is delicate and respects every opt-out
+  ---
+  duration_ms: 5.2925
+  type: 'test'
+  ...
+# Subtest: панель разделов кабинета закреплена внизу экрана, в зоне большого пальца
+ok 397 - панель разделов кабинета закреплена внизу экрана, в зоне большого пальца
+  ---
+  duration_ms: 4.1955
+  type: 'test'
+  ...
+# Subtest: панель «Ещё» раскрывается вверх, а не за нижнюю кромку
+ok 398 - панель «Ещё» раскрывается вверх, а не за нижнюю кромку
+  ---
+  duration_ms: 0.220334
+  type: 'test'
+  ...
+# Subtest: кабинет резервирует высоту нижней панели, а не обнуляет отступ
+ok 399 - кабинет резервирует высоту нижней панели, а не обнуляет отступ
+  ---
+  duration_ms: 0.107542
+  type: 'test'
+  ...
+# Subtest: баннер согласия уступает панели разделов, а не накрывает её
+ok 400 - баннер согласия уступает панели разделов, а не накрывает её
+  ---
+  duration_ms: 0.134625
+  type: 'test'
+  ...
+# Subtest: решение hall97 не отменяется: общий док в кабинете остаётся выключен
+ok 401 - решение hall97 не отменяется: общий док в кабинете остаётся выключен
+  ---
+  duration_ms: 0.0725
+  type: 'test'
+  ...
+# Subtest: крестик закрытия рисуется у любого оверлея, а не только у поиска
+ok 402 - крестик закрытия рисуется у любого оверлея, а не только у поиска
+  ---
+  duration_ms: 1.794042
+  type: 'test'
+  ...
+# Subtest: первая строка панели «Ещё» выровнена так же, как остальные
+ok 403 - первая строка панели «Ещё» выровнена так же, как остальные
+  ---
+  duration_ms: 0.356125
+  type: 'test'
+  ...
+# Subtest: набор разделов кабинета не меняется: четыре кнопки и «Ещё»
+ok 404 - набор разделов кабинета не меняется: четыре кнопки и «Ещё»
+  ---
+  duration_ms: 0.142958
+  type: 'test'
+  ...
+# Subtest: лист согласия уплотнён и больше не занимает нижнюю треть телефона
+ok 405 - лист согласия уплотнён и больше не занимает нижнюю треть телефона
+  ---
+  duration_ms: 0.828
+  type: 'test'
+  ...
+# Subtest: абзац листа остаётся целым: юридический текст не режется многоточием
+ok 406 - абзац листа остаётся целым: юридический текст не режется многоточием
+  ---
+  duration_ms: 0.5985
+  type: 'test'
+  ...
+# Subtest: заголовок листа уходит из раскладки, но остаётся именем региона
+ok 407 - заголовок листа уходит из раскладки, но остаётся именем региона
+  ---
+  duration_ms: 0.296959
+  type: 'test'
+  ...
+# Subtest: мёртвый блок компактности убран, а не оставлен вводить в заблуждение
+ok 408 - мёртвый блок компактности убран, а не оставлен вводить в заблуждение
+  ---
+  duration_ms: 0.084125
+  type: 'test'
+  ...
+# Subtest: сборка главной несёт тот же уплотнённый лист
+ok 409 - сборка главной несёт тот же уплотнённый лист
+  ---
+  duration_ms: 0.978875
+  type: 'test'
+  ...
+# Subtest: сборка главной сохраняет раскладку карточки уведомления
+ok 410 - сборка главной сохраняет раскладку карточки уведомления
+  ---
+  duration_ms: 0.185041
+  type: 'test'
+  ...
+# Subtest: сборка главной сохраняет классы тона, которые ставит JS
+ok 411 - сборка главной сохраняет классы тона, которые ставит JS
+  ---
+  duration_ms: 0.109042
+  type: 'test'
+  ...
+# Subtest: панель «Ещё» закрывается тапом мимо, Esc и сменой раздела
+ok 412 - панель «Ещё» закрывается тапом мимо, Esc и сменой раздела
+  ---
+  duration_ms: 0.23
+  type: 'test'
+  ...
+# Subtest: закрытие возвращает фокус на кнопку, а не теряет его
+ok 413 - закрытие возвращает фокус на кнопку, а не теряет его
+  ---
+  duration_ms: 0.108291
+  type: 'test'
+  ...
+# Subtest: reviewed schedules grow monotonically and keep exact boundaries
+ok 414 - reviewed schedules grow monotonically and keep exact boundaries
+  ---
+  duration_ms: 93.181417
+  type: 'test'
+  ...
+# Subtest: eligibility fails closed and owner mode is presentation-only
+ok 415 - eligibility fails closed and owner mode is presentation-only
+  ---
+  duration_ms: 1.020833
+  type: 'test'
+  ...
+# Subtest: retention payload is categorical and cannot carry draft or identity text
+ok 416 - retention payload is categorical and cannot carry draft or identity text
+  ---
+  duration_ms: 0.298667
+  type: 'test'
+  ...
+# Subtest: rescue reason matrix gives the existing discount only to the price objection
+ok 417 - rescue reason matrix gives the existing discount only to the price objection
+  ---
+  duration_ms: 0.175459
+  type: 'test'
+  ...
+# Subtest: campaign assets are isolated, versioned and never preloaded for suppressed users
+ok 418 - campaign assets are isolated, versioned and never preloaded for suppressed users
+  ---
+  duration_ms: 2.526667
+  type: 'test'
+  ...
+# Subtest: owner preview stays observable without covering an active configurator
+ok 419 - owner preview stays observable without covering an active configurator
+  ---
+  duration_ms: 1.861334
+  type: 'test'
+  ...
+# Subtest: retention outcome has a bounded editorial hierarchy instead of a full-width slab
+ok 420 - retention outcome has a bounded editorial hierarchy instead of a full-width slab
+  ---
+  duration_ms: 0.975042
+  type: 'test'
+  ...
+# Subtest: retention outcome preserves contrast in dark hover and forced-colors modes
+ok 421 - retention outcome preserves contrast in dark hover and forced-colors modes
+  ---
+  duration_ms: 0.492958
+  type: 'test'
+  ...
+# Subtest: retention asks a finite reason, keeps return neutral and never networks during unload
+ok 422 - retention asks a finite reason, keeps return neutral and never networks during unload
+  ---
+  duration_ms: 2.275291
+  type: 'test'
+  ...
+# Subtest: owner preview can inspect reason branches without storage, navigation or promo claim
+ok 423 - owner preview can inspect reason branches without storage, navigation or promo claim
+  ---
+  duration_ms: 0.991833
+  type: 'test'
+  ...
+# Subtest: owner preview remains GET-only and never mutates analytics identity
+ok 424 - owner preview remains GET-only and never mutates analytics identity
+  ---
+  duration_ms: 0.494416
+  type: 'test'
+  ...
+# Subtest: promo dialog history sentinel preserves the configurator step and consumes Back first
+ok 425 - promo dialog history sentinel preserves the configurator step and consumes Back first
+  ---
+  duration_ms: 1.255375
+  type: 'test'
+  ...
+# Subtest: public terms state provisional authority, first-order scope and non-stacking
+ok 426 - public terms state provisional authority, first-order scope and non-stacking
+  ---
+  duration_ms: 0.645958
+  type: 'test'
+  ...
+# Subtest: remaining public and system routes use the final operations layer
+ok 427 - remaining public and system routes use the final operations layer
+  ---
+  duration_ms: 16.197708
+  type: 'test'
+  ...
+# Subtest: tool routes keep real interactive controls
+ok 428 - tool routes keep real interactive controls
+  ---
+  duration_ms: 1.023792
+  type: 'test'
+  ...
+# Subtest: payment routing and live offer mechanics remain connected
+ok 429 - payment routing and live offer mechanics remain connected
+  ---
+  duration_ms: 0.744625
+  type: 'test'
+  ...
+# Subtest: system routes expose a useful recovery action
+ok 430 - system routes expose a useful recovery action
+  ---
+  duration_ms: 0.25825
+  type: 'test'
+  ...
+# Subtest: old prohibited term is absent from visible route sources
+ok 431 - old prohibited term is absent from visible route sources
+  ---
+  duration_ms: 1.446083
+  type: 'test'
+  ...
+# Subtest: cover workshop keeps browser canvas export mechanics
+ok 432 - cover workshop keeps browser canvas export mechanics
+  ---
+  duration_ms: 0.174833
+  type: 'test'
+  ...
+# Subtest: Akademsalon monitoring uses its own privacy-safe Nginx log
+ok 433 - Akademsalon monitoring uses its own privacy-safe Nginx log
+  ---
+  duration_ms: 0.836959
+  type: 'test'
+  ...
+# Subtest: static Akademsalon rejects PHP probes before any upstream
+ok 434 - static Akademsalon rejects PHP probes before any upstream
+  ---
+  duration_ms: 0.164792
+  type: 'test'
+  ...
+# Subtest: runbook keeps shared-host failures out of Salon alerts and defines rollback
+ok 435 - runbook keeps shared-host failures out of Salon alerts and defines rollback
+  ---
+  duration_ms: 0.454792
+  type: 'test'
+  ...
+# Subtest: raw public 404 scan volume is not a paging or daily health signal
+ok 436 - raw public 404 scan volume is not a paging or daily health signal
+  ---
+  duration_ms: 0.606708
+  type: 'test'
+  ...
+# Subtest: the two public producers use one frozen v2 contract and no parallel JSON truth
+ok 437 - the two public producers use one frozen v2 contract and no parallel JSON truth
+  ---
+  duration_ms: 1.486458
+  type: 'test'
+  ...
+# Subtest: every tracked browser producer routes /orders through the canonical helper
+ok 438 - every tracked browser producer routes /orders through the canonical helper
+  ---
+  duration_ms: 91.341041
+  type: 'test'
+  ...
+# Subtest: one atomic v2 session record binds producer, scope, id and fingerprint
+ok 439 - one atomic v2 session record binds producer, scope, id and fingerprint
+  ---
+  duration_ms: 1.778417
+  type: 'test'
+  ...
+# Subtest: legacy v1 identity or fingerprint fails closed and is never rebound
+ok 440 - legacy v1 identity or fingerprint fails closed and is never rebound
+  ---
+  duration_ms: 3.535333
+  type: 'test'
+  ...
+# Subtest: corrupt, partial, foreign and future records all fail closed
+ok 441 - corrupt, partial, foreign and future records all fail closed
+  ---
+  duration_ms: 4.396542
+  type: 'test'
+  ...
+# Subtest: storage, fingerprint, header and secure-id failures are shaped before network
+ok 442 - storage, fingerprint, header and secure-id failures are shaped before network
+  ---
+  duration_ms: 1.738917
+  type: 'test'
+  ...
+# Subtest: success accepts only a safe positive integer or its canonical decimal string
+ok 443 - success accepts only a safe positive integer or its canonical decimal string
+  ---
+  duration_ms: 0.372958
+  type: 'test'
+  ...
+# Subtest: outcomes distinguish terminal rejection, conflict, ambiguity and local block
+ok 444 - outcomes distinguish terminal rejection, conflict, ambiguity and local block
+  ---
+  duration_ms: 0.31325
+  type: 'test'
+  ...
+# Subtest: fingerprint follows JSON wire semantics and ignores object key order
+ok 445 - fingerprint follows JSON wire semantics and ignores object key order
+  ---
+  duration_ms: 0.744291
+  type: 'test'
+  ...
+# Subtest: producer-supplied request identity and unserializable payload fail before fetch
+ok 446 - producer-supplied request identity and unserializable payload fail before fetch
+  ---
+  duration_ms: 0.499875
+  type: 'test'
+  ...
+# Subtest: concurrent identical submits are single-flight and cause one physical POST
+ok 447 - concurrent identical submits are single-flight and cause one physical POST
+  ---
+  duration_ms: 5.799208
+  type: 'test'
+  ...
+# Subtest: soft timeout never aborts POST and retry joins the still-live request
+ok 448 - soft timeout never aborts POST and retry joins the still-live request
+  ---
+  duration_ms: 2.245333
+  type: 'test'
+  ...
+# Subtest: changed concurrent intent conflicts while the original flight continues
+ok 449 - changed concurrent intent conflicts while the original flight continues
+  ---
+  duration_ms: 4.453834
+  type: 'test'
+  ...
+# Subtest: request state clears only by compare-and-swap with the exact terminal attempt id
+ok 450 - request state clears only by compare-and-swap with the exact terminal attempt id
+  ---
+  duration_ms: 0.630042
+  type: 'test'
+  ...
+# Subtest: ambiguous failures retain identity across reload and changed intent rotates it
+ok 451 - ambiguous failures retain identity across reload and changed intent rotates it
+  ---
+  duration_ms: 0.819167
+  type: 'test'
+  ...
+# Subtest: order transport invokes the shared status hook before reading a 401 body
+ok 452 - order transport invokes the shared status hook before reading a 401 body
+  ---
+  duration_ms: 0.370834
+  type: 'test'
+  ...
+# Subtest: late 401 cannot clear a newer auth generation, token or impersonation context
+ok 453 - late 401 cannot clear a newer auth generation, token or impersonation context
+  ---
+  duration_ms: 0.330833
+  type: 'test'
+  ...
+# Subtest: producer UI clears identity only after confirmed or definitive terminal outcomes
+ok 454 - producer UI clears identity only after confirmed or definitive terminal outcomes
+  ---
+  duration_ms: 0.305125
+  type: 'test'
+  ...
+# Subtest: generated home runtime remains in parity with the canonical helper
+ok 455 - generated home runtime remains in parity with the canonical helper
+  ---
+  duration_ms: 0.228917
+  type: 'test'
+  ...
+# Subtest: every shared order-runtime consumer uses its current atomic cache wave
+ok 456 - every shared order-runtime consumer uses its current atomic cache wave
+  ---
+  duration_ms: 76.248584
+  type: 'test'
+  ...
+# Subtest: production smoke default run is mechanically read-only and never reaches /orders
+ok 457 - production smoke default run is mechanically read-only and never reaches /orders
+  ---
+  duration_ms: 1.204791
+  type: 'test'
+  ...
+# Subtest: unknown producer and invalid guide scope fail closed
+ok 458 - unknown producer and invalid guide scope fail closed
+  ---
+  duration_ms: 0.405459
+  type: 'test'
+  ...
+# Subtest: первый экран показывает предмет, результат и условия начала
+ok 459 - первый экран показывает предмет, результат и условия начала
+  ---
+  duration_ms: 1.159792
+  type: 'test'
+  ...
+# Subtest: страница использует единственный main и финальные блоки услуги
+ok 460 - страница использует единственный main и финальные блоки услуги
+  ---
+  duration_ms: 0.227625
+  type: 'test'
+  ...
+# Subtest: все CTA открывают утверждённый сценарий заявки на разбор плана
+ok 461 - все CTA открывают утверждённый сценарий заявки на разбор плана
+  ---
+  duration_ms: 0.10825
+  type: 'test'
+  ...
+# Subtest: стоимость и результат не подменяются устаревшим интерактивным примером
+ok 462 - стоимость и результат не подменяются устаревшим интерактивным примером
+  ---
+  duration_ms: 0.118458
+  type: 'test'
+  ...
+# Subtest: мобильный док совпадает с финальным пятираздельным концептом
+ok 463 - мобильный док совпадает с финальным пятираздельным концептом
+  ---
+  duration_ms: 0.290791
+  type: 'test'
+  ...
+# Subtest: видимый FAQ совпадает с FAQPage schema
+ok 464 - видимый FAQ совпадает с FAQPage schema
+  ---
+  duration_ms: 1.730167
+  type: 'test'
+  ...
+# Subtest: метаданные и sitemap обновлены для новой страницы
+ok 465 - метаданные и sitemap обновлены для новой страницы
+  ---
+  duration_ms: 0.189459
+  type: 'test'
+  ...
+# Subtest: разбор плана использует стабильные ID и цену 3 000 / 5 000 ₽
+ok 466 - разбор плана использует стабильные ID и цену 3 000 / 5 000 ₽
+  ---
+  duration_ms: 0.502583
+  type: 'test'
+  ...
+# Subtest: прямая заявка на разбор не подменяется ранее собранной корзиной
+ok 467 - прямая заявка на разбор не подменяется ранее собранной корзиной
+  ---
+  duration_ms: 0.189458
+  type: 'test'
+  ...
+# Subtest: черновик услуги изолирован от черновика полной работы
+ok 468 - черновик услуги изолирован от черновика полной работы
+  ---
+  duration_ms: 0.126958
+  type: 'test'
+  ...
+# Subtest: формуляр показывает раздел 01 и не маскирует сетевой сбой под успех
+ok 469 - формуляр показывает раздел 01 и не маскирует сетевой сбой под успех
+  ---
+  duration_ms: 0.293917
+  type: 'test'
+  ...
+# Subtest: фирменная подпись прямого действия переживает перерисовку корзины
+ok 470 - фирменная подпись прямого действия переживает перерисовку корзины
+  ---
+  duration_ms: 0.06275
+  type: 'test'
+  ...
+# Subtest: выборы услуги и канала связи сообщают состояние вспомогательным технологиям
+ok 471 - выборы услуги и канала связи сообщают состояние вспомогательным технологиям
+  ---
+  duration_ms: 0.050458
+  type: 'test'
+  ...
+# Subtest: Telegram принимает ник и ссылку t.me
+ok 472 - Telegram принимает ник и ссылку t.me
+  ---
+  duration_ms: 0.100875
+  type: 'test'
+  ...
+# Subtest: practice page explains all three canonical scopes before contact
+ok 473 - practice page explains all three canonical scopes before contact
+  ---
+  duration_ms: 1.180125
+  type: 'test'
+  ...
+# Subtest: each price is tied to a different entry condition and verifiable output
+ok 474 - each price is tied to a different entry condition and verifiable output
+  ---
+  duration_ms: 0.402875
+  type: 'test'
+  ...
+# Subtest: 14k support has one checkable result passport before the primary action
+ok 475 - 14k support has one checkable result passport before the primary action
+  ---
+  duration_ms: 0.290375
+  type: 'test'
+  ...
+# Subtest: one selected scope controls every continuation into the configurator
+ok 476 - one selected scope controls every continuation into the configurator
+  ---
+  duration_ms: 0.525666
+  type: 'test'
+  ...
+# Subtest: practice selection also controls the mobile dock without stealing a saved draft
+ok 477 - practice selection also controls the mobile dock without stealing a saved draft
+  ---
+  duration_ms: 0.151291
+  type: 'test'
+  ...
+# Subtest: explicit and history-restored scope choices override a saved-draft dock once
+ok 478 - explicit and history-restored scope choices override a saved-draft dock once
+  ---
+  duration_ms: 1.19475
+  type: 'test'
+  ...
+# Subtest: three practice routes preserve scope codes while draft support stays supplied-material A1
+ok 479 - three practice routes preserve scope codes while draft support stays supplied-material A1
+  ---
+  duration_ms: 5.179875
+  type: 'test'
+  ...
+# Subtest: practice price ledger is page-scoped and covered in dark and mobile layouts
+ok 480 - practice price ledger is page-scoped and covered in dark and mobile layouts
+  ---
+  duration_ms: 0.563208
+  type: 'test'
+  ...
+# Subtest: explicit A1 outranks vip/support inference while legacy rows keep the A2 fallback
+ok 481 - explicit A1 outranks vip/support inference while legacy rows keep the A2 fallback
+  ---
+  duration_ms: 2.693042
+  type: 'test'
+  ...
+# Subtest: all practice scope outputs remain distinct in the prepayment specification
+ok 482 - all practice scope outputs remain distinct in the prepayment specification
+  ---
+  duration_ms: 1.879458
+  type: 'test'
+  ...
+# Subtest: the admin specification runtime uses the practice continuity cache key
+ok 483 - the admin specification runtime uses the practice continuity cache key
+  ---
+  duration_ms: 0.171583
+  type: 'test'
+  ...
+# Subtest: UTM attribution keeps canonical non-PII codes only
+ok 484 - UTM attribution keeps canonical non-PII codes only
+  ---
+  duration_ms: 3.073541
+  type: 'test'
+  ...
+# Subtest: analytics consent describes the implementation without a server checksum promise
+ok 485 - analytics consent describes the implementation without a server checksum promise
+  ---
+  duration_ms: 0.901583
+  type: 'test'
+  ...
+# Subtest: referral contract consistently rewards the inviter after the first paid order
+ok 486 - referral contract consistently rewards the inviter after the first paid order
+  ---
+  duration_ms: 0.456708
+  type: 'test'
+  ...
+# Subtest: order capability tokens stay out of new upload/list query strings
+ok 487 - order capability tokens stay out of new upload/list query strings
+  ---
+  duration_ms: 1.097458
+  type: 'test'
+  ...
+# Subtest: browser secret storage is session-scoped and old persistent secrets are removed
+ok 488 - browser secret storage is session-scoped and old persistent secrets are removed
+  ---
+  duration_ms: 0.538791
+  type: 'test'
+  ...
+# Subtest: normal authentication uses HttpOnly-cookie transport with CSRF protection
+ok 489 - normal authentication uses HttpOnly-cookie transport with CSRF protection
+  ---
+  duration_ms: 2.63925
+  type: 'test'
+  ...
+# Subtest: new cross-device order links are one-time exchanges and are scrubbed immediately
+ok 490 - new cross-device order links are one-time exchanges and are scrubbed immediately
+  ---
+  duration_ms: 0.411792
+  type: 'test'
+  ...
+# Subtest: gift purchase secrets use a header and are removed from the visible address
+ok 491 - gift purchase secrets use a header and are removed from the visible address
+  ---
+  duration_ms: 0.110458
+  type: 'test'
+  ...
+# Subtest: A2 offer issuance requires recorded participation and customer decisions
+ok 492 - A2 offer issuance requires recorded participation and customer decisions
+  ---
+  duration_ms: 0.499042
+  type: 'test'
+  ...
+# Subtest: B1 and B2 offers require structured named rights provenance
+ok 493 - B1 and B2 offers require structured named rights provenance
+  ---
+  duration_ms: 0.682833
+  type: 'test'
+  ...
+# Subtest: AI specification keeps its canonical service id and source provenance
+ok 494 - AI specification keeps its canonical service id and source provenance
+  ---
+  duration_ms: 0.337958
+  type: 'test'
+  ...
+# Subtest: Telegram receives a one-time login code, never an order capability token
+ok 495 - Telegram receives a one-time login code, never an order capability token
+  ---
+  duration_ms: 0.605917
+  type: 'test'
+  ...
+# Subtest: sensitive entry pages suppress referrers
+ok 496 - sensitive entry pages suppress referrers
+  ---
+  duration_ms: 1.012459
+  type: 'test'
+  ...
+# Subtest: psychology page exposes four truthful levels with one action owner
+ok 497 - psychology page exposes four truthful levels with one action owner
+  ---
+  duration_ms: 0.680292
+  type: 'test'
+  ...
+# Subtest: VIP price has one canonical service identity and bounded economics
+ok 498 - VIP price has one canonical service identity and bounded economics
+  ---
+  duration_ms: 2.509417
+  type: 'test'
+  ...
+# Subtest: VIP remains A2 from configurator through cart and case context
+ok 499 - VIP remains A2 from configurator through cart and case context
+  ---
+  duration_ms: 4.854209
+  type: 'test'
+  ...
+# Subtest: psychology materials are gated by explicit de-identification
+ok 500 - psychology materials are gated by explicit de-identification
+  ---
+  duration_ms: 1.980458
+  type: 'test'
+  ...
+# Subtest: VIP configurator explains the package before asking for project details
+ok 501 - VIP configurator explains the package before asking for project details
+  ---
+  duration_ms: 1.638541
+  type: 'test'
+  ...
+# Subtest: VIP choice remains the source of truth after browser back-forward cache restore
+ok 502 - VIP choice remains the source of truth after browser back-forward cache restore
+  ---
+  duration_ms: 0.210833
+  type: 'test'
+  ...
+# Subtest: research passport and search language cover the real psychology request
+ok 503 - research passport and search language cover the real psychology request
+  ---
+  duration_ms: 2.413625
+  type: 'test'
+  ...
+# Subtest: манифест и мета установки есть на КАЖДОЙ странице
+ok 504 - манифест и мета установки есть на КАЖДОЙ странице
+  ---
+  duration_ms: 22.427834
+  type: 'test'
+  ...
+# Subtest: манифест описывает установку полностью
+ok 505 - манифест описывает установку полностью
+  ---
+  duration_ms: 0.582042
+  type: 'test'
+  ...
+# Subtest: иконки установки нужного размера, а не растянутые
+ok 506 - иконки установки нужного размера, а не растянутые
+  ---
+  duration_ms: 1.116917
+  type: 'test'
+  ...
+# Subtest: воркер не касается денег, входа и чужих кабинетов
+ok 507 - воркер не касается денег, входа и чужих кабинетов
+  ---
+  duration_ms: 0.487916
+  type: 'test'
+  ...
+# Subtest: страница без сети существует и не зависит от внешних файлов
+ok 508 - страница без сети существует и не зависит от внешних файлов
+  ---
+  duration_ms: 0.503416
+  type: 'test'
+  ...
+# Subtest: версия воркера совпадает с ключом семьи shell
+ok 509 - версия воркера совпадает с ключом семьи shell
+  ---
+  duration_ms: 1.205958
+  type: 'test'
+  ...
+# Subtest: воркер регистрируется и не ломает страницу при отказе
+ok 510 - воркер регистрируется и не ломает страницу при отказе
+  ---
+  duration_ms: 1.582833
+  type: 'test'
+  ...
+# Subtest: every changed public asset uses the release cache key
+ok 511 - every changed public asset uses the release cache key
+  ---
+  duration_ms: 16.2285
+  type: 'test'
+  ...
+# Subtest: stage tabs use an allowed tabpanel host and the review preview has intrinsic size
+ok 512 - stage tabs use an allowed tabpanel host and the review preview has intrinsic size
+  ---
+  duration_ms: 1.581
+  type: 'test'
+  ...
+# Subtest: home follows the client decision sequence and keeps its brand concept durable
+ok 513 - home follows the client decision sequence and keeps its brand concept durable
+  ---
+  duration_ms: 1.203833
+  type: 'test'
+  ...
+# Subtest: reviews use lightweight thumbnails while retaining full evidence for the lightbox
+ok 514 - reviews use lightweight thumbnails while retaining full evidence for the lightbox
+  ---
+  duration_ms: 0.61125
+  type: 'test'
+  ...
+# Subtest: social preview is the exact share-card size and stays within its payload budget
+ok 515 - social preview is the exact share-card size and stays within its payload budget
+  ---
+  duration_ms: 0.648334
+  type: 'test'
+  ...
+# Subtest: horizontal comparison is a keyboard reachable named region
+ok 516 - horizontal comparison is a keyboard reachable named region
+  ---
+  duration_ms: 0.1595
+  type: 'test'
+  ...
+# Subtest: consent choice stays compact, equal and non-blocking
+ok 517 - consent choice stays compact, equal and non-blocking
+  ---
+  duration_ms: 1.268084
+  type: 'test'
+  ...
+# Subtest: saved-draft card resets the legacy night palette in both themes
+ok 518 - saved-draft card resets the legacy night palette in both themes
+  ---
+  duration_ms: 1.71775
+  type: 'test'
+  ...
+# Subtest: home release build pins its compiler and complete ordered source set
+ok 519 - home release build pins its compiler and complete ordered source set
+  ---
+  duration_ms: 0.202208
+  type: 'test'
+  ...
+# Subtest: home loads only the reproducible release bundles
+ok 520 - home loads only the reproducible release bundles
+  ---
+  duration_ms: 0.463792
+  type: 'test'
+  ...
+# Subtest: home interactions connect meaning instead of adding decorative motion
+ok 521 - home interactions connect meaning instead of adding decorative motion
+  ---
+  duration_ms: 0.63675
+  type: 'test'
+  ...
+# Subtest: phone review link can deliberately preserve the desktop composition
+ok 522 - phone review link can deliberately preserve the desktop composition
+  ---
+  duration_ms: 0.237125
+  type: 'test'
+  ...
+# Subtest: privacy confirmation and saved progress never replace one another
+ok 523 - privacy confirmation and saved progress never replace one another
+  ---
+  duration_ms: 0.855167
+  type: 'test'
+  ...
+# Subtest: services saved progress stays a single inline card at tablet widths
+ok 524 - services saved progress stays a single inline card at tablet widths
+  ---
+  duration_ms: 0.416875
+  type: 'test'
+  ...
+# Subtest: header and guided entry use one editorial hierarchy
+ok 525 - header and guided entry use one editorial hierarchy
+  ---
+  duration_ms: 5.046167
+  type: 'test'
+  ...
+# Subtest: the shared search and menu dialogs close explicitly on Escape
+ok 526 - the shared search and menu dialogs close explicitly on Escape
+  ---
+  duration_ms: 0.146917
+  type: 'test'
+  ...
+# Subtest: shared dialogs restore focus to the exact trigger that opened them
+ok 527 - shared dialogs restore focus to the exact trigger that opened them
+  ---
+  duration_ms: 0.735917
+  type: 'test'
+  ...
+# Subtest: the 320px appbar hides the compressed brand lockup without losing its accessible text
+ok 528 - the 320px appbar hides the compressed brand lockup without losing its accessible text
+  ---
+  duration_ms: 1.356083
+  type: 'test'
+  ...
+# Subtest: narrow configurator header cannot exceed the mobile viewport
+ok 529 - narrow configurator header cannot exceed the mobile viewport
+  ---
+  duration_ms: 0.499958
+  type: 'test'
+  ...
+# Subtest: desktop work choices preserve a readable 44px target
+ok 530 - desktop work choices preserve a readable 44px target
+  ---
+  duration_ms: 0.391958
+  type: 'test'
+  ...
+# Subtest: consent to personal-data processing is not the smallest text on the step
+ok 531 - consent to personal-data processing is not the smallest text on the step
+  ---
+  duration_ms: 0.248792
+  type: 'test'
+  ...
+# Subtest: mobile footer has no duplicate light-only tail and keeps legal links tappable
+ok 532 - mobile footer has no duplicate light-only tail and keeps legal links tappable
+  ---
+  duration_ms: 0.421916
+  type: 'test'
+  ...
+# Subtest: shared API gives retryable GET reads a bounded body-aware timeout
+ok 533 - shared API gives retryable GET reads a bounded body-aware timeout
+  ---
+  duration_ms: 0.335375
+  type: 'test'
+  ...
+# Subtest: order submission timeout never aborts an ambiguous POST mutation
+ok 534 - order submission timeout never aborts an ambiguous POST mutation
+  ---
+  duration_ms: 0.369542
+  type: 'test'
+  ...
+# Subtest: contact step supports Enter without bypassing validation
+ok 535 - contact step supports Enter without bypassing validation
+  ---
+  duration_ms: 0.413583
+  type: 'test'
+  ...
+# Subtest: audited standalone controls keep the 44px comfort floor
+ok 536 - audited standalone controls keep the 44px comfort floor
+  ---
+  duration_ms: 1.623209
+  type: 'test'
+  ...
+# Subtest: narrow service and about grids cannot retain an oversized min-content track
+ok 537 - narrow service and about grids cannot retain an oversized min-content track
+  ---
+  duration_ms: 0.291083
+  type: 'test'
+  ...
+# Subtest: deadline and contact feedback stay live without forcing a rerender
+ok 538 - deadline and contact feedback stay live without forcing a rerender
+  ---
+  duration_ms: 0.375584
+  type: 'test'
+  ...
+# Subtest: remarks handoff builder is finite, bounded and contains no source or identity fields
+ok 539 - remarks handoff builder is finite, bounded and contains no source or identity fields
+  ---
+  duration_ms: 1.235542
+  type: 'test'
+  ...
+# Subtest: dossier uses one session handoff and a code-only estimate URL
+ok 540 - dossier uses one session handoff and a code-only estimate URL
+  ---
+  duration_ms: 0.19225
+  type: 'test'
+  ...
+# Subtest: dossier scrubs both legacy private-text stores without touching unrelated state
+ok 541 - dossier scrubs both legacy private-text stores without touching unrelated state
+  ---
+  duration_ms: 0.334541
+  type: 'test'
+  ...
+# Subtest: blocked storage getters fail closed without breaking the dossier handoff UI
+ok 542 - blocked storage getters fail closed without breaking the dossier handoff UI
+  ---
+  duration_ms: 1.262
+  type: 'test'
+  ...
+# Subtest: configurator defers valid consumption through draft choice and resolves both branches
+ok 543 - configurator defers valid consumption through draft choice and resolves both branches
+  ---
+  duration_ms: 1.464292
+  type: 'test'
+  ...
+# Subtest: configurator never places remarks text in URL or telemetry
+ok 544 - configurator never places remarks text in URL or telemetry
+  ---
+  duration_ms: 2.284917
+  type: 'test'
+  ...
+# Subtest: home review proof keeps the final canonical crop
+ok 545 - home review proof keeps the final canonical crop
+  ---
+  duration_ms: 0.718625
+  type: 'test'
+  ...
+# Subtest: services and knowledge retain the canonical desktop compositions
+ok 546 - services and knowledge retain the canonical desktop compositions
+  ---
+  duration_ms: 0.15975
+  type: 'test'
+  ...
+# Subtest: cabinet heading and summary use the canonical measures
+ok 547 - cabinet heading and summary use the canonical measures
+  ---
+  duration_ms: 0.218416
+  type: 'test'
+  ...
+# Subtest: cabinet benefit cards are full canonical sheets, not compact substitutes
+ok 548 - cabinet benefit cards are full canonical sheets, not compact substitutes
+  ---
+  duration_ms: 0.326541
+  type: 'test'
+  ...
+# Subtest: home opens one calm guided entry before asking for contact
+ok 549 - home opens one calm guided entry before asking for contact
+  ---
+  duration_ms: 0.974292
+  type: 'test'
+  ...
+# Subtest: quick situations open as an accessible functional side drawer
+ok 550 - quick situations open as an accessible functional side drawer
+  ---
+  duration_ms: 0.715
+  type: 'test'
+  ...
+# Subtest: local classifier is explainable, reversible and never serializes the raw phrase
+ok 551 - local classifier is explainable, reversible and never serializes the raw phrase
+  ---
+  duration_ms: 1.597792
+  type: 'test'
+  ...
+# Subtest: classifier dynamically blocks fabricated evidence and detector evasion
+ok 552 - classifier dynamically blocks fabricated evidence and detector evasion
+  ---
+  duration_ms: 8.267959
+  type: 'test'
+  ...
+# Subtest: classifier dynamically preserves safe visualization of supplied evidence
+ok 553 - classifier dynamically preserves safe visualization of supplied evidence
+  ---
+  duration_ms: 5.019333
+  type: 'test'
+  ...
+# Subtest: conflicting requested results require an explicit first priority
+ok 554 - conflicting requested results require an explicit first priority
+  ---
+  duration_ms: 2.242208
+  type: 'test'
+  ...
+# Subtest: clear tutoring and post-AI editing contexts use formal safe route codes
+ok 555 - clear tutoring and post-AI editing contexts use formal safe route codes
+  ---
+  duration_ms: 0.888792
+  type: 'test'
+  ...
+# Subtest: candidate diagnostics keep the work-based route and its canonical first price
+ok 556 - candidate diagnostics keep the work-based route and its canonical first price
+  ---
+  duration_ms: 0.399667
+  type: 'test'
+  ...
+# Subtest: chapter is recognized as the eleventh canonical work type
+ok 557 - chapter is recognized as the eleventh canonical work type
+  ---
+  duration_ms: 0.534792
+  type: 'test'
+  ...
+# Subtest: submit and presets focus the route on mobile and reveal it in every viewport
+ok 558 - submit and presets focus the route on mobile and reveal it in every viewport
+  ---
+  duration_ms: 1.115334
+  type: 'test'
+  ...
+# Subtest: safe route codes prefill the configurator and are removed from its address
+ok 559 - safe route codes prefill the configurator and are removed from its address
+  ---
+  duration_ms: 0.388791
+  type: 'test'
+  ...
+# Subtest: every major public surface can continue the same case
+ok 560 - every major public surface can continue the same case
+  ---
+  duration_ms: 0.262417
+  type: 'test'
+  ...
+# Subtest: the shared case bridge keeps all four stages inside a 320px viewport
+ok 561 - the shared case bridge keeps all four stages inside a 320px viewport
+  ---
+  duration_ms: 0.09775
+  type: 'test'
+  ...
+# Subtest: library, catalog and mobile proof no longer contain orphan routes
+ok 562 - library, catalog and mobile proof no longer contain orphan routes
+  ---
+  duration_ms: 0.176125
+  type: 'test'
+  ...
+# Subtest: public service copy uses plain participation language while legal terms stay defined
+ok 563 - public service copy uses plain participation language while legal terms stay defined
+  ---
+  duration_ms: 0.418792
+  type: 'test'
+  ...
+# Subtest: весь архив присутствует, но точный счётчик нигде не показывается
+ok 564 - весь архив присутствует, но точный счётчик нигде не показывается
+  ---
+  duration_ms: 1.208584
+  type: 'test'
+  ...
+# Subtest: книга благодарностей повторяет финальную сетку без старых фильтров
+ok 565 - книга благодарностей повторяет финальную сетку без старых фильтров
+  ---
+  duration_ms: 0.352875
+  type: 'test'
+  ...
+# Subtest: каждый скриншот имеет полный просмотр с клавиатурным управлением
+ok 566 - каждый скриншот имеет полный просмотр с клавиатурным управлением
+  ---
+  duration_ms: 0.206834
+  type: 'test'
+  ...
+# Subtest: страница не имитирует общий рейтинг в schema
+ok 567 - страница не имитирует общий рейтинг в schema
+  ---
+  duration_ms: 1.710833
+  type: 'test'
+  ...
+# Subtest: интерактивный слой и короткий bootstrap темы синтаксически валидны
+ok 568 - интерактивный слой и короткий bootstrap темы синтаксически валидны
+  ---
+  duration_ms: 0.905458
+  type: 'test'
+  ...
+# Subtest: метаданные компактны, а CollectionPage JSON-LD валиден
+ok 569 - метаданные компактны, а CollectionPage JSON-LD валиден
+  ---
+  duration_ms: 0.766875
+  type: 'test'
+  ...
+# Subtest: круглые элементы задают обе стороны, а не только высоту
+ok 570 - круглые элементы задают обе стороны, а не только высоту
+  ---
+  duration_ms: 24.523125
+  type: 'test'
+  ...
+# Subtest: legacy configurator cart reads the concept context without crossing script scope
+ok 571 - legacy configurator cart reads the concept context without crossing script scope
+  ---
+  duration_ms: 1.467625
+  type: 'test'
+  ...
+# Subtest: 320px supporting-page headings cannot expand their mobile grid tracks
+ok 572 - 320px supporting-page headings cannot expand their mobile grid tracks
+  ---
+  duration_ms: 0.965625
+  type: 'test'
+  ...
+# Subtest: 320px prologue heading keeps long Russian words inside the story shell
+ok 573 - 320px prologue heading keeps long Russian words inside the story shell
+  ---
+  duration_ms: 0.724208
+  type: 'test'
+  ...
+# Subtest: SEO overlay is declared independently of product HTML and runtime
+ok 574 - SEO overlay is declared independently of product HTML and runtime
+  ---
+  duration_ms: 1.716291
+  type: 'test'
+  ...
+# Subtest: all sitemap pages retain indexability, unique metadata and self canonical
+ok 575 - all sitemap pages retain indexability, unique metadata and self canonical # SKIP
+  ---
+  duration_ms: 0.091792
+  type: 'test'
+  ...
+# Subtest: icons are square, sufficiently large and consistent across every HTML page
+ok 576 - icons are square, sufficiently large and consistent across every HTML page # SKIP
+  ---
+  duration_ms: 0.039208
+  type: 'test'
+  ...
+# Subtest: all structured data parses and organization references have one identity
+ok 577 - all structured data parses and organization references have one identity # SKIP
+  ---
+  duration_ms: 0.033166
+  type: 'test'
+  ...
+# Subtest: social images exist, match declared dimensions and use current identity
+ok 578 - social images exist, match declared dimensions and use current identity # SKIP
+  ---
+  duration_ms: 0.079417
+  type: 'test'
+  ...
+# Subtest: previously isolated service pages and seven-day guide have visible incoming links
+ok 579 - previously isolated service pages and seven-day guide have visible incoming links # SKIP
+  ---
+  duration_ms: 0.029167
+  type: 'test'
+  ...
+# Subtest: contextual order buttons preserve formatting and defense intent
+ok 580 - contextual order buttons preserve formatting and defense intent # SKIP
+  ---
+  duration_ms: 0.072959
+  type: 'test'
+  ...
+# Subtest: existing local HTML and static asset references resolve
+ok 581 - existing local HTML and static asset references resolve # SKIP
+  ---
+  duration_ms: 0.028084
+  type: 'test'
+  ...
+# Subtest: private flows, prices, backend and runtime are preserved; cache refresh is isolated
+ok 582 - private flows, prices, backend and runtime are preserved; cache refresh is isolated # SKIP
+  ---
+  duration_ms: 0.196
+  type: 'test'
+  ...
+# Subtest: only substantive content changes update Article dates
+ok 583 - only substantive content changes update Article dates # SKIP
+  ---
+  duration_ms: 0.22425
+  type: 'test'
+  ...
+# Subtest: drawer close control is a labeled capsule with its own wax mark
+ok 584 - drawer close control is a labeled capsule with its own wax mark
+  ---
+  duration_ms: 1.264833
+  type: 'test'
+  ...
+# Subtest: situations use a two-column card set with a phone list fallback
+ok 585 - situations use a two-column card set with a phone list fallback
+  ---
+  duration_ms: 0.339167
+  type: 'test'
+  ...
+# Subtest: drawer motion remains optional
+ok 586 - drawer motion remains optional
+  ---
+  duration_ms: 0.13075
+  type: 'test'
+  ...
+# Subtest: gate 1: catalogue and mobile search geometry reserve header and dock space
+ok 587 - gate 1: catalogue and mobile search geometry reserve header and dock space
+  ---
+  duration_ms: 3.661292
+  type: 'test'
+  ...
+# Subtest: gate 2: the corrected editorial search layer has one shared owner
+ok 588 - gate 2: the corrected editorial search layer has one shared owner
+  ---
+  duration_ms: 0.991208
+  type: 'test'
+  ...
+# Subtest: gate 3: services has facets, while global search owns the only text query
+ok 589 - gate 3: services has facets, while global search owns the only text query
+  ---
+  duration_ms: 0.886459
+  type: 'test'
+  ...
+# Subtest: gate 3: aliases and ranking are deterministic for the frozen query matrix
+ok 590 - gate 3: aliases and ranking are deterministic for the frozen query matrix
+  ---
+  duration_ms: 7.431417
+  type: 'test'
+  ...
+# Subtest: gate 3: zero results are outside the listbox and status has one live owner
+ok 591 - gate 3: zero results are outside the listbox and status has one live owner
+  ---
+  duration_ms: 0.572917
+  type: 'test'
+  ...
+# Subtest: gate 2: every shared CSS consumer and the home CSS bundle use one cache wave
+ok 592 - gate 2: every shared CSS consumer and the home CSS bundle use one cache wave
+  ---
+  duration_ms: 12.013167
+  type: 'test'
+  ...
+# Subtest: gate 3: every shared JS consumer and the home JS bundle use one cache wave
+ok 593 - gate 3: every shared JS consumer and the home JS bundle use one cache wave
+  ---
+  duration_ms: 26.490958
+  type: 'test'
+  ...
+# Subtest: protected catalogue inventory remains physically unchanged
+ok 594 - protected catalogue inventory remains physically unchanged
+  ---
+  duration_ms: 0.236
+  type: 'test'
+  ...
+# Subtest: search dialog has a branded header and an intentional empty state
+ok 595 - search dialog has a branded header and an intentional empty state
+  ---
+  duration_ms: 0.523167
+  type: 'test'
+  ...
+# Subtest: search close button uses a stable drawn mark instead of a text glyph
+ok 596 - search close button uses a stable drawn mark instead of a text glyph
+  ---
+  duration_ms: 0.100459
+  type: 'test'
+  ...
+# Subtest: search palette is responsive and supports both themes
+ok 597 - search palette is responsive and supports both themes
+  ---
+  duration_ms: 0.089667
+  type: 'test'
+  ...
+# Subtest: canonical pricing source contains every primary service type
+ok 598 - canonical pricing source contains every primary service type
+  ---
+  duration_ms: 5.721667
+  type: 'test'
+  ...
+# Subtest: primary landing pages show the canonical entry price and preserve schema bounds
+ok 599 - primary landing pages show the canonical entry price and preserve schema bounds
+  ---
+  duration_ms: 5.937291
+  type: 'test'
+  ...
+# Subtest: discipline landing schema publishes only the visible entry price
+ok 600 - discipline landing schema publishes only the visible entry price
+  ---
+  duration_ms: 3.467209
+  type: 'test'
+  ...
+# Subtest: article and short-text CTAs open the advertised editing tier
+ok 601 - article and short-text CTAs open the advertised editing tier
+  ---
+  duration_ms: 1.432667
+  type: 'test'
+  ...
+# Subtest: format comparison preserves the final three choices and truthful entry price
+ok 602 - format comparison preserves the final three choices and truthful entry price
+  ---
+  duration_ms: 0.704
+  type: 'test'
+  ...
+# Subtest: discipline prefills use only valid SalonCalc IDs
+ok 603 - discipline prefills use only valid SalonCalc IDs
+  ---
+  duration_ms: 1.832
+  type: 'test'
+  ...
+# Subtest: indexation signals exclude consent forms and include growth landings
+ok 604 - indexation signals exclude consent forms and include growth landings
+  ---
+  duration_ms: 0.59375
+  type: 'test'
+  ...
+# Subtest: internal home links do not route through the /index.html redirect
+ok 605 - internal home links do not route through the /index.html redirect
+  ---
+  duration_ms: 11.87225
+  type: 'test'
+  ...
+# Subtest: welcome artwork is a bounded modern source with an intrinsic PNG fallback
+ok 606 - welcome artwork is a bounded modern source with an intrinsic PNG fallback
+  ---
+  duration_ms: 1.282083
+  type: 'test'
+  ...
+# Subtest: promo cache wave is atomic on both eligible entry routes
+ok 607 - promo cache wave is atomic on both eligible entry routes
+  ---
+  duration_ms: 2.531084
+  type: 'test'
+  ...
+# Subtest: application entry and terminal promise use the current three-step contract
+ok 608 - application entry and terminal promise use the current three-step contract
+  ---
+  duration_ms: 24.110042
+  type: 'test'
+  ...
+# Subtest: course detail sends one explicit, prefilled intent into the configurator
+ok 609 - course detail sends one explicit, prefilled intent into the configurator
+  ---
+  duration_ms: 0.623375
+  type: 'test'
+  ...
+# Subtest: course detail uses the shared dossier treatment in both themes and on mobile
+ok 610 - course detail uses the shared dossier treatment in both themes and on mobile
+  ---
+  duration_ms: 0.269458
+  type: 'test'
+  ...
+# Subtest: fresh services state requires one selected situation before one continuation
+ok 611 - fresh services state requires one selected situation before one continuation
+  ---
+  duration_ms: 2.702958
+  type: 'test'
+  ...
+# Subtest: saved progress owns the primary action and reveals a fresh selector secondarily
+ok 612 - saved progress owns the primary action and reveals a fresh selector secondarily
+  ---
+  duration_ms: 0.716291
+  type: 'test'
+  ...
+# Subtest: configurator keeps an incoming route until explicit conflict resolution and restores focus
+ok 613 - configurator keeps an incoming route until explicit conflict resolution and restores focus
+  ---
+  duration_ms: 2.158958
+  type: 'test'
+  ...
+# Subtest: catalog-owned normal-text actions use AA color tokens in both themes
+ok 614 - catalog-owned normal-text actions use AA color tokens in both themes
+  ---
+  duration_ms: 1.240958
+  type: 'test'
+  ...
+# Subtest: catalog search includes discipline links before declaring an empty result
+ok 615 - catalog search includes discipline links before declaring an empty result
+  ---
+  duration_ms: 0.694083
+  type: 'test'
+  ...
+# Subtest: physical catalog inventory and ItemList remain exact
+ok 616 - physical catalog inventory and ItemList remain exact
+  ---
+  duration_ms: 0.672875
+  type: 'test'
+  ...
+# Subtest: detail configurator actions carry one explicit allowlisted URL intent without draft mutation
+ok 617 - detail configurator actions carry one explicit allowlisted URL intent without draft mutation
+  ---
+  duration_ms: 4.889459
+  type: 'test'
+  ...
+# Subtest: discipline detail routes preserve their canonical visible entry price
+ok 618 - discipline detail routes preserve their canonical visible entry price
+  ---
+  duration_ms: 13.129541
+  type: 'test'
+  ...
+# Subtest: hub promises match referat editing truth and practice rework carries full context
+ok 619 - hub promises match referat editing truth and practice rework carries full context
+  ---
+  duration_ms: 1.178541
+  type: 'test'
+  ...
+# Subtest: all 24 catalog consumers use one OUT-005 cache key
+ok 620 - all 24 catalog consumers use one OUT-005 cache key
+  ---
+  duration_ms: 2.83225
+  type: 'test'
+  ...
+# Subtest: all 95 root documents resolve to one explicit delivery and shell family
+ok 621 - all 95 root documents resolve to one explicit delivery and shell family
+  ---
+  duration_ms: 14.563375
+  type: 'test'
+  ...
+# Subtest: admin foundation has one Cmd/Ctrl+K owner and no public dialog runtime
+ok 622 - admin foundation has one Cmd/Ctrl+K owner and no public dialog runtime
+  ---
+  duration_ms: 1.472209
+  type: 'test'
+  ...
+# Subtest: saved theme is bootstrapped before app runtime on every public route
+ok 623 - saved theme is bootstrapped before app runtime on every public route
+  ---
+  duration_ms: 15.344542
+  type: 'test'
+  ...
+# Subtest: consent settings remain available on every public route and are truly modal
+ok 624 - consent settings remain available on every public route and are truly modal
+  ---
+  duration_ms: 12.55525
+  type: 'test'
+  ...
+# Subtest: normal-text CTA and unread badge fills use the accessible wax token
+ok 625 - normal-text CTA and unread badge fills use the accessible wax token
+  ---
+  duration_ms: 0.983667
+  type: 'test'
+  ...
+# Subtest: auth, footer and overlay source invariants remain explicit
+ok 626 - auth, footer and overlay source invariants remain explicit
+  ---
+  duration_ms: 0.835458
+  type: 'test'
+  ...
+# Subtest: shared shell and OUT-005 runtime changes keep atomic cache waves and home parity
+ok 627 - shared shell and OUT-005 runtime changes keep atomic cache waves and home parity
+  ---
+  duration_ms: 11.00675
+  type: 'test'
+  ...
+# Subtest: в каждой публичной странице ровно один ориентир <main>
+ok 628 - в каждой публичной странице ровно один ориентир <main>
+  ---
+  duration_ms: 2.721708
+  type: 'test'
+  ...
+# Subtest: каждый гайд несёт Article-разметку — на ней держится выдача
+ok 629 - каждый гайд несёт Article-разметку — на ней держится выдача
+  ---
+  duration_ms: 0.608
+  type: 'test'
+  ...
+# Subtest: все блоки JSON-LD разбираются как корректный JSON
+ok 630 - все блоки JSON-LD разбираются как корректный JSON
+  ---
+  duration_ms: 2.653917
+  type: 'test'
+  ...
+# Subtest: весь инлайн-JavaScript синтаксически валиден
+ok 631 - весь инлайн-JavaScript синтаксически валиден
+  ---
+  duration_ms: 4.468459
+  type: 'test'
+  ...
+# Subtest: все внешние файлы assets/js синтаксически валидны
+ok 632 - все внешние файлы assets/js синтаксически валидны
+  ---
+  duration_ms: 24.170916
+  type: 'test'
+  ...
+# Subtest: страницы не ссылаются на отсутствующие локальные файлы
+ok 633 - страницы не ссылаются на отсутствующие локальные файлы
+  ---
+  duration_ms: 11.180167
+  type: 'test'
+  ...
+# Subtest: каждый URL из sitemap существует файлом и объявляет canonical
+ok 634 - каждый URL из sitemap существует файлом и объявляет canonical
+  ---
+  duration_ms: 6.143417
+  type: 'test'
+  ...
+# Subtest: хаб знаний ведёт на гайды обычными ссылками, а не только скриптом
+ok 635 - хаб знаний ведёт на гайды обычными ссылками, а не только скриптом
+  ---
+  duration_ms: 0.29375
+  type: 'test'
+  ...
+# Subtest: skip link is revealed only by keyboard navigation
+ok 636 - skip link is revealed only by keyboard navigation
+  ---
+  duration_ms: 0.825792
+  type: 'test'
+  ...
+# Subtest: brand marks cannot be selected or dragged by pointer input
+ok 637 - brand marks cannot be selected or dragged by pointer input
+  ---
+  duration_ms: 0.108542
+  type: 'test'
+  ...
+# Subtest: production chrome uses the same keyboard-only focus contract
+ok 638 - production chrome uses the same keyboard-only focus contract
+  ---
+  duration_ms: 0.377792
+  type: 'test'
+  ...
+# Subtest: home typography keeps the approved style-lab measures
+ok 639 - home typography keeps the approved style-lab measures
+  ---
+  duration_ms: 1.107
+  type: 'test'
+  ...
+# Subtest: desktop chrome keeps the approved control geometry
+ok 640 - desktop chrome keeps the approved control geometry
+  ---
+  duration_ms: 0.426625
+  type: 'test'
+  ...
+# Subtest: chrome icons and theme transition remain identical to style-lab
+ok 641 - chrome icons and theme transition remain identical to style-lab
+  ---
+  duration_ms: 0.605541
+  type: 'test'
+  ...
+# Subtest: production shell keeps the approved light and dark palette
+ok 642 - production shell keeps the approved light and dark palette
+  ---
+  duration_ms: 0.22075
+  type: 'test'
+  ...
+# Subtest: footer retains the approved compact link set and theme control
+ok 643 - footer retains the approved compact link set and theme control
+  ---
+  duration_ms: 0.434667
+  type: 'test'
+  ...
+# Subtest: tablet and phone appbar lockups retain their approved heights
+ok 644 - tablet and phone appbar lockups retain their approved heights
+  ---
+  duration_ms: 0.631625
+  type: 'test'
+  ...
+# Subtest: mobile consent replaces the dock without keeping its empty floor
+ok 645 - mobile consent replaces the dock without keeping its empty floor
+  ---
+  duration_ms: 0.438958
+  type: 'test'
+  ...
+# Subtest: вспомогательные маршруты используют один изолированный финальный слой
+ok 646 - вспомогательные маршруты используют один изолированный финальный слой
+  ---
+  duration_ms: 0.62025
+  type: 'test'
+  ...
+# Subtest: старые публичные композиции не попали в финальные страницы
+ok 647 - старые публичные композиции не попали в финальные страницы
+  ---
+  duration_ms: 0.256084
+  type: 'test'
+  ...
+# Subtest: приёмная сохраняет рабочий API и Telegram-маршрут без публичного журнала
+ok 648 - приёмная сохраняет рабочий API и Telegram-маршрут без публичного журнала
+  ---
+  duration_ms: 0.123292
+  type: 'test'
+  ...
+# Subtest: книга благодарностей содержит весь исходный архив и доступный просмотр
+ok 649 - книга благодарностей содержит весь исходный архив и доступный просмотр
+  ---
+  duration_ms: 0.154416
+  type: 'test'
+  ...
+# Subtest: денежные экраны оставляют расчёты и выпуск в рабочем слое
+ok 650 - денежные экраны оставляют расчёты и выпуск в рабочем слое
+  ---
+  duration_ms: 0.112416
+  type: 'test'
+  ...
+# Subtest: общий интерактивный файл синтаксически валиден
+ok 651 - общий интерактивный файл синтаксически валиден
+  ---
+  duration_ms: 0.281708
+  type: 'test'
+  ...
+# Subtest: в assets/js не вызывается ни одна необъявленная функция
+ok 652 - в assets/js не вызывается ни одна необъявленная функция
+  ---
+  duration_ms: 58.151333
+  type: 'test'
+  ...
+# Subtest: публикация защищённой версии клиенту использует существующий помощник api()
+ok 653 - публикация защищённой версии клиенту использует существующий помощник api()
+  ---
+  duration_ms: 1.331541
+  type: 'test'
+  ...
+# Subtest: Zero Classes page states exact value, limits, dates and non-cash boundary
+ok 654 - Zero Classes page states exact value, limits, dates and non-cash boundary
+  ---
+  duration_ms: 0.69725
+  type: 'test'
+  ...
+# Subtest: Zero Classes page delegates issuance to Kladovaya and reads only aggregate stock
+ok 655 - Zero Classes page delegates issuance to Kladovaya and reads only aggregate stock
+  ---
+  duration_ms: 0.22725
+  type: 'test'
+  ...
+# Subtest: campaign backend installer is hash-pinned and never prints promo codes
+ok 656 - campaign backend installer is hash-pinned and never prints promo codes
+  ---
+  duration_ms: 1.7945
+  type: 'test'
+  ...
+# Subtest: home keeps the from-zero route without turning the first screen into a price catalog
+ok 657 - home keeps the from-zero route without turning the first screen into a price catalog
+  ---
+  duration_ms: 0.818666
+  type: 'test'
+  ...
+# Subtest: the brand promise now matches the research-case model
+ok 658 - the brand promise now matches the research-case model
+  ---
+  duration_ms: 1.414
+  type: 'test'
+  ...
+# Subtest: calculator and configurator expose supported work without weakening authorship
+ok 659 - calculator and configurator expose supported work without weakening authorship
+  ---
+  duration_ms: 2.567625
+  type: 'test'
+  ...
+# Subtest: tariff catalog exposes all five promised entry prices and routes them to the full project tier
+ok 660 - tariff catalog exposes all five promised entry prices and routes them to the full project tier
+  ---
+  duration_ms: 1.001292
+  type: 'test'
+  ...
+# Subtest: offer documents make from-zero work operational without promising substitution
+ok 661 - offer documents make from-zero work operational without promising substitution
+  ---
+  duration_ms: 2.350083
+  type: 'test'
+  ...
+1..661
+# tests 661
+# suites 0
+# pass 652
+# fail 0
+# cancelled 0
+# skipped 9
+# todo 0
+# duration_ms 956.246708

@@ -1,0 +1,32 @@
+.......................................
+----------------------------------------------------------------------
+Ran 39 tests in 16.339s
+
+OK
+CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS
+decision: BLOCKED
+counts: hard=0 warnings=1 info=0 blocking=1 inspected=1
+warning-policy: block
+canonical: 5a9e47145645fedfdb43ad697721f34277e61f7e
+head: 5a9e47145645fedfdb43ad697721f34277e61f7e
+manifest: WS-0123456789abcdef0123456789abcdef
+WARN UNMANAGED_REF_OVERLAP: codex/dormant-overlap: 1 path(s): tools/brain/brain.py
+snapshot: b9b10cbc7bdc03eb08bdb7ed3228c6c6414aec0fc32c7d1c05dc58beb90944e3
+LIMIT: no fetch or remote lease
+LIMIT: unfetched, unpushed and undeclared semantic work is unknown
+LIMIT: re-run on exact SHAs before integration
+NEXT: review every warning; only the integration owner may rerun with --allow-warnings.
+CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS
+decision: PROCEED_LOCAL_SNAPSHOT
+counts: hard=0 warnings=1 info=0 blocking=0 inspected=1
+warning-policy: allow-explicit
+canonical: 5a9e47145645fedfdb43ad697721f34277e61f7e
+head: 5a9e47145645fedfdb43ad697721f34277e61f7e
+manifest: WS-0123456789abcdef0123456789abcdef
+WARN UNMANAGED_REF_OVERLAP: codex/dormant-overlap: 1 path(s): tools/brain/brain.py
+snapshot: b9b10cbc7bdc03eb08bdb7ed3228c6c6414aec0fc32c7d1c05dc58beb90944e3
+LIMIT: no fetch or remote lease
+LIMIT: unfetched, unpushed and undeclared semantic work is unknown
+LIMIT: re-run on exact SHAs before integration
+NEXT: re-run this local snapshot immediately before integration.
+Indexed 11 files / 11 records → .brain/index.sqlite

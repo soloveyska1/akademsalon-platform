@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "error": null,
+  "source": "f44026fb6f1bd01adcb79dfb4ef2700aa19413d4",
+  "network": "all requests fulfilled locally or aborted; no production traffic",
+  "browser": "Chrome headless",
+  "hashes": {
+    "assets/js/salon-return.js": "1c5c659582c81aa6316a955bff875e6f27620c0730e5712ab545dd973ef4d96a",
+    "assets/js/salon-portfolio.js": "88403e08442fed11eb92c9a37735c01179804bb4f4921226320bdb793c002c56",
+    "assets/js/salon-catalogue.js": "f31c818b3f1e2408abb9269414c6172afc4d9c328f3c765f87233479abf84ab8"
+  },
+  "checks": [
+    "PASS expiry/future/private route rejection",
+    "PASS malformed JSON recovery",
+    "PASS trusted bare catalogue click restores facet despite no-referrer; intent consumed",
+    "PASS explicit anchor wins and consumes stale intent",
+    "PASS invalid intent discarded; direct entry not restored",
+    "PASS clear tombstone invalidates stale history.state and session catalogue record",
+    "PASS expired catalogue intent consumed without restore",
+    "PASS intro scrolling does not overwrite far article bookmark",
+    "PASS rapid close preserves successful PDF mark",
+    "PASS cross-tab recent update does not cancel PDF search",
+    "PASS cross-tab clear survives passive PDF resize",
+    "PASS explicit zoom resumes local bookmark after clear",
+    "PASS no JS errors or API writes",
+    "PASS candidate hashes unchanged during review"
+  ]
+}

@@ -1,0 +1,17 @@
+Verified public return-context candidate; G0-G9 PASS in declared scope.
+G0 exact base5682dd77 and immutable release220; user dirtylaunch excluded.
+G1 Node652pass/9skip/0fail; Brain39/39; strict registry125records/74manifests.
+G2 public18/18: article resume/anchor, recent/clear/cross-tab, actualPDFpage/zoom/
+first-page/keyboard-race/error, catalogueBack/return/anchor andmobilephysicaltap.
+G3/G4/G7 protected auth/private/commerce/form/API code and HTML byte-identical.
+No live auth/payment/order/client-message transaction attempted or claimed.
+G5/G6 360/390/768/1024/1440 light/dark, no body/menu overflow; newtargets44px+;
+keyboard/focus/reducedmotion; independent menu contrast light7.80 dark8.86.
+G8 all browser requests fulfilled locally; owner/QA excluded; zeroAPIwrites;
+finite only storage schema; expiry, corruption, denial, cross-tab clear tested.
+G9 exact runtime hashes in results.json + independent reports/screenshots.
+Review: two independent read-only GO. TruePDFclose/reopenrace fixed and
+failing-first independent reproduction retained. Cataloguefalsealarm retired:
+Playwright locator auto-scroll moved a visible sticky control beforepointerdown;
+physicalmouse check passes exact finalf31c, no unnecessaryworkaround retained.
+G10 pending publication, full hash readback, actual rollback/forward and live smoke.
