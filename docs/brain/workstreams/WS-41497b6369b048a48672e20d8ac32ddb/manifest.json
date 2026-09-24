@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-41497b6369b048a48672e20d8ac32ddb",
+  "slug": "salon-return-20260924",
+  "status": "active",
+  "branch": "codex/salon-return-20260924",
+  "base_sha": "5682dd77ea3251c3e444c8e3adbeb3a6d99ec665",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-return-20260924",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-41497b6369b048a48672e20d8ac32ddb/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-return-20260924",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "ui-state:public-return-v1"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
