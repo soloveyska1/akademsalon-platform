@@ -1,0 +1,20 @@
+// Real public GET-only smoke. No submit, grant, telemetry, login or payment calls.
+import {createRequire} from 'node:module';import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
+const require=createRequire(process.env.SALON_NODE_DEPS+'/package.json');const {chromium}=require('playwright');const browser=await chromium.launch({headless:true,channel:'chrome'});const results=[];const output=path.resolve(process.argv[2]);fs.mkdirSync(output,{recursive:true});
+try{
+ for(const width of [390,1440])for(const theme of ['light','dark']){
+  const context=await browser.newContext({serviceWorkers:'block',viewport:{width,height:900}});const blocked=[],errors=[];
+  await context.addInitScript(theme=>{const now=Date.now();localStorage.setItem('salon_consent',JSON.stringify({v:3,analytics:false,at:new Date(now).toISOString(),expiresAt:new Date(now+86400000).toISOString()}));localStorage.setItem('salon_theme',theme);localStorage.setItem('salon_analytics_owner_device_v1',JSON.stringify({v:1}));sessionStorage.setItem('salon_analytics_qa_session_v1','1')},theme);
+  await context.route('**/*',async route=>{const r=route.request(),u=new URL(r.url());if(r.method()!=='GET'||u.origin!=='https://akademsalon.ru'){blocked.push({method:r.method(),path:u.pathname});return route.abort()}
+   if(u.pathname.startsWith('/api/')){blocked.push({method:r.method(),path:u.pathname});return route.fulfill({json:{ok:true,authenticated:false}})}return route.continue()});
+  try{
+   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+   assert.equal((await page.goto('https://akademsalon.ru/guide-kursovaya-za-nedelyu.html')).status(),200);await page.locator('.read-cta a').click();await page.waitForLoadState('load');
+   assert.equal(await page.locator('#product').inputValue(),'service:plan');assert.equal(await page.locator('#service-work').inputValue(),'course');assert.match(await page.locator('#intake-estimate').textContent(),/3.?000/);
+   const urls=await page.locator('script[src]').evaluateAll(nodes=>nodes.map(n=>n.src));for(const file of ['app.js','salon-order.js','salon-select.js'])assert(urls.some(u=>u.includes('/'+file+'?v=funnel-20260924-v1&')));
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(output,`live-plan-${width}-${theme}.png`)});
+   const wrap=page.locator('.salon-select').filter({has:page.locator('#service-work')});await wrap.locator('.salon-select-trigger').click();await wrap.getByRole('option',{name:'Магистерская',exact:true}).click();assert.equal(await page.locator('#service-work').inputValue(),'master');assert.match(await page.locator('#intake-estimate').textContent(),/5.?000/);assert.deepEqual(errors,[]);assert(!blocked.some(x=>x.method!=='GET'));
+   results.push({width,theme,status:'PASS',route:'guide -> plan/course -> plan/master',prices:[3000,5000],errors,blocked,submitted:false});
+  }finally{await context.close()}
+ }
+}finally{await browser.close();const report={release:'release218-funnel-5e860b3c',browser:'Chrome',data:'new context; consent=false; owner+QA excluded; all API mocked, only public static GET allowed',results};fs.writeFileSync(path.join(output,'live-smoke.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2))}

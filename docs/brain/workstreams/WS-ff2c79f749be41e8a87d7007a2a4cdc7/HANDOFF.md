@@ -10,7 +10,9 @@
 - Protected: consent opt-in; no contacts/texts/files/tokens in analytics or evidence; server-confirmed success only; stable request/file IDs; preserve current live overlays and dist pointer.
 - Changed: reproducible six-file static overlay, private intake events with custom-select adapter, plan-course guide entry, cache refresh; isolated browser verifier and evidence.
 - Verified locally: 10 browser scenario groups including privacy, actual cart payload, 503/conflict/retry and uploads; 10 viewport/theme combinations; Node 652 passed, 9 skipped, 0 failures; Brain 39/39 and strict validation; two independent final GO reviews with no P0/P1/P2. See unique evidence directory.
-- Unverified: production remains release217; publication and real rollback-forward still pending.
+- Published: `release218-funnel-5e860b3c` from implementation `5e860b3c0b4b35702971462861cf12456ccdf84c`; current pointer confirmed. Built bytes exactly match reviewed hashes.
+- Production proof: actual apply -> rollback to release217 -> forward, health/features and public hashes passed at all steps. GET-only browser smoke at 390/1440 light/dark passed; plan/course3000 and plan/master5000, no console errors, no real submit/telemetry. `dist` remains release203; backend/DB unchanged.
+- Not claimed: real new client submissions, lead quality, revenue or conversion uplift; these need prospective consented observations. Nine existing tests requiring their external fixtures remain skipped.
 - Risks/rollback: canonical static sources differ from production. Build starts from full immutable live snapshot and fails on hash drift; deploy only delta with immediate pointer rollback and no DB restore.
 - Conflict decision: first canonical-guide declaration was abandoned because of active historical reservations. Overlay owns only unique directories; hard=0, 62 historical warnings consciously accepted by root as integration owner.
-- Next: freeze implementation, rebuild identical artifact with implementation SHA, run guarded production apply/rollback/forward and live GET-only smoke.
+- Next: submit the verified result, integrate into fresh canonical main, then have the existing daily monitor compare prospective open/input/validation/attempt/failure/success observations without synthetic traffic.
