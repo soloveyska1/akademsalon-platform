@@ -28,3 +28,16 @@
   or private data change. All browser API requests so far synthetic.
 - Next: freeze implementation; byte-identical clean build; atomic release222,
   health/static readback, actual rollback/forward, live browser smoke.
+
+## Publication readback correction
+
+- First attempt release222-ease-b264e4f2 correctly auto-rolled back to release221
+  after expertise.html HTTP bytes differed. Existing Nginx sends exact301 to
+  the homepage; automatic urllib redirect had hidden this distinction.
+- Read-only inventory of all changed HTML found only this known redirect.
+  No server rule or UI changed. New verifier forbids automatic redirects,
+  requires exact301+Location for expertise and checks target homepage bytes;
+  other redirects fail. All staged immutable files still match full manifest.
+- Eight deterministic fail-closed contract tests and live baseline GET proof pass.
+- Next: freeze readback correction, rebuild identical UI, deploy unique release
+  with repeated apply/rollback/forward and live smoke.

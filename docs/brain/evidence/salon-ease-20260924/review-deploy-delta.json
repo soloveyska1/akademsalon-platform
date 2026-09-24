@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "source": "/Users/saymurrbk.ru/.codex/worktrees/salon-ease-20260924/scripts/salon-ease-20260924/deploy.py",
+  "sha256": "e484e9a254c9c15f15f870f101bc2c594db99a07f3d96fc68119419d31966e0b",
+  "checks": [
+    "NoRedirect refuses construction of a redirected request",
+    "All redirect statuses returned without a second request; headers normalized",
+    "Matching bytes cannot bypass non-200 ordinary status, wrong expertise status, or redirect chain",
+    "Health and features independently reject every tested non-200 status even with valid success JSON"
+  ],
+  "network": "none; all HTTP mocked"
+}

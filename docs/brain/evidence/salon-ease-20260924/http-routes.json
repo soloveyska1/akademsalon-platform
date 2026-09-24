@@ -1,0 +1,467 @@
+[
+  {
+    "path": "/about.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/academic-integrity.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/admin.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/audit-temy-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/avtorskiy-zakaz.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/benefits.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/check.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/configurator.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/consent-analytics.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/consent-marketing.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/consent-publication.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/consent-request.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/consent.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/dashboard.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/deposit.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/diplomnaya-po-ekonomike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/diplomnaya-po-psihologii.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/diplomnaya-po-yurisprudencii.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/diplomnaya-rabota.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/dorabotka-otcheta-po-praktike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/dosie-nauchruka.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/expertise.html",
+    "status": 301,
+    "location": "https://akademsalon.ru/"
+  },
+  {
+    "path": "/gift.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guarantees.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-antiplagiat-ai.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-apellyaciya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-dnevnik-praktiki.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-harakteristika-s-praktiki.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-kursovaya-za-nedelyu.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-normocontrol.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-obekt-predmet-cel-zadachi.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-otchet-po-praktike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-otzyv-rukovoditelya-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-prakticheskaya-chast-kursovoy.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-prezentaciya-k-zashchite.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-prilozheniya-po-gost.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-recenziya-na-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-rech-na-zashchitu.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-rinc-statya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-skolko-stoit-diplomnaya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-skolko-stoit-kursovaya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-spisok-literatury.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-temy-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-titulnyj-list.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-vkr-struktura.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-vvedenie-kursovoy.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-zaklyuchenie-kursovoy.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-zaklyuchenie-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/guide-zashchita-diploma.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kandidatskaya-dissertaciya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/knowledge.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/komissiya-0.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-po-ekonomike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-po-informatike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-po-menedzhmentu.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-po-pedagogike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-po-psihologii.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-po-yurisprudencii.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/kursovaya-rabota.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/loyalty.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/magisterskaya-dissertaciya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/nauchnaya-statya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/normokontrol-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/oferta.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/oplaceno.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/oplata.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/otchet-po-praktike.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/plan.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/plus.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/privacy.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/priyomnaya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/prolog.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/proverka-istochnikov-vkr.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/razbor-zamechaniy-nauchruka.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/redaktura-posle-ii.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/referat.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/referral-rules.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/referral.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/refunds.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/requisites.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/reviews.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/samples.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/services.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/shop-terms.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/shop.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/specifikaciya.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/start.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/tariffs.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/terms.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/tools.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/vedenie.html",
+    "status": 200,
+    "location": null
+  },
+  {
+    "path": "/zayavka.html",
+    "status": 200,
+    "location": null
+  }
+]

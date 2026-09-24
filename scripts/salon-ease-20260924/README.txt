@@ -46,3 +46,8 @@ switches current atomically and performs apply/rollback/forward + exact HTTP
 readback. Compatibility dist remains release203. No full rebuild or restart.
 After live smoke freeze clean result; submit/integrate via Brain lifecycle,
 then canonical owner updates CURRENT-HANDOFF. Keep terminal task branch parked.
+
+HTTP expertise.html is shadowed by a pre-existing Nginx301 to /. Verify that
+exact status/location plus target homepage bytes; never follow arbitrary
+redirects. Full immutable file inventory still covers expertise.html itself.
+python3 scripts/salon-ease-20260924/test_deploy.py proves readback fail-closed.

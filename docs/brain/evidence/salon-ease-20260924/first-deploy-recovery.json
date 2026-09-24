@@ -1,0 +1,21 @@
+{
+  "release": "release222-ease-b264e4f2",
+  "baseline_release": "release221-return-4ee1f306",
+  "source_commit": "b264e4f2bf56b343f60a6239a56d8c0134bf497c",
+  "old_dist": "release203-09ccfca4",
+  "dist_preserved": true,
+  "database_changed": false,
+  "backend_changed": false,
+  "steps": [],
+  "error": "AssertionError: /expertise.html",
+  "recovery": {
+    "health_ok": true,
+    "pay_online": true,
+    "files_verified": [
+      "/",
+      "/configurator.html",
+      "/dashboard.html",
+      "/sw.js"
+    ]
+  }
+}

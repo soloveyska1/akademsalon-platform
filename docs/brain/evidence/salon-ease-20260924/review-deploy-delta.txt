@@ -1,0 +1,16 @@
+# Release verifier delta safety review
+
+Verdict: GO for the reviewed deploy.py delta. No open P0/P1 in this delta. Candidate10 UI safety GO remains unchanged; its eight reviewed runtime/style hashes still match.
+
+- Automatic HTTP redirect following is disabled globally. The HTTP helper returns observed redirect status and lowercase headers without making the redirect request.
+- Only `/expertise.html` permits a redirect: exactly HTTP 301 and exactly `Location: https://akademsalon.ru/`. The helper then separately requests `/` and requires HTTP 200 plus the exact index.html SHA-256 of the currently verified release.
+- Ordinary files require HTTP 200 and exact bytes. Unexpected redirect destinations, statuses, redirect chains, partial HTTP 206 results, and wrong destination bytes cannot pass the file gate.
+- Initial review found health/features ignored the newly exposed HTTP status. The current `verify_health()` requires both statuses to be 200 before parsing success JSON. Independent tests exercise both endpoints against 206/301/302/303/307/308, including success-looking JSON: all are rejected.
+- Root's contract test suite ran independently: 8/8 PASS. Additional independent mocked-HTTP cases PASS in deploy-delta-results.json. No network requests, server writes, or repository edits were performed by this reviewer; PYTHONDONTWRITEBYTECODE prevented import cache writes.
+- Existing staged-tree inventory, pointer equality checks, and apply/rollback/forward/recovery control flow are unchanged by this delta. This review does not claim a new deployment or independently reproduce the prior production rollback.
+
+Exact deploy.py SHA-256: `e484e9a254c9c15f15f870f101bc2c594db99a07f3d96fc68119419d31966e0b`.
+
+Evidence: `/tmp/salon-ease-safety-review/deploy-delta-probe.py`, `/tmp/salon-ease-safety-review/deploy-delta-results.json`.
+
+Reproduction: `PYTHONDONTWRITEBYTECODE=1 python3 /tmp/salon-ease-safety-review/deploy-delta-probe.py`; root suite: `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest scripts/salon-ease-20260924/test_deploy.py` from the ease worktree.

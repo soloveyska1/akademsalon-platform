@@ -2,13 +2,37 @@
 Fail closed on a changed baseline. Does not modify backend, DB or Nginx config.
 """
 from pathlib import Path
-import argparse,fcntl,hashlib,json,os,shutil,tarfile,tempfile,urllib.request
+import argparse,fcntl,hashlib,json,os,shutil,tarfile,tempfile,urllib.request,urllib.error
 
 BASE=Path('/var/www/academic_saloon')
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def inventory(p):return {str(f.relative_to(p)):digest(f) for f in p.rglob('*') if f.is_file()}
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+ def redirect_request(self,*args,**kwargs):return None
+opener=urllib.request.build_opener(NoRedirect)
 def get(path):
- with urllib.request.urlopen('https://akademsalon.ru'+path,timeout=20) as r:return r.read(),dict(r.headers)
+ try:
+  with opener.open('https://akademsalon.ru'+path,timeout=20) as r:return r.read(),{k.lower():v for k,v in r.headers.items()},r.status
+ except urllib.error.HTTPError as e:
+  if e.code not in [301,302,303,307,308]:raise
+  with e:return e.read(),{k.lower():v for k,v in e.headers.items()},e.code
+def verify_file(root,path,release):
+ body,headers,status=get(path+'?growth_verify='+release)
+ # Existing Nginx canonical redirect, independently observed before release222.
+ # Do not follow arbitrary redirects or pretend the shadowed HTML is served.
+ redirect=None
+ if path=='/expertise.html':
+  assert status==301 and headers.get('location')=='https://akademsalon.ru/',path
+  redirect='/'
+  body,headers,status=get('/?growth_verify='+release)
+ file='index.html' if path=='/' or redirect else path[1:]
+ assert status==200 and hashlib.sha256(body).hexdigest()==digest(root/file),path
+ if path.endswith('.svg'):assert 'image/svg+xml' in headers.get('content-type','')
+ return redirect
+def verify_health():
+ health,_,health_status=get('/api/health');features,_,feature_status=get('/api/features')
+ assert health_status==200 and feature_status==200,'health/features HTTP status'
+ assert json.loads(health).get('ok') and json.loads(features).get('pay_online'),'health/features contract'
 def switch(target):
  temp=BASE/'.current-growth-switch'
  if temp.is_symlink():temp.unlink()
@@ -40,15 +64,13 @@ def deploy(stage,expected,release,archive_hash):
  critical=['/' if p=='index.html' else '/'+p for p in manifest['changed']]+['/services.html','/configurator.html','/dashboard.html','/sw.js','/manifest.webmanifest']
  def verify(root,modern):
   assert (BASE/'current').resolve()==root and (BASE/'dist').resolve()==dist
-  health=json.loads(get('/api/health')[0]);features=json.loads(get('/api/features')[0]);assert health.get('ok') and features.get('pay_online')
-  checked=[]
+  verify_health()
+  checked=[];redirects={}
   for path in critical if modern else ['/','/configurator.html','/dashboard.html','/sw.js']:
-   file='index.html' if path=='/' else path[1:]
-   body,headers=get(path+'?growth_verify='+release)
-   assert hashlib.sha256(body).hexdigest()==digest(root/file),path
-   if path.endswith('.svg'):assert 'image/svg+xml' in headers.get('Content-Type','')
+   redirect=verify_file(root,path,release)
+   if redirect:redirects[path]=redirect
    checked.append(path)
-  return {'health_ok':True,'pay_online':True,'files_verified':checked}
+  return {'health_ok':True,'pay_online':True,'files_verified':checked,'canonical_redirects_verified':redirects}
  # Recheck immediately before the only public pointer mutation.
  assert (BASE/'current').resolve()==old and inventory(old)==before
  try:
