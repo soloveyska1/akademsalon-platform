@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-da0a31bda1434828b2b651bb2e975810",
+  "slug": "salon-comfort-20260924",
+  "status": "active",
+  "branch": "codex/salon-comfort-20260924",
+  "base_sha": "d1b33ce819f6cfab3429446f03a9f2e7c03032f5",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-006"
+  ],
+  "write_owner": "root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-comfort-20260924",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-da0a31bda1434828b2b651bb2e975810/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-comfort-20260924",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
