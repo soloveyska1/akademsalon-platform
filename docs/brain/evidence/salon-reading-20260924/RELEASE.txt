@@ -1,0 +1,50 @@
+Release223 — approved public comfort set
+Source:9876e9336b2c815c1c75e3b2baf6715cf83a3a56
+Baseline:release222-ease-fa5ea915,524 public static files.
+Output:release223-reading-9876e933,526 files,97 modified/added paths; no deletions.
+Production current only; compatibility dist deliberately stays release203.
+
+G0: canonical55bb28fd, isolated Brain WS-d1515e1200b64c5e86cb89ebc7ea02b0,
+write-owner root. Original dirty .claude/launch.json excluded. Bootstrap v1 was
+abandoned before changes due unnecessary mutable CURRENT-HANDOFF dependency;
+v2 pins immutable canonical/live inputs. Reviewed strict scan hard0,67terminal
+warnings, same scopes at integration; explicit owner allow-warnings accepted.
+G1/G5/G6: clean-source21/21 owner browser scenarios,91public route sweep,10
+360/390/768/1024/1440 light/dark states; no overflow or new JS errors. Prior ease22,
+return18,intake9 including held-pointer/retry/file journey pass. Node652pass/9
+existing skips, Brain39, strict validation and deploy8tests pass. Independent
+UI8profiles verifies drift <=0.35px, Tab/ShiftTab, rapid doubleEscape, table
+scrolling/unique IDs, touch targets and empty-state actions. Safety10probes cover
+bounded/escaped search/no query storage, direct page over bookmarks, malformed
+hashes, slow paint/load races, canonical share/cancel/clipboard-denied fallback,
+and queued close safety. Two final independent GO reviews: P0/P1/P2=0 outstanding.
+G2/G3/G4/G7: order/auth/cabinet/API/commerce/analytics/service-worker unchanged
+bytes outside scope. Form retry/success semantics additionally covered by existing
+hermetic intake suite; no real order/payment/login or delivery claimed.
+G8: every local request routed to exact static tree or synthetic API. Live smoke
+uses actual public static resources with API/external interception and owner/QA
+exclusion; no real order, message, payment or analytics write.
+G9: hashes in release-build.json; clean-source owner-results.json; independent
+hash-bound review files/probes, screenshots, prior suites and reproduction scripts.
+G10: exact immutable build equals every tested candidate9 byte. Guarded deploy
+executed apply -> rollback222 -> forward223; health/pay_online true each time,
+102static HTTP checks each forward (including known expertise301 destination),
+4critical files during rollback. No backend/DB/config mutation. Live browser
+receipt live-results.json confirms4/4 profiles (390/1440 light/dark),10actual static hashes per profile, all new controls and existing settings/FAQ/catalogue/inline helper; JSerrors0, real APIwrites0.
+
+Implementation decisions:14explicitly marked existing examples,25readers,
+91shell consumers; 404keeps original recovery actions with new decorative SVG.
+No new storage keys, personal text, URLs or telemetry. Search query160/12tokens,
+deduplicated routes, exact before alias/fuzzy, honest partial/default suggestions.
+Direct PDF link is strict allowlisted #pdf=ID&page=N; correct successful paint
+only, no private query. Hash-driven Back/Forward is separate from ordinary opens.
+Dialogs finish cleanup synchronously and ignore their queued native close event.
+Public incoming-main160ms opacity .88->1 gives gentle arrival without navigation
+interception; reduced/calm/motionoff suppress it, Back/Forward skips it. Earlier
+native cross-document snapshots were removed after reproducible menu-click and
+aborted-transition problems; both regressions pass on final implementation.
+
+Limits: Chrome desktop/browser device sizes, not native Safari/physical-device/
+screen-reader certification. Native OS share sheet mocked for branch verification;
+no claim that a message was sent. No conversion/traffic uplift claimed.
+Rollback: static current -> release222-ease-fa5ea915 only. Never restore DB.

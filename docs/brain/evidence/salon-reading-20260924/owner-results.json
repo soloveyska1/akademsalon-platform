@@ -1,6 +1,6 @@
 {
-  "source": "aa1a5df07996476788935c7251292806effd1232",
-  "root": "/tmp/salon-reading-20260924/candidate9",
+  "source": "9876e9336b2c815c1c75e3b2baf6715cf83a3a56",
+  "root": "/tmp/salon-reading-20260924/release-final",
   "browser": "Chrome headless",
   "network": "all routed, no production requests",
   "results": [

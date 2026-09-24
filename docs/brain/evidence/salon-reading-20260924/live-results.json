@@ -1,0 +1,88 @@
+{
+  "sourceCommit": "9876e9336b2c815c1c75e3b2baf6715cf83a3a56",
+  "production": "https://akademsalon.ru",
+  "browser": "Chrome",
+  "network": "real static resources; API synthetic and external aborted",
+  "results": [
+    {
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "staticHashesVerified": [
+        "assets/js/salon-ease-preferences.js",
+        "assets/css/salon-ease.css",
+        "assets/css/salon-reading.css",
+        "assets/js/app.js",
+        "assets/js/salon-reading.js",
+        "assets/js/salon-experience.js",
+        "assets/js/salon-shell.js",
+        "assets/js/salon-ease.js",
+        "assets/js/salon-library.js",
+        "assets/js/salon-portfolio.js"
+      ],
+      "errors": [],
+      "apiCalls": 9,
+      "apiWrites": 0
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "staticHashesVerified": [
+        "assets/js/salon-ease-preferences.js",
+        "assets/css/salon-ease.css",
+        "assets/css/salon-reading.css",
+        "assets/js/app.js",
+        "assets/js/salon-reading.js",
+        "assets/js/salon-experience.js",
+        "assets/js/salon-shell.js",
+        "assets/js/salon-ease.js",
+        "assets/js/salon-library.js",
+        "assets/js/salon-portfolio.js"
+      ],
+      "errors": [],
+      "apiCalls": 9,
+      "apiWrites": 0
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "staticHashesVerified": [
+        "assets/js/salon-ease-preferences.js",
+        "assets/css/salon-ease.css",
+        "assets/css/salon-reading.css",
+        "assets/js/app.js",
+        "assets/js/salon-reading.js",
+        "assets/js/salon-experience.js",
+        "assets/js/salon-shell.js",
+        "assets/js/salon-ease.js",
+        "assets/js/salon-library.js",
+        "assets/js/salon-portfolio.js"
+      ],
+      "errors": [],
+      "apiCalls": 9,
+      "apiWrites": 0
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "staticHashesVerified": [
+        "assets/js/salon-ease-preferences.js",
+        "assets/css/salon-ease.css",
+        "assets/css/salon-reading.css",
+        "assets/js/app.js",
+        "assets/js/salon-reading.js",
+        "assets/js/salon-experience.js",
+        "assets/js/salon-shell.js",
+        "assets/js/salon-ease.js",
+        "assets/js/salon-library.js",
+        "assets/js/salon-portfolio.js"
+      ],
+      "errors": [],
+      "apiCalls": 9,
+      "apiWrites": 0
+    }
+  ]
+}
