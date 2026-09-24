@@ -1,0 +1,13 @@
+{
+  "node": {
+    "passed": 652,
+    "skipped": 9,
+    "failed": 0
+  },
+  "brain": {
+    "passed": 39,
+    "failed": 0
+  },
+  "overlayBrowser": "exact candidate-v4 targeted + inherited comfort and funnel matrix reports",
+  "privateFixtures": "Synthetic only. All HTTP intercepted. No private values recorded in reports."
+}

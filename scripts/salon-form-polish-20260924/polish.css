@@ -1,0 +1,18 @@
+/* Quiet field guidance in the current Salon type and purple palette. */
+.salon-intake .polish-contact-modes{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 7px;border-bottom:1px solid var(--line)}
+.salon-intake .polish-contact-modes button{position:relative;min-height:44px;min-width:44px;padding:10px 13px;border:0;border-radius:6px 6px 0 0;background:transparent;color:var(--muted);font-size:12px;line-height:1.4}
+.salon-intake .polish-contact-modes button:hover:not(:disabled){color:var(--accent);background:var(--soft)}
+.salon-intake .polish-contact-modes button[aria-pressed=true]{color:var(--accent);background:var(--soft)}
+.salon-intake .polish-contact-modes button[aria-pressed=true]:after{content:'';position:absolute;bottom:-1px;left:12px;right:12px;height:2px;background:var(--accent)}
+.salon-intake .polish-contact-modes button:disabled{cursor:default}
+.salon-intake .polish-contact-hint{font-size:11px;line-height:1.55;color:var(--muted);margin:8px 0 0;min-height:35px}
+.salon-intake .polish-field-error{font-size:12px;line-height:1.6;color:var(--ink);border-left:2px solid var(--accent);padding-left:9px;margin:9px 0 7px;overflow-wrap:anywhere}
+.salon-intake #direct-order [aria-invalid=true]:not([type=checkbox]){border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.salon-intake .polish-text-count{font-size:10px;line-height:1.5;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;margin:6px 0 0}
+.salon-intake .polish-text-count.is-full{color:var(--accent);font-weight:500}
+.salon-intake .polish-field-error[hidden],.salon-intake .polish-text-count[hidden]{display:none}
+@media(max-width:480px){.salon-intake .polish-contact-modes{gap:2px}.salon-intake .polish-contact-modes button{padding-inline:11px}.salon-intake #direct-order input#contact{font-size:16px}}
+
+.salon-intake .polish-help-slot{min-height:66px;margin:22px 0 0}
+.salon-intake .polish-help-slot .sa-launch{position:static;width:auto;min-height:58px;height:58px;right:auto;bottom:auto;margin:0;box-shadow:none;transform:none}
+.salon-intake .polish-help-slot .sa-launch:hover{transform:none;box-shadow:none;border-color:var(--accent)}
