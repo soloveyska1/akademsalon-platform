@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-d1515e1200b64c5e86cb89ebc7ea02b0",
   "slug": "salon-reading-v2-20260924",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-reading-v2-20260924",
   "base_sha": "55bb28fd9561dfece859beede0969e3c735ce80c",
   "result_sha": "90616e5ab5bd0bfb997f22b1d978e1b3cb27e788",
@@ -54,6 +54,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "8031eb27601cf8918c13b42be464969851810b2c039834d96510926e2a3abebc"
+  "manifest_revision": 3,
+  "base_manifest_hash": "585c04fda4b4282746e64a8790ff7442ee426a8624f362f75cd78cc9eb7e4f8b"
 }
