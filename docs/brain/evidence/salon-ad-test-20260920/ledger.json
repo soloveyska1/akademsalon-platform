@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-25T18:21:01Z",
+  "as_of": "2026-09-25T22:21:02Z",
   "currency": "RUB",
   "initial_cap": 1000,
   "current_cap": 3000,
@@ -34,7 +34,7 @@
     "owner_acceptance_confirmed": true,
     "post_url": "https://t.me/citatnikrggu/5948",
     "launch_transaction_ui_time_msk": "2026-09-23 14:07",
-    "last_verified_at": "2026-09-25T18:21:01Z",
+    "last_verified_at": "2026-09-25T22:21:02Z",
     "owner_acceptance_countdown_observed": null,
     "automatic_additional_purchase_authorized": false,
     "owner_acceptance_first_observed_at": "2026-09-24T10:12:47Z",
@@ -47,24 +47,26 @@
       "hour_to": 21,
       "timezone": "Europe/Moscow",
       "source": "Accepted task card owner-selected date",
-      "verified_at": "2026-09-25T18:21:01Z"
+      "verified_at": "2026-09-25T22:21:02Z"
     },
     "published_at_msk": "2026-09-25 18:00",
     "publication_first_verified_at": "2026-09-25T18:21:01Z",
     "delivery_completed": false
   },
   "metrics": {
-    "views": 871,
+    "views": 1005,
     "clicks": 5,
     "qualified_leads": 0,
     "confirmed_paid_orders": 0,
     "attributed_paid_revenue": 0,
-    "scope": "Observed Telegram counter, not verified unique humans. Telega report847views and6clicks; subtract1known prepublication QA gives5non-QA counted clicks. Customer inbox/payment source not audited; zero confirmed attributable orders is not a claim of zero organic orders.",
-    "platform_views": 847,
+    "scope": "Telega exact1005views; public Telegram1.01K rounded.6raw clicks minus1knownQA gives5non-QA counted clicks; no proof of unique humans. Customer inbox/payment source not audited; zero confirmed attributable orders is not zero organic orders.",
+    "platform_views": 1005,
     "platform_clicks_raw": 6,
     "platform_unique_clicks_raw": 6,
     "qa_clicks_subtracted": 1,
-    "observed_at": "2026-09-25T18:21:01Z"
+    "observed_at": "2026-09-25T22:21:02Z",
+    "telegram_views_display": "1.01K",
+    "views_source": "Telega.in exact report count; public Telegram rounded counter recorded separately"
   },
   "moderation": {
     "state": "new_creative_registered_owner_accepted_no_separate_moderation_confirmation",
@@ -151,12 +153,12 @@
   "qa_tracked_clicks_before_publication": 1,
   "unlaunched_duplicate_project_id": "2501950",
   "last_check": {
-    "at": "2026-09-25T18:21:01Z",
+    "at": "2026-09-25T22:21:02Z",
     "source_type": "authenticated_campaign_report_finance_and_public_post_ui",
-    "observation_file": "check-20260925T182101Z.json",
-    "state_changed": true,
+    "observation_file": "check-20260925T222102Z.json",
+    "state_changed": false,
     "owner_status": "На проверке",
-    "owner_status_last_verified_at": "2026-09-25T18:21:01Z",
+    "owner_status_last_verified_at": "2026-09-25T22:21:02Z",
     "customer_inbox_checked": false,
     "reason_inbox_not_checked": "Public post and marketplace metrics checked; no authenticated customer inbox or payment audit performed.",
     "new_tracked_qa_clicks": 0,
@@ -178,7 +180,8 @@
     "unchanged_status_notification_sent": false,
     "browser_cleanup": "Campaign and exact public post retained; finance tab closed; no refund form opened.",
     "owner_acceptance_notification_sent": false,
-    "publication_notification_sent": true
+    "publication_notification_sent": false,
+    "metrics_changed": true
   },
   "monitor": {
     "automation_id": "automation-4",
@@ -286,10 +289,10 @@
       "disposition": "Stopped bot navigation; continued independently permitted finance, application and existing web-feedback checks",
       "new_bot_replies_known": false
     },
-    "last_skipped_check_at": "2026-09-25T18:21:01Z",
+    "last_skipped_check_at": "2026-09-25T22:21:02Z",
     "last_skip_reason": "Existing browser security restriction; no retry or alternate access to the bot."
   },
-  "financial_last_verified_at": "2026-09-25T18:21:01Z",
+  "financial_last_verified_at": "2026-09-25T22:21:02Z",
   "placement_pricing_support": {
     "catalog_price_final": true,
     "agency_remuneration_included": true,
@@ -595,12 +598,13 @@
     "destination_live_retested": false,
     "destination_live_last_verified": "2026-09-23",
     "new_qa_clicks": 0,
-    "top_duration_report": "3 часа 2 минуты",
+    "top_duration_report": "7 часов 1 минута",
     "top_requirement_report_met": true,
-    "retention_duration_report": "3 часа",
+    "retention_duration_report": "7 часов",
     "retention_requirement_completed": false,
     "expected_48h_end_msk": "2026-09-27 18:00",
     "early_accept_button_clicked": false,
-    "private_identity_saved": false
+    "private_identity_saved": false,
+    "retention_last_checked_at": "2026-09-25T22:21:02Z"
   }
 }
