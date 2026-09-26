@@ -1,0 +1,19 @@
+Command: node --test tests/*.test.js
+Full local log: /tmp/salon-services-20260927/regression.txt
+Full log SHA256: 3064c387f8a6e89e07e2cda8bbbd4d5c53ae0699cdd6aa598254f2ab912a7f9d
+
+# Subtest: offer documents make from-zero work operational without promising substitution
+ok 661 - offer documents make from-zero work operational without promising substitution
+  ---
+  duration_ms: 1.117917
+  type: 'test'
+  ...
+1..661
+# tests 661
+# suites 0
+# pass 652
+# fail 0
+# cancelled 0
+# skipped 9
+# todo 0
+# duration_ms 989.401125

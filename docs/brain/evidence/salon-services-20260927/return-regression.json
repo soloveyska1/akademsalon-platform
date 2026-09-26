@@ -1,0 +1,86 @@
+{
+  "source": "fad014baa357f93b9334e401ae391764e5f383f6",
+  "root": "/tmp/salon-services-20260927/candidate5",
+  "browser": "Chrome headless",
+  "network": "all routed; no external network; no API writes",
+  "hashes": {
+    "assets/js/salon-return.js": "70a2aa64f2919b93d9e5b325c29fdb793db02c2b452902a1de806b4c32939aac",
+    "assets/css/salon-return.css": "8ebb25231f99d2195059b66f8fe09530f82e694c7d02f6bff653711cd6d25056",
+    "assets/js/salon-portfolio.js": "1db103769466a8b1b88b2b3dc942008c2c69b50521d9e874613006ea322adf63",
+    "assets/js/salon-catalogue.js": "fa0b4e2cb9739a155c3ff8dc51725e7ba9a25de4b47fe5fba7ac1c1b27e8ada1"
+  },
+  "results": [
+    {
+      "name": "article-explicit-resume-and-anchor",
+      "status": "PASS"
+    },
+    {
+      "name": "recent-clear-cross-tab",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-page-zoom-and-separate-documents",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-keyboard-immediate-reopen",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-load-failure-does-not-overwrite",
+      "status": "PASS"
+    },
+    {
+      "name": "catalogue-back-return-and-direct-anchor",
+      "status": "PASS"
+    },
+    {
+      "name": "catalogue-mobile-menu-return",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid-storage-preview-and-denial",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-360-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-360-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-390-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-390-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-768-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-768-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1024-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1024-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1440-light",
+      "status": "PASS"
+    },
+    {
+      "name": "visual-1440-dark",
+      "status": "PASS"
+    }
+  ]
+}

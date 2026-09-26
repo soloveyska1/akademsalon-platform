@@ -1,0 +1,24 @@
+[
+  {
+    "width": 390,
+    "status": "PASS",
+    "profitBase": 2580,
+    "profitStress": -1515,
+    "capacity": [
+      11.97,
+      5.99,
+      3.99
+    ]
+  },
+  {
+    "width": 1440,
+    "status": "PASS",
+    "profitBase": 2580,
+    "profitStress": -1515,
+    "capacity": [
+      11.97,
+      5.99,
+      3.99
+    ]
+  }
+]

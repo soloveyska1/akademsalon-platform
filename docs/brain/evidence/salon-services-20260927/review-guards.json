@@ -1,0 +1,50 @@
+{
+  "source": "fad014baa357f93b9334e401ae391764e5f383f6",
+  "root": "/tmp/salon-services-20260927/candidate8",
+  "browser": "Chrome",
+  "api": "all synthetic; zero real mutations",
+  "results": [
+    {
+      "name": "hero-perk-contrast",
+      "theme": "light",
+      "foreground": "rgb(42, 69, 32)",
+      "background": "rgb(220, 244, 142)",
+      "ratio": 8.81681141801063,
+      "status": "PASS"
+    },
+    {
+      "name": "review-clarity-and-accessibility-light",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "hero-perk-contrast",
+      "theme": "dark",
+      "foreground": "rgb(42, 69, 32)",
+      "background": "rgb(220, 244, 142)",
+      "ratio": 8.81681141801063,
+      "status": "PASS"
+    },
+    {
+      "name": "review-clarity-and-accessibility-dark",
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    }
+  ]
+}

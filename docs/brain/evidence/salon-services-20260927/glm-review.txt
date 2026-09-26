@@ -1,0 +1,78 @@
+# glm
+
+### Independent Release Readiness Review Report
+
+#### 1. Introduction
+This report evaluates the readiness of the Russian services catalogue and budget estimator for independent release. The review focuses on **economic arithmetic/caps**, **estimate/checkout contract**, **accessibility**, and **obvious journey risks**. The goal is to preserve existing published base tariffs while ensuring the new interface is functional, transparent, and user-friendly.
+
+#### 2. Review Scope
+- **Economic Model**: Preserve existing base tariffs; new budget model as a labelled fallback.
+- **Estimate Functionality**: Accurate calculation of budgets (range: low–high) with VIP coordination.
+- **Checkout Contract**: Consistent quote previews and handling of deposits/bonuses.
+- **Accessibility**: Compliance with accessibility standards.
+- **Journey Risks**: Mitigate user misunderstandings (e.g., VIP support limits, under-24h overcharges).
+
+---
+
+### 3. Findings by Priority
+
+#### **P0 (Critical Issues – Must Fix Before Release)**
+1. **VIP Coordination Clarity**
+   - **Evidence**: ECONOMICS.md states: *"Резерв VIP: 15% работы, минимум 3 000 ₽. Итерации и срок фиксируются в смете."* The UI must explicitly highlight this cap to avoid unrealistic user expectations.
+   - **Risk**: Users may assume unlimited support, leading to dissatisfaction if support is capped.
+
+2. **Under-24h Multiplier Transparency**
+   - **Evidence**: UI shows: *"Меньше суток: бюджет ×2–3 от плановой цены"* with a note that confirmation is required after materials review.
+   - **Risk**: The variable multiplier (2–3x) may be perceived as arbitrary, and users might proceed without understanding the preliminary nature.
+
+3. **Deposit vs. Discount Misinterpretation**
+   - **Evidence**: ECONOMICS.md clarifies: *"Депозит – твои деньги на будущие услуги; ставка зависит от фактически использованной суммы."* The UI must distinguish this from a discount.
+   - **Risk**: Users may treat deposit as a discount, leading to confusion about final payment.
+
+#### **P1 (Major Issues – Address Before Release)**
+1. **Consistency of Quote Preview**
+   - **Evidence**: Build.py modifies the cart serializer to ensure preview lines update correctly when VIP or under-24h options are selected. The code maintains line and total previews.
+   - **Risk**: Inconsistent previews could cause user confusion about the final quote.
+
+2. **Accessibility Compliance**
+   - **Evidence**: UI includes proper labels for form elements and supports dark mode. However, ARIA labels for dynamic content (e.g., estimate updates) need verification.
+   - **Risk**: Inaccessible features may exclude users with disabilities.
+
+3. **Under-24h Confirmation Step**
+   - **Evidence**: UI provides a button *"Меньше сутки"* but does not enforce a confirmation dialog before proceeding.
+   - **Risk**: Users may proceed without confirming materials, leading to overcharges.
+
+#### **P2 (Minor Issues – Address Before Release)**
+1. **Color Contrast in Dark Mode**
+   - **Evidence**: Dark mode uses dark background with light text, generally meeting standards. Verify specific elements (e.g., buttons, labels).
+   - **Risk**: Poor contrast could affect readability for users with visual impairments.
+
+2. **Search and Filter Labels**
+   - **Evidence**: Search bar has placeholder text but lacks explicit labeling.
+   - **Risk**: Users may struggle to identify the search functionality.
+
+---
+
+### 4. GO/NO-GO Decision
+- **GO**: The release is ready with the following conditions:
+  - Clear UI labels explaining VIP coordination caps and under-24h multipliers.
+  - Consistent quote previews (per build.py modifications).
+  - Accessibility checks completed (ARIA labels, keyboard navigation).
+  - Under-24h confirmation enforced before finalizing the budget.
+- **NO-GO**: If any P0 issues (e.g., unclear VIP support or deposit misinterpretation) are unresolved, the release should be delayed.
+
+---
+
+### 5. Recommendations
+1. **Enhance VIP Coordination Label**: Add a tooltip or note explaining the cap (max 3 000 ₽ or 15% of work).
+2. **Clarify Under-24h Terms**: Add a modal/confirmation step before applying the 2–3x multiplier.
+3. **Update Deposit Section**: Explicitly label deposit as an advance and reserve as a separate bonus.
+4. **Accessibility Testing**: Conduct comprehensive testing with screen readers and keyboard navigation.
+5. **User Testing**: Validate that users understand the budget range and preliminary estimate nature.
+
+---
+
+### 6. Conclusion
+The service catalogue and budget estimator meet core requirements (preserving tariffs, functional estimates). With the above fixes, the release can proceed with minimal user risk.
+
+**Final Verdict**: **GO** (with recommended clarifications and testing).

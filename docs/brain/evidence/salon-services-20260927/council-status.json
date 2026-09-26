@@ -1,0 +1,20 @@
+{
+  "providers": [
+    {
+      "provider": "glm",
+      "ok": true,
+      "report": "/private/tmp/salon-services-20260927/council-final/glm.md",
+      "usage": {
+        "completion_tokens": 3659,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2593
+        },
+        "prompt_tokens": 14116,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "total_tokens": 17775
+      }
+    }
+  ]
+}

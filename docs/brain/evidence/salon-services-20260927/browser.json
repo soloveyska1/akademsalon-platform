@@ -1,0 +1,333 @@
+{
+  "source": "fad014baa357f93b9334e401ae391764e5f383f6",
+  "root": "/tmp/salon-services-20260927/candidate7",
+  "browser": "Chrome",
+  "api": "all synthetic; zero real mutations",
+  "results": [
+    {
+      "name": "geometry-360-light",
+      "width": 360,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-360-dark",
+      "width": 360,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-390-light",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-390-dark",
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-768-light",
+      "width": 768,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-768-dark",
+      "width": 768,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-1024-light",
+      "width": 1024,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-1024-dark",
+      "width": 1024,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-1440-light",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "geometry-1440-dark",
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "every-product-scope-speed-and-accessible-close",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "known-price-benefits-copy-and-checkout-parity",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "custom-unit-quantity-persists-with-no-duplicate-addon",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "synthetic-order-carries-pending-range-and-unit-once",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "vip-request-line-matches-cart-total",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "editing-price-and-custom-select-keyboard",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "invalid-hypothetical-benefit-cannot-block-an-order",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "all-reachable-configurator-scopes-retain-a-number",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "custom-editing-submitted-price-and-basis",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "custom-diagnostic-submitted-price-and-basis",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "custom-support-submitted-price-and-basis",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    }
+  ]
+}

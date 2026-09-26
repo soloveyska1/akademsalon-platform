@@ -1,0 +1,8 @@
+{
+  "from": "candidate7",
+  "to": "candidate8",
+  "changed": [
+    "services.html"
+  ],
+  "change": "Added explicit accessible name to catalogue search; pricing/checkout JS and CSS identical. Focused review-guards PASS in both themes."
+}
