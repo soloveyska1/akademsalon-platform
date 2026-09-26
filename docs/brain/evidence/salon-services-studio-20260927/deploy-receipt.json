@@ -1,0 +1,57 @@
+{
+  "release": "release225-studio-a45b389e",
+  "baseline_release": "release224-services-acad423a",
+  "source_commit": "a45b389eb5a566cd57501d8191ad07e063445fb0",
+  "old_dist": "release203-09ccfca4",
+  "dist_preserved": true,
+  "database_changed": false,
+  "backend_changed": false,
+  "steps": [
+    {
+      "action": "apply",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/assets/css/salon-services-studio.css",
+        "/assets/js/salon-catalogue.js",
+        "/services.html",
+        "/services.html",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js",
+        "/manifest.webmanifest"
+      ],
+      "canonical_redirects_verified": {}
+    },
+    {
+      "action": "rollback",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js"
+      ],
+      "canonical_redirects_verified": {}
+    },
+    {
+      "action": "forward",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/assets/css/salon-services-studio.css",
+        "/assets/js/salon-catalogue.js",
+        "/services.html",
+        "/services.html",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js",
+        "/manifest.webmanifest"
+      ],
+      "canonical_redirects_verified": {}
+    }
+  ],
+  "final_files": 531,
+  "changed_files": 3
+}

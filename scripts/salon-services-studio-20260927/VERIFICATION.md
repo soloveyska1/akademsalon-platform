@@ -17,7 +17,7 @@ Two independent read-only reviews: see reviews.json. All concrete findings resol
 
 ## Release proof
 
-Use existing fail-closed deploy.py with whole-baseline inventory, exact archive SHA, public HTTP hash readback, health/features, real apply→rollback→forward, preserving the older compatibility dist symlink. Live smoke blocks all non-GET/HEAD traffic and checks services→VIP→checkout parity and custom editing. Receipt and live proof are added only after completion.
+Use existing fail-closed deploy.py with whole-baseline inventory, exact archive SHA, public HTTP hash readback, health/features, real apply→rollback→forward, preserving the older compatibility dist symlink. Live smoke blocks all non-GET/HEAD traffic and checks services→VIP→checkout parity and custom editing. Completed: release225-studio-a45b389e, sourcea45b389e; receipt confirms all three switches and exact readbacks. Live319/1440 in both themes4/4, JSerrors0 and APIwrites0. Original user IAB page reloaded and visually verified. See deploy-receipt.json, build.json and live-results.json.
 
 ## Limits
 

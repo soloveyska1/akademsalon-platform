@@ -1,0 +1,14 @@
+{
+  "release": "release225-studio-a45b389e",
+  "source": "a45b389eb5a566cd57501d8191ad07e063445fb0",
+  "baseline": "release224-services-acad423a",
+  "archive_sha256": "d94123df48c9dddfc6435b7e5b99c7ec7b2ddd88a844b044c0720a6f633272ae",
+  "tested_candidate": "candidate6",
+  "final_public_files_equal_tested": true,
+  "browser_tests": 28,
+  "independent_reviews": 2,
+  "live_profiles": 4,
+  "current_user_iab": "319px native pane reloaded at /services.html#main and new masthead visually confirmed",
+  "original_checkout_dirty_file": ".claude/launch.json",
+  "original_dirty_sha256": "9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5"
+}
