@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-31d6f266d92745b980afc4a4c855e111",
+  "slug": "salon-services-studio-20260927",
+  "status": "active",
+  "branch": "codex/salon-services-studio-20260927",
+  "base_sha": "924a378c28fc4d8ff4c62785a681565504543161",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-007"
+  ],
+  "write_owner": "codex-root",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/salon-services-studio-20260927",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-31d6f266d92745b980afc4a4c855e111/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-services-studio-20260927",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:services-estimate"
+    },
+    {
+      "access": "write",
+      "key": "ui-state:services-estimate"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
