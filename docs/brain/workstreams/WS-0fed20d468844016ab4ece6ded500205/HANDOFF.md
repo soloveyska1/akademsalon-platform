@@ -1,0 +1,10 @@
+# Services clarity handoff
+
+- Goal: owner again rejects visual and interaction quality, with a concrete screenshot of glued mixed-font words. Outcome OUT-007; root is sole write-owner.
+- Base: exact fresh origin/main1614b3682af743cabd6ba0bb6e268bdd23218573. Original checkout user-dirty .claude/launch.json is excluded. Expected production release225-studio-a45b389e, local pinned baseline /tmp/salon-services-studio-20260927/release-final.
+- Scope: services-only HTML/controller/styles overlay, reproducible build/tests and own evidence. All existing tariffs, math, bonuses and checkout bytes preserved. No backend/DB or broader site changes.
+- Acceptance before changes: readable section headings at every breakpoint with proper spaces; prices and meaningful service content reached quickly; a clear current choice and next action; calculation explains selected result and extras; no unexplained selected default; contextual benefits and readable controls without tiny labels or overloaded form; saved state, explicit switching, date/quantity errors, history, numeric ranges and checkout parity retained.
+- Proof: inspect full page and actual phone inspector, not only first-screen screenshots; widths319/360/390/768/1024/1440 in both themes, low height and text zoom; concrete typical tasks; unchanged price-model hashes; deterministic regression then two independent read-only reviews; guarded publication, live smoke, real rollback and original-tab visual confirmation.
+- Authority: repeated direct user request authorizes this bounded design/UX correction beyond historical IA freeze. Protected tariff/privacy/submit decisions remain.
+- Changed: declaration only.
+- Next: commit declaration, conflicts gate, inspect current UI and implement a coherent refined design.
