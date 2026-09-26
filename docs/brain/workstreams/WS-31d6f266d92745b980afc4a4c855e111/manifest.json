@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-31d6f266d92745b980afc4a4c855e111",
   "slug": "salon-services-studio-20260927",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-services-studio-20260927",
   "base_sha": "924a378c28fc4d8ff4c62785a681565504543161",
   "result_sha": "b5a51e9d3af481847b1e42b85864a3eff07bd038",
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "a7a2a467b3e06aa74158f98b16ceac0c05ca4b6d61b9964ad6aa51354329e3be"
+  "manifest_revision": 3,
+  "base_manifest_hash": "3aabba34ea1067e14c2492ab8a3418a32972337d8b22a54f023006c26c49489c"
 }
