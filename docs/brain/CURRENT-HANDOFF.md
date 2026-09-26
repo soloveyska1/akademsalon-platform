@@ -1,6 +1,21 @@
 # Current handoff
 
-## Verified current state — 24 September 2026
+## Verified current state — 27 September 2026
+
+Sequential integration-owner update; historical records below are not current release pointers.
+
+- Production `current` is `release224-services-acad423a`, frozen source `acad423a5bddc210e73b7252020a85ef275fa4e4`. Hash-pinned overlay on exact release223: eight public paths changed, four assets added (526→530 files). Compatibility `dist` remains `release203-09ccfca4`. Never rebuild production from stale canonical root HTML.
+- Services now offers numeric preliminary ranges for all twelve catalogue products, scope/discipline/deadline/speed/VIP combinations, bounded custom tasks and typed editing. Current SalonCalc, products, commerce and benefits bytes remain unchanged. Existing price multipliers remain authoritative; under24h uses an explicitly preliminary2–3× budget, VIP adds existing services plus coordination max(3,000,15% work), with iterations and term agreed before payment.
+- Existing subscriptions, points, gifts and deposit are modelled transparently: new membership fee included, points≤20%, discount+points≤25%, cashback later, gift/advance principal never called savings, deposit reserve net of cashback and conditional on acceptance+14days. Expired welcome promo is not activated. Referral200 and digital gifts link to their existing cabinet flows. No new monetary bonus obligation.
+- Catalogue selection, unit/quantity and scenario benefits persist in session storage as bounded enums/numbers; no topic/contact/file data added. Copyable estimate has a selectable fallback. All estimate-derived request lines and aggregate cart ranges are finalized after the legacy serializer and marked pending; custom/diagnostic/support basis and quantity survive. Optional scenario inputs cannot block order validation. Main task/addon deduplication and existing9,500 defense bundle work across the main/addon boundary.
+- Verified: estimate8/8 including6,048 combinations; browser21/21, ten viewport/theme states, copy/Back/focus/keyboard and intercepted POST parity; existing form9/9 and return18/18; canonical652pass/9existing skips; Brain39/39 and strict validation. Two independent reviews; all reproducible issues closed, no outstanding scoped P0/P1/P2. Explicit search label and measured new hero-badge contrast8.82:1. Native Safari, physical devices and screen-reader certification are not claimed.
+- Real apply→rollback223→forward224 passed health/features and13/4/13 exact static readbacks. Live Chrome390/1440 light/dark passed4/4: all cards numeric, VIP and custom-edit estimates persist into intake, JSerrors0 and APIwrites0. Backend, DB, auth, billing rules and service worker unchanged. Rollback: static current pointer to release223 only; never restore DB for this release.
+- Owner-only model: `scripts/salon-services-20260927/economics.html` and `ECONOMICS.md`, not public release files. Rates500/1,000/1,500 RUB/hour, adjustable cash costs/acquisition/time/rework/margin, conservative bonus liability. At course14k/rate1k/target20%, all-in hour ceiling9.38 base or5.99 stress. With8 production hours+20% buffer: profit2,580 base/-1,515 stress. Actual hours/costs and sales uplift remain unmeasured. Market advertising minima are lower; no unsupported cheapest/quality claim.
+- Evidence: `docs/brain/evidence/salon-services-20260927/`; reproduction and review disposition: `scripts/salon-services-20260927/VERIFICATION.md`. Integrated `WS-a68d2d36b85948a6921045f9c509c8bf`, frozen result `2d47ca6b58b2`, terminal revision `372f4d8e`. Keep task branch `codex/salon-services-20260927` at its terminal revision.
+- Original user-dirty `.claude/launch.json` is preserved and excluded. Owned test browsers closed; no dev server/watcher left running. Next exact step: record actual hours and expenses on10–20 completed comparable orders in the owner model before expanding monetary bonuses or interpreting higher average ticket as higher profit. Existing monitoring configuration was not changed.
+
+
+## Previous verified release223 — superseded by release224
 
 Sequential integration-owner update; historical records below are not current release pointers.
 
