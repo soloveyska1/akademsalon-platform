@@ -1,6 +1,17 @@
 # Current handoff
 
-## Verified current state — 27 September 2026
+## Verified current state — 27 September 2026, services studio
+
+Sequential integration-owner update after the user rejected the release224 visual result.
+
+- Live `current`: `release225-studio-a45b389e`, source `a45b389eb5a566cd57501d8191ad07e063445fb0`. Three-path overlay on exact release224;531 public files. Services HTML, catalogue controller and one new stylesheet changed. Pricing, estimate model, benefits rules, checkout, shared shell, backend and database are byte-identical. Compatibility `dist` remains release203. Build only from the pinned live overlay, never stale root HTML.
+- Visible design is now a violet masthead with four situation choices, compact service rows and a single calculation workbench: sticky inspector on desktop, native dialog on mobile. Scope alternatives show prices; budget filter, quick dates, benefit tab, cost-inclusive membership comparison, copy and saved per-product selections work. Total and request action stay visible while settings scroll. Bonus/deposit math is unchanged from release224.
+- Proof:28 isolated browser scenarios at319/360/390/768/1024/1440, light/dark/reduced-motion; short390×320 and actual319×484 checks; arithmetic8/8 including6048 combinations; canonical652pass/9skipped; Brain39/39 and strict125records/263links. Two independent read-only reviews closed all scoped P0/P1/P2. Repeat opening, cross-product return and bfcache keep scope, speed, extras and price; date/quantity errors are visible. Synthetic request prices/basis/pending flags agree with the UI.
+- Real apply→rollback224→forward225 passed exact public readbacks and health/features. Live319/1440 both themes4/4, zero JS errors and zero API writes. User's original browser tab reloaded to `/services.html#main`; visibly new page verified. All owned preview servers and test browsers stopped. Native Safari/physical-device certification and commercial uplift are not claimed.
+- Implementation and evidence: `scripts/salon-services-studio-20260927/`; `docs/brain/evidence/salon-services-studio-20260927/`. Workstream `WS-31d6f266d92745b980afc4a4c855e111`; result `b5a51e9d` integrated through terminal `34179166`. User-dirty `.claude/launch.json` preserved byte-for-byte. Existing owner economics remain in `scripts/salon-services-20260927/ECONOMICS.md`; this visual correction does not change those scenarios.
+- Next: await the owner's visual feedback on the published services page. Rollback is the static pointer to release224 only; never restore the DB.
+
+## Previous verified state — release224
 
 Sequential integration-owner update; historical records below are not current release pointers.
 
