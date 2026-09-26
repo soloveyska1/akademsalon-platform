@@ -1,0 +1,37 @@
+{
+  "route": "/services.html",
+  "baseline": "release224-services-acad423a",
+  "reviewed": "candidate5",
+  "reviewers": [
+    {
+      "name": "services_independent_review",
+      "role": "independent read-only pricing, persistence and request review",
+      "result": "GO",
+      "P0": 0,
+      "P1": 0,
+      "P2": 0,
+      "closed": [
+        "same-product and product-switch reopening retained VIP and express",
+        "persisted pageshow and resume refreshed state plus per-product drafts",
+        "custom part has a visible selected scope",
+        "quantity validation resets with changed scope",
+        "past dates are rejected without overwriting the quote",
+        "bonus calculation, request handoff and keyboard checks passed; no JS errors"
+      ]
+    },
+    {
+      "name": "studio_visual_review",
+      "role": "independent read-only visual and UX review",
+      "result": "GO",
+      "P0": 0,
+      "P1": 0,
+      "P2": 0,
+      "closed": [
+        "319x484 situation click scrolls to catalogue and updated price",
+        "selected direction label fully readable",
+        "390x320 price and CTA fully visible with scrolling settings"
+      ]
+    }
+  ],
+  "final_touch": "candidate6 increases low-height tabs and detail links to minimum44px; same design and state logic, full final matrix rerun"
+}
