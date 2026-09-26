@@ -1,0 +1,288 @@
+{
+  "canonical_sha": "8bd8032c60dff9a2e3894c958dd4aa9d982f6139",
+  "head_sha": "acad423a5bddc210e73b7252020a85ef275fa4e4",
+  "decision": "PROCEED_LOCAL_SNAPSHOT",
+  "counts": {
+    "blocking": 0,
+    "hard": 0,
+    "info": 9,
+    "inspected": 273,
+    "warnings": 68
+  },
+  "blocking": [],
+  "hard": [],
+  "warnings": [
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "claude/mobile-shell:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/admin-analytics-master-parity-release:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/admin-analytics-master-parity:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/analytics-v2-dbip-attribution:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/incident-404-scanner-noise:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/incident-502-vhost-isolation:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/incident-admin-auth-recovery-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/incident-admin-auth-recovery-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/listik-review-studio:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-001-authoritative-contract-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-001-synthetic-e2e:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-analytics-truth-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-analytics-truth-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-analytics-truth-v3:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-analytics-v2-core:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-analytics-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-conversion-package-v1:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-form-engagement-truth-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-new-user-promo-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-new-user-promo-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-new-user-promo-v3:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-practice-price-trust-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-practice-price-trust-v3:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-practice-result-passport-v1:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-practice-support-continuity-v4:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-promo-value-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-prospective-readback-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-006-quote-scope-measurement-v1:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-008-keyboard-action-shelf-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-008-keyboard-action-shelf-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-008-mobile-action-reachability-v1:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-008-mobile-action-reachability-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-008-private-checkpoint-v1:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-008-september-entry:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out-009-practice-back-parity:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out001-installer-migrations-layout:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out001-installer-parent-layout:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out001-table-xinfo-links-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/out001-table-xinfo-links:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release103-production:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release157-analytics-v2-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release157-analytics-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release158-analytics-master-parity:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release159-quote-scope-measurement-v2:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release159-quote-scope-measurement:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release160-practice-price-trust:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release161-practice-continuity:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release162-practice-passport:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release163-practice-dock:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release164-practice-back-parity:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release165-keyboard-shelf:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release166-private-checkpoint:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release168-first-order-promo:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release169-promo-value:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release171-economic-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release174-out001-final:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release174-out001-synthetic-v2:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release174-out001-synthetic-v3:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/release174-out001-synthetic:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-comfort-20260924:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-ease-20260924:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-form-polish-20260924:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-growth-overlay-20260920:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-reading-20260924:abandoned"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-reading-v2-20260924:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-return-20260924:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/salon-seo-overlay-20260911:integrated"
+    },
+    {
+      "code": "TERMINAL_WORKTREE_PRESENT",
+      "subject": "codex/september-economic-safety:integrated"
+    }
+  ]
+}

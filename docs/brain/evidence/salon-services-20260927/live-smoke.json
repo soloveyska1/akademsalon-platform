@@ -1,0 +1,72 @@
+{
+  "at": "2026-09-26T22:53:23.370Z",
+  "route": "https://akademsalon.ru/services.html",
+  "browser": "Chrome",
+  "network": "live read-only; all non-GET/HEAD blocked",
+  "results": [
+    {
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditing": [
+        9000,
+        12500
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditing": [
+        9000,
+        12500
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditing": [
+        9000,
+        12500
+      ]
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditing": [
+        9000,
+        12500
+      ]
+    }
+  ]
+}

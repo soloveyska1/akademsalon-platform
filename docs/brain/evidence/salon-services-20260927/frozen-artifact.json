@@ -1,0 +1,19 @@
+{
+  "source_commit": "acad423a5bddc210e73b7252020a85ef275fa4e4",
+  "files": 530,
+  "changed": [
+    "assets/css/salon-services-estimate.css",
+    "assets/js/salon-catalogue.js",
+    "assets/js/salon-estimate-benefits.js",
+    "assets/js/salon-estimate-order.js",
+    "assets/js/salon-estimate.js",
+    "assets/js/salon-order.js",
+    "configurator.html",
+    "services.html"
+  ],
+  "tested_candidate": "candidate8",
+  "hash_parity": true,
+  "archive_sha256": "ac1b2384b416c00e59db3cacef2588acb3ab3181445568641007d214423c31f8",
+  "expected_release": "release223-reading-9876e933",
+  "release": "release224-services-acad423a"
+}
