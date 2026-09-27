@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-b18a2e32052e449aa198dbdb417819b4",
   "slug": "salon-intake-studio-20260927",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-intake-studio-20260927",
   "base_sha": "5cf4da85e581b890c63f3d00adc7b3764d828441",
-  "result_sha": null,
+  "result_sha": "99a956481c31faf025d27f46bb7d6c3b55924f9d",
   "outcome_ids": [
     "OUT-001"
   ],
@@ -37,6 +37,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "7b5091b63b9e377fa52f4faa48444434afdb4edf7079fe9f9bcd881f44db821f"
 }
