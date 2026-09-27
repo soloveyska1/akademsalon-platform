@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-27T00:46:10.429306+00:00",
+  "browser": "Original user IAB tab1",
+  "url": "https://akademsalon.ru/services.html#main",
+  "viewport": {
+    "width": 319,
+    "height": 484
+  },
+  "theme": "light",
+  "calendar": {
+    "open": true,
+    "x": 1,
+    "y": 8,
+    "width": 317,
+    "height": 466
+  },
+  "selectedDate": "",
+  "observedAssetVersions": {
+    "css": "6d647a699a7b8e93",
+    "js": "b7cd4ea4b9b9467f"
+  },
+  "visual": "Screenshot inspected: Salon violet controls, paper surface, disabled past dates, today dot, all controls fit. Left open for owner.",
+  "cleanup": "Agent preview tab4 closed; preview process13195 terminated and session exit143 observed; test browsers closed by finally; viewport reset called."
+}

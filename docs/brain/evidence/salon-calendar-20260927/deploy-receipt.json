@@ -1,0 +1,59 @@
+{
+  "release": "release227-calendar-97e3cc13",
+  "baseline_release": "release226-clarity-376cd066",
+  "source_commit": "97e3cc13a023fdf6a625a7bf040d5cde05cb1cad",
+  "old_dist": "release203-09ccfca4",
+  "dist_preserved": true,
+  "database_changed": false,
+  "backend_changed": false,
+  "steps": [
+    {
+      "action": "apply",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/assets/css/salon-calendar.css",
+        "/assets/js/salon-calendar.js",
+        "/configurator.html",
+        "/services.html",
+        "/services.html",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js",
+        "/manifest.webmanifest"
+      ],
+      "canonical_redirects_verified": {}
+    },
+    {
+      "action": "rollback",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js"
+      ],
+      "canonical_redirects_verified": {}
+    },
+    {
+      "action": "forward",
+      "health_ok": true,
+      "pay_online": true,
+      "files_verified": [
+        "/assets/css/salon-calendar.css",
+        "/assets/js/salon-calendar.js",
+        "/configurator.html",
+        "/services.html",
+        "/services.html",
+        "/configurator.html",
+        "/dashboard.html",
+        "/sw.js",
+        "/manifest.webmanifest"
+      ],
+      "canonical_redirects_verified": {}
+    }
+  ],
+  "final_files": 533,
+  "changed_files": 4
+}

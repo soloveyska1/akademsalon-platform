@@ -1,0 +1,60 @@
+{
+  "at": "2026-09-27T00:44:59.560Z",
+  "route": "https://akademsalon.ru/services.html",
+  "browser": "Chrome",
+  "network": "live read-only; all non-GET/HEAD blocked",
+  "results": [
+    {
+      "width": 319,
+      "theme": "light",
+      "status": "PASS",
+      "target": "2026-09-28",
+      "total": "20 500–28 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/salon-calendar.css?v=calendar-20260927&r=6d647a699a7b8e93",
+        "https://akademsalon.ru/assets/js/salon-calendar.js?v=calendar-20260927&r=b7cd4ea4b9b9467f"
+      ],
+      "errors": [],
+      "mutations": []
+    },
+    {
+      "width": 319,
+      "theme": "dark",
+      "status": "PASS",
+      "target": "2026-09-28",
+      "total": "20 500–28 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/salon-calendar.css?v=calendar-20260927&r=6d647a699a7b8e93",
+        "https://akademsalon.ru/assets/js/salon-calendar.js?v=calendar-20260927&r=b7cd4ea4b9b9467f"
+      ],
+      "errors": [],
+      "mutations": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "target": "2026-09-28",
+      "total": "20 500–28 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/salon-calendar.css?v=calendar-20260927&r=6d647a699a7b8e93",
+        "https://akademsalon.ru/assets/js/salon-calendar.js?v=calendar-20260927&r=b7cd4ea4b9b9467f"
+      ],
+      "errors": [],
+      "mutations": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "target": "2026-09-28",
+      "total": "20 500–28 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/salon-calendar.css?v=calendar-20260927&r=6d647a699a7b8e93",
+        "https://akademsalon.ru/assets/js/salon-calendar.js?v=calendar-20260927&r=b7cd4ea4b9b9467f"
+      ],
+      "errors": [],
+      "mutations": []
+    }
+  ]
+}
