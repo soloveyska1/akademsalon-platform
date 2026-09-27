@@ -1,0 +1,20 @@
+{
+  "canonical_sha": "5cf4da85e581b890c63f3d00adc7b3764d828441",
+  "head_sha": "dd37adadf940ad20b28fa8627976c35271b9e072",
+  "counts": {
+    "blocking": 0,
+    "hard": 0,
+    "info": 9,
+    "inspected": 281,
+    "warnings": 72
+  },
+  "decision": "PROCEED_LOCAL_SNAPSHOT",
+  "snapshot_digest": "26e71d7610b05c15ebafdd1cc68b0df2eeb5de3794c31586e62ad325cd5b653d",
+  "manifest_id": "WS-b18a2e32052e449aa198dbdb417819b4",
+  "warning_policy": "allow-explicit",
+  "terminal_commit": "8b954eae724d81256f6c27105a14a08721287d41",
+  "frozen_result": "99a956481c31faf025d27f46bb7d6c3b55924f9d",
+  "fresh_origin_result_ancestry_verified": true,
+  "owner_warning_decision": "accept only72 TERMINAL_WORKTREE_PRESENT; zero hard conflicts",
+  "user_dirty_launch_sha256": "9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5"
+}

@@ -1,6 +1,17 @@
 # Current handoff
 
-## Verified current state — 27 September 2026, branded calendar
+## Verified current state — 27 September 2026, intake form
+
+Sequential integration-owner update after the owner requested a more comfortable requirements/contact/optional fields/consents area.
+
+- Live current is `release228-intake-da171f06`, clean implementation `da171f06d5bbae3ada221fa5dde3fe997ae31b10`. Exact release227 overlay533→535 files, four changed public paths. Reuse the pinned live baseline; never rebuild from stale root HTML. Price/benefit/calendar/order/auth/backend/database bytes remain exact; compatibility dist stays release203.
+- Requirements now have a compact optional helper disclosure: five prompts append headings without overwriting text, duplicates receive focus, Undo is safe, maxlength and retry freeze hold. Contact cards show the selected method; format/mismatch guidance stays synchronized with legacy validation and raw values remain intact. Optional name is separate; promo/certificate disclose that benefit awaits confirmation. Larger consent cards preserve exact legal text/links and unchecked state. No new personal storage, telemetry, prices or monetary obligation.
+- Proof:19/19 studio scenarios across319/360/390/768/1024/1440 light/dark, plus2/2 affected final contact cases; existing comfort9/9, form-polish9/9, calendar25/25, Node652pass/9existing skips, Brain39/39. Independent visual and functional GO; all observed scoped P0/P1/P2 closed. Native Safari, physical devices, screen-reader certification and conversion uplift are not claimed.
+- All535 clean rebuild hashes match the tested artifact. Real apply→rollback227→forward228 and public static/health/features readbacks pass. Live Chrome319/1440 light/dark4/4, JSerrors0 and attempted APIwrites0. Price/date survive services→intake; helpers/contact/codes verified without real submission. Original IAB follows its existing quote into the updated form with exact loaded asset hashes; no user text entered or submitted. Temporary preview server/tab and test browsers closed; viewport reset.
+- Source: `scripts/salon-intake-studio-20260927/`; evidence: `docs/brain/evidence/salon-intake-studio-20260927/`. Workstream `WS-b18a2e32052e449aa198dbdb417819b4`, frozen result `99a956481c31faf025d27f46bb7d6c3b55924f9d`, terminal `8b954eae`. Fresh-fetch integration scan hard0;72 existing terminal-worktree warnings deliberately accepted by integration owner. Original dirty `.claude/launch.json` retains SHA256 `9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5` and remains excluded.
+- Next: collect owner feedback on the published intake layout. Existing owner hourly economics remain in `scripts/salon-services-20260927/ECONOMICS.md`. Rollback is only the static current pointer to release227-calendar-97e3cc13; never restore the database for this UI change.
+
+## Previous verified state — release227 branded calendar
 
 Sequential integration-owner update after the owner requested a calendar matching the Salon design.
 
