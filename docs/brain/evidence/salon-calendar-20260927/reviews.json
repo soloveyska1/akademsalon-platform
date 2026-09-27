@@ -1,0 +1,23 @@
+{
+  "functional": {
+    "decision": "GO",
+    "p0": 0,
+    "p1": 0,
+    "p2": 0,
+    "evidence": "functional-final/results.json",
+    "scope": "Independent candidate4 resize no-selection/saved and keyboard month navigation390/1440; initial candidate2 base journey8/8"
+  },
+  "visual": {
+    "decision": "GO",
+    "p0": 0,
+    "p1": 0,
+    "p2": 0,
+    "evidence": "visual-final/observations.json",
+    "scope": "Initial9-profile calendar; candidate3 stable-height390both/319x484; candidate4 desktop1440dark keyboard delta"
+  },
+  "closedFindings": [
+    "Variable mode height and repeated anchor measurement moved popup: fixed identical mode area and position on open/resize only",
+    "Resize selected hidden-ancestor resume control: use rendered visibility before focus"
+  ],
+  "root": "25/25 final deterministic calendar cases; independent observations do not replace tests"
+}

@@ -1,0 +1,32 @@
+{
+  "outcome": "OUT-007",
+  "base": "ad7b75ced04bb8a2e2ea1fc3cb518e9ea3f58ebf",
+  "candidate": "/tmp/salon-calendar-20260927/candidate4",
+  "routes": [
+    "/services.html",
+    "/configurator.html?composition=1"
+  ],
+  "browser": "Chrome via installed Playwright",
+  "viewportWidths": [
+    319,
+    360,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "state": "fresh isolated sessions, synthetic fixtures, no actual API mutations",
+  "expected": "Branded stable-position calendar, >=44px date targets, preserved date/quote/payload, no overflow or JS error",
+  "actual": "25/25 final calendar checks PASS; 51/51 existing services checks PASS on candidate2 before only calendar positioning/focus delta",
+  "publicDelta": [
+    "assets/js/salon-calendar.js",
+    "assets/css/salon-calendar.css",
+    "services.html",
+    "configurator.html"
+  ],
+  "sourceBinding": "final committed rebuild must match tested-build-manifest.json files exactly"
+}

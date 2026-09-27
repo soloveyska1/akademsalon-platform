@@ -1,0 +1,299 @@
+[
+  {
+    "width": 319,
+    "height": 844,
+    "theme": "light",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 1,
+        "y": 8,
+        "width": 317,
+        "height": 466,
+        "top": 8,
+        "right": 318,
+        "bottom": 474,
+        "left": 1
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 319,
+    "height": 844,
+    "theme": "dark",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 1,
+        "y": 8,
+        "width": 317,
+        "height": 466,
+        "top": 8,
+        "right": 318,
+        "bottom": 474,
+        "left": 1
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 11,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 371,
+        "bottom": 474,
+        "left": 11
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 11,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 371,
+        "bottom": 474,
+        "left": 11
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 768,
+    "height": 844,
+    "theme": "light",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 309,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 669,
+        "bottom": 474,
+        "left": 309
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 768,
+    "height": 844,
+    "theme": "dark",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 309,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 669,
+        "bottom": 474,
+        "left": 309
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "height": 844,
+    "theme": "light",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 958,
+        "y": 292.140625,
+        "width": 360,
+        "height": 466,
+        "top": 292.140625,
+        "right": 1318,
+        "bottom": 758.140625,
+        "left": 958
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "height": 844,
+    "theme": "dark",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 958,
+        "y": 292.140625,
+        "width": 360,
+        "height": 466,
+        "top": 292.140625,
+        "right": 1318,
+        "bottom": 758.140625,
+        "left": 958
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 319,
+    "height": 484,
+    "theme": "light",
+    "status": "PASS",
+    "target": "2027-05-15",
+    "initial": {
+      "box": {
+        "x": 1,
+        "y": 8,
+        "width": 317,
+        "height": 466,
+        "top": 8,
+        "right": 318,
+        "bottom": 474,
+        "left": 1
+      },
+      "today": "2026-09-27",
+      "disabled": 27,
+      "overflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "errors": []
+  }
+]

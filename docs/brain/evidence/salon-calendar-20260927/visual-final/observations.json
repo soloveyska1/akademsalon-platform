@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "viewport": "1440x844 dark",
+  "action": "Shift+Tab twice, Space to months, Space to days",
+  "before": {
+    "x": 958,
+    "y": 24.140625,
+    "width": 360,
+    "height": 466,
+    "top": 24.140625,
+    "right": 1318,
+    "bottom": 490.140625,
+    "left": 958
+  },
+  "months": {
+    "x": 958,
+    "y": 24.140625,
+    "width": 360,
+    "height": 466,
+    "top": 24.140625,
+    "right": 1318,
+    "bottom": 490.140625,
+    "left": 958
+  },
+  "days": {
+    "x": 958,
+    "y": 24.140625,
+    "width": 360,
+    "height": 466,
+    "top": 24.140625,
+    "right": 1318,
+    "bottom": 490.140625,
+    "left": 958
+  },
+  "api": [
+    "GET"
+  ]
+}

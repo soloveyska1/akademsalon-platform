@@ -1,0 +1,114 @@
+[
+  {
+    "name": "resize-desktop-to-mobile-no-selection",
+    "width": 1440,
+    "status": "PASS",
+    "saved": false,
+    "dateBefore": "",
+    "focus": {
+      "tag": "BUTTON",
+      "id": "",
+      "classes": "sv-row",
+      "rect": {
+        "x": 30,
+        "y": 472.109375,
+        "width": 330,
+        "height": 123.390625,
+        "top": 472.109375,
+        "right": 360,
+        "bottom": 595.5,
+        "left": 30
+      },
+      "calendar": false
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "resize-desktop-to-mobile-saved",
+    "width": 1440,
+    "status": "PASS",
+    "saved": true,
+    "dateBefore": "2026-10-27",
+    "focus": {
+      "tag": "BUTTON",
+      "id": "cat-resume-open",
+      "classes": "",
+      "rect": {
+        "x": 40,
+        "y": 479.109375,
+        "width": 165.453125,
+        "height": 44,
+        "top": 479.109375,
+        "right": 205.453125,
+        "bottom": 523.109375,
+        "left": 40
+      },
+      "calendar": false
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "month-mode-keyboard-390",
+    "width": 390,
+    "status": "PASS",
+    "daysBox": {
+      "x": 11,
+      "y": 8,
+      "width": 360,
+      "height": 466
+    },
+    "monthsBox": {
+      "x": 11,
+      "y": 8,
+      "width": 360,
+      "height": 466
+    },
+    "yearChangedTo": 2027,
+    "dateUnchanged": "",
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "month-mode-keyboard-1440",
+    "width": 1440,
+    "status": "PASS",
+    "daysBox": {
+      "x": 958,
+      "y": 24.140625,
+      "width": 360,
+      "height": 466
+    },
+    "monthsBox": {
+      "x": 958,
+      "y": 24.140625,
+      "width": 360,
+      "height": 466
+    },
+    "yearChangedTo": 2027,
+    "dateUnchanged": "",
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  }
+]

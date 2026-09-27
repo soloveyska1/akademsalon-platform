@@ -1,0 +1,227 @@
+[
+  {
+    "tag": "390x844-light",
+    "status": "PASS",
+    "before": {
+      "#salon-calendar": {
+        "x": 11,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 371,
+        "bottom": 474,
+        "left": 11
+      },
+      ".sc-nav": {
+        "x": 28,
+        "y": 65,
+        "width": 326,
+        "height": 44,
+        "top": 65,
+        "right": 354,
+        "bottom": 109,
+        "left": 28
+      },
+      ".sc-footer": {
+        "x": 28,
+        "y": 415,
+        "width": 326,
+        "height": 50,
+        "top": 415,
+        "right": 354,
+        "bottom": 465,
+        "left": 28
+      }
+    },
+    "after": {
+      "#salon-calendar": {
+        "x": 11,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 371,
+        "bottom": 474,
+        "left": 11
+      },
+      ".sc-nav": {
+        "x": 28,
+        "y": 65,
+        "width": 326,
+        "height": 44,
+        "top": 65,
+        "right": 354,
+        "bottom": 109,
+        "left": 28
+      },
+      ".sc-footer": {
+        "x": 28,
+        "y": 415,
+        "width": 326,
+        "height": 50,
+        "top": 415,
+        "right": 354,
+        "bottom": 465,
+        "left": 28
+      }
+    },
+    "target": "2027-05-15",
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "tag": "390x844-dark",
+    "status": "PASS",
+    "before": {
+      "#salon-calendar": {
+        "x": 11,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 371,
+        "bottom": 474,
+        "left": 11
+      },
+      ".sc-nav": {
+        "x": 28,
+        "y": 65,
+        "width": 326,
+        "height": 44,
+        "top": 65,
+        "right": 354,
+        "bottom": 109,
+        "left": 28
+      },
+      ".sc-footer": {
+        "x": 28,
+        "y": 415,
+        "width": 326,
+        "height": 50,
+        "top": 415,
+        "right": 354,
+        "bottom": 465,
+        "left": 28
+      }
+    },
+    "after": {
+      "#salon-calendar": {
+        "x": 11,
+        "y": 8,
+        "width": 360,
+        "height": 466,
+        "top": 8,
+        "right": 371,
+        "bottom": 474,
+        "left": 11
+      },
+      ".sc-nav": {
+        "x": 28,
+        "y": 65,
+        "width": 326,
+        "height": 44,
+        "top": 65,
+        "right": 354,
+        "bottom": 109,
+        "left": 28
+      },
+      ".sc-footer": {
+        "x": 28,
+        "y": 415,
+        "width": 326,
+        "height": 50,
+        "top": 415,
+        "right": 354,
+        "bottom": 465,
+        "left": 28
+      }
+    },
+    "target": "2027-05-15",
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "tag": "319x484-light",
+    "status": "PASS",
+    "before": {
+      "#salon-calendar": {
+        "x": 1,
+        "y": 8,
+        "width": 317,
+        "height": 466,
+        "top": 8,
+        "right": 318,
+        "bottom": 474,
+        "left": 1
+      },
+      ".sc-nav": {
+        "x": 5,
+        "y": 65,
+        "width": 309,
+        "height": 44,
+        "top": 65,
+        "right": 314,
+        "bottom": 109,
+        "left": 5
+      },
+      ".sc-footer": {
+        "x": 12,
+        "y": 415,
+        "width": 295,
+        "height": 50,
+        "top": 415,
+        "right": 307,
+        "bottom": 465,
+        "left": 12
+      }
+    },
+    "after": {
+      "#salon-calendar": {
+        "x": 1,
+        "y": 8,
+        "width": 317,
+        "height": 466,
+        "top": 8,
+        "right": 318,
+        "bottom": 474,
+        "left": 1
+      },
+      ".sc-nav": {
+        "x": 5,
+        "y": 65,
+        "width": 309,
+        "height": 44,
+        "top": 65,
+        "right": 314,
+        "bottom": 109,
+        "left": 5
+      },
+      ".sc-footer": {
+        "x": 12,
+        "y": 415,
+        "width": 295,
+        "height": 50,
+        "top": 415,
+        "right": 307,
+        "bottom": 465,
+        "left": 12
+      }
+    },
+    "target": "2027-05-15",
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  }
+]

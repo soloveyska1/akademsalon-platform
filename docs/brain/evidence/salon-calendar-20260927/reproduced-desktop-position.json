@@ -1,0 +1,78 @@
+[
+  {
+    "stage": "opened",
+    "calendar": {
+      "x": 958,
+      "y": 24.140625,
+      "width": 360,
+      "height": 466
+    },
+    "trigger": {
+      "x": 1144.5,
+      "y": 765.140625,
+      "width": 173.5,
+      "height": 48
+    },
+    "scroll": {
+      "body": 1,
+      "editor": 0
+    }
+  },
+  {
+    "stage": "next-focused",
+    "calendar": {
+      "x": 958,
+      "y": 24.140625,
+      "width": 360,
+      "height": 466
+    },
+    "trigger": {
+      "x": 1144.5,
+      "y": 766.140625,
+      "width": 173.5,
+      "height": 48
+    },
+    "scroll": {
+      "body": 0,
+      "editor": 0
+    }
+  },
+  {
+    "stage": "period-focused",
+    "calendar": {
+      "x": 958,
+      "y": 24.140625,
+      "width": 360,
+      "height": 466
+    },
+    "trigger": {
+      "x": 1144.5,
+      "y": 766.140625,
+      "width": 173.5,
+      "height": 48
+    },
+    "scroll": {
+      "body": 0,
+      "editor": 0
+    }
+  },
+  {
+    "stage": "month-grid",
+    "calendar": {
+      "x": 958,
+      "y": 292.140625,
+      "width": 360,
+      "height": 466
+    },
+    "trigger": {
+      "x": 1144.5,
+      "y": 766.140625,
+      "width": 173.5,
+      "height": 48
+    },
+    "scroll": {
+      "body": 0,
+      "editor": 0
+    }
+  }
+]

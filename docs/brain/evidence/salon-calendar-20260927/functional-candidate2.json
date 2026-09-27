@@ -1,0 +1,219 @@
+[
+  {
+    "name": "choose-clear-quote-and-form-handoff",
+    "width": 390,
+    "status": "PASS",
+    "base": "14 000–19 500 ₽",
+    "target": "2026-10-11",
+    "total": "16 000–22 500 ₽",
+    "cleared": "14 000–19 500 ₽",
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "min-disabled-dates-and-keyboard-boundary",
+    "width": 390,
+    "status": "PASS",
+    "min": "2026-09-27",
+    "disabledMonths": 8,
+    "disabledDates": 27,
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "leap-month-end-year-and-nested-keyboard",
+    "width": 390,
+    "status": "PASS",
+    "selected": "2028-02-29",
+    "focus": [
+      "sc-today",
+      "sc-clear",
+      "sc-close",
+      "sc-prev sc-arrow",
+      "sc-period",
+      "sc-next sc-arrow",
+      "sc-day",
+      "sc-next sc-arrow",
+      "sc-period",
+      "sc-prev sc-arrow",
+      "sc-close",
+      "sc-clear",
+      "sc-today",
+      "sc-day"
+    ],
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "resize-open-calendar-with-selection",
+    "width": 390,
+    "status": "PASS",
+    "shortRect": {
+      "x": 11,
+      "y": 8,
+      "width": 360,
+      "height": 384
+    },
+    "state": {
+      "calendar": true,
+      "parent": false,
+      "active": "",
+      "activeTag": "BUTTON",
+      "rect": {
+        "x": 943.421875,
+        "y": 275,
+        "width": 46.578125,
+        "height": 44,
+        "top": 275,
+        "right": 990,
+        "bottom": 319,
+        "left": 943.421875
+      }
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "choose-clear-quote-and-form-handoff",
+    "width": 1440,
+    "status": "PASS",
+    "base": "14 000–19 500 ₽",
+    "target": "2026-10-11",
+    "total": "16 000–22 500 ₽",
+    "cleared": "14 000–19 500 ₽",
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "min-disabled-dates-and-keyboard-boundary",
+    "width": 1440,
+    "status": "PASS",
+    "min": "2026-09-27",
+    "disabledMonths": 8,
+    "disabledDates": 27,
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "leap-month-end-year-and-nested-keyboard",
+    "width": 1440,
+    "status": "PASS",
+    "selected": "2028-02-29",
+    "focus": [
+      "sc-today",
+      "sc-clear",
+      "sc-close",
+      "sc-prev sc-arrow",
+      "sc-period",
+      "sc-next sc-arrow",
+      "sc-day",
+      "sc-next sc-arrow",
+      "sc-period",
+      "sc-prev sc-arrow",
+      "sc-close",
+      "sc-clear",
+      "sc-today",
+      "sc-day"
+    ],
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "resize-open-calendar-with-selection",
+    "width": 1440,
+    "status": "PASS",
+    "shortRect": {
+      "x": 958,
+      "y": 8,
+      "width": 360,
+      "height": 384
+    },
+    "state": {
+      "calendar": false,
+      "parent": false,
+      "active": "cat-resume-open",
+      "activeTag": "BUTTON",
+      "rect": {
+        "x": 40,
+        "y": 211.109375,
+        "width": 165.453125,
+        "height": 44,
+        "top": 211.109375,
+        "right": 205.453125,
+        "bottom": 255.109375,
+        "left": 40
+      }
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "resize-desktop-example-without-saved-selection",
+    "width": 1440,
+    "status": "FAIL",
+    "state": {
+      "calendar": false,
+      "parent": false,
+      "active": "",
+      "tag": "BODY",
+      "visible": true,
+      "resumeHidden": true
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ],
+    "error": "Focus becomes BODY instead of a visible control; first Tab stays BODY and second restarts at skip-link"
+  }
+]
