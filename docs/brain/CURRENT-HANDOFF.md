@@ -1,6 +1,18 @@
 # Current handoff
 
-## Verified current state — 27 September 2026, services studio
+## Verified current state — 27 September 2026, services clarity
+
+Sequential integration-owner update after the owner again rejected release225 for glued headings and insufficient UX quality.
+
+- Live current is `release226-clarity-376cd066`, implementation `376cd06652302b789f8296b7c9502c6d75b34c93`. Exact release225 overlay changes six paths;531 public files. Services HTML/controller/style plus estimate-only request UI/style and cache references. Authoritative tariffs, calculation/benefit model, serializer, backend, DB, consent, auth and billing remain byte-identical. Compatibility dist remains release203. Build only from the pinned live baseline, never stale root HTML.
+- The first screen now uses a short readable title and compact task choices. All section headings are complete plain text; the reported mixed-font whitespace defect is removed. Benefit cards have separated surfaces, larger useful descriptions and explicit actions. Fragment prices disclose the five-page basis before selection; VIP shows its additional cost and coordination terms before selection.
+- Catalog browsing no longer overwrites the saved order. Choosing another scope retains speed/VIP/extras. Search intent opens the exact priced unit even under another situation. The defense bundle adds to the chosen work; plan recommendations can be applied and preserve keyboard focus. Both intake summaries visibly carry the same preliminary benefit/deposit amount; long amounts fit their actual receipt width.
+- Verified:48/48 isolated browser scenarios on the functional candidate, six focused final CSS/handoff tests on319/390/1440 including candidate-dissertation ranges, full service/lower-section matrix319/360/390/768/1024/1440 light/dark, short dialogs and keyboard/reduced-motion. Node652pass/9existing skips, pricing8/8 with6048 combinations, Brain39/39 and strict125records/263links. Two independent reviewers closed all scoped P0/P1/P2. Source rebuilt after implementation commit matches every tested public hash.
+- Real apply→rollback225→forward226 passes static readback and health/features. Live Chrome319/1440 light/dark4/4, JSerrors0, APIwrites0. Original user IAB tab reloaded; actual clarity CSS/JS and the new benefit heading visually verified. Preview3049 stopped, agent preview and test browsers closed, viewport override reset. Native Safari, physical devices, real text zoom, screen-reader certification and conversion uplift are not claimed.
+- Implementation/reproduction: `scripts/salon-services-clarity-20260927/`. Evidence: `docs/brain/evidence/salon-services-clarity-20260927/`. Workstream `WS-0fed20d468844016ab4ece6ded500205`, result `2765b7ef`, integrated terminal `497ecd98`. Fresh integration scan hard0;70 existing terminal-worktree warnings deliberately accepted by integration owner. Original user-dirty `.claude/launch.json` hash preserved: `9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5`.
+- Existing owner hourly economics remain in `scripts/salon-services-20260927/ECONOMICS.md`. No new monetary obligation or discount was added. Next: collect the owner's feedback on the published services page. Static rollback target is release225-studio-a45b389e; never restore the database for this UI release.
+
+## Previous verified state — release225 services studio
 
 Sequential integration-owner update after the user rejected the release224 visual result.
 

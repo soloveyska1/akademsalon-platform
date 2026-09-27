@@ -11,4 +11,5 @@
 - Published: release226-clarity-376cd066, source376cd06652302b789f8296b7c9502c6d75b34c93, exact531-file tested inventory. Real apply/rollback225/forward226 and live319/1440 light/dark4/4 pass. Same benefit total appears in services and both intake summaries. Original browser loaded-asset/visual verification complete.
 - Cleanup: all owned test browsers and preview tab closed, local3049 server stopped, viewport reset. Original user-dirty launch.json hash remains9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5.
 - Limits: no native Safari, physical-device, real text zoom or screen-reader certification; no conversion/revenue uplift claim. No outstanding scoped P0/P1/P2. Existing owner economics and tariffs unchanged.
-- Next: submit verified workstream and integrate after a fresh remote fetch and conflict scan; integration owner then records the published outcome in CURRENT-HANDOFF.
+- Integrated: frozen verified result2765b7ef is an ancestor of freshly fetched origin/main; tool-generated terminal revision497ecd98 is pushed on main and the task branch. Integration-owner CURRENT-HANDOFF updated sequentially. Final scan hard0 with70 existing terminal-worktree warnings explicitly accepted.
+- Next: collect the owner's visual feedback on the published services page. Rollback target is static release225 only; do not restore the DB.
