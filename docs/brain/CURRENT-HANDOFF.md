@@ -1,6 +1,18 @@
 # Current handoff
 
-## Verified current state — 27 September 2026, services clarity
+## Verified current state — 27 September 2026, branded calendar
+
+Sequential integration-owner update after the owner requested a calendar matching the Salon design.
+
+- Live current is `release227-calendar-97e3cc13`, implementation `97e3cc13a023fdf6a625a7bf040d5cde05cb1cad`. Exact release226 baseline531→533 files; only new calendar CSS/JS and hash-versioned references in services/configurator HTML. Authoritative native date input, tariff/benefit/estimate/serializer, backend, DB, consent and auth preserved. Compatibility dist remains release203. Build from the pinned live baseline, never stale root HTML.
+- The date field opens a Salon-themed dialog: Monday-first grid, violet selected day, separate today marker, disabled past dates from existing bounds, direct month/year selection, Today/Clear and44px targets. It works above the mobile quote sheet and on the request form. Keyboard arrows, week/month/year navigation, Tab, Escape and focus restoration are verified. Mode changes keep popup/header/footer stationary; responsive changes return focus to a visible work/resume control.
+- Proof: final25/25 isolated calendar cases across319/360/390/768/1024/1440 light/dark, short319x484/319x320, leap-year/month-end, invalid repair, native fallback, quote/handoff and synthetic payload. Existing services51/51 before focused calendar positioning/focus delta; all changed behaviors retested. Canonical652pass/9existing skips, pricing8/8 including6048 combinations, Brain39/39. Two independent final GO reviews; no scoped P0/P1/P2 remains.
+- Clean committed rebuild matches all533 tested hashes. Actual apply→rollback226→forward227 and public readbacks/health/features PASS. Live read-only Chrome319/1440 both themes4/4, JSerrors0/APIwrites0, chosen date and price equal in request. Original IAB tab reloaded and exact new assets/calendar visually confirmed; calendar left open for owner. Owned preview server/tab and test browsers closed; viewport reset. Native Safari, physical devices, screen-reader certification and commercial uplift are not claimed.
+- Source/reproduction: `scripts/salon-calendar-20260927/`; evidence: `docs/brain/evidence/salon-calendar-20260927/`. Workstream `WS-49fc00e1aa004ae2bfe6d8218425c3f0`, frozen result `b76fe623`, integrated terminal `b9322fa8`. Fresh-fetch conflict scan hard0;71 existing terminal-worktree warnings deliberately accepted by integration owner. User-dirty `.claude/launch.json` retains SHA256 `9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5` and is excluded.
+- Next: collect owner feedback on the published calendar. Existing hourly economics remain in `scripts/salon-services-20260927/ECONOMICS.md`. Rollback is the static current pointer to release226-clarity-376cd066 only; never restore the database for this UI release.
+
+
+## Previous verified state — release226 services clarity
 
 Sequential integration-owner update after the owner again rejected release225 for glued headings and insufficient UX quality.
 

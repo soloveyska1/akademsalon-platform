@@ -1,0 +1,32 @@
+{
+  "strict": {
+    "canonical_sha": "ad7b75ced04bb8a2e2ea1fc3cb518e9ea3f58ebf",
+    "head_sha": "2994b5c0a2ce98e68af3316de81645fd8aeb427d",
+    "counts": {
+      "blocking": 71,
+      "hard": 0,
+      "info": 9,
+      "inspected": 279,
+      "warnings": 71
+    },
+    "snapshot_digest": "163cc1e15398449002fb189b0f8aac2c11fa58a991841ff00b8f1bf8cc3cb112",
+    "decision": "BLOCKED"
+  },
+  "approved": {
+    "canonical_sha": "ad7b75ced04bb8a2e2ea1fc3cb518e9ea3f58ebf",
+    "head_sha": "2994b5c0a2ce98e68af3316de81645fd8aeb427d",
+    "counts": {
+      "blocking": 0,
+      "hard": 0,
+      "info": 9,
+      "inspected": 279,
+      "warnings": 71
+    },
+    "snapshot_digest": "163cc1e15398449002fb189b0f8aac2c11fa58a991841ff00b8f1bf8cc3cb112",
+    "decision": "PROCEED_LOCAL_SNAPSHOT"
+  },
+  "integrationOwnerDecision": "accept71 terminal worktrees only; hard0; no active/dirty overlap",
+  "result": "b76fe623",
+  "terminal": "b9322fa8",
+  "rootUserDirtyPreserved": true
+}
