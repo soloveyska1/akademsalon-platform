@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-49fc00e1aa004ae2bfe6d8218425c3f0",
   "slug": "salon-calendar-20260927",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-calendar-20260927",
   "base_sha": "ad7b75ced04bb8a2e2ea1fc3cb518e9ea3f58ebf",
-  "result_sha": null,
+  "result_sha": "b76fe623c5219574e98e2dba445ba9e0c279573b",
   "outcome_ids": [
     "OUT-007"
   ],
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "5829a7cc1b7bf0487ebb1abf60f285f36fbca8a0e4dfb64f4ed41112202599d5"
 }
