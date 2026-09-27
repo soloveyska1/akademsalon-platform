@@ -1,0 +1,76 @@
+{
+  "at": "2026-09-27T00:15:56.533Z",
+  "route": "https://akademsalon.ru/services.html",
+  "browser": "Chrome",
+  "network": "live read-only; all non-GET/HEAD blocked",
+  "results": [
+    {
+      "width": 319,
+      "theme": "light",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditingWith1000Points": [
+        8000,
+        11500
+      ],
+      "benefitHandoff": "28 500–34 000 ₽"
+    },
+    {
+      "width": 319,
+      "theme": "dark",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditingWith1000Points": [
+        8000,
+        11500
+      ],
+      "benefitHandoff": "28 500–34 000 ₽"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditingWith1000Points": [
+        8000,
+        11500
+      ],
+      "benefitHandoff": "28 500–34 000 ₽"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "errors": [],
+      "mutations": [],
+      "prices": "12 numeric",
+      "vip": [
+        29500,
+        35000
+      ],
+      "chapterEditingWith1000Points": [
+        8000,
+        11500
+      ],
+      "benefitHandoff": "28 500–34 000 ₽"
+    }
+  ]
+}

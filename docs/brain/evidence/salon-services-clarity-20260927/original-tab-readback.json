@@ -1,0 +1,11 @@
+{
+  "at": "2026-09-27T00:18:17.204504+00:00",
+  "url": "https://akademsalon.ru/services.html#main",
+  "heading": "\u0411\u043e\u043b\u044c\u0448\u0435 \u043f\u043e\u043b\u044c\u0437\u044b \u043e\u0442 \u0437\u0430\u043a\u0430\u0437\u0430",
+  "assets": [
+    "assets/css/salon-services-studio.css?v=clarity-20260927&r=a6f585cee87c82c9",
+    "assets/js/salon-catalogue.js?v=clarity-20260927&r=2891010e4c06d9e6"
+  ],
+  "method": "Original user IAB tab reloaded, heading visually inspected and loaded asset URLs read through DOM. Browser viewport override reset. Agent preview tab closed.",
+  "user_dirty_sha256": "9fdc65af74cb3fda56e0e7852675383409fc9a1a46076183ed824c35c4a3d5c5"
+}

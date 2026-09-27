@@ -30,3 +30,9 @@ python3 -m unittest discover -s tools/brain/tests -p 'test_*.py' -v
 ```
 
 Publication must use deploy.py with the manifest, exact archive digest and expected release225 pointer. It checks the entire live baseline, stages an exact tree, switches atomically and executes apply/rollback/forward with public hashes plus health/features. Live smoke blocks all non-GET/HEAD traffic. Native Safari, physical-device or screen-reader certification, real text zoom and any conversion uplift are not claimed. No unverified new monetary bonus is introduced.
+
+## Published result
+
+release226-clarity-376cd066, implementation376cd06652302b789f8296b7c9502c6d75b34c93. Rebuilding the committed source produced exactly the tested531-file inventory. Real apply→rollback225→forward226 passed all static hashes and health/features; compatibility dist remains release203. Live Chrome319/1440 light/dark4/4 passes, JS errors0 and real API writes0. VIP base29500–35000 and benefit28500–34000 remain equal across the request handoff. Original user IAB tab reloaded and the loaded clarity CSS/JS plus new benefit section visually verified. Temporary preview3049 stopped, agent-created preview tab and test browsers closed, viewport override reset.
+
+Rollback uses only the static current pointer to release225-studio-a45b389e; never restore the database for this change. Deployment receipt, exact final build manifest, live screenshots/results and original-tab readback are committed as evidence.
