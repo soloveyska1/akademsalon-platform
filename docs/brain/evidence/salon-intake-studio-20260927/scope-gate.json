@@ -1,0 +1,16 @@
+{
+  "canonical_sha": "5cf4da85e581b890c63f3d00adc7b3764d828441",
+  "head_sha": "94fc52dff350536baadbd26466ce88706c97efcf",
+  "counts": {
+    "blocking": 0,
+    "hard": 0,
+    "info": 9,
+    "inspected": 281,
+    "warnings": 72
+  },
+  "decision": "PROCEED_LOCAL_SNAPSHOT",
+  "snapshot_digest": "58326f7fd25746ba095614e9870dc12780186a4ff78a0229cf4b33349612c3f1",
+  "manifest_id": "WS-b18a2e32052e449aa198dbdb417819b4",
+  "warning_policy": "allow-explicit",
+  "owner_decision": "Root integration owner explicitly reviewed and accepted72 TERMINAL_WORKTREE_PRESENT warnings only; no hard conflicts. User dirty .claude/launch.json excluded."
+}

@@ -1,0 +1,87 @@
+{
+  "sourceCommit": "94fc52dff350536baadbd26466ce88706c97efcf",
+  "root": "/tmp/salon-intake-studio-20260927/candidate3",
+  "browser": "Chrome",
+  "routes": [
+    "https://akademsalon.ru/configurator.html"
+  ],
+  "data": "synthetic only; every request intercepted",
+  "results": [
+    {
+      "name": "form-layout-319-light",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-319-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-360-light",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-360-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-390-light",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-390-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-768-light",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-768-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-1024-light",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-1024-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-1440-light",
+      "status": "PASS"
+    },
+    {
+      "name": "form-layout-1440-dark",
+      "status": "PASS"
+    },
+    {
+      "name": "brief-assistance-preserves-text-focuses-existing-and-undoes-only-insertion",
+      "status": "PASS"
+    },
+    {
+      "name": "template-is-not-a-topic-and-maxlength-never-truncates-user-text",
+      "status": "PASS"
+    },
+    {
+      "name": "contact-detection-keeps-raw-values-and-optional-codes-do-not-change-price",
+      "status": "PASS"
+    },
+    {
+      "name": "exact-consent-links-unchecked-state-dynamic-visibility-and-payload",
+      "status": "PASS"
+    },
+    {
+      "name": "frozen-retry-disables-helpers-and-preserves-identity-and-rejection-unlocks",
+      "status": "PASS"
+    },
+    {
+      "name": "contact-switch-explains-existing-value-and-selected-check-does-not-overlap",
+      "status": "PASS"
+    },
+    {
+      "name": "short-screen-keyboard-and-native-fallback",
+      "status": "PASS"
+    }
+  ]
+}

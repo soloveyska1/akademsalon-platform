@@ -1,0 +1,71 @@
+test_ambiguous_foreign_manifest_is_hard_even_when_dormant (test_conflicts.ConflictTests.test_ambiguous_foreign_manifest_is_hard_even_when_dormant) ... ok
+test_branch_manifest_is_discovered_and_actual_scope_escape_is_hard (test_conflicts.ConflictTests.test_branch_manifest_is_discovered_and_actual_scope_escape_is_hard) ... ok
+test_canonical_advance_changes_digest_and_blocks_declared_scope_drift (test_conflicts.ConflictTests.test_canonical_advance_changes_digest_and_blocks_declared_scope_drift) ... ok
+test_cli_blocks_warnings_by_default_and_requires_explicit_override (test_conflicts.ConflictTests.test_cli_blocks_warnings_by_default_and_requires_explicit_override) ... ok
+test_conflict_scan_is_read_only_and_rejects_dirty_scope_escape (test_conflicts.ConflictTests.test_conflict_scan_is_read_only_and_rejects_dirty_scope_escape) ... ok
+test_current_manifest_must_match_branch_and_freeze_result (test_conflicts.ConflictTests.test_current_manifest_must_match_branch_and_freeze_result) ... ok
+test_detached_worktree_overlap_is_inspected (test_conflicts.ConflictTests.test_detached_worktree_overlap_is_inspected) ... ok
+test_disjoint_dormant_ref_is_info_and_does_not_block_bootstrap (test_conflicts.ConflictTests.test_disjoint_dormant_ref_is_info_and_does_not_block_bootstrap) ... ok
+test_dormant_ref_overlap_warns_but_checked_out_worktree_is_hard (test_conflicts.ConflictTests.test_dormant_ref_overlap_warns_but_checked_out_worktree_is_hard) ... ok
+test_inherited_submitted_result_releases_scope_but_active_does_not (test_conflicts.ConflictTests.test_inherited_submitted_result_releases_scope_but_active_does_not) ... ok
+test_invalid_terminal_drift_and_dirty_overlap_remain_hard (test_conflicts.ConflictTests.test_invalid_terminal_drift_and_dirty_overlap_remain_hard) ... ok
+test_manifest_rejects_traversal_raw_commands_and_unknown_namespace (test_conflicts.ConflictTests.test_manifest_rejects_traversal_raw_commands_and_unknown_namespace) ... ok
+test_path_exact_tree_and_write_read_overlap (test_conflicts.ConflictTests.test_path_exact_tree_and_write_read_overlap) ... ok
+test_semantic_match_mode_comes_from_policy_not_hardcoded_namespace (test_conflicts.ConflictTests.test_semantic_match_mode_comes_from_policy_not_hardcoded_namespace) ... ok
+test_semantic_write_overlap_conflicts_but_same_outcome_does_not (test_conflicts.ConflictTests.test_semantic_write_overlap_conflicts_but_same_outcome_does_not) ... ok
+test_valid_integrated_result_releases_scope (test_conflicts.ConflictTests.test_valid_integrated_result_releases_scope) ... ok
+test_write_write_and_write_read_are_hard_read_read_is_clear (test_conflicts.ConflictTests.test_write_write_and_write_read_are_hard_read_read_is_clear) ... ok
+test_active_workstream_handoff_is_mandatory_context (test_context.ContextTests.test_active_workstream_handoff_is_mandatory_context) ... ok
+test_mandatory_seed_overflow_fails_without_partial_pack (test_context.ContextTests.test_mandatory_seed_overflow_fails_without_partial_pack) ... ok
+test_map_is_generic_and_resolves_reverse_links (test_context.ContextTests.test_map_is_generic_and_resolves_reverse_links) ... ok
+test_outcome_context_is_atomic_bounded_and_has_ledger (test_context.ContextTests.test_outcome_context_is_atomic_bounded_and_has_ledger) ... ok
+test_same_tree_context_is_byte_deterministic_and_sanitizes_controls (test_context.ContextTests.test_same_tree_context_is_byte_deterministic_and_sanitizes_controls) ... ok
+test_brain_directory_symlink_is_rejected (test_security.SecurityTests.test_brain_directory_symlink_is_rejected) ... ok
+test_context_and_manifest_strings_never_execute_shell (test_security.SecurityTests.test_context_and_manifest_strings_never_execute_shell) ... ok
+test_failed_size_gate_preserves_previous_database (test_security.SecurityTests.test_failed_size_gate_preserves_previous_database) ... ok
+test_tracked_symlink_escape_is_rejected_without_reading_target (test_security.SecurityTests.test_tracked_symlink_escape_is_rejected_without_reading_target) ... ok
+test_dangling_numeric_reference_fails (test_validation.ValidationTests.test_dangling_numeric_reference_fails) ... ok
+test_duplicate_definition_fails (test_validation.ValidationTests.test_duplicate_definition_fails) ... ok
+test_duplicate_json_key_and_nan_fail_without_value_echo (test_validation.ValidationTests.test_duplicate_json_key_and_nan_fail_without_value_echo) ... ok
+test_model_review_cannot_close_hard_gate (test_validation.ValidationTests.test_model_review_cannot_close_hard_gate) ... ok
+test_policy_must_match_catalog_and_contains_no_free_form_proof (test_validation.ValidationTests.test_policy_must_match_catalog_and_contains_no_free_form_proof) ... ok
+test_record_definition_outside_canonical_owner_fails_closed (test_validation.ValidationTests.test_record_definition_outside_canonical_owner_fails_closed) ... ok
+test_unknown_record_schema_fails_closed (test_validation.ValidationTests.test_unknown_record_schema_fails_closed) ... ok
+test_valid_markdown_projection_builds_records_and_generic_links (test_validation.ValidationTests.test_valid_markdown_projection_builds_records_and_generic_links) ... ok
+test_duplicate_live_manifest_branch_is_rejected (test_workstreams.WorkstreamTests.test_duplicate_live_manifest_branch_is_rejected) ... ok
+test_failed_atomic_status_replace_preserves_previous_manifest (test_workstreams.WorkstreamTests.test_failed_atomic_status_replace_preserves_previous_manifest) ... ok
+test_init_rejects_canonical_branch_and_legacy_manifest_requires_migration (test_workstreams.WorkstreamTests.test_init_rejects_canonical_branch_and_legacy_manifest_requires_migration) ... ok
+test_init_rejects_stacked_or_dirty_branch (test_workstreams.WorkstreamTests.test_init_rejects_stacked_or_dirty_branch) ... ok
+test_init_uses_exact_canonical_and_lifecycle_hashes_each_revision (test_workstreams.WorkstreamTests.test_init_uses_exact_canonical_and_lifecycle_hashes_each_revision) ... ok
+
+----------------------------------------------------------------------
+Ran 39 tests in 12.413s
+
+OK
+CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS
+decision: BLOCKED
+counts: hard=0 warnings=1 info=0 blocking=1 inspected=1
+warning-policy: block
+canonical: f9d0ee375d55bbb5b15cbc1ea04fe6aba715bbaf
+head: f9d0ee375d55bbb5b15cbc1ea04fe6aba715bbaf
+manifest: WS-0123456789abcdef0123456789abcdef
+WARN UNMANAGED_REF_OVERLAP: codex/dormant-overlap: 1 path(s): tools/brain/brain.py
+snapshot: d601db4204c18a33f11fad10d3771dd2ca5636ee8f15b219d941379b015024c1
+LIMIT: no fetch or remote lease
+LIMIT: unfetched, unpushed and undeclared semantic work is unknown
+LIMIT: re-run on exact SHAs before integration
+NEXT: review every warning; only the integration owner may rerun with --allow-warnings.
+CLEAR_LOCAL_SNAPSHOT_WITH_WARNINGS
+decision: PROCEED_LOCAL_SNAPSHOT
+counts: hard=0 warnings=1 info=0 blocking=0 inspected=1
+warning-policy: allow-explicit
+canonical: f9d0ee375d55bbb5b15cbc1ea04fe6aba715bbaf
+head: f9d0ee375d55bbb5b15cbc1ea04fe6aba715bbaf
+manifest: WS-0123456789abcdef0123456789abcdef
+WARN UNMANAGED_REF_OVERLAP: codex/dormant-overlap: 1 path(s): tools/brain/brain.py
+snapshot: d601db4204c18a33f11fad10d3771dd2ca5636ee8f15b219d941379b015024c1
+LIMIT: no fetch or remote lease
+LIMIT: unfetched, unpushed and undeclared semantic work is unknown
+LIMIT: re-run on exact SHAs before integration
+NEXT: re-run this local snapshot immediately before integration.
+Indexed 11 files / 11 records → .brain/index.sqlite

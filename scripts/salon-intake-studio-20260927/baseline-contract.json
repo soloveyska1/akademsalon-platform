@@ -1,0 +1,37 @@
+{
+  "baseline": "/tmp/salon-calendar-20260927/release-final",
+  "release": "release227",
+  "consent_doc": "consent-request 1.0 · privacy 3.1 · oferta 3.2",
+  "consents": [
+    {
+      "id": "consent",
+      "text": "Даю согласие на обработку данных для заявки , ознакомлен(а) с политикой конфиденциальности и условиями заказа .",
+      "links": [
+        "consent-request.html",
+        "privacy.html",
+        "oferta.html"
+      ],
+      "required_in_html": true
+    },
+    {
+      "id": "participation",
+      "text": "Для работы с нуля подтверждаю: согласую цель и содержательные решения, проверю исходные данные и утвержу итоговую версию.",
+      "links": [],
+      "required_in_html": false
+    },
+    {
+      "id": "anonymous-data",
+      "text": "Подтверждаю, что приложенные данные обезличены: без ФИО, контактов и других сведений, позволяющих узнать участников исследования.",
+      "links": [],
+      "required_in_html": false
+    }
+  ],
+  "hashes": {
+    "configurator.html": "33cc57c4f4f84fa81bbd431f14f68b165d6acc70111f88ac650a7b0303d01724",
+    "assets/js/salon-order.js": "77e42a51e5ba68960aec3a0b7d01bc46902d36896219c7552db19ff9b6abe824",
+    "assets/js/salon-intake.js": "2e515b2300ed7b60a7bf801e05345952c0443c3f3b11b1ff881839e789678b37",
+    "assets/js/form-polish-20260924.js": "ebfacd73e9535052c7006ee47c4ce77e0f4d6370bdaaec9eb1613fb7f4bdfadc",
+    "assets/js/comfort-20260924.js": "ea237f275be369572337d0027c46cb6c2e0b042dc4b962e0a6344ac94537e73a",
+    "assets/js/app.js": "ef3b279b8812bbf18953807bcadffccb7cd467f8031e02912b6f324cca091f7b"
+  }
+}

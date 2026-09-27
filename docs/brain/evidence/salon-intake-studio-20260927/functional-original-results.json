@@ -1,0 +1,174 @@
+{
+  "root": "/tmp/salon-intake-studio-20260927/candidate1",
+  "data": "Every request intercepted; synthetic API; isolated Chrome; all browser contexts and browser closed",
+  "results": [
+    {
+      "name": "contact-format-raw-value-and-union",
+      "width": 390,
+      "status": "PASS",
+      "formats": [
+        {
+          "raw": "  @synthetic_review  ",
+          "mode": "telegram",
+          "format": "Формат: Telegram. Проверь, что контакт твой."
+        },
+        {
+          "raw": " synthetic+review@example.invalid ",
+          "mode": "email",
+          "format": "Формат: Email. Проверь, что контакт твой."
+        },
+        {
+          "raw": "+7 (900) 001-20-30",
+          "mode": "phone",
+          "format": "Формат: Телефон. Проверь, что контакт твой."
+        },
+        {
+          "raw": "https://vk.com/id12345678901",
+          "mode": "vk",
+          "format": "Формат: VK. Проверь, что контакт твой."
+        }
+      ],
+      "payloadContact": "synthetic+review@example.invalid",
+      "syntheticOrderCount": 1
+    },
+    {
+      "name": "brief-selection-boundary-undo-and-template",
+      "width": 390,
+      "status": "PASS",
+      "limit": 12000,
+      "selectedTextPreserved": true,
+      "templateNotPromoted": true,
+      "syntheticOrderCount": 0
+    },
+    {
+      "name": "legal-text-links-and-dynamic-scope",
+      "width": 390,
+      "status": "PASS",
+      "hiddenConsentsBlock": false,
+      "syntheticOrderCount": 1
+    },
+    {
+      "name": "all-optional-fields-payload-and-keyboard",
+      "width": 390,
+      "status": "PASS",
+      "payloadKeys": [
+        "intake_version",
+        "type",
+        "disc",
+        "term",
+        "tier",
+        "topic",
+        "deadline",
+        "details",
+        "plan",
+        "name",
+        "contact",
+        "website",
+        "consent",
+        "privacy_notice_ack",
+        "consent_doc",
+        "page",
+        "promo",
+        "gift",
+        "contract_contour",
+        "academic_submode",
+        "case_context",
+        "cart",
+        "client_request_id"
+      ],
+      "syntheticOrderCount": 1
+    },
+    {
+      "name": "empty-optionals-and-503-frozen-idempotent-retry",
+      "width": 390,
+      "status": "PASS",
+      "sameFullPayload": true,
+      "requestId": "28b05d77-298f-4591-b4d2-9a2d6b00be9c",
+      "syntheticOrderCount": 2
+    },
+    {
+      "name": "contact-format-raw-value-and-union",
+      "width": 1440,
+      "status": "PASS",
+      "formats": [
+        {
+          "raw": "  @synthetic_review  ",
+          "mode": "telegram",
+          "format": "Формат: Telegram. Проверь, что контакт твой."
+        },
+        {
+          "raw": " synthetic+review@example.invalid ",
+          "mode": "email",
+          "format": "Формат: Email. Проверь, что контакт твой."
+        },
+        {
+          "raw": "+7 (900) 001-20-30",
+          "mode": "phone",
+          "format": "Формат: Телефон. Проверь, что контакт твой."
+        },
+        {
+          "raw": "https://vk.com/id12345678901",
+          "mode": "vk",
+          "format": "Формат: VK. Проверь, что контакт твой."
+        }
+      ],
+      "payloadContact": "synthetic+review@example.invalid",
+      "syntheticOrderCount": 1
+    },
+    {
+      "name": "brief-selection-boundary-undo-and-template",
+      "width": 1440,
+      "status": "PASS",
+      "limit": 12000,
+      "selectedTextPreserved": true,
+      "templateNotPromoted": true,
+      "syntheticOrderCount": 0
+    },
+    {
+      "name": "legal-text-links-and-dynamic-scope",
+      "width": 1440,
+      "status": "PASS",
+      "hiddenConsentsBlock": false,
+      "syntheticOrderCount": 1
+    },
+    {
+      "name": "all-optional-fields-payload-and-keyboard",
+      "width": 1440,
+      "status": "PASS",
+      "payloadKeys": [
+        "intake_version",
+        "type",
+        "disc",
+        "term",
+        "tier",
+        "topic",
+        "deadline",
+        "details",
+        "plan",
+        "name",
+        "contact",
+        "website",
+        "consent",
+        "privacy_notice_ack",
+        "consent_doc",
+        "page",
+        "promo",
+        "gift",
+        "contract_contour",
+        "academic_submode",
+        "case_context",
+        "cart",
+        "client_request_id"
+      ],
+      "syntheticOrderCount": 1
+    },
+    {
+      "name": "empty-optionals-and-503-frozen-idempotent-retry",
+      "width": 1440,
+      "status": "PASS",
+      "sameFullPayload": true,
+      "requestId": "b012daf6-7d43-41a2-8f10-15292e046cb9",
+      "syntheticOrderCount": 2
+    }
+  ]
+}

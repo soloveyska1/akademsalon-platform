@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "94fc52dff350536baadbd26466ce88706c97efcf",
+  "root": "/tmp/salon-intake-studio-20260927/candidate4",
+  "browser": "Chrome",
+  "routes": [
+    "https://akademsalon.ru/configurator.html"
+  ],
+  "data": "synthetic only; every request intercepted",
+  "results": [
+    {
+      "name": "contact-detection-keeps-raw-values-and-optional-codes-do-not-change-price",
+      "status": "PASS"
+    },
+    {
+      "name": "contact-switch-explains-existing-value-and-selected-check-does-not-overlap",
+      "status": "PASS"
+    }
+  ]
+}

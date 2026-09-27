@@ -1,0 +1,19 @@
+# Independent visual delta review — candidate3
+
+**GO. All three prior P2 findings are closed; no new P0/P1/P2 observed in the requested delta.**
+
+Candidate: `/tmp/salon-intake-studio-20260927/candidate3`.
+Read-only sources. Every browser request intercepted. Synthetic contact only. No form submission or API writes. All owned browser contexts and Chrome closed.
+
+## Verified deltas
+
+1. **Helper panel:** collapsed native details occupies 49 px including border, versus the prior 237+ px panel at319. The 144 px mobile text field is now the main element. At319×484, both editor and helper disclosure fit visibly below the fixed header. Keyboard Enter opens the disclosure; insertion focuses the textarea; Undo preserves the prior value; closing returns to the compact state. Evidence: brief-closed-319-light.png, brief-closed-390-dark.png, short-brief-light.png, brief-open-319-dark.png.
+2. **Contact check placement:** selected Telegram and Phone are legible at319/390 in both themes. Check is in the upper corner; DOM Range versus check rectangle intersection is0 for both labels in every profile. Evidence: channel-telegram-319-light.png, channel-phone-319-dark.png, observations.json.
+3. **Channel/contact mismatch:** Email → Phone preserves the raw Email and explicitly explains how to change it. Text wraps readably at319 and also reads clearly on1440 dark. Replacing the value with a phone number restores the normal Phone status. Evidence: mismatch-319-dark.png, mismatch-1440-dark.png, observations.json.
+
+## Scope and runtime
+
+- 319 and390, light/dark; extra1440 dark for mismatch; short319×484 light/dark.
+- All5 runtime profiles passed; no JS errors or horizontal page overflow.
+- Previous wider review remains applicable; this was a bounded delta recheck, not a new full audit.
+- Candidate source hashes recorded separately for reproducibility.

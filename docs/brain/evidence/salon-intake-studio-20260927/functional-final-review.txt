@@ -1,0 +1,9 @@
+# Independent narrow delta review — candidate4
+
+**GO.** Previous P2 is reproduced against its exact paths and now corrected. No remaining defect found in this requested delta.
+
+4/4 isolated scenarios PASS: Email → Telephone → Tab into name, and Email → Telephone → click name, each at 390 and 1440 px. After leaving contact, Email is selected and status is exactly “Формат: Email. Проверь, что контакт твой.” Raw input with surrounding spaces is unchanged. Synthetic POST retains the same existing trimmed contact value.
+
+The candidate3→4 JS delta only adds synchronization on actual aria-pressed changes, after the existing focusout mode selection. Prior helper/disclosure/Undo/503 checks remain outside this narrow rerun.
+
+Evidence: `results.json`, reproducible `review.mjs`, and `status-{width}-{method}.png`. Every request was intercepted. No production request or real order. All browser contexts and the browser closed. Source files untouched.

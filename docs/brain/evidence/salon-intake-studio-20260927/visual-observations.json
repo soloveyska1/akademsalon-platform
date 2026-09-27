@@ -1,0 +1,247 @@
+{
+  "root": "/tmp/salon-intake-studio-20260927/candidate3",
+  "allNetworkIntercepted": true,
+  "browserClosed": true,
+  "results": [
+    {
+      "width": 319,
+      "theme": "light",
+      "helperHeight": 49,
+      "overlap": [
+        {
+          "mode": "telegram",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 461.15625,
+            "width": 62.234375,
+            "height": 17
+          },
+          "check": {
+            "x": 139.84375,
+            "y": 446.25,
+            "width": 7.65625,
+            "height": 10
+          }
+        },
+        {
+          "mode": "phone",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 529.15625,
+            "width": 59.375,
+            "height": 17
+          },
+          "check": {
+            "x": 139.84375,
+            "y": 514.25,
+            "width": 7.65625,
+            "height": 10
+          }
+        }
+      ],
+      "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+      "errors": [],
+      "calls": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "width": 319,
+      "theme": "dark",
+      "helperHeight": 49,
+      "overlap": [
+        {
+          "mode": "telegram",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 461.15625,
+            "width": 62.234375,
+            "height": 17
+          },
+          "check": {
+            "x": 139.84375,
+            "y": 446.25,
+            "width": 7.65625,
+            "height": 10
+          }
+        },
+        {
+          "mode": "phone",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 529.15625,
+            "width": 59.375,
+            "height": 17
+          },
+          "check": {
+            "x": 139.84375,
+            "y": 514.25,
+            "width": 7.65625,
+            "height": 10
+          }
+        }
+      ],
+      "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+      "errors": [],
+      "calls": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "helperHeight": 49,
+      "overlap": [
+        {
+          "mode": "telegram",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 461.3125,
+            "width": 62.234375,
+            "height": 17
+          },
+          "check": {
+            "x": 175.34375,
+            "y": 446.40625,
+            "width": 7.65625,
+            "height": 10
+          }
+        },
+        {
+          "mode": "phone",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 529.3125,
+            "width": 59.375,
+            "height": 17
+          },
+          "check": {
+            "x": 175.34375,
+            "y": 514.40625,
+            "width": 7.65625,
+            "height": 10
+          }
+        }
+      ],
+      "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+      "errors": [],
+      "calls": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "helperHeight": 49,
+      "overlap": [
+        {
+          "mode": "telegram",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 461.3125,
+            "width": 62.234375,
+            "height": 17
+          },
+          "check": {
+            "x": 175.34375,
+            "y": 446.40625,
+            "width": 7.65625,
+            "height": 10
+          }
+        },
+        {
+          "mode": "phone",
+          "intersection": 0,
+          "label": {
+            "x": 91,
+            "y": 529.3125,
+            "width": 59.375,
+            "height": 17
+          },
+          "check": {
+            "x": 175.34375,
+            "y": 514.40625,
+            "width": 7.65625,
+            "height": 10
+          }
+        }
+      ],
+      "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+      "errors": [],
+      "calls": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "overflow": 0
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "helperHeight": 49,
+      "overlap": [
+        {
+          "mode": "telegram",
+          "intersection": 0,
+          "label": {
+            "x": 265,
+            "y": 495.5625,
+            "width": 57.796875,
+            "height": 16
+          },
+          "check": {
+            "x": 371.84375,
+            "y": 479.015625,
+            "width": 7.65625,
+            "height": 10
+          }
+        },
+        {
+          "mode": "phone",
+          "intersection": 0,
+          "label": {
+            "x": 606,
+            "y": 495.5625,
+            "width": 55.125,
+            "height": 16
+          },
+          "check": {
+            "x": 712.84375,
+            "y": 479.015625,
+            "width": 7.65625,
+            "height": 10
+          }
+        }
+      ],
+      "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+      "errors": [],
+      "calls": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "overflow": 0
+    }
+  ]
+}

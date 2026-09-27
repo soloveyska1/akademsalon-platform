@@ -1,0 +1,66 @@
+{
+  "root": "/tmp/salon-intake-studio-20260927/candidate4",
+  "data": "Every request intercepted; synthetic API; all contexts and browser closed",
+  "results": [
+    {
+      "width": 390,
+      "method": "Tab",
+      "status": "PASS",
+      "before": {
+        "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+        "mode": "phone"
+      },
+      "after": {
+        "status": "Формат: Email. Проверь, что контакт твой.",
+        "mode": "email",
+        "raw": "  synthetic+delta@example.invalid  "
+      },
+      "payloadContact": "synthetic+delta@example.invalid"
+    },
+    {
+      "width": 390,
+      "method": "click-name",
+      "status": "PASS",
+      "before": {
+        "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+        "mode": "phone"
+      },
+      "after": {
+        "status": "Формат: Email. Проверь, что контакт твой.",
+        "mode": "email",
+        "raw": "  synthetic+delta@example.invalid  "
+      },
+      "payloadContact": "synthetic+delta@example.invalid"
+    },
+    {
+      "width": 1440,
+      "method": "Tab",
+      "status": "PASS",
+      "before": {
+        "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+        "mode": "phone"
+      },
+      "after": {
+        "status": "Формат: Email. Проверь, что контакт твой.",
+        "mode": "email",
+        "raw": "  synthetic+delta@example.invalid  "
+      },
+      "payloadContact": "synthetic+delta@example.invalid"
+    },
+    {
+      "width": 1440,
+      "method": "click-name",
+      "status": "PASS",
+      "before": {
+        "status": "Сейчас введён Email. Для ответа по телефону замени контакт.",
+        "mode": "phone"
+      },
+      "after": {
+        "status": "Формат: Email. Проверь, что контакт твой.",
+        "mode": "email",
+        "raw": "  synthetic+delta@example.invalid  "
+      },
+      "payloadContact": "synthetic+delta@example.invalid"
+    }
+  ]
+}

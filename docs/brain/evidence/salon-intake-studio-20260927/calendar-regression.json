@@ -1,0 +1,349 @@
+{
+  "source": "94fc52dff350536baadbd26466ce88706c97efcf",
+  "root": "/tmp/salon-intake-studio-20260927/candidate1",
+  "browser": "Chrome",
+  "api": "all intercepted; zero real mutations",
+  "results": [
+    {
+      "name": "calendar-319-light",
+      "width": 319,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-319-dark",
+      "width": 319,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-360-light",
+      "width": 360,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-360-dark",
+      "width": 360,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-390-light",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-390-dark",
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-768-light",
+      "width": 768,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-768-dark",
+      "width": 768,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-1024-light",
+      "width": 1024,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-1024-dark",
+      "width": 1024,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-1440-light",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "calendar-1440-dark",
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "deadline-selection-quote-handoff-and-payload",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "today-clear-quick-dates-and-visible-label",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "keyboard-leap-year-month-end-and-focus-trap",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "month-year-switch-always-keeps-a-roving-date",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "month-mode-retains-position-390-light",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "month-mode-retains-position-390-dark",
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "month-mode-retains-position-1440-light",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "month-mode-retains-position-1440-dark",
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "unselected-preview-resize-focuses-visible-work",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "backdrop-cancel-keeps-parent-and-date",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "short-viewport-and-resize-do-not-strand-focus",
+      "width": 319,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "source-date-invalid-state-and-back-recovery",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "native-fallback-if-calendar-js-unavailable",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    }
+  ]
+}

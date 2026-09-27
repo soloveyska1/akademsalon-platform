@@ -1,0 +1,36 @@
+{
+  "outcome": "OUT-001",
+  "source_declaration": "94fc52dff350536baadbd26466ce88706c97efcf",
+  "tested_artifact": "candidate4; exact hash inventory in tested-build-manifest.json",
+  "browser": "Chrome headless + own IAB visual inspection",
+  "routes": [
+    "/services.html",
+    "/configurator.html"
+  ],
+  "viewports": [
+    319,
+    360,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "data": "synthetic fixtures; all network intercepted in regression; no real orders",
+  "expected": "clear contact selection; compact optional assistance; no text loss; exact old legal/payload/retry/privacy; no overflow",
+  "actual": "19/19 candidate3; CSS identical in candidate4; two affected contact cases pass after focusout synchronization; 9 comfort,9 polish,25 calendar pass; 652 canonical pass/9 existing skips;39 Brain pass",
+  "binding": "after clean implementation commit rebuild and compare entire535-file inventory before publication",
+  "public_changes": [
+    "configurator.html",
+    "assets/js/form-polish-20260924.js",
+    "assets/js/intake-studio.js",
+    "assets/css/intake-studio.css"
+  ],
+  "limitations": [
+    "no physical-device, native Safari or screen-reader claim",
+    "no conversion uplift claim"
+  ]
+}

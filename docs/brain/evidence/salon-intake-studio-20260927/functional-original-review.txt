@@ -1,0 +1,17 @@
+# Independent intake functional review — candidate1
+
+Verdict: **GO** for the bounded intake scope. No reproducible P0/P1/P2 defects found in the reviewed candidate.
+
+- Exact candidate: `/tmp/salon-intake-studio-20260927/candidate1`.
+- 10/10 independent browser scenarios PASS: five essential flows at 390 and 1440 px. See `results.json` and reproducible `review.mjs`.
+- Contact: four formats select the matching card, raw input including spaces stays intact, VK numeric ID stays VK, manually switching the hint does not reject a different valid contact. Native type/pattern/maxlength and union contract retained.
+- Brief: selecting user text before a chip does not replace it; exact duplicate does not duplicate; Undo restores the entire prior value; exact 12,000-character boundary accepted; overflow insertion rejected without truncation; typing cancels Undo; generated headings cannot become the topic; a genuine first line still can.
+- Legal: exact original three consent texts, links and consent version retained. Initially unchecked. Opening a legal link does not check consent. Label title click and Space toggle once. Editing hides/removes participation requirement; work from scratch restores it. Psychology requires anonymization and unchecked state prevents POST. Returning to editing clears the hidden requirement and submits.
+- Optional fields: separate optional name and closed promo/gift disclosure retain entered values. Captured payloads trim values using existing semantics. Empty name remains allowed; absent promo/gift omitted. Main/cart topic and requirements are identical. Ordinary editing leaves no supplied sensitive text in local/session storage.
+- 503: native fields, contact cards, chips and Undo freeze; handlers also refuse forced clicks. Second POST is deep-equal to the first, including client request id. Success path completes on synthetic response.
+- Keyboard: card activation focuses original contact, Tab reaches name, disclosure works with Enter, native checkboxes work with Space, submission works with Enter at both widths.
+- Contract hash check: serializer, original intake, comfort, app, estimate, order estimate and calendar JS are byte-identical to release227 (`contract-hashes.json`).
+
+Every browser request was intercepted; no production request or real order occurred. All contexts and the isolated browser were closed in finally blocks. Repository source was not edited.
+
+Limit: this is the requested functional/keyboard review of candidate1, not a review of a later CSS hover edit or a production publication.
