@@ -1,0 +1,13 @@
+{
+  "release": "release228-intake-da171f06",
+  "source_commit": "da171f06d5bbae3ada221fa5dde3fe997ae31b10",
+  "original_IAB": "services original course quote → configurator?composition=1; same14000–19500 budget; visibly new contact cards and name; loaded all three exact asset hashes",
+  "screenshot": "own CUA live contact screenshot observed; independent Chrome live screenshots saved",
+  "cleanup": {
+    "local_port_52891_closed": true,
+    "temporary_tab_5_closed": true,
+    "viewport_reset_called": true,
+    "isolated_browser_contexts_closed": true
+  },
+  "production_mutations": "release current static pointer only; no order, message, payment or database mutation"
+}

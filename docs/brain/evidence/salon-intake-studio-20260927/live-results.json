@@ -1,0 +1,73 @@
+{
+  "at": "2026-09-27T01:23:08.390Z",
+  "source_commit": "da171f06d5bbae3ada221fa5dde3fe997ae31b10",
+  "route": "services → configurator",
+  "browser": "Chrome",
+  "network": "live read-only; all non-GET/HEAD blocked",
+  "results": [
+    {
+      "width": 319,
+      "theme": "light",
+      "status": "PASS",
+      "date": "2026-10-11",
+      "total": "16 000–22 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/intake-studio.css?v=intake-studio-20260927&r=34ad012b8cb4bb10",
+        "https://akademsalon.ru/assets/js/form-polish-20260924.js?v=intake-studio-20260927&r=f82bffe663779105",
+        "https://akademsalon.ru/assets/js/intake-studio.js?v=intake-studio-20260927&r=e037a876931149e9"
+      ],
+      "errors": [],
+      "mutations": [],
+      "checkboxes": "unchecked",
+      "codes": "unconfirmed; price unchanged"
+    },
+    {
+      "width": 319,
+      "theme": "dark",
+      "status": "PASS",
+      "date": "2026-10-11",
+      "total": "16 000–22 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/intake-studio.css?v=intake-studio-20260927&r=34ad012b8cb4bb10",
+        "https://akademsalon.ru/assets/js/form-polish-20260924.js?v=intake-studio-20260927&r=f82bffe663779105",
+        "https://akademsalon.ru/assets/js/intake-studio.js?v=intake-studio-20260927&r=e037a876931149e9"
+      ],
+      "errors": [],
+      "mutations": [],
+      "checkboxes": "unchecked",
+      "codes": "unconfirmed; price unchanged"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "date": "2026-10-11",
+      "total": "16 000–22 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/intake-studio.css?v=intake-studio-20260927&r=34ad012b8cb4bb10",
+        "https://akademsalon.ru/assets/js/form-polish-20260924.js?v=intake-studio-20260927&r=f82bffe663779105",
+        "https://akademsalon.ru/assets/js/intake-studio.js?v=intake-studio-20260927&r=e037a876931149e9"
+      ],
+      "errors": [],
+      "mutations": [],
+      "checkboxes": "unchecked",
+      "codes": "unconfirmed; price unchanged"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "date": "2026-10-11",
+      "total": "16 000–22 500 ₽",
+      "assets": [
+        "https://akademsalon.ru/assets/css/intake-studio.css?v=intake-studio-20260927&r=34ad012b8cb4bb10",
+        "https://akademsalon.ru/assets/js/form-polish-20260924.js?v=intake-studio-20260927&r=f82bffe663779105",
+        "https://akademsalon.ru/assets/js/intake-studio.js?v=intake-studio-20260927&r=e037a876931149e9"
+      ],
+      "errors": [],
+      "mutations": [],
+      "checkboxes": "unchecked",
+      "codes": "unconfirmed; price unchanged"
+    }
+  ]
+}

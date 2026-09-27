@@ -1,0 +1,12 @@
+{
+  "source_commit": "da171f06d5bbae3ada221fa5dde3fe997ae31b10",
+  "exact_tested_inventory": true,
+  "files": 535,
+  "changed": [
+    "assets/css/intake-studio.css",
+    "assets/js/form-polish-20260924.js",
+    "assets/js/intake-studio.js",
+    "configurator.html"
+  ],
+  "archive_sha256": "27def8d68f3c02ac26e39f1284d285f8c4b9d94413f41b23bbb97685ca3d2b5d"
+}

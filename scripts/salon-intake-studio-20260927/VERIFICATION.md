@@ -34,3 +34,7 @@ python3 -m unittest discover -s tools/brain/tests -p 'test_*.py' -v
 The guarded deploy script checks the baseline pointer, all file hashes, the exact archive and its four entries, then verifies apply→rollback→forward with health/features and public hashes. Preserve compatibility dist; never roll back the database. Live smoke uses fresh contexts and blocks all non-GET/HEAD requests, carries the service price/date into intake, exercises helpers/contact/code states without submission, and verifies the loaded asset hashes. Inspect the exact live result and stop the temporary preview afterward.
 
 Auth/cabinet are outside this bounded change; their bytes remain exact. Native Safari, physical phones, screen readers and commercial uplift are not claimed.
+
+## Published result
+
+release228-intake-da171f06, clean source da171f06d5bbae3ada221fa5dde3fe997ae31b10. All535 rebuilt hashes equal the tested candidate4 inventory. Apply→rollback227→forward228 passed public hashes and health/features; compatibility dist remains release203, backend/database unchanged. Live319/1440 light/dark4/4 PASS, zero JS errors and zero attempted mutations. The chosen2026-10-11 date and16000–22500 RUB quote survive the service→intake transition. Helpers, raw contact, mismatch, optional code count and unchecked consent verified live without submission. Original owner IAB also navigated from its course quote to the new form,14000–19500 budget preserved, exact new assets read back and screenshot inspected. Temporary preview tab/server closed; viewport reset.
