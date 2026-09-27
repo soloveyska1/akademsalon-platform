@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-0fed20d468844016ab4ece6ded500205",
   "slug": "salon-services-clarity-20260927",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-services-clarity-20260927",
   "base_sha": "1614b3682af743cabd6ba0bb6e268bdd23218573",
-  "result_sha": null,
+  "result_sha": "2765b7ef32ed0b764f2ea037bfab8f0c51a463dd",
   "outcome_ids": [
     "OUT-007"
   ],
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "09c41b28051a98713b0ec03e890377b9ec9da3a1e12f84d3ceeb9fa89df051d3"
 }
