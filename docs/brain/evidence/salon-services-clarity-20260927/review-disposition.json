@@ -1,0 +1,28 @@
+{
+  "at": "2026-09-27T00:14:44.591010+00:00",
+  "functional": {
+    "reviewer": "services_independent_review",
+    "candidate": "candidate4",
+    "result": "GO",
+    "independent_scenarios": 8,
+    "evidence": "independent-functional.json"
+  },
+  "visual": {
+    "reviewer": "studio_visual_review",
+    "candidate": "candidate5",
+    "result": "GO",
+    "p0": 0,
+    "p1": 0,
+    "p2": 0,
+    "method": "candidate4 isolated visual/keyboard review, followed by independent inspection of exact candidate5 receipt-course-1440.png; no new browser launch for last CSS check",
+    "evidence": [
+      "independent-visual-before-final-amount.json",
+      "receipt-course-1440.png",
+      "final-css-delta-results.json"
+    ]
+  },
+  "final_delta": [
+    "assets/css/salon-services-estimate.css",
+    "configurator.html"
+  ]
+}

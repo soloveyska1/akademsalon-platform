@@ -1,0 +1,104 @@
+[
+  {
+    "width": 390,
+    "theme": "light",
+    "deposit": 60000,
+    "focus": {
+      "active1": {
+        "tag": "ARTICLE",
+        "cls": "est-recommended",
+        "plan": "pro"
+      },
+      "active2": {
+        "tag": "BUTTON",
+        "plan": "session"
+      }
+    },
+    "services": "62 690 ₽",
+    "top": "62 690 ₽",
+    "bottom": "62 690 ₽",
+    "geometry": {
+      "width": 288,
+      "parent": 322,
+      "bodyOverflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "theme": "dark",
+    "deposit": 0,
+    "focus": {
+      "active1": {
+        "tag": "ARTICLE",
+        "cls": "est-recommended",
+        "plan": "pro"
+      },
+      "active2": {
+        "tag": "BUTTON",
+        "plan": "session"
+      }
+    },
+    "services": "29 240–34 690 ₽",
+    "top": "29 240–34 690 ₽",
+    "bottom": "29 240–34 690 ₽",
+    "geometry": {
+      "width": 217,
+      "parent": 251,
+      "bodyOverflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "width": 319,
+    "theme": "light",
+    "deposit": 0,
+    "focus": {
+      "active1": {
+        "tag": "ARTICLE",
+        "cls": "est-recommended",
+        "plan": "pro"
+      },
+      "active2": {
+        "tag": "BUTTON",
+        "plan": "session"
+      }
+    },
+    "services": "29 240–34 690 ₽",
+    "top": "29 240–34 690 ₽",
+    "bottom": "29 240–34 690 ₽",
+    "geometry": {
+      "width": 217,
+      "parent": 251,
+      "bodyOverflow": false
+    },
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  }
+]

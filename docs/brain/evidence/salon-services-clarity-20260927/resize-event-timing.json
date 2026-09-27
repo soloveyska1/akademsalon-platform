@@ -1,0 +1,66 @@
+[
+  {
+    "at": "immediate",
+    "width": 390,
+    "matches": false,
+    "open": true,
+    "parent": "catalog-sheet",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "settled",
+    "width": 390,
+    "matches": false,
+    "open": true,
+    "parent": "catalog-sheet",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "immediate",
+    "width": 1440,
+    "matches": true,
+    "open": false,
+    "parent": "sv-editor-dock",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "settled",
+    "width": 1440,
+    "matches": true,
+    "open": false,
+    "parent": "sv-editor-dock",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "immediate",
+    "width": 390,
+    "matches": false,
+    "open": true,
+    "parent": "catalog-sheet",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "settled",
+    "width": 390,
+    "matches": false,
+    "open": true,
+    "parent": "catalog-sheet",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "immediate",
+    "width": 1440,
+    "matches": true,
+    "open": false,
+    "parent": "sv-editor-dock",
+    "focus": "cat-deadline"
+  },
+  {
+    "at": "settled",
+    "width": 1440,
+    "matches": true,
+    "open": false,
+    "parent": "sv-editor-dock",
+    "focus": "cat-deadline"
+  }
+]

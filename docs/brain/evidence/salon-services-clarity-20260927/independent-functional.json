@@ -1,0 +1,356 @@
+[
+  {
+    "name": "browse-preserves-and-choice-carries-independent-settings",
+    "width": 390,
+    "status": "PASS",
+    "before": {
+      "price": "33 500–40 500 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "vip",
+        "addons": [
+          "norm"
+        ],
+        "scope": "editing"
+      }
+    },
+    "resumed": {
+      "price": "33 500–40 500 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "vip",
+        "addons": [
+          "norm"
+        ],
+        "scope": "editing"
+      }
+    },
+    "partRowPrice": "20 500–22 500 ₽",
+    "chosenPart": {
+      "price": "20 500–22 500 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "vip",
+        "addons": [
+          "norm"
+        ],
+        "scope": "part"
+      }
+    },
+    "chosenWhole": {
+      "price": "33 000–44 000 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "standard",
+        "addons": [
+          "norm"
+        ],
+        "scope": "whole"
+      }
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "matching-visible-upper-and-lower-benefit-price-0",
+    "width": 390,
+    "status": "PASS",
+    "before": "8 500–11 000 ₽",
+    "top": "8 500–11 000 ₽",
+    "bottom": "8 500–11 000 ₽",
+    "caption": "С выбранными выгодами",
+    "topBox": {
+      "x": 231.625,
+      "y": 344.78125,
+      "width": 111.375,
+      "height": 19.1875
+    },
+    "handoffBox": {
+      "x": 51,
+      "y": 396.1875,
+      "width": 288,
+      "height": 160.1875
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "matching-visible-upper-and-lower-benefit-price-60000",
+    "width": 390,
+    "status": "PASS",
+    "before": "60 000 ₽",
+    "top": "60 000 ₽",
+    "bottom": "60 000 ₽",
+    "caption": "С пополнением депозита",
+    "topBox": {
+      "x": 231.21875,
+      "y": 344.78125,
+      "width": 111.78125,
+      "height": 19.1875
+    },
+    "handoffBox": {
+      "x": 51,
+      "y": 396.1875,
+      "width": 288,
+      "height": 160.1875
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "browse-preserves-and-choice-carries-independent-settings",
+    "width": 1440,
+    "status": "PASS",
+    "before": {
+      "price": "33 500–40 500 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "vip",
+        "addons": [
+          "norm"
+        ],
+        "scope": "editing"
+      }
+    },
+    "resumed": {
+      "price": "33 500–40 500 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "vip",
+        "addons": [
+          "norm"
+        ],
+        "scope": "editing"
+      }
+    },
+    "partRowPrice": "20 500–22 500 ₽",
+    "chosenPart": {
+      "price": "20 500–22 500 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "vip",
+        "addons": [
+          "norm"
+        ],
+        "scope": "part"
+      }
+    },
+    "chosenWhole": {
+      "price": "33 000–44 000 ₽",
+      "state": {
+        "version": 1,
+        "product": "course",
+        "speed": "express24",
+        "package": "standard",
+        "addons": [
+          "norm"
+        ],
+        "scope": "whole"
+      }
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "matching-visible-upper-and-lower-benefit-price-0",
+    "width": 1440,
+    "status": "PASS",
+    "before": "8 500–11 000 ₽",
+    "top": "8 500–11 000 ₽",
+    "bottom": "8 500–11 000 ₽",
+    "caption": "С выбранными выгодами",
+    "topBox": {
+      "x": 781.25,
+      "y": 371.796875,
+      "width": 123.75,
+      "height": 22.390625
+    },
+    "handoffBox": {
+      "x": 1006,
+      "y": 526.171875,
+      "width": 217,
+      "height": 203.578125
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "matching-visible-upper-and-lower-benefit-price-60000",
+    "width": 1440,
+    "status": "PASS",
+    "before": "60 000 ₽",
+    "top": "60 000 ₽",
+    "bottom": "60 000 ₽",
+    "caption": "С пополнением депозита",
+    "topBox": {
+      "x": 780.796875,
+      "y": 371.796875,
+      "width": 124.203125,
+      "height": 22.390625
+    },
+    "handoffBox": {
+      "x": 1006,
+      "y": 526.171875,
+      "width": 217,
+      "height": 185.578125
+    },
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      },
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "search-norm-and-presentation-inside-defense",
+    "width": 390,
+    "status": "PASS",
+    "cases": [
+      {
+        "term": "нормоконтроль",
+        "row": "Дополнительный нормоконтроль\nДополнительные замечания к готовой работе. Базовое оформление уже включено.\n5 000–7 000 ₽\n+250 б. потом\n↗",
+        "selected": {
+          "price": "5 000–7 000 ₽",
+          "state": {
+            "version": 1,
+            "product": "custom",
+            "speed": "standard",
+            "package": "standard",
+            "addons": [],
+            "scope": "whole"
+          }
+        },
+        "piece": "norm",
+        "description": "Дополнительные замечания к готовой работе. Базовое оформление уже включено."
+      },
+      {
+        "term": "презентация",
+        "row": "Презентация и речь\nПо готовой работе. Действующая цена презентации и речи.\n6 000–8 500 ₽\n+300 б. потом\n↗",
+        "selected": {
+          "price": "6 000–8 500 ₽",
+          "state": {
+            "version": 1,
+            "product": "custom",
+            "speed": "standard",
+            "package": "standard",
+            "addons": [],
+            "scope": "whole"
+          }
+        },
+        "piece": "defense",
+        "description": "По готовой работе. Действующая цена презентации и речи."
+      }
+    ],
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  },
+  {
+    "name": "search-norm-and-presentation-inside-defense",
+    "width": 1440,
+    "status": "PASS",
+    "cases": [
+      {
+        "term": "нормоконтроль",
+        "row": "Дополнительный нормоконтроль\nДополнительные замечания к готовой работе. Базовое оформление уже включено.\n5 000–7 000 ₽\n+250 б. потом\n↗",
+        "selected": {
+          "price": "5 000–7 000 ₽",
+          "state": {
+            "version": 1,
+            "product": "custom",
+            "speed": "standard",
+            "package": "standard",
+            "addons": [],
+            "scope": "whole"
+          }
+        },
+        "piece": "norm",
+        "description": "Дополнительные замечания к готовой работе. Базовое оформление уже включено."
+      },
+      {
+        "term": "презентация",
+        "row": "Презентация и речь\nПо готовой работе. Действующая цена презентации и речи.\n6 000–8 500 ₽\n+300 б. потом\n↗",
+        "selected": {
+          "price": "6 000–8 500 ₽",
+          "state": {
+            "version": 1,
+            "product": "custom",
+            "speed": "standard",
+            "package": "standard",
+            "addons": [],
+            "scope": "whole"
+          }
+        },
+        "piece": "defense",
+        "description": "По готовой работе. Действующая цена презентации и речи."
+      }
+    ],
+    "errors": [],
+    "api": [
+      {
+        "path": "/api/auth/session",
+        "method": "GET"
+      }
+    ]
+  }
+]

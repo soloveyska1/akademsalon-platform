@@ -1,0 +1,154 @@
+{
+  "source": "e30696d651ad23bbceb3fa0943afaa2a1823e5fa",
+  "root": "/tmp/salon-services-clarity-20260927/candidate5",
+  "browser": "Chrome",
+  "api": "all synthetic; zero real mutations",
+  "results": [
+    {
+      "name": "benefit-total-visible-through-request-0",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "benefit-total-visible-through-request-60000",
+      "width": 390,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/orders",
+          "method": "POST"
+        }
+      ],
+      "orders": 1
+    },
+    {
+      "name": "benefit-reset-restores-original-base-price",
+      "width": 1440,
+      "theme": "light",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "receipt-amount-fits-its-column-319",
+      "width": 319,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "receipt-amount-fits-its-column-390",
+      "width": 390,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    },
+    {
+      "name": "receipt-amount-fits-its-column-1440",
+      "width": 1440,
+      "theme": "dark",
+      "status": "PASS",
+      "requests": [
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        },
+        {
+          "path": "/api/auth/session",
+          "method": "GET"
+        }
+      ],
+      "orders": 0
+    }
+  ]
+}
