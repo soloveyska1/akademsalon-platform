@@ -1,0 +1,8 @@
+# Intake form comfort and clarity
+
+- Outcome: OUT-001, bounded usability redesign of requirements/contact/optional inputs/consents requested explicitly by the owner. Root is sole write-owner. Keep confirmed-server-success, retry identity, privacy, prices, date/calendar, materials queue and mandatory consent text/links intact. New interactions only on the intake page.
+- Base: fresh origin/main 5cf4da85e581b890c63f3d00adc7b3764d828441. Live current release227-calendar-97e3cc13 verified over SSH; configurator SHA256 33cc57c4f4f84fa81bbd431f14f68b165d6acc70111f88ac650a7b0303d01724. Pin533-file local release227 inventory. Original user-dirty .claude/launch.json excluded.
+- Acceptance before edits: clearly selected and accessible contact method with format guidance; optional name separate from codes; approachable requirements editor with useful explicit assistance that never overwrites user text; readable consent cards preserving exact legal text and unchecked state; compact consistent light/dark layout,44px controls and16px mobile inputs; no overflow at319/360/390/768/1024/1440. Requirements/contact/name/promo/gift and consents must serialize unchanged; invalid/timeout/retry/freeze/Back/upload/date interactions continue working; no personal values in new storage, URLs, telemetry or logs.
+- Proof: isolated browser journeys including synthetic submission only, existing intake/calendar regression, visual screenshots and two independent read-only reviews. Exact committed build binding, guarded production apply/rollback/forward, live GET-only smoke and original-tab readback. No real orders or messages for QA.
+- State: declared; implementation not started.
+- Next: commit manifest/handoff, run reviewed conflict gate, build and test the focused redesign.
