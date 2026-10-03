@@ -22,12 +22,18 @@
   "checks": {
     "command": "bash scripts/cloud-workspace/check.sh",
     "guard": "set -eu",
-    "completion_marker": "CLOUD_CHECKS_PASSED",
+    "completion_marker": "CLOUD_CHECKS_PASSED CLEAN_CHECKOUT_VERIFIED",
     "node_tests": 661,
     "node_pass": 652,
     "node_fail": 0,
     "node_existing_skips": 9,
-    "workspace_and_brain": "Both run before Node in check.sh; command completed successfully"
+    "workspace_and_brain": "Both run before Node in check.sh; command completed successfully",
+    "clean_checkout": {
+      "command": "test -z \"$(git status --porcelain)\"",
+      "result": "PASS",
+      "observed_argument": "",
+      "timing": "After setup and all checks in a fresh cloud container"
+    }
   },
   "test_status": "Test complete",
   "environment_save": "Verified saved detail page, repository, setup and maintenance commands, zero secrets and task count 0",
@@ -42,5 +48,8 @@
     "raw.githubusercontent.com",
     "codeload.github.com"
   ],
-  "agent_http_methods": "all (required for Git HTTPS protocol)"
+  "agent_http_methods": "all (required for Git HTTPS protocol)",
+  "environment_variables": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  }
 }

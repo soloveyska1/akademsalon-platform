@@ -18,12 +18,17 @@
 ## Воспроизводимая подготовка
 
 Образ Codex `universal`, Node.js **22**, Python **3.12**; Git предустановлен.
+Переменная окружения `PYTHONDONTWRITEBYTECODE=1` предотвращает появление
+неотслеживаемого Python-кэша при проверках в новой рабочей копии.
 Скрипт установки выполняет подготовку и проверки:
 
 ```sh
 set -eu
 bash scripts/cloud-workspace/setup.sh
-bash scripts/cloud-workspace/check.sh
+bash scripts/cloud-workspace/check.sh > /tmp/salon-check.log 2>&1
+tail -n 14 /tmp/salon-check.log
+test -z "$(git status --porcelain)"
+printf "CLOUD_CHECKS_PASSED CLEAN_CHECKOUT_VERIFIED\n"
 ```
 
 Скрипт обслуживания восстанавливает и проверяет baseline при каждом запуске:
