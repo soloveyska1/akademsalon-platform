@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-925450d7dc864946a2cbf360153739cf",
   "slug": "salon-cloud-verification",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/salon-cloud-verification",
   "base_sha": "fd3a57b175ae2590dbd8cf6194dfdc765e1bc2c9",
-  "result_sha": null,
+  "result_sha": "45c81c815ec168589630504c45c2535a1fef9e31",
   "outcome_ids": [
     "OUT-001"
   ],
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "c0dac8901fa97b6c294ecfb9fd2532bc0496c9fea5688d722ca6cdccc3acd63a"
 }
