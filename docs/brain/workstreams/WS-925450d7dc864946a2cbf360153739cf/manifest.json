@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-925450d7dc864946a2cbf360153739cf",
+  "slug": "salon-cloud-verification",
+  "status": "active",
+  "branch": "codex/salon-cloud-verification",
+  "base_sha": "fd3a57b175ae2590dbd8cf6194dfdc765e1bc2c9",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/evidence/cloud-workspace-20261003",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-33acedabd4664c09adddde8d1d7774d9/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-925450d7dc864946a2cbf360153739cf/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/CLOUD-WORKSPACE.md",
+        "match": "exact"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "shared-runtime:cloud-workspace-evidence"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
