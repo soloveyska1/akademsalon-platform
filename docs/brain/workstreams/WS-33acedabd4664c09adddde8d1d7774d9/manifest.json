@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-33acedabd4664c09adddde8d1d7774d9",
   "slug": "salon-cloud-access",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/salon-cloud-access",
   "base_sha": "8c960b733dda103e170811b1795c93f03465934f",
   "result_sha": "098f58ef3b3a972a6d88156820a7db8146901b4c",
@@ -54,6 +54,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "005bba419fac0301830c7586d5e8df646efa4cf9c8936290a7e6d711b85d91c0"
+  "manifest_revision": 3,
+  "base_manifest_hash": "8ec313b5baf656e27b85c55d1dc0061d88661a74fd009fe10ca433b08d273bef"
 }
