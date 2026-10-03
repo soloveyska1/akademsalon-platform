@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-33acedabd4664c09adddde8d1d7774d9",
+  "slug": "salon-cloud-access",
+  "status": "active",
+  "branch": "codex/salon-cloud-access",
+  "base_sha": "8c960b733dda103e170811b1795c93f03465934f",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-001"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "AGENTS.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/evidence/cloud-workspace-20261003",
+        "match": "tree"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-33acedabd4664c09adddde8d1d7774d9/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "docs/CLOUD-WORKSPACE.md",
+        "match": "exact"
+      },
+      {
+        "path": "README.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/cloud-workspace",
+        "match": "tree"
+      }
+    ],
+    "read": [
+      {
+        "path": "docs/brain/evidence/salon-intake-studio-20260927/release-build-manifest.json",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "shared-runtime:cloud-workspace"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
