@@ -1,0 +1,46 @@
+{
+  "source": "Observed Codex Cloud setup terminal in authenticated browser",
+  "environment_name": "Академический Салон — основной проект",
+  "repository": "soloveyska1/akademsalon-platform",
+  "runtime": {
+    "image": "universal",
+    "node": "22.22.2",
+    "python": "3.12.13",
+    "git": "2.43.0"
+  },
+  "cold_setup": {
+    "result": "PASS",
+    "files": 534,
+    "downloaded": 263,
+    "repository": 271,
+    "manifest_sha256": "4465619198dc8003c6a7e75e6c7c18f68a963f81c591f1488cf7da2db65501e1"
+  },
+  "maintenance": {
+    "result": "PASS",
+    "cached": 534
+  },
+  "checks": {
+    "command": "bash scripts/cloud-workspace/check.sh",
+    "guard": "set -eu",
+    "completion_marker": "CLOUD_CHECKS_PASSED",
+    "node_tests": 661,
+    "node_pass": 652,
+    "node_fail": 0,
+    "node_existing_skips": 9,
+    "workspace_and_brain": "Both run before Node in check.sh; command completed successfully"
+  },
+  "test_status": "Test complete",
+  "environment_save": "Verified saved detail page, repository, setup and maintenance commands, zero secrets and task count 0",
+  "production_access": false,
+  "secrets_added": false,
+  "new_cloud_task_created": false,
+  "environment_id": "6ac059e9e520819188deb814e4040a5e",
+  "environment_url": "https://chatgpt.com/codex/cloud/settings/environment/6ac059e9e520819188deb814e4040a5e",
+  "agent_allowed_domains": [
+    "github.com",
+    "api.github.com",
+    "raw.githubusercontent.com",
+    "codeload.github.com"
+  ],
+  "agent_http_methods": "all (required for Git HTTPS protocol)"
+}

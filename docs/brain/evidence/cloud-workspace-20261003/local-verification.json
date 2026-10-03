@@ -30,7 +30,7 @@
     },
     "working_copy_preserved": true
   },
-  "cloud_result": "pending environment terminal readback",
+  "cloud_result": "PASS; see cloud-verification.json",
   "production_changes": false,
   "credentials_copied": false,
   "scope": {

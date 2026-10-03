@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "source_hash_equal": true
+    },
+    {
+      "path": "/services.html",
+      "status": 200,
+      "source_hash_equal": true
+    },
+    {
+      "path": "/configurator.html",
+      "status": 200,
+      "source_hash_equal": true
+    },
+    {
+      "path": "/assets/js/intake-studio.js",
+      "status": 200,
+      "source_hash_equal": true
+    }
+  ],
+  "server_closed": true
+}
