@@ -1,0 +1,41 @@
+{
+  "source_declaration": "dc34b380229f4c0e25a1ff7bea0b09914ff2445c",
+  "base": "8c960b733dda103e170811b1795c93f03465934f",
+  "node": "v22.22.3",
+  "python": "Python 3.14.7",
+  "commands": [
+    "bash scripts/cloud-workspace/setup.sh",
+    "bash scripts/cloud-workspace/check.sh",
+    "git diff --check"
+  ],
+  "local_result": "PASS",
+  "tests": {
+    "workspace": 7,
+    "brain": 39,
+    "node_pass": 652,
+    "node_fail": 0,
+    "node_existing_skips": 9
+  },
+  "baseline": {
+    "release": "release228-intake-da171f06",
+    "files": 534,
+    "redirects": {
+      "expertise.html": "/"
+    },
+    "manifest_sha256": "4465619198dc8003c6a7e75e6c7c18f68a963f81c591f1488cf7da2db65501e1",
+    "sources": {
+      "cached": 493,
+      "downloaded": 40,
+      "repository": 1
+    },
+    "working_copy_preserved": true
+  },
+  "cloud_result": "pending environment terminal readback",
+  "production_changes": false,
+  "credentials_copied": false,
+  "scope": {
+    "hard_conflicts": 0,
+    "warnings": 74,
+    "decision": "Integration owner explicitly accepted existing terminal-worktree and dormant-ref warnings; active CURRENT-HANDOFF overlap removed by a new Brain declaration."
+  }
+}
