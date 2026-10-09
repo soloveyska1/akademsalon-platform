@@ -97,6 +97,7 @@ def connect(path: Path = DB_PATH) -> sqlite3.Connection:
 
 def migrate(con: sqlite3.Connection) -> None:
     con.execute(SCHEMA)
+    con.execute(PRIZES_SCHEMA)
 
 
 def active_subscription(con: sqlite3.Connection, user_id: int, now: datetime):
@@ -194,6 +195,49 @@ def notify(con: sqlite3.Connection, done: dict) -> None:
         con.execute("UPDATE kladovaya_6let_grants SET notified_at=? WHERE id=?", (iso(utcnow()), done["id"]))
 
 
+BONUS_PRIZES = {"bonus2000": 2000, "bonus1000": 1000}
+BONUS_TTL_DAYS = 180
+PRIZES_SCHEMA = """
+CREATE TABLE IF NOT EXISTS kladovaya_6let_prizes(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tg INTEGER NOT NULL CHECK(tg > 0),
+  prize TEXT NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  code TEXT,
+  created_at TEXT NOT NULL,
+  state TEXT NOT NULL DEFAULT 'pending' CHECK(state IN ('pending','applied','revoked')),
+  applied_at TEXT,
+  notified_at TEXT
+);
+"""
+
+
+def apply_bonus(con: sqlite3.Connection, prize_id: int, now: datetime | None = None) -> dict | None:
+    """Бонусы приза — на счёт победителя, когда он есть в Салоне. None — уже не ждёт или его нет."""
+    now = now or utcnow()
+    con.execute("BEGIN IMMEDIATE")
+    try:
+        prize = con.execute("SELECT * FROM kladovaya_6let_prizes WHERE id=?", (prize_id,)).fetchone()
+        user = prize and con.execute(
+            "SELECT id FROM users WHERE id=? AND id > 0 AND COALESCE(banned, 0)=0", (prize["tg"],)
+        ).fetchone()
+        amount = BONUS_PRIZES.get(prize["prize"]) if prize else None
+        if not prize or prize["state"] != "pending" or not user or not amount:
+            con.execute("ROLLBACK")
+            return None
+        expires = now + timedelta(days=BONUS_TTL_DAYS)
+        con.execute(
+            "INSERT INTO bonus_ledger(user_id, delta, kind, note, order_id, expires_at, created_at) VALUES(?,?,?,?,NULL,?,?)",
+            (int(prize["tg"]), amount, "admin", "Кладовой 6 лет: приз розыгрыша", iso(expires), iso(now)),
+        )
+        con.execute("UPDATE kladovaya_6let_prizes SET state='applied', applied_at=? WHERE id=?", (iso(now), prize_id))
+        con.execute("COMMIT")
+        return {"id": prize_id, "tg": int(prize["tg"]), "amount": amount, "expires": iso(expires)}
+    except Exception:
+        con.execute("ROLLBACK")
+        raise
+
+
 def run(con: sqlite3.Connection, *, dry_run: bool = False) -> list[dict]:
     migrate(con)
     applied = []
@@ -205,13 +249,32 @@ def run(con: sqlite3.Connection, *, dry_run: bool = False) -> list[dict]:
         if done:
             applied.append(done)
             notify(con, done)
+    bonus_rows = con.execute(
+        "SELECT p.id FROM kladovaya_6let_prizes p JOIN users u ON u.id = p.tg "
+        "WHERE p.state='pending' AND p.prize IN ('bonus2000','bonus1000') AND COALESCE(u.banned, 0)=0 ORDER BY p.id"
+    ).fetchall()
+    for row in bonus_rows:
+        if dry_run:
+            applied.append({"prize": int(row["id"]), "dry_run": True})
+            continue
+        done = apply_bonus(con, int(row["id"]))
+        if done:
+            applied.append(done)
+            until = parse_iso(done["expires"]).astimezone(timezone(timedelta(hours=3))).strftime("%d.%m.%Y")
+            text = (f"🎉 Кладовой 6 лет — и тебе повезло в розыгрыше: {done['amount']:,} бонусов уже на твоём счёте в Салоне "
+                    f"(до {until}). Бонусами можно оплатить до 20 % заказа.").replace(",", " ")
+            if telegram("sendMessage", {"chat_id": done["tg"], "text": text}):
+                con.execute("UPDATE kladovaya_6let_prizes SET notified_at=? WHERE id=?", (iso(utcnow()), done["id"]))
     return applied
 
 
 def status(con: sqlite3.Connection) -> dict:
     migrate(con)
     rows = con.execute("SELECT reason, state, COUNT(*) AS n FROM kladovaya_6let_grants GROUP BY reason, state").fetchall()
-    return {f"{r['reason']}:{r['state']}": int(r["n"]) for r in rows}
+    counts = {f"{r['reason']}:{r['state']}": int(r["n"]) for r in rows}
+    for r in con.execute("SELECT prize, state, COUNT(*) AS n FROM kladovaya_6let_prizes GROUP BY prize, state").fetchall():
+        counts[f"prize-{r['prize']}:{r['state']}"] = int(r["n"])
+    return counts
 
 
 def main(argv: list[str] | None = None) -> int:

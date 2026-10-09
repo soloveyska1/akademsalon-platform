@@ -19,6 +19,9 @@ zero_campaign_nonces). В запросе — подарки, которые бо
 Подарки записываются в kladovaya_6let_grants (один на человека и причину) и
 включаются сторожем kladovaya_6let_watch.py (таймер раз в минуту), когда
 человек есть в Салоне со входом через Telegram (users.id = Telegram-ID).
+Призы розыгрыша 16.10 (prizes: tg, приз, ключ) — в kladovaya_6let_prizes:
+коды −90 % (ВКР, курсовая) и −100 % (две самостоятельные) сразу строкой promos
+и возвращаются боту, он шлёт их победителю; бонусы начисляет сторож.
 Подписка конкурса (via='kladovaya-6let') не лишает кода новичка ЛИСТ-:
 db.promo_customer_state её не считает (правка того же установщика).
 Механика акции — docs/6let.md в репозитории Кладовой.
@@ -28,6 +31,7 @@ from __future__ import annotations
 
 import json
 import re
+import secrets
 import time
 from typing import Any, Callable
 
@@ -111,25 +115,101 @@ def parse_grants(raw: Any) -> list[tuple[int, str, str, int]]:
     return out
 
 
+# Призы розыгрыша 16.10: коды — сразу строкой promos (личный, одноразовый, до 30.06.2027),
+# бонусы — сторож начисляет, когда победитель есть в Салоне (bonus_ledger, kind='admin').
+PRIZES = {
+    "vkr": {"pct": 90, "cap": 45000, "uses": 1, "note": "Кладовой 6 лет: ВКР за 10 %"},
+    "course": {"pct": 90, "cap": 15000, "uses": 1, "note": "Кладовой 6 лет: курсовая за 10 %"},
+    "self": {"pct": 100, "cap": 3000, "uses": 2, "note": "Кладовой 6 лет: две самостоятельные"},
+    "bonus2000": {"bonus": 2000},
+    "bonus1000": {"bonus": 1000},
+}
+PRIZE_EXPIRES = "2027-06-30"
+PRIZE_KEY_RE = re.compile(r"^[a-z0-9-]{4,40}$")
+CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+PRIZES_SCHEMA = """
+CREATE TABLE IF NOT EXISTS kladovaya_6let_prizes(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tg INTEGER NOT NULL CHECK(tg > 0),
+  prize TEXT NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  code TEXT,
+  created_at TEXT NOT NULL,
+  state TEXT NOT NULL DEFAULT 'pending' CHECK(state IN ('pending','applied','revoked')),
+  applied_at TEXT,
+  notified_at TEXT
+);
+"""
+
+
+def parse_prizes(raw: Any) -> list[tuple[int, str, str]]:
+    """Призы из запроса бота: (tg, приз, ключ); кривое — CampaignError."""
+    if raw is None:
+        return []
+    if not isinstance(raw, list) or len(raw) > 100:
+        raise zero_campaign.CampaignError("bad_payload", 400)
+    out: list[tuple[int, str, str]] = []
+    for item in raw:
+        if not isinstance(item, dict) or set(item) != {"tg", "prize", "key"}:
+            raise zero_campaign.CampaignError("bad_payload", 400)
+        tg, prize, key = item["tg"], item["prize"], item["key"]
+        if (
+            not isinstance(tg, int) or isinstance(tg, bool) or tg <= 0
+            or prize not in PRIZES
+            or not isinstance(key, str) or not PRIZE_KEY_RE.fullmatch(key)
+        ):
+            raise zero_campaign.CampaignError("bad_payload", 400)
+        out.append((tg, prize, key))
+    return out
+
+
+def prize_code() -> str:
+    return "6ЛЕТ-" + "".join(secrets.choice(CODE_ALPHABET) for _ in range(8))
+
+
 async def _rows(connection, sql: str, args: tuple = ()) -> list:
     return list(await (await connection.execute(sql, args)).fetchall())
 
 
 async def sync(payload: dict, *, now: str | None = None) -> dict:
-    """Записать подарки бота (повтор не задвоит) и отдать оплаты и состояние подарков."""
-    if not isinstance(payload, dict) or not set(payload) <= {"grants", "request_id"}:
+    """Записать подарки и призы бота (повтор не задвоит) и отдать оплаты и их состояние."""
+    if not isinstance(payload, dict) or not set(payload) <= {"grants", "prizes", "request_id"}:
         raise zero_campaign.CampaignError("bad_payload", 400)
     grants = parse_grants(payload.get("grants"))
+    prizes = parse_prizes(payload.get("prizes"))
     moment = now or db.now_iso()
     accepted = moment <= GRANTS_UNTIL
     async with db.transaction() as connection:
-        # одна инструкция — execute (executescript закоммитил бы транзакцию посреди)
+        # по одной инструкции — execute (executescript закоммитил бы транзакцию посреди)
         await connection.execute(SCHEMA)
+        await connection.execute(PRIZES_SCHEMA)
         if accepted:
             for tg, reason, plan, days in grants:
                 await connection.execute(
                     "INSERT OR IGNORE INTO kladovaya_6let_grants(tg, reason, plan, days, created_at) VALUES(?,?,?,?,?)",
                     (tg, reason, plan, days, moment),
+                )
+            for tg, prize, key in prizes:
+                if await _rows(connection, "SELECT 1 FROM kladovaya_6let_prizes WHERE key=?", (key,)):
+                    continue
+                spec = PRIZES[prize]
+                code = None
+                if "pct" in spec:
+                    for _ in range(10):
+                        candidate = prize_code()
+                        if not await _rows(connection, "SELECT 1 FROM promos WHERE code=?", (candidate,)):
+                            code = candidate
+                            break
+                    if code is None:
+                        raise zero_campaign.CampaignError("code_collision", 500)
+                    await connection.execute(
+                        "INSERT INTO promos(code, pct, amount, cap, min_price, uses_left, expires_at, active, note, created_at, family)"
+                        " VALUES(?,?,NULL,?,0,?,?,1,?,?,NULL)",
+                        (code, spec["pct"], spec["cap"], spec["uses"], PRIZE_EXPIRES, spec["note"], moment),
+                    )
+                await connection.execute(
+                    "INSERT INTO kladovaya_6let_prizes(tg, prize, key, code, created_at, state, applied_at) VALUES(?,?,?,?,?,?,?)",
+                    (tg, prize, key, code, moment, "applied" if code else "pending", moment if code else None),
                 )
     connection = db.conn()
     buyers = [
@@ -141,8 +221,12 @@ async def sync(payload: dict, *, now: str | None = None) -> dict:
         {"tg": int(r["tg"]), "reason": r["reason"], "state": r["state"], "extended": bool(r["extended"])}
         for r in await _rows(connection, "SELECT tg, reason, state, extended FROM kladovaya_6let_grants ORDER BY id")
     ]
+    prize_states = [
+        {"tg": int(r["tg"]), "prize": r["prize"], "key": r["key"], "code": r["code"], "state": r["state"]}
+        for r in await _rows(connection, "SELECT tg, prize, key, code, state FROM kladovaya_6let_prizes ORDER BY id")
+    ]
     return {"ok": True, "campaign": CAMPAIGN, "generatedAt": moment, "grantsAccepted": accepted,
-            "buyers": buyers, "grants": states}
+            "buyers": buyers, "grants": states, "prizes": prize_states}
 
 
 def register(router, ip_of: Callable[[web.Request], str]) -> None:

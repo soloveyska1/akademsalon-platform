@@ -27,6 +27,10 @@ CREATE TABLE orders(id INTEGER PRIMARY KEY, user_id INTEGER, status TEXT, work_t
   deleted INTEGER DEFAULT 0, synthetic INTEGER DEFAULT 0);
 CREATE TABLE payments(id INTEGER PRIMARY KEY, order_id INTEGER, kind TEXT, amount INTEGER, method TEXT,
   status TEXT, created_at TEXT, paid_at TEXT);
+CREATE TABLE promos(code TEXT PRIMARY KEY, pct INTEGER, amount INTEGER, cap INTEGER, min_price INTEGER, uses_left INTEGER,
+  expires_at TEXT, active INTEGER, note TEXT, created_at TEXT, family TEXT);
+CREATE TABLE bonus_ledger(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, delta INTEGER, kind TEXT, note TEXT,
+  order_id INTEGER, expires_at TEXT, consumed INTEGER DEFAULT 0, created_at TEXT);
 CREATE TABLE subscriptions(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, plan TEXT, features TEXT, price INTEGER,
   period_days INTEGER, discount_pct INTEGER, discount_cap INTEGER, status TEXT, order_id INTEGER, started_at TEXT,
   expires_at TEXT, via TEXT, pay_method TEXT, auto_renew INTEGER, created_at TEXT);
@@ -158,6 +162,27 @@ class SyncTest(unittest.TestCase):
         with self.assertRaises(CampaignError):
             asyncio.run(self.k6.sync({"grants": [], "evil": 1}))
 
+    def test_prizes_make_codes_once_and_wait_for_bonuses(self):
+        prizes = [{"tg": 700100200, "prize": "vkr", "key": "main-1"},
+                  {"tg": 700100201, "prize": "self", "key": "main-3"},
+                  {"tg": 700100202, "prize": "bonus2000", "key": "main-6"}]
+        first = asyncio.run(self.k6.sync({"prizes": prizes}))
+        again = asyncio.run(self.k6.sync({"prizes": prizes}))
+        self.assertEqual(first["prizes"], again["prizes"])
+        codes = {p["key"]: p for p in again["prizes"]}
+        self.assertRegex(codes["main-1"]["code"], r"^6ЛЕТ-[2-9A-HJ-NP-Z]{8}$")
+        self.assertEqual(codes["main-1"]["state"], "applied")
+        self.assertIsNone(codes["main-6"]["code"])
+        self.assertEqual(codes["main-6"]["state"], "pending")
+        rows = {r["code"]: r for r in self.con.execute("SELECT * FROM promos")}
+        vkr = rows[codes["main-1"]["code"]]
+        self.assertEqual((vkr["pct"], vkr["cap"], vkr["uses_left"], vkr["expires_at"], vkr["active"], vkr["family"]), (90, 45000, 1, "2027-06-30", 1, None))
+        self_row = rows[codes["main-3"]["code"]]
+        self.assertEqual((self_row["pct"], self_row["cap"], self_row["uses_left"]), (100, 3000, 2))
+        self.assertEqual(len(rows), 2)
+        with self.assertRaises(CampaignError):
+            asyncio.run(self.k6.sync({"prizes": [{"tg": 1, "prize": "car", "key": "main-9"}]}))
+
     def test_no_new_grants_after_the_end(self):
         result = asyncio.run(self.k6.sync({"grants": [{"tg": 5, "reason": "friend", "plan": "plus", "days": 30}]}, now="2026-11-01T00:00:00"))
         self.assertFalse(result["grantsAccepted"])
@@ -221,6 +246,18 @@ class WatchTest(unittest.TestCase):
         self.assertIn("«Про»", self.sent[0]["text"])
         self.assertIn("спасибо за именинный заказ", self.sent[0]["text"])
         self.assertEqual(self.watch.status(self.con), {"buyer:applied": 1, "friend:pending": 1})
+
+
+    def test_bonus_prize_waits_for_the_salon_account(self):
+        self.con.execute("INSERT INTO kladovaya_6let_prizes(tg, prize, key, created_at) VALUES(700100200, 'bonus2000', 'main-6', '2026-10-16T16:00:00')")
+        self.assertEqual(self.watch.run(self.con), [])
+        self.con.execute("INSERT INTO users(id) VALUES(700100200)")
+        done = self.watch.run(self.con)
+        self.assertEqual(done[0]["amount"], 2000)
+        row = self.con.execute("SELECT user_id, delta, kind FROM bonus_ledger").fetchone()
+        self.assertEqual(tuple(row), (700100200, 2000, "admin"))
+        self.assertIn("2 000 бонусов", self.sent[-1]["text"])
+        self.assertEqual(self.watch.run(self.con), [])
 
 
 class InstallerTest(unittest.TestCase):

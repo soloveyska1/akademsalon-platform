@@ -198,6 +198,41 @@ def apply(root: Path, *, do_restart: bool, health_url: str, systemd_dir: Path = 
     return backup
 
 
+def update(root: Path, *, health_url: str) -> Path:
+    """Только новые модуль и сторож: правки webapp.py и db.py уже стоят (--apply)."""
+    webapp = root / "app/webapp.py"
+    if MARKER not in webapp.read_text(encoding="utf-8"):
+        raise SystemExit("«Кладовой 6 лет» ещё не стоит — сначала --apply")
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    backup = root / "backups" / f"kladovaya-6let-update-{stamp}"
+    backup.mkdir(parents=True)
+    module = root / "app/services/kladovaya_6let.py"
+    watcher = root / "ops/kladovaya_6let_watch.py"
+    shutil.copy2(module, backup / "kladovaya_6let.py")
+    shutil.copy2(watcher, backup / "kladovaya_6let_watch.py")
+    tmp_module = write_compiled(module, (HERE / "kladovaya_6let.py").read_text(encoding="utf-8"))
+    tmp_watcher = write_compiled(watcher, (HERE / "kladovaya_6let_watch.py").read_text(encoding="utf-8"))
+    spec = importlib.util.spec_from_file_location("kladovaya_6let_watch", HERE / "kladovaya_6let_watch.py")
+    watch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(watch)
+    con = watch.connect(root / "salon.db")
+    try:
+        watch.migrate(con)
+    finally:
+        con.close()
+    tmp_module.replace(module)
+    tmp_watcher.replace(watcher)
+    systemctl("restart", "salon-bot-v2.service")
+    if not health(health_url):
+        print("здоровье не ответило — возвращаю прежние модуль и сторож", file=sys.stderr)
+        shutil.copy2(backup / "kladovaya_6let.py", module)
+        shutil.copy2(backup / "kladovaya_6let_watch.py", watcher)
+        systemctl("restart", "salon-bot-v2.service")
+        raise SystemExit(1)
+    print(f"обновлено: модуль {sha256(module)[:16]}…, сторож {sha256(watcher)[:16]}…, бэкап {backup}; /api/health — 200")
+    return backup
+
+
 def rollback(root: Path, backup: Path, *, do_restart: bool, health_url: str, systemd_dir: Path = Path("/etc/systemd/system")) -> None:
     shutil.copy2(backup / "webapp.py", root / "app/webapp.py")
     shutil.copy2(backup / "db.py", root / "app/db.py")
@@ -219,6 +254,7 @@ def main(argv: list[str] | None = None) -> int:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--check", action="store_true")
     group.add_argument("--apply", action="store_true")
+    group.add_argument("--update", action="store_true")
     group.add_argument("--rollback")
     parser.add_argument("--restart", action="store_true")
     parser.add_argument("--health-url", default="http://127.0.0.1:8090/api/health")
@@ -229,6 +265,8 @@ def main(argv: list[str] | None = None) -> int:
         print("можно ставить: " + ", ".join(f"{rel} {d[:16]}…" for rel, d in digests.items()) + "; места правки найдены по разу")
     elif args.apply:
         apply(root, do_restart=args.restart, health_url=args.health_url)
+    elif args.update:
+        update(root, health_url=args.health_url)
     else:
         rollback(root, Path(args.rollback), do_restart=args.restart, health_url=args.health_url)
     return 0
