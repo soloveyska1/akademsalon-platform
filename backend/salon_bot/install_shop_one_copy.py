@@ -144,7 +144,7 @@ def install(args):
     report = {"mode": "preflight", "before": catalogue_state(core, db), "rehearsal": expected,
               "after_sha256": {name: hashlib.sha256(data).hexdigest() for name, data in new.items()}}
     if args.apply:
-        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         backup = args.app.parent / "backups" / ("shop-one-copy-" + stamp)
         backup.mkdir(parents=True, mode=0o700)
         for name, path in files.items():
