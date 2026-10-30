@@ -1,0 +1,65 @@
+--- app/services/scheduler.py.pre-trash-silence-20261030	2026-08-25 06:08:59.225288201 +0300
++++ app/services/scheduler.py	2026-10-30 10:45:25.842922200 +0300
+@@ -175,7 +175,7 @@
+     Финальная часть не авто-принимается никогда."""
+     from . import flow
+     rows = await db.orders_where(
+-        "WHERE status='check' AND coalesce(paused,0)=0 AND coalesce(stages_total,1) > 1")
++        "WHERE coalesce(deleted,0)=0 AND status='check' AND coalesce(paused,0)=0 AND coalesce(stages_total,1) > 1")
+     for o in rows:
+         try:
+             total = o["stages_total"] or 1
+@@ -268,7 +268,7 @@
+     from . import flow, payments
+     from . import group as grp_svc
+     rows = await db.orders_where(
+-        "WHERE status IN ('prepay','work','check','fix') AND coalesce(paused,0)=0")
++        "WHERE coalesce(deleted,0)=0 AND status IN ('prepay','work','check','fix') AND coalesce(paused,0)=0")
+     now = datetime.now(timezone.utc)
+     for o in rows:
+         try:
+@@ -405,7 +405,7 @@
+     cutoff = (datetime.now(timezone.utc) - timedelta(minutes=PING_AFTER_MIN)) \
+         .strftime("%Y-%m-%dT%H:%M:%S")
+     rows = await db.orders_where(
+-        "WHERE status='new' AND coalesce(paused,0)=0 AND created_at < ?", (cutoff,))
++        "WHERE coalesce(deleted,0)=0 AND status='new' AND coalesce(paused,0)=0 AND created_at < ?", (cutoff,))
+     for o in rows:
+         if await db.has_event(o["id"], "admin_ping"):
+             continue
+@@ -420,7 +420,7 @@
+     cutoff = (datetime.now(timezone.utc) - timedelta(hours=FOLLOWUP_AFTER_H)) \
+         .strftime("%Y-%m-%dT%H:%M:%S")
+     rows = await db.orders_where(
+-        "WHERE status='check' AND coalesce(paused,0)=0 AND updated_at < ?", (cutoff,))
++        "WHERE coalesce(deleted,0)=0 AND status='check' AND coalesce(paused,0)=0 AND updated_at < ?", (cutoff,))
+     for o in rows:
+         if not o["user_id"] or await db.has_event(o["id"], "client_followup"):
+             continue
+@@ -437,7 +437,7 @@
+     from . import board as board_svc
+     active = await db.active_orders(limit=50)
+     day_ago = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S")
+-    fresh = await db.orders_where("WHERE created_at >= ?", (day_ago,))
++    fresh = await db.orders_where("WHERE coalesce(deleted,0)=0 AND created_at >= ?", (day_ago,))
+     if not active and not fresh:
+         return  # тишина — не спамим
+     data = await board_svc.collect(limit=50)
+@@ -547,7 +547,7 @@
+     """
+     from . import payments
+     rows = await db.orders_where(
+-        "WHERE status IN ('new','priced','prepay','work','check','fix') "
++        "WHERE coalesce(deleted,0)=0 AND status IN ('new','priced','prepay','work','check','fix') "
+         "AND coalesce(paused,0)=0 AND deadline_date IS NOT NULL")
+     today = date.today()
+     for o in rows:
+@@ -593,7 +593,7 @@
+ 
+ async def _send_deadline_reminders(bot: Bot) -> None:
+     rows = await db.orders_where(
+-        "WHERE status IN ('work','fix','prepay') AND coalesce(paused,0)=0 "
++        "WHERE coalesce(deleted,0)=0 AND status IN ('work','fix','prepay') AND coalesce(paused,0)=0 "
+         "AND deadline_date IS NOT NULL")
+     today = date.today()
+     for o in rows:

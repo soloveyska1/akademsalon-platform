@@ -1,6 +1,15 @@
 # Current handoff
 
-## Verified current state — 27 September 2026, intake form
+## Verified current state — 30 October 2026, home trust + bot quiet trash
+
+- Live current is `release229-hometrust-21c068f6`: release228 plus 3 changed files (`index.html`, new `assets/css/home-trust.css`, new `assets/js/home-trust.js`). Build future releases from release229, never from release228 or stale root HTML. Baseline index came from the server disk; nginx `sub_filter` adds `/6let-ribbon.js` to served HTML, so served bytes differ from disk.
+- Home: Telegram CTA on the first screen, in the footer and in the mobile order dock (`t.me/academic_saloon_bot?start=web`; bot v2 relays any client text to the master). Six real review screenshots replace the «Листик» block right after the hero, and the «Выгода под твой план» perks block is removed from home (benefits page unchanged).
+- Bot v2: the 9:00 digest was firing daily because ~38 test orders stayed active. They are now `cancel` + `deleted=1` after a DB backup, and the scheduler skips trashed orders in all 7 queries. Details, order ids, patch and rollback are in `scripts/salon-home-trust-20261030/README.md`.
+- Second cleanup on the owner's decision: 12 stale orders closed like the admin «close» action (July offers 202, 208–211, 218, 221–223; no-contact 236, 238; 183), live offers set to `canceled`, no client emails sent.
+- Third cleanup: SQLite reads `"prepay"` as the `orders.prepay` column, so earlier double-quoted status lists missed six `prepay` orders. Tests 140, 143, 233, 240, 246 were trashed, and stale 220 was cancelled. Pending invoices and «я оплатил» claims of closed or trashed orders were cancelled, which stops the daily 12:00 reconcile alert. Reconcile now skips trashed orders too. Seven orders remain active (parametrized check). In SQL against `salon.db`, use single quotes or parameters for strings.
+- Not done: real unanswered leads (orders 250, 249, 241; contact-page lead 2) have drafted replies that the owner sends himself. Orders 229 and 245 wait for the owner's decision. Conversion uplift is not measured.
+
+## Previous verified state — 27 September 2026, intake form
 
 Sequential integration-owner update after the owner requested a more comfortable requirements/contact/optional fields/consents area.
 
