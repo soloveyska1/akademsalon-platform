@@ -1,6 +1,12 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, homepage v4
+## Verified current state — 30 October 2026, header v4 and services v4
+
+- Live current is `release246-header-services-3008b54d`: `release245-shop-one-copy-e5bc8212` (a parallel shop release built on top of release244) plus 93 HTML pages. Every page with the shared header gets the new header markup (`apply_header_v4.py`: only the header block and its `ds-header.css` link change; page-specific order links are kept), and `services.html` is «Работы и цены» v4 (`build_services_v4.py`). `ds-header.css` and `services-v4.css` were added in release244 together with hidden previews. Rollback: the static pointer to release245-shop-one-copy-e5bc8212; never restore the DB for this UI change. Build future releases from release246; a new page with the shared header needs `apply_ds_shell.py` and then `apply_header_v4.py`.
+- Header: a lighter translucent bar (76/64 px), a lime marker under the current section, round search/cabinet/Telegram buttons, «Заказать работу», and a night menu with a lime order card and a Telegram link. Services: a night first screen with Listik, the situations bar over it, work cards and an estimate panel styled like the home calculator; the pricing scripts are unchanged and were re-tested (filters, search, scope, add-ons, express, benefits tab, checkout link).
+- Details: `scripts/salon-header-v4-20261030/README.md`, `scripts/salon-services-v4-20261030/README.md`. Not measured: conversion uplift.
+
+## Previous verified state — 30 October 2026, homepage v4
 
 - Live current is `release243-ds-shell-3adcc8f9`: release242 plus the new `assets/css/ds-shell.css` linked (with an Onest preload) in the 94 pages that have the site header. The header, menu and search used `--sh-sans: Manrope, Arial`, but the site has no Manrope files, so visitors saw Arial; the shell (header, menu, search, FAQ hints, Listik widget) is now Onest site-wide. Old stylesheets are unchanged. Rollback of this step only: the static pointer to release242. Details: `scripts/salon-ds-shell-20261030/README.md`. Metrika goals «Telegram: калькулятор» (`tg_click_calc`) and «Калькулятор: заявка на сайте» (`calc_order_click`) were created on 30 October.
 - Release242 (`release242-home-v4-4c795839`) switched `index.html` to homepage v4; it differs from release241 only in `index.html`. Releases 237–241 added hidden noindex previews (`home-v3.html`, `home-v4.html`) and the v4 assets (`assets/css/ds-v4.css`, `assets/css/home-v4.css`, `assets/js/home-v4.js`, `assets/fonts/v4/`, `assets/img/home-v4/`). Build future releases from release243. Rollback to homepage v2 is the static pointer to `release241-v4preview-c234028d`; never restore the DB for this UI change.
