@@ -1,0 +1,306 @@
+/* «Документы Салона» в дизайн-системе ds-v4: титул документа на ночной сцене, навигация по разделу,
+   читалка с оглавлением и поиском, список всех документов. Токены и кнопки — в ds-v4.css, поведение —
+   docs-v4.js. Все правила начинаются с body.salon-legal.ds-v4, чтобы перебить старые стили без !important. */
+
+body.salon-legal.ds-v4{background:var(--paper,#f5f4ef)}
+body.salon-legal.ds-v4 #main.ld-main{--doc-fs:17px;width:min(1320px,calc(100% - 64px));max-width:none;margin:16px auto clamp(32px,4vw,56px);padding:0;color:var(--ds-ink);font:400 16px/1.5 var(--sans)}
+body.salon-legal.ds-v4 #main.ld-main.ld-large{--doc-fs:19.5px}
+body.salon-legal.ds-v4 .ld-main *{box-sizing:border-box}
+body.salon-legal.ds-v4 .ld-main [hidden]{display:none!important}
+body.salon-legal.ds-v4 .ld-main :where(h1,h2,h3,p,ul,ol,li){margin:0}
+body.salon-legal.ds-v4 .ld-main :where(.dc-facts,.dc-docs){padding:0;list-style:none}
+body.salon-legal.ds-v4 .ld-main a{-webkit-tap-highlight-color:transparent}
+body.salon-legal.ds-v4 .ld-main button{-webkit-tap-highlight-color:transparent}
+
+/* Документы раздела: плашки, как в «Выгодах» */
+body.salon-legal.ds-v4 .dc-crumbs{display:flex;gap:6px;margin:0 0 14px;padding:2px 0 4px;overflow-x:auto;scrollbar-width:none}
+body.salon-legal.ds-v4 .dc-crumbs::-webkit-scrollbar{display:none}
+body.salon-legal.ds-v4 .dc-crumbs a{display:inline-flex;align-items:center;flex:none;min-height:40px;padding:0 16px;border:1px solid var(--ds-line);border-radius:999px;background:var(--ds-paper);color:var(--ds-ink);font:500 14.5px/1.2 var(--sans);text-decoration:none;white-space:nowrap;transition:border-color .15s ease,color .15s ease}
+body.salon-legal.ds-v4 .dc-crumbs a:hover{border-color:var(--ds-line-2);color:var(--ds-violet)}
+body.salon-legal.ds-v4 .dc-crumbs a[aria-current]{border-color:var(--ds-violet);background:var(--ds-violet);color:var(--ds-on-violet)}
+
+/* Титул документа: ночная сцена, справа — лист с печатью */
+body.salon-legal.ds-v4 .dc-hero{min-height:clamp(320px,26vw,372px);padding:clamp(22px,2.6vw,34px) clamp(24px,4.8vw,64px) clamp(36px,4.2vw,56px)}
+body.salon-legal.ds-v4 .dc-hero-top{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px}
+body.salon-legal.ds-v4 .dc-kicker{display:inline-flex;align-items:center;gap:10px;min-height:44px;font:500 15px/1.2 var(--sans);color:var(--ds-on-night-2)}
+body.salon-legal.ds-v4 .dc-kicker svg{width:20px;height:20px;color:var(--ds-lime)}
+body.salon-legal.ds-v4 .dc-tools{display:flex;gap:8px}
+body.salon-legal.ds-v4 .dc-tools button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:44px;min-height:44px;margin:0;padding:0 16px;border:1.5px solid rgba(255,255,255,.26);border-radius:13px;background:rgba(255,255,255,.06);color:#fff;font:600 14.5px/1 var(--sans);cursor:pointer;transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+body.salon-legal.ds-v4 .dc-tools button:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.62)}
+body.salon-legal.ds-v4 .dc-tools button[aria-pressed=true]{background:var(--ds-lime);border-color:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-legal.ds-v4 .dc-tools svg{width:18px;height:18px;flex:none}
+body.salon-legal.ds-v4 .dc-aa{font:500 18px/1 var(--display);letter-spacing:-.01em}
+body.salon-legal.ds-v4 .dc-hero-copy{position:relative;z-index:1;max-width:min(800px,64%);margin-top:clamp(26px,3.2vw,44px)}
+body.salon-legal.ds-v4 .dc-hero .ds-display-1{font-size:clamp(34px,1.3rem + 2.5vw,60px);line-height:1.04;letter-spacing:-.022em;color:#fff;overflow-wrap:break-word}
+body.salon-legal.ds-v4 .dc-hero .doc-subtitle{margin-top:16px;max-width:34em;color:var(--ds-on-night-2)}
+body.salon-legal.ds-v4 .dc-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+body.salon-legal.ds-v4 .dc-facts li{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin:0;padding:6px 16px 6px 6px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font:500 15px/1.3 var(--sans);color:#fff}
+body.salon-legal.ds-v4 .dc-facts b{display:grid;place-items:center;min-width:32px;height:32px;padding:0 9px;border-radius:999px;background:var(--ds-lime);color:var(--ds-lime-ink);font:700 14px/1 var(--sans);font-variant-numeric:tabular-nums lining-nums}
+body.salon-legal.ds-v4 .dc-consents{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px}
+body.salon-legal.ds-v4 .dc-consents a{display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border:1px solid rgba(255,255,255,.22);border-radius:999px;color:var(--ds-on-night-2);font:500 14px/1.2 var(--sans);text-decoration:none;transition:border-color .15s ease,color .15s ease}
+body.salon-legal.ds-v4 .dc-consents a:hover{border-color:rgba(255,255,255,.6);color:#fff}
+body.salon-legal.ds-v4 .dc-consents a[aria-current]{border-color:var(--ds-lime);background:var(--ds-lime);color:var(--ds-lime-ink)}
+
+body.salon-legal.ds-v4 .dc-sheet{position:absolute;right:clamp(36px,7vw,112px);bottom:-46px;width:clamp(176px,16vw,224px);aspect-ratio:3/4;pointer-events:none}
+body.salon-legal.ds-v4 .dc-sheet::before{content:"";position:absolute;inset:-6% -26% 4%;border-radius:50%;background:radial-gradient(closest-side,rgba(150,118,255,.6),transparent);filter:blur(26px)}
+body.salon-legal.ds-v4 .dc-sheet-back,body.salon-legal.ds-v4 .dc-sheet-page{position:absolute;inset:0;border-radius:6px;background:#fff;box-shadow:0 2px 3px rgba(6,3,22,.25),0 30px 50px -22px rgba(6,3,22,.9)}
+body.salon-legal.ds-v4 .dc-sheet-back{background:#e4def7;transform:rotate(-7deg) translate(-14px,6px)}
+body.salon-legal.ds-v4 .dc-sheet-page{display:flex;flex-direction:column;gap:9px;padding:16% 13%;transform:rotate(4deg)}
+body.salon-legal.ds-v4 .dc-sheet-page i{display:block;height:6px;border-radius:3px;background:#e8e3f5}
+body.salon-legal.ds-v4 .dc-sheet-page i:nth-child(1){width:64%;height:11px;margin-bottom:8px;background:#cdc2f6}
+body.salon-legal.ds-v4 .dc-sheet-page i:nth-child(4){margin-top:8px;width:46%;background:#d9d1f8}
+body.salon-legal.ds-v4 .dc-sheet-page i:nth-child(3),body.salon-legal.ds-v4 .dc-sheet-page i:nth-child(7){width:78%}
+body.salon-legal.ds-v4 .dc-sheet-page i:nth-child(9){width:58%}
+body.salon-legal.ds-v4 .dc-sheet-seal{position:absolute;right:-22px;top:40%;display:grid;place-items:center;width:76px;height:76px;border-radius:50%;background:var(--ds-lime);box-shadow:0 0 0 5px rgba(214,246,166,.22),0 16px 30px -12px rgba(6,3,22,.8);color:var(--ds-lime-ink);font:600 30px/1 var(--display);transform:rotate(-12deg)}
+
+/* Читалка: слева оглавление и поиск, справа лист документа */
+body.salon-legal.ds-v4 .ld-layout{display:grid;grid-template-columns:minmax(236px,288px) minmax(0,1fr);gap:clamp(28px,3.6vw,52px);align-items:start;margin-top:clamp(20px,2.4vw,32px)}
+body.salon-legal.ds-v4 .ld-sidebar{position:sticky;top:101px;max-height:calc(100vh - 117px);max-height:calc(100dvh - 117px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ds-line-2) transparent;padding:2px 6px 16px 2px}
+body.salon-legal.ds-v4 .ld-navigation{margin:0;padding:0;border:0;background:none}
+body.salon-legal.ds-v4 .ld-navigation>summary{display:flex;align-items:center;gap:10px;min-height:44px;margin:0;padding:0;list-style:none;cursor:pointer;font:600 15px/1.3 var(--sans);color:var(--ds-ink)}
+body.salon-legal.ds-v4 .ld-navigation>summary::-webkit-details-marker{display:none}
+body.salon-legal.ds-v4 .ld-navigation>summary::after{display:none!important}
+body.salon-legal.ds-v4 .dc-nav-label{flex:1}
+body.salon-legal.ds-v4 .dc-now{display:none}
+body.salon-legal.ds-v4 .dc-chevron{width:18px;height:18px;flex:none;color:var(--ds-muted);transition:transform .2s ease}
+body.salon-legal.ds-v4 .ld-navigation[open]>summary .dc-chevron{transform:rotate(180deg)}
+
+body.salon-legal.ds-v4 .ld-search{position:relative;display:grid;gap:8px;margin:6px 0 0;font:500 13.5px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-legal.ds-v4 .ld-search>svg{position:absolute;left:15px;bottom:15px;width:18px;height:18px;color:var(--ds-muted);pointer-events:none}
+body.salon-legal.ds-v4 .ld-search input{width:100%;min-width:0;min-height:48px;margin:0;padding:0 14px 0 43px;border:1.5px solid var(--ds-line);border-radius:14px;background:var(--ds-paper);color:var(--ds-ink);font:400 15.5px/1.2 var(--sans);box-shadow:none;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .15s ease,box-shadow .15s ease}
+body.salon-legal.ds-v4 .ld-search input::placeholder{color:var(--ds-muted);opacity:.8}
+body.salon-legal.ds-v4 .ld-search input:hover{border-color:var(--ds-line-2)}
+body.salon-legal.ds-v4 .ld-search input:focus{border-color:var(--ds-violet);box-shadow:0 0 0 4px var(--ds-violet-soft)}
+body.salon-legal.ds-v4 .ld-search input::-webkit-search-cancel-button{cursor:pointer}
+body.salon-legal.ds-v4 .ld-search-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:36px;margin:6px 0 4px;font:500 13.5px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-legal.ds-v4 .ld-search-actions:has(#ld-search-status:empty):has([data-ld-next][hidden]){min-height:8px;margin:0}
+body.salon-legal.ds-v4 .ld-search-actions button{min-height:36px;margin:0;padding:0 12px;border:1.5px solid var(--ds-line-2);border-radius:10px;background:var(--ds-paper);color:var(--ds-ink);font:600 13.5px/1 var(--sans);cursor:pointer}
+body.salon-legal.ds-v4 .ld-search-actions button:hover{border-color:var(--ds-violet);color:var(--ds-violet)}
+
+body.salon-legal.ds-v4 #ld-toc{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+body.salon-legal.ds-v4 #ld-toc a{position:relative;display:grid;grid-template-columns:2.5em minmax(0,1fr);align-items:baseline;padding:9px 12px;border-radius:12px;color:var(--ds-muted);font:500 14.5px/1.35 var(--sans);text-decoration:none;transition:background-color .15s ease,color .15s ease}
+body.salon-legal.ds-v4 #ld-toc a>span:only-child{grid-column:1/-1}
+body.salon-legal.ds-v4 #ld-toc.ld-toc-plain a{grid-template-columns:minmax(0,1fr)}
+body.salon-legal.ds-v4 #ld-toc .ld-toc-n{color:var(--ds-violet);font-weight:600;font-variant-numeric:lining-nums}
+body.salon-legal.ds-v4 #ld-toc a:hover{background:var(--ds-mist);color:var(--ds-ink)}
+body.salon-legal.ds-v4 #ld-toc a[aria-current]{background:var(--ds-violet-soft);color:var(--ds-violet);font-weight:600}
+body.salon-legal.ds-v4 #ld-toc a[aria-current]::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:3px;background:var(--ds-violet)}
+
+body.salon-legal.ds-v4 .ld-ask{display:grid;gap:3px;margin:20px 0 0;padding:16px 18px;border-radius:18px;background:var(--ds-mist);color:var(--ds-ink);font:500 14px/1.4 var(--sans);text-decoration:none;transition:background-color .15s ease}
+body.salon-legal.ds-v4 .ld-ask span{color:var(--ds-muted)}
+body.salon-legal.ds-v4 .ld-ask strong{font:600 16px/1.3 var(--sans);color:var(--ds-violet);text-decoration:underline;text-decoration-thickness:1.5px;text-decoration-color:transparent;text-underline-offset:4px;transition:text-decoration-color .15s ease}
+body.salon-legal.ds-v4 .ld-ask:hover{background:var(--ds-mist-2)}
+body.salon-legal.ds-v4 .ld-ask:hover strong{text-decoration-color:currentColor}
+
+/* Лист документа */
+body.salon-legal.ds-v4 .ld-paper{min-width:0;padding:clamp(28px,4.6vw,64px) clamp(22px,5.4vw,88px) clamp(24px,3vw,40px);background:var(--ds-paper);border:1px solid var(--ds-line);border-radius:28px;box-shadow:var(--ds-shadow-1)}
+body.salon-legal.ds-v4 .ld-paper .doc{--g:calc(var(--doc-fs) * 3.3);max-width:calc(var(--doc-fs) * 42);margin:0 auto;padding:0;border:0;border-radius:0;background:none;box-shadow:none;color:var(--ds-ink-2);font:400 var(--doc-fs)/1.72 var(--sans);font-feature-settings:"kern","liga";overflow-wrap:break-word}
+html[data-reading-space=roomy] body.salon-legal.ds-v4 .ld-paper .doc{line-height:2}
+body.salon-legal.ds-v4 .ld-paper .doc.ld-numbered{padding-left:var(--g)}
+/* Прокрутка к разделу: к отступу сайта под шапку (scroll-padding-top 92/80 px) добавляем немного воздуха, на телефоне — ещё плашку оглавления */
+body.salon-legal.ds-v4 .ld-paper .doc [id]{scroll-margin-top:16px}
+body.salon-legal.ds-v4 .ld-paper .doc p{margin:0 0 .95em;color:inherit;font:inherit;text-wrap:pretty}
+body.salon-legal.ds-v4 .ld-paper .doc :is(strong,b){font-weight:600;color:var(--ds-ink)}
+body.salon-legal.ds-v4 .ld-paper .doc a{color:var(--ds-violet);text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:color-mix(in srgb,currentColor 45%,transparent);text-underline-offset:.2em;overflow-wrap:anywhere;transition:text-decoration-color .15s ease}
+body.salon-legal.ds-v4 .ld-paper .doc a:hover{text-decoration-color:currentColor;text-decoration-thickness:1.5px}
+body.salon-legal.ds-v4 .ld-paper .doc :is(ul,ol){margin:.15em 0 1.1em;padding-left:1.3em}
+body.salon-legal.ds-v4 .ld-paper .doc li{margin:.4em 0;padding-left:.3em;color:inherit;font:inherit}
+body.salon-legal.ds-v4 .ld-paper .doc li::marker{color:var(--ds-violet)}
+body.salon-legal.ds-v4 .ld-paper .doc ol>li::marker{font-weight:600;font-variant-numeric:tabular-nums lining-nums}
+body.salon-legal.ds-v4 .ld-paper .doc .ld-n{display:inline-block;width:var(--g);margin-left:calc(var(--g) * -1);color:var(--ds-violet);font-weight:600;font-variant-numeric:lining-nums;white-space:nowrap}
+
+/* Разделы: заголовок Literata, номер раздела на полях, ссылка на раздел справа */
+body.salon-legal.ds-v4 .ld-paper .doc h2,body.salon-legal.ds-v4 .ld-paper .doc .ld-h{margin:calc(var(--doc-fs) * 2.5) 0 calc(var(--doc-fs) * .85);padding:calc(var(--doc-fs) * 1.35) 0 0;border:0;border-top:1px solid var(--ds-line)}
+body.salon-legal.ds-v4 .ld-paper .doc h2{font:500 1.55em/1.22 var(--display);letter-spacing:-.012em;color:var(--ds-ink);text-wrap:balance}
+body.salon-legal.ds-v4 .ld-paper .doc .ld-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+body.salon-legal.ds-v4 .ld-paper .doc .ld-h h2{flex:1;min-width:0;margin:0;padding:0;border:0}
+body.salon-legal.ds-v4 .ld-paper .doc .ld-hn{display:inline-block;width:var(--g);margin-left:calc(var(--g) * -1);font:600 var(--doc-fs)/1 var(--sans);letter-spacing:0;color:var(--ds-violet);font-variant-numeric:lining-nums;white-space:nowrap}
+body.salon-legal.ds-v4 .ld-paper .doc h3{margin:1.7em 0 .55em;font:600 1.1em/1.35 var(--sans);color:var(--ds-ink)}
+body.salon-legal.ds-v4 .ld-copy-section{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:36px;margin:0;padding:0 10px;border:0;border-radius:10px;background:transparent;color:var(--ds-muted);font:500 13.5px/1 var(--sans);cursor:pointer;transition:background-color .15s ease,color .15s ease,opacity .15s ease}
+body.salon-legal.ds-v4 .ld-copy-section svg{width:16px;height:16px}
+body.salon-legal.ds-v4 :is(.ld-copy-section:hover,.ld-copy-section.ld-copied){background:var(--ds-mist);color:var(--ds-violet);opacity:1}
+@media (hover:hover){
+  body.salon-legal.ds-v4 .ld-copy-section{opacity:.55}
+  body.salon-legal.ds-v4 .ld-h:hover .ld-copy-section,body.salon-legal.ds-v4 .ld-copy-section:focus-visible{opacity:1}
+}
+
+/* Строка редакции, врезки, таблицы, подсветка поиска */
+body.salon-legal.ds-v4 .ld-paper .doc .doc-meta{position:relative;margin:0 0 2.2em;padding:14px 18px 14px 50px;border-radius:16px;background:var(--ds-mist);color:var(--ds-ink-2);font:400 .88em/1.6 var(--sans)}
+body.salon-legal.ds-v4 .ld-paper .doc.ld-numbered>.doc-meta{margin-left:calc(var(--g) * -1)}
+body.salon-legal.ds-v4 .ld-paper .doc .doc-meta::before{content:"";position:absolute;left:18px;top:15px;width:20px;height:20px;background:var(--ds-violet);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") center/contain no-repeat}
+body.salon-legal.ds-v4 .ld-paper .doc .doc-meta a{font-weight:600}
+body.salon-legal.ds-v4 .ld-paper .doc .doc-note{margin:0 0 1.6em;padding:1em 1.2em;border:1px solid color-mix(in srgb,var(--ds-lime) 85%,var(--ds-ink) 6%);border-radius:18px;background:color-mix(in srgb,var(--ds-lime) 38%,var(--ds-paper));color:var(--ds-ink)}
+body.salon-legal.ds-v4 .ld-paper .doc .doc-note p:last-child{margin-bottom:0}
+body.salon-legal.ds-v4 .ld-paper .doc aside.doc-note{margin-top:2.4em;padding:1.4em 1.5em 1.2em;border:0;background:var(--ds-mist)}
+body.salon-legal.ds-v4 .ld-paper .doc aside.doc-note :is(.ld-h,h2){margin:0 0 .5em;padding:0;border:0}
+body.salon-legal.ds-v4 .ld-paper .doc aside.doc-note h2{font-size:1.3em}
+body.salon-legal.ds-v4 .ld-paper .doc .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin:.3em .4em .3em 0;padding:0 20px;border-radius:13px;font:600 15px/1.2 var(--sans);text-decoration:none;transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+body.salon-legal.ds-v4 .ld-paper .doc .btn-wax{background:var(--ds-violet);color:var(--ds-on-violet);border:0;box-shadow:0 12px 28px -14px rgba(75,48,200,.8)}
+body.salon-legal.ds-v4 .ld-paper .doc .btn-wax:hover{background:var(--ds-violet-hover)}
+body.salon-legal.ds-v4 .ld-paper .doc .btn-line{background:var(--ds-paper);color:var(--ds-ink);border:1.5px solid var(--ds-line-2)}
+body.salon-legal.ds-v4 .ld-paper .doc .btn-line:hover{border-color:var(--ds-violet);color:var(--ds-violet)}
+body.salon-legal.ds-v4 .ld-paper .doc .mono{padding:.1em .38em;border-radius:6px;background:var(--ds-mist);color:var(--ds-ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em;overflow-wrap:anywhere}
+
+body.salon-legal.ds-v4 .ld-paper .doc .ld-table{margin:1.1em 0 1.5em;overflow-x:auto;border:1px solid var(--ds-line);border-radius:16px;scrollbar-width:thin}
+body.salon-legal.ds-v4 .ld-paper .doc table{display:table;width:100%;max-width:none;margin:0;overflow:visible;border:0;border-collapse:collapse;font:400 .9em/1.55 var(--sans);color:var(--ds-ink-2)}
+body.salon-legal.ds-v4 .ld-paper .doc :is(th,td){min-width:0;padding:12px 16px;border:0;border-bottom:1px solid var(--ds-line);background:none;text-align:left;vertical-align:top}
+body.salon-legal.ds-v4 .ld-paper .doc tr:last-child>:is(th,td){border-bottom:0}
+body.salon-legal.ds-v4 .ld-paper .doc :is(th,td)+:is(th,td){border-left:1px solid var(--ds-line)}
+body.salon-legal.ds-v4 .ld-paper .doc th{color:var(--ds-ink);font-weight:600}
+body.salon-legal.ds-v4 .ld-paper .doc th:not([scope=row]){background:var(--ds-mist);font-size:.95em}
+body.salon-legal.ds-v4 .ld-paper .doc .ld-table :where(th[scope=row],table:not(:has(th)) td:first-child){width:36%;background:var(--ds-card);color:var(--ds-ink);font-weight:600}
+body.salon-legal.ds-v4 .ld-paper .doc table:has(thead th:nth-child(3)){min-width:560px}
+
+body.salon-legal.ds-v4 .ld-paper .doc mark{padding:.04em .12em;border-radius:4px;background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-legal.ds-v4 .ld-paper .doc mark.ld-found{background:#b7ea78;outline:2px solid var(--ds-violet);outline-offset:1px}
+
+body.salon-legal.ds-v4 .ld-end{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:calc(var(--doc-fs) * 42);margin:2.6em auto 0;padding-top:16px;border-top:1px solid var(--ds-line);font:500 14px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-legal.ds-v4 .ld-end>a{display:inline-flex;align-items:center;min-height:44px;color:var(--ds-violet);font-weight:600;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+body.salon-legal.ds-v4 .ld-progress{position:fixed;left:0;right:0;bottom:0;z-index:60;height:3px;background:transparent;pointer-events:none}
+body.salon-legal.ds-v4 .ld-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--ds-violet),#8f74ff)}
+
+/* Все документы Салона */
+body.salon-legal.ds-v4 .dc-more{padding-top:clamp(64px,8vw,112px)}
+body.salon-legal.ds-v4 .dc-head{max-width:720px;margin-bottom:clamp(24px,3vw,40px)}
+body.salon-legal.ds-v4 .dc-head .ds-lead{margin-top:14px}
+body.salon-legal.ds-v4 .dc-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+body.salon-legal.ds-v4 .dc-group{padding:clamp(18px,2vw,24px);border-radius:28px;background:var(--ds-mist)}
+body.salon-legal.ds-v4 .dc-group h3{margin:4px 6px 14px;font:600 19px/1.3 var(--sans);letter-spacing:-.01em;color:var(--ds-ink)}
+body.salon-legal.ds-v4 .dc-docs{display:grid;gap:8px}
+body.salon-legal.ds-v4 .dc-doc{position:relative;display:grid;gap:4px;padding:15px 18px;border:1.5px solid transparent;border-radius:18px;background:var(--ds-paper);color:var(--ds-ink);text-decoration:none;transition:border-color .15s ease,box-shadow .15s ease}
+body.salon-legal.ds-v4 .dc-doc b{font:600 16px/1.3 var(--sans);letter-spacing:-.005em}
+body.salon-legal.ds-v4 .dc-doc span{font:400 14.5px/1.45 var(--sans);color:var(--ds-muted)}
+body.salon-legal.ds-v4 .dc-doc:hover{border-color:var(--ds-line-2);box-shadow:var(--ds-shadow-1)}
+body.salon-legal.ds-v4 .dc-doc:hover b{color:var(--ds-violet)}
+body.salon-legal.ds-v4 .dc-doc[aria-current]{border-color:var(--ds-violet)}
+body.salon-legal.ds-v4 .dc-doc em{position:absolute;top:14px;right:14px;padding:4px 10px;border-radius:999px;background:var(--ds-violet-soft);color:var(--ds-violet);font:600 12.5px/1.2 var(--sans);font-style:normal}
+body.salon-legal.ds-v4 .dc-doc[aria-current] b{padding-right:120px}
+
+/* Финальный блок */
+body.salon-legal.ds-v4 .dc-final{display:flex;align-items:center;justify-content:space-between;gap:32px 48px;margin-top:clamp(56px,7vw,96px);padding:clamp(32px,4.4vw,56px) clamp(24px,4.8vw,64px)}
+body.salon-legal.ds-v4 .dc-final-copy{position:relative;z-index:1;max-width:640px}
+body.salon-legal.ds-v4 .dc-final .ds-lead{margin-top:14px}
+body.salon-legal.ds-v4 .dc-final-actions{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:12px;flex:none}
+
+:root[data-theme=dark] body.salon-legal.ds-v4 .ld-paper .doc .doc-note:not(aside){border-color:rgba(214,246,166,.28);background:rgba(214,246,166,.1)}
+:root[data-theme=dark] body.salon-legal.ds-v4 .ld-paper .doc mark.ld-found{background:#c8f08c}
+:root[data-theme=dark] body.salon-legal.ds-v4 .dc-sheet-page{background:#f1eef8}
+
+@media (max-width:1100px){
+  body.salon-legal.ds-v4 .dc-hero-copy{max-width:min(640px,64%)}
+  body.salon-legal.ds-v4 .dc-sheet{right:clamp(24px,4vw,48px)}
+  body.salon-legal.ds-v4 .dc-final{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:900px){
+  body.salon-legal.ds-v4 .dc-hero-copy{max-width:none}
+  body.salon-legal.ds-v4 .dc-hero{min-height:0}
+  body.salon-legal.ds-v4 .dc-sheet{display:none}
+  body.salon-legal.ds-v4 .dc-groups{grid-template-columns:minmax(0,1fr)}
+}
+
+/* Телефон: оглавление — плашка под шапкой, номера пунктов в строке */
+@media (max-width:760px){
+  body.salon-legal.ds-v4 #main.ld-main{--doc-fs:16.5px;width:calc(100% - 24px);margin-top:12px;margin-bottom:32px}
+  body.salon-legal.ds-v4 #main.ld-main.ld-large{--doc-fs:18.5px}
+  body.salon-legal.ds-v4 .dc-crumbs{margin:0 -12px 10px;padding-inline:12px}
+  body.salon-legal.ds-v4 .dc-hero{border-radius:24px;padding:14px 18px 28px}
+  body.salon-legal.ds-v4 .dc-tools{gap:6px}
+  body.salon-legal.ds-v4 .dc-tools button{padding:0 12px}
+  body.salon-legal.ds-v4 .dc-tool-label{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+  body.salon-legal.ds-v4 .dc-kicker{font-size:14px}
+  body.salon-legal.ds-v4 .dc-hero-copy{margin-top:14px}
+  body.salon-legal.ds-v4 .dc-hero .ds-display-1{font-size:clamp(29px,7.6vw,36px);line-height:1.08}
+  body.salon-legal.ds-v4 .dc-hero .doc-subtitle{font-size:16.5px}
+  body.salon-legal.ds-v4 .dc-facts{margin-top:20px;gap:6px}
+  body.salon-legal.ds-v4 .dc-facts li{min-height:40px;font-size:14px}
+  body.salon-legal.ds-v4 .dc-facts b{min-width:28px;height:28px;font-size:13px}
+  body.salon-legal.ds-v4 .dc-consents{flex-wrap:nowrap;margin:18px -18px 0;padding:0 18px 2px;overflow-x:auto;scrollbar-width:none}
+  body.salon-legal.ds-v4 .dc-consents::-webkit-scrollbar{display:none}
+  body.salon-legal.ds-v4 .dc-consents a{flex:none;white-space:nowrap}
+
+  body.salon-legal.ds-v4 .ld-layout{display:block;margin-top:12px}
+  body.salon-legal.ds-v4 .ld-sidebar{position:sticky;top:73px;z-index:30;max-height:none;overflow:visible;padding:0}
+  body.salon-legal.ds-v4 .ld-navigation{position:relative;border:1px solid var(--ds-line);border-radius:18px;background:color-mix(in srgb,var(--ds-paper) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 2px 4px rgba(27,21,49,.04),0 14px 30px -20px rgba(20,12,53,.5)}
+  body.salon-legal.ds-v4 .ld-navigation>summary{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;min-height:56px;padding:8px 14px 8px 16px}
+  body.salon-legal.ds-v4 .dc-nav-label{grid-column:1;font:500 12.5px/1.25 var(--sans);color:var(--ds-muted)}
+  body.salon-legal.ds-v4 .dc-now{display:block;grid-column:1;min-height:1.3em;overflow:hidden;font:600 15px/1.3 var(--sans);color:var(--ds-ink);white-space:nowrap;text-overflow:ellipsis}
+  body.salon-legal.ds-v4 .dc-chevron{grid-column:2;grid-row:1/3;width:20px;height:20px;color:var(--ds-violet)}
+  body.salon-legal.ds-v4 .ld-navigation>div{position:absolute;left:0;right:0;top:calc(100% + 6px);max-height:calc(100vh - 168px);max-height:calc(100dvh - 168px);overflow:auto;overscroll-behavior:contain;padding:12px 12px 10px;border:1px solid var(--ds-line);border-radius:18px;background:var(--ds-paper);box-shadow:var(--ds-shadow-2)}
+  body.salon-legal.ds-v4 .ld-navigation:not(.ld-ready)>div{display:none}
+  body.salon-legal.ds-v4 .ld-navigation.ld-searching #ld-toc{display:none}
+  body.salon-legal.ds-v4 .ld-search{margin-top:0}
+  body.salon-legal.ds-v4 .ld-search input{font-size:16px}
+  body.salon-legal.ds-v4 #ld-toc a{padding:11px 12px;font-size:15px}
+  body.salon-legal.ds-v4 .ld-ask{display:none}
+
+  body.salon-legal.ds-v4 .ld-paper{margin-top:12px;padding:22px 18px 18px;border-radius:22px}
+  body.salon-legal.ds-v4 .ld-paper .doc.ld-numbered{padding-left:0}
+  body.salon-legal.ds-v4 .ld-paper .doc.ld-numbered>.doc-meta{margin-left:0}
+  body.salon-legal.ds-v4 .ld-paper .doc :is(.ld-n,.ld-hn){display:inline;width:auto;margin:0}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-hn{font:inherit;color:var(--ds-violet)}
+  body.salon-legal.ds-v4 .ld-paper .doc h2{font-size:1.42em}
+  body.salon-legal.ds-v4 .ld-paper .doc [id]{scroll-margin-top:64px}
+  body.salon-legal.ds-v4 .ld-paper .doc :is(h2,.ld-h){margin-top:calc(var(--doc-fs) * 2.1);padding-top:calc(var(--doc-fs) * 1.1)}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-h{gap:4px}
+  body.salon-legal.ds-v4 .ld-copy-section{width:40px;min-height:40px;margin:0 -10px 0 0;padding:0;justify-content:center;transform:translateY(.2em)}
+  body.salon-legal.ds-v4 .ld-copy-section svg{width:18px;height:18px}
+  body.salon-legal.ds-v4 .ld-copy-section{position:relative}
+  body.salon-legal.ds-v4 .ld-copy-section span{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  body.salon-legal.ds-v4 .ld-copy-section.ld-copied span{right:0;top:calc(100% + 4px);z-index:2;width:auto;height:auto;margin:0;padding:7px 11px;overflow:visible;clip-path:none;border-radius:10px;background:var(--ds-ink);color:var(--ds-paper);font:500 13px/1.2 var(--sans);box-shadow:var(--ds-shadow-1)}
+  body.salon-legal.ds-v4 .ld-paper .doc .doc-meta{padding:12px 14px 12px 44px}
+  body.salon-legal.ds-v4 .ld-paper .doc .doc-meta::before{left:14px;top:13px}
+  /* Таблица — стопка карточек: первая ячейка строки — заголовок, у остальных над значением подпись колонки */
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table{overflow:visible}
+  body.salon-legal.ds-v4 .ld-paper .doc table,body.salon-legal.ds-v4 .ld-paper .doc table:has(thead th:nth-child(3)){display:block;min-width:0}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table :is(tbody,tr){display:block}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table :is(thead,tr.ld-thead){position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table tr{padding:12px 14px;border-bottom:1px solid var(--ds-line)}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table tbody tr:last-child{border-bottom:0}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table tr>:is(th,td){display:block;width:auto;padding:0;border:0;background:none}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table tr>:is(th,td)+:is(th,td){margin-top:6px}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table tr>:is(th,td):first-child{color:var(--ds-ink);font-weight:600}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;margin-bottom:1px;font:500 .88em/1.35 var(--sans);color:var(--ds-muted)}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table table:not(:has([data-label])) tr>:is(th,td):first-child{color:var(--ds-muted);font-weight:500;font-size:.92em}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table table:not(:has([data-label])) tr>:is(th,td)+td{margin-top:1px;color:var(--ds-ink)}
+
+  body.salon-legal.ds-v4 .dc-doc em{position:static;justify-self:start;margin-top:6px}
+  body.salon-legal.ds-v4 .dc-doc[aria-current] b{padding-right:0}
+  body.salon-legal.ds-v4 .dc-group{border-radius:24px}
+  body.salon-legal.ds-v4 .dc-final{border-radius:24px}
+  body.salon-legal.ds-v4 .dc-final-actions{width:100%}
+  body.salon-legal.ds-v4 .dc-final .ds-btn{width:100%}
+}
+@media (max-width:370px){
+  body.salon-legal.ds-v4 .dc-tools button{min-width:42px;padding:0 10px}
+  body.salon-legal.ds-v4 .ld-paper{padding:20px 14px 16px}
+}
+@media (prefers-reduced-motion:reduce){
+  body.salon-legal.ds-v4 :is(.dc-crumbs a,.dc-tools button,.dc-consents a,#ld-toc a,.ld-copy-section,.dc-doc,.dc-chevron,.ld-search input){transition:none}
+}
+
+/* Печать: только документ, чёрным по белому */
+@media print{
+  body.salon-legal.ds-v4{background:#fff!important;color:#000!important}
+  body.salon-legal.ds-v4 :is(.site-header,.site-footer,.skip-link,.dc-crumbs,.dc-hero-top,.dc-facts,.dc-consents,.dc-sheet,.ld-sidebar,.ld-end,.ld-progress,.ld-copy-section,.dc-more,.dc-final,.sa-launch,.exp-dock,.cookie-banner,dialog){display:none!important}
+  body.salon-legal.ds-v4 #main.ld-main{--doc-fs:11pt;width:auto;margin:0}
+  body.salon-legal.ds-v4 .dc-hero{min-height:0;padding:0 0 10pt;border-radius:0;background:none!important;color:#000}
+  body.salon-legal.ds-v4 .dc-hero::before{display:none}
+  body.salon-legal.ds-v4 .dc-hero-copy{max-width:none;margin:0}
+  body.salon-legal.ds-v4 .dc-hero .ds-display-1{color:#000!important;font-size:21pt}
+  body.salon-legal.ds-v4 .dc-hero .doc-subtitle{margin-top:6pt;color:#333!important;font-size:12pt}
+  body.salon-legal.ds-v4 .ld-layout{display:block;margin:0}
+  body.salon-legal.ds-v4 .ld-paper{padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+  body.salon-legal.ds-v4 .ld-paper .doc{max-width:none;color:#000;line-height:1.5}
+  body.salon-legal.ds-v4 .ld-paper .doc :is(h2,.ld-h){margin-top:16pt;padding-top:8pt;border-color:#999;break-after:avoid}
+  body.salon-legal.ds-v4 .ld-paper .doc h2{color:#000;font-size:14pt}
+  body.salon-legal.ds-v4 .ld-paper .doc :is(.ld-n,.ld-hn,a,strong,b,th,td){color:#000}
+  body.salon-legal.ds-v4 .ld-paper .doc :is(.doc-meta,.doc-note,th,td,.mono){background:none!important}
+  body.salon-legal.ds-v4 .ld-paper .doc .doc-meta{padding:0 0 0 0;border:0}
+  body.salon-legal.ds-v4 .ld-paper .doc .doc-meta::before{display:none}
+  body.salon-legal.ds-v4 .ld-paper .doc .doc-note{border:1px solid #999}
+  body.salon-legal.ds-v4 .ld-paper .doc mark{background:none!important;color:inherit!important;outline:none!important}
+  body.salon-legal.ds-v4 .ld-paper .doc .ld-table{overflow:visible;border-color:#999}
+  body.salon-legal.ds-v4 .ld-paper .doc :is(th,td){border-color:#999}
+  body.salon-legal.ds-v4 .ld-paper .doc table{min-width:0}
+  body.salon-legal.ds-v4 .ld-paper .doc .btn{display:none}
+}

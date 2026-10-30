@@ -1,6 +1,13 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, library v4
+## Verified current state — 30 October 2026, documents v4
+
+- Live current is `release261-docs-v4-064ed622`: release260 with the twelve document pages (`requisites`, `oferta`, `terms`, `privacy`, `loyalty`, `refunds`, `academic-integrity` and the five `consent*` pages) switched to «Документы Салона» v4 on `ds-v4`; their previews `*-v4.html` are removed. Release260 (`release260-docs-preview-5a106c7e`) is release259 (library v4, below) plus those noindex previews, `assets/css/docs-v4.css` and `assets/js/docs-v4.js`. Rollback of the section: the static pointer to release260 if nothing was released after it, otherwise a release from the live current with the twelve pages from `src/`. Never restore the DB for this UI change. Build future releases from the live current.
+- Legal texts are unchanged character for character: the builder and `check_docs_v4.py` compare the article text, links and every old id. All anchors stay (`oferta#p1`–`#p16`, `#p14a`, `refunds#advances`, `academic-integrity#integrityNextTitle`, the `loyalty` slugs, `doc-section-N` for sections without an id, `privacy#cookies` inside its section).
+- `docs-v4.js` replaces `salon-legal.js` on these pages with the same selectors, id rules and search code; `salon-legal.js` and `salon-legal.css` stay on the server (`specifikaciya.html` still uses the CSS). New: a numbered TOC with the current section, a TOC bar under the header on phones, a «Ссылка» button per section, tables as cards on phones; «Крупнее» now sets the site-wide `SalonEase.readingSize`. The footer CTA on these pages is replaced by their own final block.
+- Details, builder and checks: `scripts/salon-docs-v4-20261030/README.md`. Not measured: effect on reading and inquiries.
+
+## Previous verified state — 30 October 2026, library v4
 
 - Live current is `release259-library-v4-d308b086`: release258 with `knowledge.html` and the 25 `guide-*.html` switched to «Библиотека» v4 on `ds-v4`. Release258 (`release258-library-preview-e323e7a6`) is release257 plus the hidden noindex previews `knowledge-v4.html` and 25 `guide-*-v4.html`, `assets/css/library-v4.css` and `assets/js/library-v4.js`; the previews stay. Rollback of the section: the static pointer to release258. Never restore the DB for this UI change. Build future releases from the live current.
 - Guide texts are unchanged. Search, topics, saved items, the study route, the TOC and reading progress still come from `salon-library.js`, text size and spacing from `salon-ease.js`, share, sections and focus mode from `salon-reading.js`; none of them changed. `library-v4.js` strips the arrows those scripts write into button labels (inside `main` and the reader dialogs only), shows the hub search result count with a jump to the catalog, and builds the checklists.
