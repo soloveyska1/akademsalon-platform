@@ -1,6 +1,13 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, benefits subpages v4
+## Verified current state — 30 October 2026, library v4
+
+- Live current is `release259-library-v4-d308b086`: release258 with `knowledge.html` and the 25 `guide-*.html` switched to «Библиотека» v4 on `ds-v4`. Release258 (`release258-library-preview-e323e7a6`) is release257 plus the hidden noindex previews `knowledge-v4.html` and 25 `guide-*-v4.html`, `assets/css/library-v4.css` and `assets/js/library-v4.js`; the previews stay. Rollback of the section: the static pointer to release258. Never restore the DB for this UI change. Build future releases from the live current.
+- Guide texts are unchanged. Search, topics, saved items, the study route, the TOC and reading progress still come from `salon-library.js`, text size and spacing from `salon-ease.js`, share, sections and focus mode from `salon-reading.js`; none of them changed. `library-v4.js` strips the arrows those scripts write into button labels (inside `main` and the reader dialogs only), shows the hub search result count with a jump to the catalog, and builds the checklists.
+- Two old bugs are fixed on the new pages: search missed the first word of a guide title (the card text glued «минут» to the title), and checklist ticks never appeared (`salon-reading.js` puts the section-share block right under each `h2`). Ticks are kept in localStorage per guide.
+- One builder makes the hub and all guides from the pre-v4 pages in `scripts/salon-library-v4-20261030/src/` and reproduces the live files and the previews byte for byte. Details and checks: `scripts/salon-library-v4-20261030/README.md`. Not measured: conversion uplift.
+
+## Previous verified state — 30 October 2026, benefits subpages v4
 
 - Live current is `release257-benefits-pages-v4-fb260d7f`. Release256 switched `plus.html`, `deposit.html`, `gift.html`, `referral.html` and `referral-rules.html` to v4 and updated the hub `benefits.html` (links to the subpages, «Мои бонусы» → `dashboard.html#deposit` because the cabinet has no `#benefits`); release257 only fixes the gift view by code and bumps the shared assets to `benefits-v4-20261030-3`. Previews `*-v4.html` stay (noindex). Rollback: the static pointer to release254 (new hub, old subpages) or release253 (all old). Never restore the DB for this UI change.
 - One builder makes all six pages from the pre-v4 pages kept in `scripts/salon-benefits-v4-20261030/src/` and reproduces the live files byte for byte. `benefits-v4.js` is shared and only starts the blocks a page has; amounts still come from `salon-benefits.js`. The gift purchase (`polish15-supporting.js`, `POST /gift`, payment, `?code=` view) keeps its markup and ids — only the first screen, navigation, captions and styles changed; checked up to the checkout form without submitting.
