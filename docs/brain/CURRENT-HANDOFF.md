@@ -1,6 +1,13 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, home trust + bot quiet trash
+## Verified current state — 30 October 2026, homepage v2
+
+- Live current is `release236-originality-dd7572ff`. Release235 switched `index.html` to homepage v2; release236 adds the originality promise to the agreements block and FAQ. Both differ from the previous release only in `index.html`. Build future releases from release236. Rollback to homepage v1 is the static pointer to `release234-preview4-9076ae65`; never restore the DB for this UI change.
+- Homepage v2: a stack of real anonymised pages (title page, contents, chapter) with lime highlights over what supervisors check; prices with what is included; Telegram to `t.me/academicsaloon` without registration; nine chat-screenshot reviews; steps; the unchanged site calculator; agreements before payment and what is not promised; samples; FAQ; final CTA; SEO catalogue links.
+- Classes use the `hv-` prefix because `.hp` is the site's form honeypot. `[data-home-faq]` must stay, because `salon-home.js` writes into it without a null check. Sources, decisions, checks and open questions are in `scripts/salon-home-v2-20261030/README.md`.
+- Owner decisions: the originality promise is published as «university originality and AI-check requirements go into the task; if the work fails them, rework is free» (consistent with guarantees). No name or photo of the master. Not done: conversion uplift is not measured.
+
+## Previous verified state — 30 October 2026, home trust + bot quiet trash
 
 - Live current is `release229-hometrust-21c068f6`: release228 plus 3 changed files (`index.html`, new `assets/css/home-trust.css`, new `assets/js/home-trust.js`). Build future releases from release229, never from release228 or stale root HTML. Baseline index came from the server disk; nginx `sub_filter` adds `/6let-ribbon.js` to served HTML, so served bytes differ from disk.
 - Home: Telegram CTA on the first screen, in the footer and in the mobile order dock (`t.me/academic_saloon_bot?start=web`; bot v2 relays any client text to the master). Six real review screenshots replace the «Листик» block right after the hero, and the «Выгода под твой план» perks block is removed from home (benefits page unchanged).
