@@ -1,0 +1,37 @@
+--- app/services/scheduler.py.pre-payrec-trash-20261030	2026-10-30 10:45:25.842922200 +0300
++++ app/services/scheduler.py	2026-10-30 11:15:42.700580697 +0300
+@@ -76,6 +76,16 @@
+ 
+ 
+ 
++async def _not_trashed(payments: list) -> list:
++    """Сверка молчит о счетах дел из корзины: там тестовый мусор, а не потерянные деньги."""
++    out = []
++    for p in payments:
++        o = await db.get_order(p["order_id"])
++        if o and not (o["deleted"] or 0):
++            out.append(p)
++    return out
++
++
+ async def _reconcile_payments(bot: Bot) -> None:
+     """Сверка раз в сутки. Ловит потерянные вебхуки и зависшие сверки:
+     (а) pending-счёт Robokassa старше суток — с координатами, а не голым числом;
+@@ -87,7 +97,7 @@
+     from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+     from . import payments as pay_svc
+     stale = (_dt.now(_tz.utc) - _td(hours=24)).strftime("%Y-%m-%dT%H:%M:%S")
+-    rows = await db.payments_pending_older_than(stale, method="robokassa")
++    rows = await _not_trashed(await db.payments_pending_older_than(stale, method="robokassa"))
+     if rows:
+         lines = []
+         for p in rows[:5]:
+@@ -101,7 +111,7 @@
+             f"\U0001F50E Pending-счета Robokassa старше суток — сверьте с выпиской "
+             f"(потерянный вебхук неотличим от брошенной кассы):\n"
+             + "\n".join(lines) + more)
+-    claimed = await db.payments_claimed_older_than(stale)
++    claimed = await _not_trashed(await db.payments_claimed_older_than(stale))
+     if claimed:
+         lines = []
+         for p in claimed[:5]:
