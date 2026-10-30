@@ -19,7 +19,7 @@
     send_failed:'Письмо не отправилось. Попробуй ещё раз или войди через Telegram.', csrf:'Сессия истекла. Начни вход через Telegram или обнови страницу.',
   };
   let products = [], authenticated = false, enabled = false, terms = '', selected = null, quote = null, requestKey = null;
-  let readerState=null, cardFilter='all', searchQuery='', displaySku='digital-behaviour';
+  let readerState=null, cardFilter='all', searchQuery='', displaySku='digital-behaviour', featureChosen=false;
   let compared=new Set(),compareOpener=null;
   const FEATURED=['digital-behaviour','speech-diagnostics','digital-practicum','social-pedagogy'];
   const SAVED_KEY='salon_material_saved_v1';
@@ -43,7 +43,7 @@
   const formats=p=>p.format_label||'PDF + Word';
   function matchesProduct(p){const tokens=normalize(searchQuery).trim().split(/\s+/).filter(Boolean);const text=normalize([p.title,p.description,p.programme,p.discipline,p.task_label,...(p.contents||[])].join(' '));return tokens.every(x=>text.includes(x))&&(cardFilter==='all'||cardFilter==='saved'&&saved.has(p.sku)||cardFilter===programmeKey(p));}
   function coverMarkup(p){const c=coverFor(p);return `<span class="ms-book-eyebrow">ГИПСР · ${esc(p.cover_label||edition(p))}</span><strong>${esc(c.title).replaceAll('\n','<br>')}</strong><span class="ms-book-kind">${esc(c.kind)}</span><span class="ms-book-signature">а. <small>Академический<br>Салон</small><span>${esc(p.cover_format||'PDF + Word')}</span></span>`;}
-  function featuredProducts(){const featured=FEATURED.map(sku=>products.find(p=>p.sku===sku)).filter(Boolean);return [...featured,...products.filter(p=>!FEATURED.includes(p.sku))].slice(0,4);}
+  function featuredProducts(){const featured=FEATURED.map(sku=>products.find(p=>p.sku===sku)).filter(Boolean),pool=[...featured,...products.filter(p=>!FEATURED.includes(p.sku))];return [...pool.filter(p=>p.available),...pool.filter(p=>!p.available)].slice(0,4);}
   function fitMarkup(p){return `<p>${esc(p.requirements_label)}</p>${p.fit_notes?.length?`<ul>${p.fit_notes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${p.exclusions?.length?`<p><strong>За рамками комплекта:</strong> ${esc(p.exclusions.join(' '))}</p>`:''}${p.preview_note?`<p class="ms-format-note">${esc(p.preview_note)}</p>`:''}<p>Сверь свою тему и дополнительные указания преподавателя.</p>`;}
   function renderCompare(){
     compared=new Set([...compared].filter(sku=>products.some(p=>p.sku===sku)));
@@ -62,9 +62,9 @@
     if(compared.size===2)notice('Два комплекта выбраны. Открой сравнение над списком материалов.');
   }
   function renderShowcase(){
-    const p=products.find(x=>x.sku===displaySku)||products[0];if(!p){$('hero-preview').disabled=true;$('hero-preview').setAttribute('aria-label','Комплекты пока недоступны');$('feature-price').textContent='';$('feature-tabs').innerHTML='';$('feature-cover').innerHTML='<span class="ms-book-eyebrow">Учебная полка</span><strong>Готовим<br>материалы</strong>';$('feature-note').textContent='Новые комплекты появятся после проверки.';return;}displaySku=p.sku;
+    const chosen=products.find(x=>x.sku===displaySku),p=chosen&&(chosen.available||featureChosen)?chosen:featuredProducts()[0]||chosen;if(!p){$('hero-preview').disabled=true;$('hero-preview').setAttribute('aria-label','Комплекты пока недоступны');$('feature-price').textContent='';$('feature-tabs').innerHTML='';$('feature-cover').innerHTML='<span class="ms-book-eyebrow">Учебная полка</span><strong>Готовим<br>материалы</strong>';$('feature-note').textContent='Новые комплекты появятся после проверки.';return;}displaySku=p.sku;
     $('hero-preview').disabled=false;$('hero-preview').dataset.tone=coverFor(p).tone;$('hero-preview').setAttribute('aria-label','Полистать: '+p.title);
-    $('feature-cover').innerHTML=coverMarkup(p);$('feature-price').textContent=money(p.price);$('feature-note').textContent=p.page_label+' · '+formats(p);
+    $('feature-cover').innerHTML=coverMarkup(p);$('feature-price').textContent=p.available?money(p.price):stockLabel(p);$('feature-note').textContent=p.page_label+' · '+formats(p);
     $('feature-tabs').innerHTML=featuredProducts().map(x=>`<button type="button" data-feature="${esc(x.sku)}" aria-pressed="${x.sku===displaySku}">${esc(coverFor(x).tab)}</button>`).join('');
   }
   function toggleSaved(sku){if(!products.some(p=>p.sku===sku))return;if(saved.has(sku))saved.delete(sku);else saved.add(sku);try{localStorage.setItem(SAVED_KEY,JSON.stringify([...saved]));}catch{notice('Полка сохранена до закрытия страницы: браузер не разрешил постоянное сохранение.');}renderCards();const b=[...document.querySelectorAll('[data-save]')].find(x=>x.dataset.save===sku);(b||$('store-search')).focus();}
@@ -163,7 +163,7 @@
     $('bonus-balance').textContent=d.balance.toLocaleString('ru-RU');
     const names={'first-material':'Первый материал','three-materials':'Три материала'};
     $('achievements').innerHTML=Object.entries(names).map(([code,label])=>{const a=d.achievements.find(x=>x.code===code);return `<span class="achievement" data-earned="${Boolean(a)}">${a?'✓':'○'} ${label}${a?' · +'+a.reward+' бонусов':' · +2% за достижение'}</span>`;}).join('');
-    const states={pending:'Ожидает оплаты',paid:'Оплачено',expired:'Бронь завершена',refunded:'Возврат подтверждён',paid_unallocated:'Оплата получена, но работа уже продана или оплачена повторно. Оформляем полный возврат.'};
+    const states={pending:'Ожидает оплаты',paid:'Оплачено',expired:'Бронь завершена',refunded:'Возврат подтверждён',paid_unallocated:'Оплата получена, но работу уже купил или забронировал другой покупатель, либо платёж повторный. Оформляем полный возврат.'};
     $('purchases-list').innerHTML=d.purchases.length ? d.purchases.map(p=>`<article class="purchase"><div><p class="eyebrow">Покупка №${p.id}</p><h3>${esc(p.title)}</h3><p>${esc(states[p.state] || 'Проверяем статус')} · ${money(p.cash)}${p.state==='pending'?' · срок оплаты до '+new Date(p.expires_at*1000).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}):''}</p>${p.state==='pending' && p.expires_at*1000<Date.now()?'<p>Время оплаты истекло. Сверяем операцию с кассой перед снятием брони.</p>':''}</div><div class="purchase-links">${p.download_available ? p.formats.filter(x=>['pdf','docx','zip'].includes(x)).map(fmt=>`<a class="button ${fmt==='docx'?'secondary':''}" href="/api/store/purchases/${p.id}/${fmt}">Скачать ${fmt.toUpperCase()}</a>`).join('') : p.payment_url ? `<a class="button" href="${esc(safeSource(p.payment_url))}" target="_blank" rel="noopener">Продолжить оплату ↗</a>` : p.state==='pending' && p.expires_at*1000>Date.now()?`<button class="button secondary" data-retry="${p.id}">Повторить переход</button>`:''}</div></article>`).join('') : '<p class="notice">Здесь появятся оплаченные материалы и активные брони.</p>';
     if (d.purchases.some(p=>p.state==='pending'||p.state==='paid_unallocated')) { if (!accountTimer) accountTimer=setInterval(loadAccount, 7000); }
     else { clearInterval(accountTimer); accountTimer=null; }
@@ -222,7 +222,7 @@
   document.addEventListener('visibilitychange',()=>{if(!document.hidden){void loadAccount();void loadCatalog();}});
   if(new URLSearchParams(location.search).has('Shp_store')) { history.replaceState(null,'',location.pathname+'#purchases'); $('account-status').textContent='Проверяем подтверждение оплаты. Войди тем же способом, которым оформлял покупку.'; }
   $('hero-preview').addEventListener('click',()=>preview(displaySku));
-  $('feature-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-feature]');if(!b||!products.some(p=>p.sku===b.dataset.feature))return;displaySku=b.dataset.feature;renderShowcase();[...document.querySelectorAll('[data-feature]')].find(x=>x.dataset.feature===displaySku)?.focus();});
+  $('feature-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-feature]');if(!b||!products.some(p=>p.sku===b.dataset.feature))return;displaySku=b.dataset.feature;featureChosen=true;renderShowcase();[...document.querySelectorAll('[data-feature]')].find(x=>x.dataset.feature===displaySku)?.focus();});
   $('store-search').addEventListener('input',()=>{searchQuery=$('store-search').value;renderCards();});
   $('reset-filters').addEventListener('click',()=>{cardFilter='all';searchQuery='';$('store-search').value='';document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.filter==='all')));renderCards();$('store-search').focus();});
   const proofLabels={'41':'О длительном сотрудничестве','43':'Об оперативности','47':'Впечатление после чтения'};let proofOpener=null;

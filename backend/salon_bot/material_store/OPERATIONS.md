@@ -73,7 +73,9 @@ after a file has been delivered. A published version may only lose unsold copies
 `sync_catalog` withdraws available copies above a lower `licences`, refuses to
 withdraw a held or sold copy (`licence_in_use`) and still refuses every other
 change, restocking included. Additional versions must be materially described;
-never create cosmetic versions to fake scarcity.
+never create cosmetic versions to fake scarcity or to sell a sold work again.
+More than one copy per version contradicts the published terms: change
+`shop-terms.html` and `TERMS_VERSION` first.
 The switch from five copies, its backups and rollback:
 `scripts/shop-one-copy-20261030/README.md`.
 Prices: 1490 / 1190 / 790 / 690 RUB. Maximum monetary discount plus spent bonuses is
