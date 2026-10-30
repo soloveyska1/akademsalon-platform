@@ -1,6 +1,12 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, benefits page v4
+## Verified current state — 30 October 2026, benefits subpages v4
+
+- Live current is `release257-benefits-pages-v4-fb260d7f`. Release256 switched `plus.html`, `deposit.html`, `gift.html`, `referral.html` and `referral-rules.html` to v4 and updated the hub `benefits.html` (links to the subpages, «Мои бонусы» → `dashboard.html#deposit` because the cabinet has no `#benefits`); release257 only fixes the gift view by code and bumps the shared assets to `benefits-v4-20261030-3`. Previews `*-v4.html` stay (noindex). Rollback: the static pointer to release254 (new hub, old subpages) or release253 (all old). Never restore the DB for this UI change.
+- One builder makes all six pages from the pre-v4 pages kept in `scripts/salon-benefits-v4-20261030/src/` and reproduces the live files byte for byte. `benefits-v4.js` is shared and only starts the blocks a page has; amounts still come from `salon-benefits.js`. The gift purchase (`polish15-supporting.js`, `POST /gift`, payment, `?code=` view) keeps its markup and ids — only the first screen, navigation, captions and styles changed; checked up to the checkout form without submitting.
+- Details and checks: `scripts/salon-benefits-v4-20261030/README.md`. Not measured: conversion uplift.
+
+## Previous verified state — 30 October 2026, benefits page v4
 
 - Live current is `release254-benefits-v4-505c8f85`: release253 with `benefits.html` switched to «Выгоды» v4 on `ds-v4`. Release253 (`release253-benefits-preview-c52e466e`) is release252 plus the hidden noindex preview `benefits-v4.html`, `assets/css/benefits-v4.css` and `assets/js/benefits-v4.js`. Rollback of the page: the static pointer to release253 (rollback of everything: release252). Never restore the DB for this UI change. Build future releases from the live current.
 - All amounts still come from `salon-benefits.js` (`window.SalonBenefitMath`, the published loyalty rules); `benefits-v4.js` replaces `salon-rewards.js` on this page and only handles input, output, the tabs (`#subscriptions`, `#bonuses`, `#deposit`, `#more`, old `#compare`) and the bonus card on the first screen. «Забрать 300 бонусов» uses `POST /api/welcome/token` like the Listik tour, with the static bot link as fallback. Texts follow `loyalty.html` (edition 1.11).
