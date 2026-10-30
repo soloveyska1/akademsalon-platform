@@ -1,0 +1,22 @@
+/* ds-shell — общий слой дизайн-системы ds-v4 для оболочки сайта: шапка, меню, поиск, виджет Листика.
+   Подключается на всех страницах с шапкой. Шапка была задана шрифтом Manrope, но его файла на сайте нет,
+   и у посетителей она рисовалась Arial. Теперь оболочка на Onest, как текст главной. Файлы шрифта свои:
+   CSP сайта пускает шрифты только с 'self'. Селекторы начинаются с html, чтобы перебить старые правила
+   независимо от порядка подключения (стили Листика app.js добавляет в конец <head>). */
+@font-face{font-family:"Onest";font-style:normal;font-weight:400 700;font-display:swap;src:url(../fonts/v4/onest-cyrillic.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Onest";font-style:normal;font-weight:400 700;font-display:swap;src:url(../fonts/v4/onest-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Onest";font-style:normal;font-weight:400 700;font-display:swap;src:url(../fonts/v4/onest-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+/* Шапка, меню и поиск берут шрифт из этой переменной (salon-experience.css) */
+html:root{--sh-sans:"Onest","Golos Text",Arial,sans-serif}
+
+/* Подсказки под FAQ (salon-ease.css) тоже были на Manrope */
+html .se-faq .se-faq-copy,html .se-faq .se-faq-tools p{font-family:"Onest","Golos Text",Arial,sans-serif}
+
+/* Виджет Листика (salon-assistant.css): все места, где шрифт прописан явно; размеры и начертания не меняются */
+html .sa-panel,html .sa-launch,html .sa-panel .sa-identity h2,html .sa-paper-note,html .sa-panel .sa-suggestions button,
+html .sa-panel .sa-bubble>p,html .sa-panel .sa-composer textarea,html .sa-panel .sa-bottom-line button,
+html .sa-panel .sa-transfer,html .sa-panel .sa-retry,html .sa-panel .sa-back,html .sa-panel .sa-handoff label,
+html .sa-panel .sa-handoff input:not([type=checkbox]),html .sa-panel .sa-handoff textarea,html .sa-panel .sa-send-handoff,
+html .sa-panel .sa-copy,html .sa-panel [data-sa-topics],html .sa-panel .sa-show-now,html .sa-panel .sa-jump,
+html .sa-panel .sa-order-action,html .sa-panel .sa-brief button,html .sa-order-toolbar button,html .sa-panel .sa-promo-code{font-family:"Onest","Golos Text",Arial,sans-serif}

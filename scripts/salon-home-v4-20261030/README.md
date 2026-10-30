@@ -9,7 +9,8 @@
 |---|---|
 | `release237-v3preview-0b01e21a` | скрытое превью `home-v3.html`: тёмные сцены, стопка страниц в 3D, Листик |
 | `release238…241-v4preview-*` | скрытое превью `home-v4.html` (noindex, canonical на `/`); главная — v2 |
-| `release242-home-v4-4c795839` | **live**: `index.html` = главная v4; от release241 отличается только `index.html` |
+| `release242-home-v4-4c795839` | `index.html` = главная v4; от release241 отличается только `index.html` |
+| `release243-ds-shell-3adcc8f9` | **live**: шрифт оболочки (шапка, меню, Листик) на Onest на всех страницах — `scripts/salon-ds-shell-20261030/` |
 
 Откат на главную v2 (только статика, базу не трогать):
 
@@ -17,7 +18,7 @@
 ln -sfn /var/www/academic_saloon/releases/release241-v4preview-c234028d /var/www/academic_saloon/.cur && mv -T /var/www/academic_saloon/.cur /var/www/academic_saloon/current
 ```
 
-Следующий релиз собирать от release242.
+Следующий релиз собирать от release243 (откат только оболочки — на release242).
 
 ## Как собрано
 
@@ -27,7 +28,8 @@ ln -sfn /var/www/academic_saloon/releases/release241-v4preview-c234028d /var/www
   убирает дубль призыва из подвала, вместо `home-trust` подключает прелоад двух кириллических
   шрифтов, `ds-v4.css`, `home-v4.css`, `home-v4.js` с `?v=home-v4-20261030-4` и вешает на `<body>`
   класс `ds-v4`. `salon-home.js` и `salon-select.js/css` с главной убраны: калькулятор свой.
-  Сборка воспроизводит live `index.html` байт в байт (sha256 `4c795839e265…`).
+  Сборка воспроизводит `index.html` release242 байт в байт (sha256 `4c795839e265…`); live-главная
+  release243 = эта сборка + `scripts/salon-ds-shell-20261030/apply_ds_shell.py` (`2224206ae95a…`).
 - Раскладка в релизе: `assets/css/ds-v4.css`, `assets/css/home-v4.css`, `assets/js/home-v4.js`,
   `assets/fonts/v4/*.woff2` (здесь `fonts/`), `assets/img/home-v4/*.webp` (здесь `img/`).
 - Сервис-воркер сайта отдаёт ассеты с `?v=` из кэша: после любой правки CSS или JS поднимать `VER`.
@@ -61,8 +63,9 @@ ln -sfn /var/www/academic_saloon/releases/release241-v4preview-c234028d /var/www
 - На телефоне плашки в две колонки, пузырь Листика прячется, пока калькулятор на экране.
 - Цели Метрики (только при согласии на аналитику): `tg_click_{hero,calc,calc_note,faq,final,bar,footer}`,
   `calc_order_click`, `review_open_home`. Все `tg_click_*` попадают в цель «Посещение Telegram»
-  (условие «содержит tg_click»); отдельные цели есть для hero, bar, final и dock. Отдельных целей
-  на `tg_click_calc` и `calc_order_click` в Метрике нет.
+  (условие «содержит tg_click»); отдельные цели есть для hero, bar, final и dock, а с 30.10 — «Telegram:
+  калькулятор» (содержит `tg_click_calc`, ловит и ссылку под калькулятором) и «Калькулятор: заявка на
+  сайте» (`calc_order_click`). Цель «Telegram: панель калькулятора» (`tg_click_dock`) осталась от v2 и больше не срабатывает.
 
 ## Проверено
 
@@ -76,8 +79,8 @@ ln -sfn /var/www/academic_saloon/releases/release241-v4preview-c234028d /var/www
 
 ## Открыто
 
-- Шапка и меню сайта пока на Manrope, виджет Листика — на Golos. Переводить их на `ds-v4` вместе
-  с остальными страницами, иначе шапка будет меняться при переходе между страницами.
+- Шапка, меню и Листик переведены на Onest на всех страницах (release243, `salon-ds-shell-20261030`).
+  Тело остальных страниц пока на Golos Text.
 - Срок из калькулятора в конфигуратор датой не передаётся: дату человек выбирает сам, до этого
   конфигуратор показывает плановый срок без надбавки.
 - Рост конверсии не измерен.
