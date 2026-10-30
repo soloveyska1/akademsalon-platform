@@ -2,10 +2,10 @@
 
 ## Verified current state — 30 October 2026, homepage v2
 
-- Live current is `release235-home-v2-11cd6364`; it differs from `release234-preview4-9076ae65` only in `index.html`. Build future releases from release235. Rollback is the static pointer to release234 (homepage v1); never restore the DB for this UI change.
+- Live current is `release236-originality-dd7572ff`. Release235 switched `index.html` to homepage v2; release236 adds the originality promise to the agreements block and FAQ. Both differ from the previous release only in `index.html`. Build future releases from release236. Rollback to homepage v1 is the static pointer to `release234-preview4-9076ae65`; never restore the DB for this UI change.
 - Homepage v2: a stack of real anonymised pages (title page, contents, chapter) with lime highlights over what supervisors check; prices with what is included; Telegram to `t.me/academicsaloon` without registration; nine chat-screenshot reviews; steps; the unchanged site calculator; agreements before payment and what is not promised; samples; FAQ; final CTA; SEO catalogue links.
 - Classes use the `hv-` prefix because `.hp` is the site's form honeypot. `[data-home-faq]` must stay, because `salon-home.js` writes into it without a null check. Sources, decisions, checks and open questions are in `scripts/salon-home-v2-20261030/README.md`.
-- Not done: antiplagiarism/AI-check stance and the master's name/photo wait for the owner. Metrika goals for the new CTAs must be created in Metrika. Conversion uplift is not measured.
+- Owner decisions: the originality promise is published as «university originality and AI-check requirements go into the task; if the work fails them, rework is free» (consistent with guarantees). No name or photo of the master. Not done: conversion uplift is not measured.
 
 ## Previous verified state — 30 October 2026, home trust + bot quiet trash
 
