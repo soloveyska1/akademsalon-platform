@@ -1,0 +1,211 @@
+/* Главная, версия 2. Герой — настоящие страницы из заказов; всё остальное тихое.
+   Шапка, подвал, калькулятор и FAQ-подсказки остаются компонентами сайта. */
+
+body.salon-home .hv,body.salon-home .hv-bar{
+  --hv-ink:#1d1830;--hv-muted:#5f5872;--hv-line:#e4e0ee;--hv-mist:#f3f1f8;--hv-paper:#fff;
+  --hv-violet:#4a31b4;--hv-violet-hover:#3b2496;--hv-violet-soft:#ece8fb;--hv-deep:#241860;
+  --hv-btn-ink:#fff;--hv-marker:#d6f5ae;--hv-marker-ink:#21301a;
+  --hv-sheet-shadow:0 1px 1px rgba(29,24,48,.06),0 22px 44px -22px rgba(29,24,48,.42);
+  --hv-sheet-filter:none;
+  color:var(--hv-ink);font-family:var(--sans);
+}
+:root[data-theme=dark] body.salon-home .hv,:root[data-theme=dark] body.salon-home .hv-bar{
+  --hv-ink:#f1eef8;--hv-muted:#b8b0c9;--hv-line:#38314c;--hv-mist:#1d1929;--hv-paper:#16121f;
+  --hv-violet:#b6a4ff;--hv-violet-hover:#cbbdff;--hv-violet-soft:#2a2340;--hv-deep:#2b1f6e;
+  --hv-btn-ink:#1d1830;--hv-sheet-shadow:0 22px 44px -22px rgba(0,0,0,.7);--hv-sheet-filter:brightness(.93);
+}
+
+.salon-home .hv h1,.salon-home .hv h2,.salon-home .hv h3{font-family:var(--sans);color:var(--hv-ink);letter-spacing:-.03em;text-wrap:balance;margin:0}
+.salon-home .hv h2{font:600 clamp(28px,1.6rem + 1.4vw,42px)/1.12 var(--sans);letter-spacing:-.032em}
+.salon-home .hv h3{font:600 18px/1.3 var(--sans);letter-spacing:-.015em}
+.salon-home .hv p{margin:0}
+.salon-home .hv a{color:inherit}
+.hv :focus-visible{outline:3px solid var(--hv-violet);outline-offset:3px;border-radius:6px}
+.hv [id]{scroll-margin-top:112px}
+.hv-section{padding-block:clamp(56px,7vw,104px);border-top:1px solid var(--hv-line)}
+.hv-head{display:flex;align-items:end;justify-content:space-between;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(28px,3.4vw,44px)}
+.hv-head > div{max-width:620px}
+.hv-head p{margin-top:12px;font:400 17px/1.55 var(--sans);color:var(--hv-muted)}
+.hv-link{display:inline-flex;align-items:center;min-height:44px;font:500 15px/1.3 var(--sans);color:var(--hv-violet)!important;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.hv-link:hover{color:var(--hv-violet-hover)!important;text-decoration-thickness:2px}
+
+/* Кнопки */
+.hv-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 24px;border-radius:12px;font:600 16px/1.2 var(--sans);text-decoration:none;white-space:nowrap;transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+.hv-btn svg{width:20px;height:20px;flex:none}
+.hv-btn--tg{background:var(--hv-violet);color:var(--hv-btn-ink)!important}
+.hv-btn--tg:hover{background:var(--hv-violet-hover)}
+.hv-btn--line{border:1.5px solid var(--hv-line);color:var(--hv-ink)!important;background:var(--hv-paper)}
+.hv-btn--line:hover{border-color:var(--hv-violet);color:var(--hv-violet)!important}
+
+/* Первый экран */
+.hv-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:clamp(32px,5vw,72px);padding-block:clamp(40px,5vw,72px) clamp(56px,6vw,88px)}
+.salon-home .hv-hero h1{font:600 clamp(34px,1rem + 2.6vw,54px)/1.06 var(--sans);letter-spacing:-.038em;max-width:15em}
+.hv-lead{margin-top:22px!important;max-width:34em;font:400 clamp(17px,1rem + .3vw,19px)/1.55 var(--sans);color:var(--hv-muted)}
+.hv-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hv-hint{margin-top:14px!important;font:400 14px/1.5 var(--sans);color:var(--hv-muted)}
+.hv-prices{width:100%;max-width:520px;margin-top:34px;border-collapse:collapse;font:400 15px/1.35 var(--sans)}
+.hv-prices caption{text-align:left;font:600 15px/1.3 var(--sans);padding-bottom:8px;color:var(--hv-ink)}
+.hv-prices th,.hv-prices td{padding:11px 0;border-top:1px solid var(--hv-line);text-align:left;vertical-align:baseline}
+.hv-prices th{font-weight:400;color:var(--hv-ink)}
+.hv-prices td{white-space:nowrap;padding-left:16px}
+.hv-prices td:nth-of-type(1){font-weight:600;font-variant-numeric:tabular-nums}
+.hv-prices td:nth-of-type(2){color:var(--hv-muted);text-align:right}
+.hv-prices tr:last-child th,.hv-prices tr:last-child td{border-bottom:1px solid var(--hv-line)}
+.hv-price-note{margin-top:12px!important;font:400 14px/1.5 var(--sans);color:var(--hv-muted);max-width:520px}
+.hv-hero .hv-link{margin-top:6px}
+
+/* Стопка страниц */
+.hv-doc{margin:0;position:relative}
+.hv-doc-desk{position:relative;width:min(100%,500px);margin-inline:auto 0;aspect-ratio:500/640}
+.hv-sheet{position:absolute;display:block;background:#fff;border-radius:3px;box-shadow:var(--hv-sheet-shadow);filter:var(--hv-sheet-filter)}
+.hv-sheet img{display:block;width:100%;height:auto;border-radius:3px}
+.hv-sheet--title{width:72%;right:0;top:0;transform:rotate(4.5deg);transform-origin:70% 30%}
+.hv-sheet--toc{width:74%;right:9%;top:4%;transform:rotate(-2.5deg)}
+.hv-sheet--main{width:80%;left:0;top:7%;transform:rotate(-.6deg)}
+.hv-mark{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);background:var(--hv-marker);mix-blend-mode:multiply;border-radius:2px 5px 3px 6px;transform-origin:left center;transform:skewX(-8deg)}
+.hv-num{position:absolute;left:7.4%;top:var(--y);translate:-50% -50%;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--hv-violet);color:#fff;font:600 12px/1 var(--sans);box-shadow:0 0 0 3px #fff}
+:root[data-theme=dark] body.salon-home .hv-num{background:#4a31b4}
+.hv-doc figcaption{margin-top:22px;width:min(100%,500px);margin-left:auto}
+.hv-legend{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:hv-legend}
+.hv-legend li{display:flex;align-items:baseline;gap:12px;font:italic 400 17px/1.4 var(--serif);color:var(--hv-ink);counter-increment:hv-legend}
+.hv-legend li::before{content:counter(hv-legend);flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--hv-violet);color:var(--hv-btn-ink);font:600 12px/1 var(--sans);transform:translateY(3px)}
+.hv-doc-note{margin-top:12px!important;font:400 13px/1.5 var(--sans);color:var(--hv-muted)}
+.hv-doc-note a{color:var(--hv-violet)!important}
+
+@media (prefers-reduced-motion:no-preference){
+  .hv-mark{animation:hv-mark-in .55s cubic-bezier(.3,.7,.2,1) both;animation-delay:var(--d,.5s)}
+  .hv-num{animation:hv-num-in .3s ease-out both;animation-delay:calc(var(--d,.5s) + .35s)}
+}
+@keyframes hv-mark-in{from{transform:skewX(-8deg) scaleX(0)}to{transform:skewX(-8deg) scaleX(1)}}
+@keyframes hv-num-in{from{opacity:0;scale:.6}to{opacity:1;scale:1}}
+
+/* Отзывы: скриншоты с их настоящими пропорциями */
+.hv-voices-wall{columns:3 280px;column-gap:18px}
+.hv-voice{break-inside:avoid;margin:0 0 18px}
+.hv-voice a{display:block;text-decoration:none;color:inherit}
+.hv-voice-shot{display:block;max-height:340px;overflow:hidden;border-radius:14px;border:1px solid var(--hv-line);background:var(--hv-mist)}
+.hv-voice-shot img{display:block;width:100%;height:auto}
+.hv-voice figcaption{padding:12px 4px 0;font:italic 400 17px/1.4 var(--serif);color:var(--hv-ink)}
+.hv-voice a:hover .hv-voice-shot{border-color:var(--hv-violet)}
+
+/* Шаги */
+.hv-steps-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,40px);counter-reset:hv-step}
+.hv-steps-list li{counter-increment:hv-step;padding-top:20px;border-top:2px solid var(--hv-ink)}
+.hv-steps-list li::before{content:counter(hv-step);display:block;margin-bottom:18px;font:600 15px/1 var(--sans);color:var(--hv-violet)}
+.hv-steps-list p{margin-top:10px!important;font:400 16px/1.55 var(--sans);color:var(--hv-muted)}
+
+/* Калькулятор: компонент сайта в новой рамке */
+.hv-calc{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,72px);align-items:start}
+.hv-calc-copy p{margin-top:14px!important;font:400 17px/1.55 var(--sans);color:var(--hv-muted);max-width:30em}
+.hv-calc-copy ul{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.hv-calc-copy li{display:flex;gap:12px;align-items:baseline;font:400 16px/1.45 var(--sans)}
+.hv-calc-copy li::before{content:"";flex:none;width:14px;height:8px;border-left:2px solid var(--hv-violet);border-bottom:2px solid var(--hv-violet);transform:rotate(-45deg) translateY(-3px)}
+.hv-calc-faq{margin-top:30px}
+.hv-calc-faq h3{margin-bottom:6px!important}
+.hv-calc .hv-calc-faq details{border:0;border-bottom:1px solid var(--hv-line);border-radius:0;background:none;padding:0;margin:0}
+.hv-calc .hv-calc-faq summary{display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:52px;padding:10px 0;font:500 16px/1.35 var(--sans);color:var(--hv-ink);cursor:pointer;list-style:none}
+.hv-calc .hv-calc-faq summary::-webkit-details-marker{display:none}
+.hv-calc .hv-calc-faq summary::after{content:none!important;display:none!important}
+.hv-calc .hv-calc-faq summary span{flex:none;font-size:20px;color:var(--hv-violet)}
+.hv-calc .hv-calc-faq details div{padding:0 0 16px}
+.hv-calc .hv-calc-faq details p{font:400 15px/1.55 var(--sans);color:var(--hv-muted);margin:0}
+.hv-calc .hv-calc-faq details a{display:inline-block;margin-top:8px;color:var(--hv-violet)}
+.salon-home .hv .order-desk{border-radius:20px;border:1px solid var(--hv-line);box-shadow:0 24px 60px -36px rgba(29,24,48,.35);animation:none!important;opacity:1!important}
+
+/* Договорённости */
+.hv-terms{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(28px,5vw,72px);align-items:start}
+.hv-terms-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 40px}
+.hv-terms-list li p{margin-top:8px!important;font:400 16px/1.55 var(--sans);color:var(--hv-muted)}
+.hv-terms-not{padding:28px;border-radius:20px;background:var(--hv-mist)}
+.hv-terms-not p{margin-top:10px!important;font:400 16px/1.55 var(--sans);color:var(--hv-muted)}
+.hv-terms-not .hv-link{margin-top:10px}
+
+/* Примеры */
+.hv-samples-row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(16px,2.4vw,28px)}
+.hv-samples-row a{display:block;text-decoration:none;color:inherit}
+.hv-samples-row img{display:block;width:100%;height:auto;border-radius:3px;box-shadow:var(--hv-sheet-shadow);filter:var(--hv-sheet-filter);background:#fff}
+.hv-samples-row span{display:block;margin-top:14px;font:500 15px/1.35 var(--sans)}
+.hv-samples-row a:hover span{color:var(--hv-violet)}
+
+/* Вопросы */
+.hv-faq{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(28px,5vw,72px);align-items:start}
+.hv-faq details{border-bottom:1px solid var(--hv-line)}
+.hv-faq details:first-child{border-top:1px solid var(--hv-line)}
+.hv-faq summary{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:14px 0;font:500 18px/1.35 var(--sans);cursor:pointer;list-style:none}
+.hv-faq summary::-webkit-details-marker{display:none}
+.hv-faq summary::after{content:"+";flex:none;font:400 26px/1 var(--sans);color:var(--hv-violet);transition:transform .2s ease}
+.hv-faq details[open] summary::after{transform:rotate(45deg)}
+.hv-faq details p{padding:0 0 22px;max-width:40em;font:400 16px/1.6 var(--sans);color:var(--hv-muted)}
+.hv-faq details p a{color:var(--hv-violet)}
+
+/* Финальный призыв */
+.hv-final{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:32px;margin-block:clamp(40px,6vw,88px) clamp(32px,4vw,56px);padding:clamp(32px,5vw,64px);border-radius:28px;background:var(--hv-deep);color:#fff;overflow:hidden}
+.salon-home .hv .hv-final h2{color:#fff;max-width:16em}
+.hv-final p{margin-top:14px!important;font:400 17px/1.55 var(--sans);color:#d9d2f5;max-width:32em}
+.hv-final .hv-actions{margin-top:28px}
+.hv-final .hv-btn--tg{background:var(--hv-marker);color:var(--hv-marker-ink)!important}
+.hv-final .hv-btn--tg:hover{background:#c8ef95}
+.hv-final .hv-btn--line{background:transparent;border-color:rgba(255,255,255,.35);color:#fff!important}
+.hv-final .hv-btn--line:hover{border-color:#fff;color:#fff!important}
+.hv-final img{width:120px;height:auto;align-self:end;margin-bottom:-12px}
+
+/* Виды работ */
+.hv-catalog{padding-block:8px 48px}
+.hv-catalog h2{font:600 18px/1.3 var(--sans)!important;letter-spacing:-.01em!important;margin-bottom:14px!important}
+.hv-catalog ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 10px}
+.hv-catalog a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--hv-line);border-radius:999px;font:400 14px/1.2 var(--sans);text-decoration:none;color:var(--hv-ink)}
+.hv-catalog a:hover{border-color:var(--hv-violet);color:var(--hv-violet)}
+
+/* Просмотр отзыва */
+.hv-viewer{width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;border-radius:18px;background:#fff;color:#1d1830;box-shadow:0 30px 80px -20px rgba(18,13,36,.6)}
+.hv-viewer::backdrop{background:rgba(18,13,36,.7)}
+.hv-viewer figure{margin:0;display:flex;flex-direction:column;max-height:calc(100dvh - 24px)}
+.hv-viewer .hv-viewer-img{overflow:auto;min-height:0;background:#f3f1f8}
+.hv-viewer img{display:block;width:100%;height:auto}
+.hv-viewer figcaption{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 12px 18px;font:italic 400 17px/1.35 var(--serif)}
+.hv-viewer button{flex:none;min-width:44px;min-height:44px;padding:0 14px;border:1px solid #e4e0ee;border-radius:12px;background:#fff;color:#1d1830;font:500 14px/1 var(--sans);cursor:pointer}
+
+/* Липкая панель на телефоне */
+.hv-bar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:flex;gap:10px;padding:10px 16px max(10px,env(safe-area-inset-bottom));background:var(--sheet,#fff);border-top:1px solid var(--line,#e4e0ee);box-shadow:0 -8px 24px rgba(29,24,48,.08);transform:translateY(110%);transition:transform .2s ease;visibility:hidden}
+.hv-bar.is-on{transform:none;visibility:visible}
+.hv-bar a{flex:1;min-height:50px;font-size:15px;padding:0 12px}
+.hv-bar .hv-btn--line{flex:0 0 auto}
+@media (min-width:801px){.hv-bar{display:none}}
+.dock-tg{display:grid;place-items:center;flex:none;width:46px;height:46px;margin-left:auto;border:1px solid var(--line-strong,#bab1ce);border-radius:10px;color:var(--accent,#4a31b4);background:var(--sheet,#fff)}
+.dock-tg svg{width:20px;height:20px}
+
+@media (max-width:1060px){
+  .hv-steps-list{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:32px}
+  .hv-samples-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hv-terms-list{grid-template-columns:1fr}
+}
+@media (max-width:900px){
+  .hv-hero,.hv-calc,.hv-terms,.hv-faq{grid-template-columns:1fr}
+  .hv-doc-desk{margin-inline:auto;width:min(100%,400px)}
+  .hv-doc figcaption{margin-inline:auto;width:min(100%,400px)}
+}
+@media (max-width:640px){
+  .hv-hero{padding-block:28px 48px;gap:36px}
+  .hv-actions{flex-direction:column}
+  .hv-actions .hv-btn{width:100%}
+  .hv-prices{font-size:14px}
+  .hv-prices td{padding-left:10px}
+  .hv-voices-wall{columns:auto;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:0 16px 8px;scrollbar-width:none}
+  .hv-voices-wall::-webkit-scrollbar{display:none}
+  .hv-voice{flex:0 0 78%;scroll-snap-align:start;margin:0}
+  .hv-voice-shot{max-height:230px}
+  .hv-steps-list{grid-template-columns:1fr;row-gap:28px}
+  .hv-samples-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:4px 16px 24px;scrollbar-width:none}
+  .hv-samples-row::-webkit-scrollbar{display:none}
+  .hv-samples-row li{flex:0 0 46%;scroll-snap-align:start}
+  .hv-final{grid-template-columns:1fr;border-radius:22px}
+  .hv-final img{display:none}
+  .hv-faq summary{font-size:17px}
+  /* Кнопка Листика на телефоне — только маскот: подпись закрывала цены и текст */
+  body.salon-home .sa-launch{width:56px!important;height:56px!important;min-width:0!important;padding:0!important;gap:0!important;border-radius:50%!important;justify-content:center!important;overflow:hidden}
+  body.salon-home .sa-launch>span:not(.sa-mascot),body.salon-home .sa-launch>i{display:none!important}
+  body.salon-home .sa-launch .sa-mascot{margin:0!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .hv-bar,.hv-btn,.hv-faq summary::after{transition:none}
+}
