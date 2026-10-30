@@ -1,6 +1,12 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, order form v4 and bot card text
+## Verified current state — 30 October 2026, samples page v4
+
+- Live current is `release252-samples-v4-37ea34de`: release251 with `samples.html` switched to «Примеры работ» v4 on `ds-v4`. Release251 (`release251-samples-preview-2d70327f`) is release250 plus the hidden noindex preview `samples-v4.html`, `assets/css/samples-v4.css`, `assets/js/samples-v4.js`, `assets/js/samples-v4-data.js`, `assets/img/samples-v4/` and a patched `assets/js/salon-portfolio.js`. Rollback of the page: the static pointer to release251 (rollback of everything: release250). Never restore the DB for this UI change. Build future releases from the live current.
+- The page shows all seven archive works at once (the course work full-width), an annotated contents of the master's thesis whose rows open the exact page, three section samples from `assets/samples/` in the same reader, and a final Telegram block (the footer heading is removed, as on home). Card chips, contents rows and samples open the pdf.js reader on a page; old `#pdf=<id>&page=<n>` links keep working; «Продолжить со стр. N» comes from `SalonReturn` bookmarks.
+- The reader logic is unchanged: the builder appends `window.SalonPortfolioReader={open:open}` and a page-count plural to `salon-portfolio.js`; the hidden old library markup must stay because the script needs it. Details, builder and checks: `scripts/salon-samples-v4-20261030/README.md`. Not measured: conversion uplift.
+
+## Previous verified state — 30 October 2026, order form v4 and bot card text
 
 - Update: live current is `release250-reviews-c800982a` = release249 plus seven new client reviews (`review-51…57`, avatars pixelated like the rest) first on `reviews.html`, and the homepage count 47 → 54 (also in `scripts/salon-home-v4-20261030/main.html`, so the homepage pipeline still reproduces the live index). Rollback: the static pointer to release249. Details: `scripts/salon-reviews-20261030/README.md`.
 - Release249 (`release249-form-v4-8b11504d`) is release248 (release246 plus the hidden `configurator-v4.html` preview and `configurator-v4.css/js`) with `configurator.html` replaced by order form v4. Rollback of the form: the static pointer to `release248-form-preview-cd92c2e4`; never restore the DB for this UI change. Build future releases from the live current.
