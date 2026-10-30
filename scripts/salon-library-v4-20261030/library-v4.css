@@ -1,0 +1,351 @@
+/* «Библиотека» в дизайн-системе ds-v4: хаб knowledge.html и читалка разборов guide-*.html.
+   Поиск, фильтры, «Сохранённое», маршрут, оглавление и прогресс даёт salon-library.js, размер и интервал
+   текста — salon-ease.js (html[data-reading-size|space]). Все правила начинаются с body.salon-learning.ds-v4. */
+
+body.salon-learning.ds-v4{background:var(--paper,#faf9f6);--sx-paper:var(--ds-paper);--sx-ink:var(--ds-ink);--sx-accent:var(--ds-violet);--sx-tint:var(--ds-mist);--sx-line:var(--ds-line)}
+body.salon-learning.ds-v4 .lr-main{max-width:none;width:min(1320px,calc(100% - 64px));margin:16px auto 0;padding:0;color:var(--ds-ink);font:400 16px/1.5 var(--sans)}
+body.salon-learning.ds-v4 .lr-main :where(h1:not([class*="ds-"]),h2:not([class*="ds-"]),h3,p:not([class*="ds-"])){color:inherit}
+body.salon-learning.ds-v4 .lr-main :where(ul,ol).lb-list{margin:0;padding:0;list-style:none}
+body.salon-learning.ds-v4 .lr-main :where(button){font-family:var(--sans);cursor:pointer}
+
+/* Навигация раздела: Библиотека / Инструменты / Примеры работ */
+body.salon-learning.ds-v4 .lr-subnav{display:flex;flex-wrap:nowrap;gap:6px;margin:0 0 14px;padding:2px 0 4px;border:0;overflow-x:auto;scrollbar-width:none}
+body.salon-learning.ds-v4 .lr-subnav::-webkit-scrollbar{display:none}
+body.salon-learning.ds-v4 .lr-subnav a{display:inline-flex;align-items:center;flex:none;min-height:40px;padding:0 16px;border:1px solid var(--ds-line);border-radius:999px;background:var(--ds-paper);color:var(--ds-ink);font:500 14.5px/1.2 var(--sans);text-decoration:none;white-space:nowrap}
+body.salon-learning.ds-v4 .lr-subnav a:hover{border-color:var(--ds-line-2);color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lr-subnav a[aria-current]{border-color:var(--ds-violet);background:var(--ds-violet);color:var(--ds-on-violet)}
+
+/* ---------- Хаб ---------- */
+body.salon-learning.ds-v4 .lb-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,500px);gap:clamp(28px,4vw,64px);align-items:center;padding:clamp(40px,5vw,72px) clamp(28px,4.8vw,68px)}
+body.salon-learning.ds-v4 .lb-hero>*{min-width:0}
+body.salon-learning.ds-v4 .lb-hero .ds-display-1{font-size:clamp(44px,1.6rem + 3vw,76px);line-height:1;letter-spacing:-.025em}
+body.salon-learning.ds-v4 .lb-hero .ds-lead{margin-top:18px;max-width:31em}
+body.salon-learning.ds-v4 .lb-search{position:relative;display:flex;align-items:center;gap:12px;max-width:560px;min-height:64px;margin-top:30px;padding:0 10px 0 20px;border:1.5px solid rgba(255,255,255,.22);border-radius:20px;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:border-color .15s ease,background-color .15s ease}
+body.salon-learning.ds-v4 .lb-search:focus-within{border-color:var(--ds-lime);background:rgba(255,255,255,.12)}
+body.salon-learning.ds-v4 .lb-search svg{flex:none;width:24px;height:24px;color:var(--ds-lime)}
+body.salon-learning.ds-v4 .lb-search input{flex:1;min-width:0;height:60px;min-height:0;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font:500 18px/1.3 var(--sans);box-shadow:none;outline:0}
+body.salon-learning.ds-v4 .lb-search input::placeholder{color:var(--ds-on-night-3)}
+body.salon-learning.ds-v4 .lb-search input::-webkit-search-cancel-button{-webkit-appearance:none}
+body.salon-learning.ds-v4 .lb-search button{display:grid;place-items:center;flex:none;width:40px;height:40px;min-height:0;padding:0;border:0;border-radius:12px;background:rgba(255,255,255,.12);color:#fff;font:400 22px/1 var(--sans)}
+/* Под полем: сколько нашлось и кнопка к результатам (library-v4.js) — каталог ниже первого экрана */
+body.salon-learning.ds-v4 .lb-hint{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;max-width:560px;margin-top:12px;font:600 15.5px/1.4 var(--sans);color:#fff}
+body.salon-learning.ds-v4 .lb-hint[hidden],body.salon-learning.ds-v4 .lb-hint button[hidden]{display:none}
+body.salon-learning.ds-v4 .lb-hint button{min-height:38px;padding:0 16px;border:0;border-radius:999px;background:var(--ds-lime);color:var(--ds-lime-ink);font:600 14.5px/1 var(--sans)}
+body.salon-learning.ds-v4 .lb-quick{display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:600px;margin-top:16px}
+body.salon-learning.ds-v4 .lb-quick>span{margin-right:4px;font:500 14.5px/1.3 var(--sans);color:var(--ds-on-night-3);white-space:nowrap}
+body.salon-learning.ds-v4 .lb-quick button{flex:none;min-height:40px;padding:0 15px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.06);color:#fff;font:500 14.5px/1 var(--sans);transition:border-color .15s ease,color .15s ease}
+body.salon-learning.ds-v4 .lb-quick button:hover{border-color:var(--ds-lime);color:var(--ds-lime)}
+body.salon-learning.ds-v4 .lb-hero-links{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font:500 15px/1.4 var(--sans);color:var(--ds-on-night-3)}
+body.salon-learning.ds-v4 .lb-hero-links a{color:var(--ds-lime);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+
+/* Маршрут по задаче — три разбора в нужном порядке */
+body.salon-learning.ds-v4 .lb-route{position:relative;display:grid;gap:16px;padding:24px;border:1px solid rgba(255,255,255,.16);border-radius:26px;background:rgba(255,255,255,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;scroll-margin-top:100px}
+body.salon-learning.ds-v4 .lb-route-title{font:500 26px/1.15 var(--display);letter-spacing:-.015em;color:#fff}
+body.salon-learning.ds-v4 .lb-route-sub{margin-top:4px;font:400 14.5px/1.45 var(--sans);color:var(--ds-on-night-2)}
+body.salon-learning.ds-v4 .lb-route fieldset{margin:0;padding:0;border:0;min-width:0;background:none}
+body.salon-learning.ds-v4 .lb-route legend{margin:0 0 8px;padding:0;font:600 13.5px/1.3 var(--sans);color:var(--ds-on-night-3)}
+body.salon-learning.ds-v4 .lb-route fieldset>div{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:16px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+body.salon-learning.ds-v4 .lb-route fieldset button{min-height:42px;padding:0 8px;border:0;border-radius:12px;background:transparent;color:var(--ds-on-night-2);font:600 14.5px/1.2 var(--sans);transition:background-color .15s ease,color .15s ease}
+body.salon-learning.ds-v4 .lb-route fieldset button[aria-pressed=true]{background:#fff;color:#1b1531;box-shadow:0 8px 18px -10px rgba(0,0,0,.6)}
+body.salon-learning.ds-v4 .lb-route .lr-route-caption{display:none}
+body.salon-learning.ds-v4 .lb-route .lr-route-list{display:grid;gap:8px;margin:0;padding:0;list-style:none;counter-reset:none}
+body.salon-learning.ds-v4 .lb-route .lr-route-list li{margin:0;padding:0;border:0}
+body.salon-learning.ds-v4 .lb-route .lr-route-list a{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:center;min-height:64px;padding:10px 14px 10px 10px;border-radius:16px;background:#fff;color:#1b1531;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease}
+body.salon-learning.ds-v4 .lb-route .lr-route-list a:hover{transform:translateX(3px);box-shadow:0 14px 28px -18px rgba(0,0,0,.7)}
+body.salon-learning.ds-v4 .lb-route .lr-route-number{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ds-lime);color:var(--ds-lime-ink);font:700 14px/1 var(--sans)}
+body.salon-learning.ds-v4 .lb-route .lr-route-list strong{display:block;font:600 15.5px/1.3 var(--sans);color:#1b1531}
+body.salon-learning.ds-v4 .lb-route .lr-route-list small{display:block;margin-top:2px;font:400 13.5px/1.4 var(--sans);color:#5c5670}
+body.salon-learning.ds-v4 .lb-route .lr-route-arrow{display:none}
+body.salon-learning.ds-v4 .lb-route .lr-route-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+body.salon-learning.ds-v4 .lb-route .lr-route-actions button{min-height:40px;padding:0 14px;border:1.5px solid rgba(255,255,255,.28);border-radius:12px;background:transparent;color:#fff;font:600 14px/1.2 var(--sans)}
+body.salon-learning.ds-v4 .lb-route .lr-route-actions button span{display:none}
+body.salon-learning.ds-v4 .lb-route .lr-route-actions a{font:600 14.5px/1.3 var(--sans);color:var(--ds-lime);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+body.salon-learning.ds-v4 .lb-route .lr-route-status{min-height:0;font:400 13.5px/1.4 var(--sans);color:var(--ds-on-night-2)}
+body.salon-learning.ds-v4 .lb-route .lr-route-status:empty{display:none}
+body.salon-learning.ds-v4 .lb-route .lr-route-fallback{display:grid;gap:6px;font:500 13.5px/1.3 var(--sans)}
+body.salon-learning.ds-v4 .lb-route .lr-route-fallback[hidden]{display:none}
+body.salon-learning.ds-v4 .lb-route .lr-route-fallback input{min-height:44px;padding:0 12px;border:0;border-radius:12px;background:#fff;color:#1b1531;font:400 14px/1.3 var(--sans)}
+
+/* Каталог */
+body.salon-learning.ds-v4 .lb-catalog{padding-top:clamp(56px,7vw,96px)}
+body.salon-learning.ds-v4 .lb-catalog-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:22px}
+body.salon-learning.ds-v4 .lb-catalog-head .ds-lead{margin-top:10px;max-width:36em}
+body.salon-learning.ds-v4 .lb-shelf{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 10px 0 16px;border:1.5px solid var(--ds-line-2);border-radius:14px;background:var(--ds-paper);color:var(--ds-ink);font:600 15px/1.2 var(--sans)}
+body.salon-learning.ds-v4 .lb-shelf svg{width:20px;height:20px;color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lb-shelf b{display:grid;place-items:center;min-width:28px;height:28px;padding:0 8px;border-radius:999px;background:var(--ds-violet-soft);color:var(--ds-violet);font:700 13px/1 var(--sans)}
+body.salon-learning.ds-v4 .lb-shelf[aria-pressed=true]{border-color:var(--ds-violet);background:var(--ds-violet);color:var(--ds-on-violet)}
+body.salon-learning.ds-v4 .lb-shelf[aria-pressed=true] svg{color:var(--ds-lime)}
+body.salon-learning.ds-v4 .lb-shelf[aria-pressed=true] svg path{fill:currentColor}
+body.salon-learning.ds-v4 .lb-filters{display:flex;flex-wrap:wrap;gap:8px;scroll-margin-top:96px}
+body.salon-learning.ds-v4 .lb-filters button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1.5px solid var(--ds-line);border-radius:999px;background:var(--ds-paper);color:var(--ds-ink);font:600 14.5px/1.2 var(--sans);transition:border-color .15s ease,background-color .15s ease,color .15s ease}
+body.salon-learning.ds-v4 .lb-filters button small{font:600 12.5px/1 var(--sans);color:var(--ds-muted);font-variant-numeric:tabular-nums}
+body.salon-learning.ds-v4 .lb-filters button:hover{border-color:var(--ds-line-2)}
+body.salon-learning.ds-v4 .lb-filters button[aria-pressed=true]{border-color:var(--ds-violet);background:var(--ds-violet);color:var(--ds-on-violet)}
+body.salon-learning.ds-v4 .lb-filters button[aria-pressed=true] small{color:rgba(255,255,255,.75)}
+:root[data-theme=dark] body.salon-learning.ds-v4 .lb-filters button[aria-pressed=true] small{color:rgba(27,21,49,.7)}
+body.salon-learning.ds-v4 .lb-results{display:flex;align-items:baseline;gap:12px;margin:18px 0 16px;font:500 14px/1.4 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lb-results p{color:inherit}
+body.salon-learning.ds-v4 .lb-results span{padding:3px 10px;border-radius:999px;background:var(--ds-violet-soft);color:var(--ds-violet);font-size:13px}
+body.salon-learning.ds-v4 .lb-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+body.salon-learning.ds-v4 .lb-card{position:relative;display:flex;min-width:0;border:1px solid var(--ds-line);border-radius:24px;background:var(--ds-paper);transition:border-color .15s ease,box-shadow .25s ease,transform .25s ease}
+body.salon-learning.ds-v4 .lb-card::before{content:none}
+body.salon-learning.ds-v4 .lb-card[hidden]{display:none}
+body.salon-learning.ds-v4 .lb-card>a{display:flex;flex:1;flex-direction:column;min-width:0;height:auto;padding:20px 22px 20px;color:inherit;text-decoration:none}
+body.salon-learning.ds-v4 .lb-card:hover{border-color:var(--ds-line-2);box-shadow:0 22px 44px -32px rgba(48,24,140,.55);transform:translateY(-2px)}
+body.salon-learning.ds-v4 .lb-card .lb-card-meta{display:flex;align-items:center;gap:10px;min-height:40px;margin:-6px 0 0;padding-right:44px;font:500 13.5px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lb-card-meta b{padding:4px 10px;border-radius:999px;background:var(--ds-mist);color:var(--ds-violet);font:600 13px/1.2 var(--sans)}
+body.salon-learning.ds-v4 .lb-card h2{max-width:none;margin:12px 0 0;font:600 19px/1.3 var(--sans);letter-spacing:-.01em;color:var(--ds-ink);text-wrap:pretty}
+body.salon-learning.ds-v4 .lb-card h2 mark{padding:0 2px;border-radius:4px;background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-learning.ds-v4 .lb-card p:not(.lb-card-meta){margin:8px 0 0;font:400 15px/1.55 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lb-card-read{margin-top:auto;padding-top:16px;font:600 15px/1.3 var(--sans);color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lb-card:hover .lb-card-read{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+/* Сердечко: текст ♡/♥ ставит salon-library.js, рисуем иконку поверх */
+body.salon-learning.ds-v4 .lb-card .lr-save{position:absolute;top:14px;right:14px;display:grid;place-items:center;width:40px;height:40px;min-height:0;padding:0;border:0;border-radius:50%;background:var(--ds-mist);color:var(--ds-violet);font-size:0;transition:background-color .15s ease,transform .15s ease}
+body.salon-learning.ds-v4 .lb-card .lr-save::before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'/%3E%3C/svg%3E") center/contain no-repeat}
+body.salon-learning.ds-v4 .lb-card .lr-save[aria-pressed=true]{background:var(--ds-violet);color:var(--ds-lime)}
+body.salon-learning.ds-v4 .lb-card .lr-save[aria-pressed=true]::before{-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'/%3E%3C/svg%3E") center/contain no-repeat}
+body.salon-learning.ds-v4 .lb-card .lr-save:active{transform:scale(.9)}
+body.salon-learning.ds-v4 .lb-empty{padding:48px 24px;border:1.5px dashed var(--ds-line-2);border-radius:24px;text-align:center}
+body.salon-learning.ds-v4 .lb-empty h2{font:500 30px/1.2 var(--display);color:var(--ds-ink)}
+body.salon-learning.ds-v4 .lb-empty p{margin-top:8px;font:400 15.5px/1.5 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lb-empty .ds-btn{margin-top:18px}
+body.salon-learning.ds-v4 .lb-more{display:flex;align-items:center;justify-content:center;width:auto;min-width:240px;min-height:52px;margin:28px auto 0;padding:0 28px;border:1.5px solid var(--ds-line-2);border-radius:999px;background:var(--ds-paper);color:var(--ds-ink);font:600 15.5px/1.2 var(--sans)}
+body.salon-learning.ds-v4 .lb-more:hover{border-color:var(--ds-violet);color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lb-more[hidden]{display:none}
+body.salon-learning.ds-v4 .lb-final{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:32px;margin-block:clamp(64px,8vw,112px) clamp(32px,4vw,56px);padding:clamp(36px,5vw,72px)}
+body.salon-learning.ds-v4 .lb-final .ds-display-2{max-width:15em}
+body.salon-learning.ds-v4 .lb-final .ds-lead{margin-top:16px;max-width:32em}
+body.salon-learning.ds-v4 .lb-final-actions{display:flex;flex-wrap:wrap;gap:12px}
+body.salon-learning.ds-v4 .lr-status{position:fixed;left:50%;bottom:24px;z-index:80;max-width:calc(100% - 32px);padding:0;transform:translateX(-50%);font:600 14.5px/1.4 var(--sans)}
+body.salon-learning.ds-v4 .lr-status:not(:empty){padding:12px 18px;border-radius:14px;background:#1b1531;color:#fff;box-shadow:0 18px 40px -16px rgba(0,0,0,.6)}
+
+/* ---------- Читалка разбора ---------- */
+body.salon-learning.ds-v4 .lr-reader{width:min(1180px,calc(100% - 64px));padding-bottom:clamp(64px,8vw,104px)}
+/* В разборе вместо полосы раздела — «Все материалы»: над заголовком и так два ряда кнопок */
+body.salon-learning.ds-v4 .lr-reader .lr-subnav{display:none}
+body.salon-learning.ds-v4 .lr-reader-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 0 10px;font:500 14.5px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lr-reader-top a{display:inline-flex;align-items:center;min-height:44px;color:var(--ds-violet);font-weight:600;text-decoration:none}
+body.salon-learning.ds-v4 .lr-reader-top a:hover{text-decoration:underline;text-underline-offset:4px}
+body.salon-learning.ds-v4 .lr-reader-top span{padding:4px 12px;border-radius:999px;background:var(--ds-mist);color:var(--ds-violet);font-weight:600}
+body.salon-learning.ds-v4 .lr-reader-actions{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+body.salon-learning.ds-v4 .lr-reader-actions button{min-height:40px;padding:0 14px;border:1.5px solid var(--ds-line);border-radius:12px;background:var(--ds-paper);color:var(--ds-ink);font:600 14px/1.2 var(--sans);transition:border-color .15s ease,background-color .15s ease,color .15s ease}
+body.salon-learning.ds-v4 .lr-reader-actions button:hover{border-color:var(--ds-line-2)}
+body.salon-learning.ds-v4 .lr-reader-actions button[aria-pressed=true]{border-color:var(--ds-violet);background:var(--ds-violet-soft);color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lr-reading-layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:start}
+body.salon-learning.ds-v4 .lr-reading-nav{position:sticky;top:96px;max-height:calc(100dvh - 120px);overflow:auto;padding:0;scrollbar-width:thin}
+body.salon-learning.ds-v4 .lr-reading-nav details>summary{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:10px 0;font:600 14px/1.3 var(--sans);color:var(--ds-muted);list-style:none;cursor:pointer}
+body.salon-learning.ds-v4 .lr-reading-nav details>summary::-webkit-details-marker{display:none}
+body.salon-learning.ds-v4 .lr-reading-nav [data-reader-toc]{display:grid;gap:2px;padding-left:0;border-left:2px solid var(--ds-line)}
+body.salon-learning.ds-v4 .lr-reading-nav [data-reader-toc] a{display:block;min-height:0;margin:0 0 0 -2px;padding:8px 12px;border:0;border-left:2px solid transparent;border-radius:0 10px 10px 0;background:none;color:var(--ds-ink-2);font:500 14.5px/1.4 var(--sans);text-decoration:none;transition:color .15s ease,border-color .15s ease,background-color .15s ease}
+body.salon-learning.ds-v4 .lr-reading-nav [data-reader-toc] a:hover{color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lr-reading-nav [data-reader-toc] a[aria-current]{border-left-color:var(--ds-violet);background:var(--ds-mist);color:var(--ds-violet);font-weight:600}
+/* На широком экране оглавление открыто всегда — сворачивать нечего */
+@media(min-width:1001px){
+  body.salon-learning.ds-v4 .lr-reading-nav details>summary{pointer-events:none}
+  body.salon-learning.ds-v4 .lr-reading-nav details>summary::after{content:none;display:none}
+}
+/* Прогресс чтения — тонкая лаймовая линия под шапкой */
+body.salon-learning.ds-v4 .lr-reading-progress{position:fixed;top:77px;left:0;right:0;z-index:60;height:3px;margin:0;border-radius:0;background:transparent;pointer-events:none}
+body.salon-learning.ds-v4 .lr-reading-progress i{display:block;height:100%;border-radius:0 3px 3px 0;background:linear-gradient(90deg,var(--ds-violet),var(--ds-lime))}
+body.salon-learning.ds-v4 .lr-related-tool{display:flex;margin-top:18px;padding:14px 16px;border-radius:16px;background:var(--ds-mist);color:var(--ds-violet);font:600 14.5px/1.35 var(--sans);text-decoration:none}
+body.salon-learning.ds-v4 .lr-related-tool:hover{background:var(--ds-violet-soft)}
+
+/* Текст статьи: длинное чтение, строка ~68 знаков */
+body.salon-learning.ds-v4 .lr-reader article.doc{margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;color:var(--ds-ink-2);font:400 18px/1.75 var(--sans);font-feature-settings:"kern","liga"}
+body.salon-learning.ds-v4 .lr-reader article.doc>*{max-width:42rem}
+body.salon-learning.ds-v4 .lr-reader article.doc>:is(.lr-table-scroll,table){max-width:none}
+body.salon-learning.ds-v4 .lr-reader article.doc h1{margin:0;font:500 clamp(36px,1.4rem + 2.2vw,56px)/1.06 var(--display);letter-spacing:-.022em;color:var(--ds-ink);text-wrap:balance}
+body.salon-learning.ds-v4 .lr-reader .doc-subtitle{margin:18px 0 0;font:400 clamp(18px,1rem + .3vw,21px)/1.5 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lr-reader .doc-meta{margin:18px 0 0;padding-bottom:26px;border-bottom:1px solid var(--ds-line);font:500 14px/1.5 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lr-reader .doc-meta a{color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lr-reader article.doc h2{margin:56px 0 0;font:500 clamp(26px,1rem + 1vw,34px)/1.15 var(--display);letter-spacing:-.018em;color:var(--ds-ink);scroll-margin-top:110px;text-wrap:balance}
+body.salon-learning.ds-v4 .lr-reader article.doc h3{margin:34px 0 0;font:600 20px/1.35 var(--sans);letter-spacing:-.01em;color:var(--ds-ink);scroll-margin-top:110px}
+body.salon-learning.ds-v4 .lr-reader article.doc p{margin:18px 0 0;color:inherit;font:inherit}
+body.salon-learning.ds-v4 .lr-reader article.doc :is(ul,ol){margin:18px 0 0;padding-left:0;list-style:none}
+body.salon-learning.ds-v4 .lr-reader article.doc li{position:relative;margin:10px 0 0;padding-left:30px;font:inherit}
+body.salon-learning.ds-v4 .lr-reader article.doc ul>li::before{content:"";position:absolute;left:6px;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--ds-lime);box-shadow:inset 0 0 0 2px rgba(27,42,14,.25)}
+body.salon-learning.ds-v4 .lr-reader article.doc ol{counter-reset:doc}
+body.salon-learning.ds-v4 .lr-reader article.doc ol>li{counter-increment:doc}
+body.salon-learning.ds-v4 .lr-reader article.doc ol>li::before{content:counter(doc);position:absolute;left:0;top:.2em;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ds-violet-soft);color:var(--ds-violet);font:700 12px/1 var(--sans)}
+body.salon-learning.ds-v4 .lr-reader article.doc strong{font-weight:650;color:var(--ds-ink)}
+body.salon-learning.ds-v4 .lr-reader article.doc em{color:var(--ds-ink)}
+body.salon-learning.ds-v4 .lr-reader article.doc a{color:var(--ds-violet);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;overflow-wrap:anywhere}
+body.salon-learning.ds-v4 .lr-reader article.doc a:hover{text-decoration-thickness:2.5px}
+/* Таблицы: обёртку с прокруткой ставит salon-library.js */
+body.salon-learning.ds-v4 .lr-reader .lr-table-scroll{margin:24px 0 0;border:1px solid var(--ds-line);border-radius:18px;background:var(--ds-paper);overflow-x:auto}
+body.salon-learning.ds-v4 .lr-reader article.doc table{width:100%;margin:0;border-collapse:collapse;font:400 15.5px/1.55 var(--sans);color:var(--ds-ink-2)}
+body.salon-learning.ds-v4 .lr-reader article.doc th{padding:13px 16px;background:var(--ds-mist);color:var(--ds-ink);font:600 14px/1.35 var(--sans);text-align:left;vertical-align:bottom}
+body.salon-learning.ds-v4 .lr-reader article.doc td{padding:12px 16px;border-top:1px solid var(--ds-line);vertical-align:top}
+body.salon-learning.ds-v4 .lr-reader article.doc td:first-child{font-weight:600;color:var(--ds-ink)}
+/* Заметки, призывы, «проверь, куда ведёт» */
+body.salon-learning.ds-v4 .lr-reader .doc-note{position:relative;margin:24px 0 0;padding:16px 20px 16px 54px;border-radius:18px;background:var(--ds-mist);color:var(--ds-ink-2);font-size:16.5px;line-height:1.6}
+body.salon-learning.ds-v4 .lr-reader .doc-note::before{content:"i";position:absolute;left:16px;top:16px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ds-violet);color:#fff;font:700 13px/1 var(--display)}
+body.salon-learning.ds-v4 .lr-reader .read-cta{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin:30px 0 0;padding:18px 22px;border-radius:20px;color:#fff;background:radial-gradient(70% 90% at 100% 0%,rgba(124,90,255,.55),transparent 70%),linear-gradient(160deg,#1d1250,#140c35 60%,#0e0926)}
+body.salon-learning.ds-v4 .lr-reader .read-cta p{margin:0;font:500 16.5px/1.45 var(--sans);color:#fff}
+body.salon-learning.ds-v4 .lr-reader article.doc .read-cta a{display:inline-flex;align-items:center;min-height:46px;padding:0 18px;border-radius:12px;background:var(--ds-lime);color:var(--ds-lime-ink);font:600 15px/1.2 var(--sans);text-decoration:none;white-space:normal}
+body.salon-learning.ds-v4 .lr-reader article.doc .read-cta a:hover{background:#c8ef8c}
+body.salon-learning.ds-v4 .lr-reader .read-cta a span{display:none}
+/* «Проверь, куда ведёт…» — discovery.css задаёт блоку всё через !important, поэтому и здесь так */
+body.salon-learning.ds-v4 .lr-reader .gd-related{margin:48px 0 0!important;padding:26px 26px 24px!important;border:0!important;border-radius:24px!important;background:var(--ds-mist)!important;box-shadow:none!important}
+body.salon-learning.ds-v4 .lr-reader .gd-related>h2{margin:0!important;font:500 clamp(24px,1rem + .6vw,28px)/1.2 var(--display)!important;letter-spacing:-.015em!important;color:var(--ds-ink)!important}
+body.salon-learning.ds-v4 .lr-reader .gd-related>p{margin:10px 0 0!important;font:400 16px/1.6 var(--sans)!important;color:var(--ds-ink-2)!important}
+body.salon-learning.ds-v4 .lr-reader .gd-related>small{color:var(--ds-muted);font:400 13.5px/1.5 var(--sans)}
+body.salon-learning.ds-v4 .lr-reader .gd-related .gd-related-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important;margin:18px 0 0!important}
+body.salon-learning.ds-v4 .lr-reader article.doc .gd-related .gd-related-links a{min-height:60px;padding:14px 18px!important;border:1.5px solid transparent!important;border-radius:16px;background:var(--ds-paper);color:var(--ds-ink);font:600 15.5px/1.35 var(--sans)!important;text-decoration:none;transition:border-color .15s ease,color .15s ease}
+body.salon-learning.ds-v4 .lr-reader article.doc .gd-related .gd-related-links a:hover{border-color:var(--ds-violet)!important;background:var(--ds-paper);color:var(--ds-violet);transform:none}
+body.salon-learning.ds-v4 .lr-reader .gd-related .gd-related-links a::after{content:none}
+body.salon-learning.ds-v4 .lr-reader .gd-related-table{margin:18px 0 0;border:1px solid var(--ds-line);border-radius:16px;background:var(--ds-paper)}
+body.salon-learning.ds-v4 .lr-reader .gd-related-table table{font:400 15px/1.55 var(--sans)!important;color:var(--ds-ink-2)}
+body.salon-learning.ds-v4 .lr-reader .gd-related-table caption{padding:16px 18px;color:var(--ds-violet);font:600 14px/1.4 var(--sans)}
+body.salon-learning.ds-v4 .lr-reader .gd-related-table th{background:var(--ds-mist);color:var(--ds-ink);font:600 13.5px/1.35 var(--sans)}
+body.salon-learning.ds-v4 .lr-reader .gd-related-table :is(th,td){border-top:1px solid var(--ds-line)}
+/* Чек-листы: галочки ставит library-v4.js, отметки хранятся на устройстве */
+body.salon-learning.ds-v4 .lr-reader article.doc .lr-checklist{display:grid;gap:8px;margin-top:18px;padding:0}
+body.salon-learning.ds-v4 .lr-reader article.doc :is(ul,ol).lr-checklist>li{margin:0;padding:0}
+body.salon-learning.ds-v4 .lr-reader article.doc :is(ul,ol).lr-checklist>li::before{content:none}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist label{display:flex;gap:14px;align-items:flex-start;min-height:48px;margin:0;padding:12px 16px;border:1px solid var(--ds-line);border-radius:16px;background:var(--ds-paper);font-size:.94em;line-height:1.55;cursor:pointer;transition:border-color .15s ease,background-color .15s ease}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist label:hover{border-color:var(--ds-line-2)}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist input{flex:none;width:22px;height:22px;min-height:0;margin:1px 0 0;padding:0;border:2px solid var(--ds-line-2);border-radius:7px;background:var(--ds-paper) center/14px no-repeat;-webkit-appearance:none;appearance:none;cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist input:checked{border-color:var(--ds-violet);background-color:var(--ds-violet);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist input:focus-visible{outline:3px solid var(--ds-violet);outline-offset:2px}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist label:has(input:checked){border-color:transparent;background:var(--ds-mist)}
+body.salon-learning.ds-v4 .lr-reader .lr-checklist label:has(input:checked)>span{color:var(--ds-muted);text-decoration:line-through;text-decoration-color:var(--ds-line-2)}
+/* Крупнее и просторнее — настройки salon-ease.js */
+:root[data-reading-size=large] body.salon-learning.ds-v4 .lr-reader article.doc{font-size:20.5px}
+:root[data-reading-size=large] body.salon-learning.ds-v4 .lr-reader article.doc>*{max-width:46rem}
+:root[data-reading-space=roomy] body.salon-learning.ds-v4 .lr-reader article.doc{line-height:2}
+:root[data-reading-space=roomy] body.salon-learning.ds-v4 .lr-reader article.doc p{margin-top:24px}
+
+/* Кнопки, которые дописывает salon-reading.js: ссылка на раздел, таблица на весь экран, пример, «Разделы» */
+body.salon-learning.ds-v4 .sx-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:40px;padding:0 14px;border:1.5px solid var(--ds-line);border-radius:12px;background:var(--ds-paper);color:var(--ds-ink);font:600 14px/1.2 var(--sans);box-shadow:none;transition:border-color .15s ease,color .15s ease}
+body.salon-learning.ds-v4 .sx-button:hover{border-color:var(--ds-line-2);color:var(--ds-violet)}
+body.salon-learning.ds-v4 .sx-button[aria-pressed=true]{border-color:var(--ds-violet);background:var(--ds-violet-soft);color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lr-reader article.doc .sx-section-share{margin:6px 0 0}
+body.salon-learning.ds-v4 .lr-reader .sx-section-share button{display:inline-flex;align-items:center;gap:6px;min-width:0;min-height:32px;padding:0;border:0;border-radius:8px;background:none;color:var(--ds-muted);font:500 13.5px/1.2 var(--sans)}
+body.salon-learning.ds-v4 .lr-reader .sx-section-share button::before{content:"";flex:none;width:16px;height:16px;background:currentColor;-webkit-mask:var(--lb-i-link) center/contain no-repeat;mask:var(--lb-i-link) center/contain no-repeat}
+body.salon-learning.ds-v4 .lr-reader .sx-section-share button:hover{color:var(--ds-violet)}
+body.salon-learning.ds-v4{--lb-i-link:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1'/%3E%3Cpath d='M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1'/%3E%3C/svg%3E");--lb-i-expand:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'/%3E%3C/svg%3E");--lb-i-list:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01'/%3E%3C/svg%3E")}
+body.salon-learning.ds-v4 .lr-reader .sx-table-open{margin:12px 0 0}
+body.salon-learning.ds-v4 .lr-reader .sx-table-open::before,body.salon-learning.ds-v4 .sx-contents::before{content:"";flex:none;width:16px;height:16px;background:currentColor;-webkit-mask:var(--lb-i-expand) center/contain no-repeat;mask:var(--lb-i-expand) center/contain no-repeat}
+body.salon-learning.ds-v4 .lr-reader .sx-example-copy{margin:10px 0 0}
+body.salon-learning.ds-v4 .lr-reader article.doc .sx-example{margin-top:22px;padding:16px 20px;border:0;border-left:3px solid var(--ds-violet);border-radius:0 16px 16px 0;background:var(--ds-mist)}
+body.salon-learning.ds-v4 .sx-contents{display:none;left:12px;bottom:calc(16px + env(safe-area-inset-bottom));min-height:48px;padding:0 18px;border:0;border-radius:999px;background:var(--ds-violet);color:#fff;font:600 15px/1 var(--sans);box-shadow:0 16px 32px -14px rgba(48,24,140,.75)}
+body.salon-learning.ds-v4 .sx-contents::before{-webkit-mask-image:var(--lb-i-list);mask-image:var(--lb-i-list)}
+body.salon-learning.ds-v4 .sx-contents:hover{border:0;color:#fff;background:#3d25a8}
+@media(max-width:760px){body.salon-learning.ds-v4 .sx-contents:not([hidden]){display:inline-flex}}
+/* Окна «В этом разборе», «Таблица», «Ссылка готова» */
+body.salon-learning.ds-v4 .sx-dialog{border:1px solid var(--ds-line);border-radius:24px;background:var(--ds-paper);color:var(--ds-ink);font:400 16px/1.5 var(--sans);box-shadow:0 40px 90px -30px rgba(20,12,53,.6)}
+body.salon-learning.ds-v4 .sx-dialog::backdrop{background:rgba(20,12,53,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+body.salon-learning.ds-v4 .sx-dialog-head{padding:16px 16px 16px 22px;border-bottom:1px solid var(--ds-line);background:var(--ds-paper)}
+body.salon-learning.ds-v4 .sx-dialog-head h2{font:500 24px/1.15 var(--display);letter-spacing:-.015em;color:var(--ds-ink)}
+body.salon-learning.ds-v4 .sx-dialog-head button{min-height:40px;padding:0 14px;border:1.5px solid var(--ds-line);border-radius:999px;background:var(--ds-paper);color:var(--ds-ink);font:600 14px/1 var(--sans)}
+body.salon-learning.ds-v4 .sx-contents-list{gap:2px;padding:10px 12px 16px}
+body.salon-learning.ds-v4 .sx-contents-list a{min-height:48px;padding:10px 12px;border-radius:12px;font:500 15.5px/1.35 var(--sans)}
+body.salon-learning.ds-v4 .sx-contents-list a:hover{background:var(--ds-mist)}
+body.salon-learning.ds-v4 .sx-contents-list a[aria-current]{background:var(--ds-mist);color:var(--ds-violet);font-weight:600}
+body.salon-learning.ds-v4 .sx-table-area table{font:400 15px/1.55 var(--sans);color:var(--ds-ink-2)}
+body.salon-learning.ds-v4 .sx-table-area :is(th,td){border-color:var(--ds-line)}
+body.salon-learning.ds-v4 .sx-table-area th{background:var(--ds-mist);color:var(--ds-ink);font-weight:600}
+body.salon-learning.ds-v4 .sx-table-hint{font:500 13.5px/1.4 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .sx-copy-fallback label{font:600 14.5px/1.4 var(--sans)}
+body.salon-learning.ds-v4 .sx-copy-fallback textarea{border-radius:14px;font:400 15px/1.5 var(--sans)}
+body.salon-learning.ds-v4 .sx-notice{padding:12px 18px;border-radius:14px;background:#1b1531;color:#fff;font:600 14.5px/1.4 var(--sans);box-shadow:0 18px 40px -16px rgba(0,0,0,.6)}
+/* Режим «Только читать» */
+body.salon-learning.ds-v4 .sx-focus-bar{min-height:64px;border-bottom:1px solid var(--ds-line);background:var(--ds-paper);color:var(--ds-ink);font:600 14.5px/1.3 var(--sans)}
+body.salon-learning.ds-v4 .sx-focus-bar button{min-height:40px;padding:0 14px;border:1.5px solid var(--ds-line);border-radius:12px;background:var(--ds-paper);color:var(--ds-ink);font:600 14px/1.2 var(--sans)}
+:root.sx-focus body.salon-learning.ds-v4 .lr-reader{width:min(760px,calc(100% - 40px));padding-top:20px}
+:root.sx-focus body.salon-learning.ds-v4 .lr-reading-layout{display:block}
+:root.sx-focus body.salon-learning.ds-v4 .lr-reading-progress{top:65px}
+
+/* Дальше по задаче */
+body.salon-learning.ds-v4 .lr-next{grid-column:2;margin:0;padding:0;border:0}
+body.salon-learning.ds-v4 .lr-next-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;margin-bottom:18px}
+body.salon-learning.ds-v4 .lr-next-heading h2{margin:0;font:500 clamp(26px,1rem + 1vw,34px)/1.15 var(--display);letter-spacing:-.018em;color:var(--ds-ink)}
+body.salon-learning.ds-v4 .lr-next-heading h2 em{font-style:normal;color:inherit;font-family:inherit}
+body.salon-learning.ds-v4 .lr-next-heading a{font:600 15px/1.3 var(--sans);color:var(--ds-violet);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+body.salon-learning.ds-v4 .lr-next-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+body.salon-learning.ds-v4 .lr-next-grid a{position:relative;display:flex;flex-direction:column;min-height:180px;padding:22px 24px;border:1px solid var(--ds-line);border-radius:24px;background:var(--ds-paper);color:var(--ds-ink);text-decoration:none;transition:transform .25s ease,box-shadow .25s ease}
+body.salon-learning.ds-v4 .lr-next-grid a:hover{transform:translateY(-2px);box-shadow:0 22px 44px -32px rgba(48,24,140,.55)}
+body.salon-learning.ds-v4 .lr-next-grid span{font:600 13.5px/1.3 var(--sans);letter-spacing:0;color:var(--ds-violet)}
+body.salon-learning.ds-v4 .lr-next-grid strong{margin-top:10px;font:500 24px/1.2 var(--display);letter-spacing:-.015em}
+body.salon-learning.ds-v4 .lr-next-grid p{margin-top:8px;font:400 15px/1.5 var(--sans);color:var(--ds-muted)}
+body.salon-learning.ds-v4 .lr-next-grid b{display:none}
+body.salon-learning.ds-v4 .lr-next-grid .lr-next-help{border-color:transparent;color:#fff;background:radial-gradient(70% 90% at 100% 0%,rgba(124,90,255,.55),transparent 70%),linear-gradient(160deg,#1d1250,#140c35 60%,#0e0926)}
+body.salon-learning.ds-v4 .lr-next-grid .lr-next-help span{color:var(--ds-lime)}
+body.salon-learning.ds-v4 .lr-next-grid .lr-next-help p{color:var(--ds-on-night-2)}
+
+@media(min-width:1001px){
+  /* Таблицы на широком экране помещаются целиком */
+  body.salon-learning.ds-v4 .lr-reader .sx-table-open{display:none}
+}
+@media(max-width:1180px){
+  body.salon-learning.ds-v4 .lr-main,body.salon-learning.ds-v4 .lr-reader{width:calc(100% - 40px)}
+  body.salon-learning.ds-v4 .lb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:1000px){
+  body.salon-learning.ds-v4 .lb-hero{grid-template-columns:minmax(0,1fr)}
+  body.salon-learning.ds-v4 .lb-route{max-width:560px}
+  body.salon-learning.ds-v4 .lb-final{grid-template-columns:1fr}
+  body.salon-learning.ds-v4 .lr-reading-layout{grid-template-columns:1fr}
+  body.salon-learning.ds-v4 .lr-reading-nav{position:static;max-height:none;margin-bottom:18px;padding:4px 16px;border:1px solid var(--ds-line);border-radius:18px;background:var(--ds-paper)}
+  body.salon-learning.ds-v4 .lr-reading-nav details>summary{color:var(--ds-ink)}
+  body.salon-learning.ds-v4 .lr-reading-nav [data-reader-toc]{margin-bottom:12px}
+  body.salon-learning.ds-v4 .lr-related-tool{margin:4px 0 14px}
+  body.salon-learning.ds-v4 .lr-next{grid-column:auto}
+}
+@media(max-width:800px){
+  body.salon-learning.ds-v4 .lr-reading-progress{top:65px}
+}
+@media(max-width:640px){
+  body.salon-learning.ds-v4 .lr-main,body.salon-learning.ds-v4 .lr-reader{width:calc(100% - 24px);margin-top:12px}
+  body.salon-learning.ds-v4 .lr-subnav{margin-inline:-12px;padding-inline:12px}
+  body.salon-learning.ds-v4 .lb-hero{gap:28px;padding:34px 18px 22px;border-radius:26px}
+  body.salon-learning.ds-v4 .lb-hero .ds-display-1{font-size:44px}
+  body.salon-learning.ds-v4 .lb-hero .ds-lead{font-size:16.5px}
+  body.salon-learning.ds-v4 .lb-search{min-height:58px;margin-top:22px;padding-left:16px}
+  body.salon-learning.ds-v4 .lb-search input{height:54px;font-size:16.5px}
+  body.salon-learning.ds-v4 .lb-quick{flex-wrap:nowrap;margin-inline:-18px;padding:2px 18px 4px;overflow-x:auto;scrollbar-width:none}
+  body.salon-learning.ds-v4 .lb-quick::-webkit-scrollbar{display:none}
+  body.salon-learning.ds-v4 .lb-hero-links{margin-top:18px}
+  body.salon-learning.ds-v4 .lb-route{padding:18px 14px;border-radius:22px}
+  body.salon-learning.ds-v4 .lb-route-title{font-size:23px}
+  body.salon-learning.ds-v4 .lb-route fieldset button{font-size:13.5px}
+  body.salon-learning.ds-v4 .lb-catalog{padding-top:48px}
+  body.salon-learning.ds-v4 .lb-filters{flex-wrap:nowrap;margin-inline:-12px;padding:2px 12px 4px;overflow-x:auto;scrollbar-width:none;scroll-margin-top:80px}
+  body.salon-learning.ds-v4 .lb-filters::-webkit-scrollbar{display:none}
+  body.salon-learning.ds-v4 .lb-filters button{flex:none}
+  body.salon-learning.ds-v4 .lb-grid{grid-template-columns:1fr;gap:10px}
+  body.salon-learning.ds-v4 .lb-card{border-radius:20px}
+  body.salon-learning.ds-v4 .lb-card>a{padding:16px 16px 18px}
+  body.salon-learning.ds-v4 .lb-card .lb-card-meta{margin-top:-4px}
+  body.salon-learning.ds-v4 .lb-card .lr-save{top:12px;right:12px}
+  body.salon-learning.ds-v4 .lb-card h2{margin-top:8px;font-size:17.5px}
+  body.salon-learning.ds-v4 .lb-card p:not(.lb-card-meta){font-size:14.5px}
+  body.salon-learning.ds-v4 .lb-card-read{display:none}
+  body.salon-learning.ds-v4 .lb-more{width:100%}
+  body.salon-learning.ds-v4 .lb-final{gap:24px;margin-top:56px;padding:34px 22px;border-radius:26px}
+  body.salon-learning.ds-v4 .lb-final-actions{display:grid}
+  body.salon-learning.ds-v4 .lr-reader-actions{flex-wrap:nowrap;margin-inline:-12px;padding:0 12px 2px;overflow-x:auto;scrollbar-width:none}
+  body.salon-learning.ds-v4 .lr-reader-actions::-webkit-scrollbar{display:none}
+  body.salon-learning.ds-v4 .lr-reader-actions button{flex:none}
+  body.salon-learning.ds-v4 .lr-reader article.doc{font-size:17px}
+  :root[data-reading-size=large] body.salon-learning.ds-v4 .lr-reader article.doc{font-size:19px}
+  body.salon-learning.ds-v4 .lr-reader article.doc h2{margin-top:44px}
+  body.salon-learning.ds-v4 .lr-reader .lr-table-scroll{margin-inline:-12px;border-radius:0;border-inline:0}
+  body.salon-learning.ds-v4 .lr-reader article.doc table{font-size:14.5px}
+  body.salon-learning.ds-v4 .lr-reader article.doc :is(th,td){padding:10px 12px}
+  body.salon-learning.ds-v4 .lr-reader .gd-related{padding:20px 16px 18px!important;border-radius:20px!important}
+  body.salon-learning.ds-v4 .lr-reader .gd-related .gd-related-links{grid-template-columns:1fr}
+  body.salon-learning.ds-v4 .lr-reader .read-cta{padding:18px}
+  body.salon-learning.ds-v4 .lr-next-grid{grid-template-columns:1fr}
+  body.salon-learning.ds-v4 .lr-next-grid a{min-height:0}
+}
+@media(prefers-reduced-motion:reduce){
+  body.salon-learning.ds-v4 :is(.lb-card,.lb-route .lr-route-list a,.lr-next-grid a,.lb-card .lr-save){transition:none}
+  body.salon-learning.ds-v4 :is(.lb-card,.lr-next-grid a):hover{transform:none}
+}
+@media print{
+  body.salon-learning.ds-v4 .lr-reading-progress,body.salon-learning.ds-v4 .lr-next{display:none}
+  body.salon-learning.ds-v4 .lr-reader article.doc{color:#000;font-size:12pt;line-height:1.5}
+  body.salon-learning.ds-v4 .lr-reader .read-cta{display:none}
+}
