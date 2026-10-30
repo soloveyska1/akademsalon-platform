@@ -1,6 +1,14 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, homepage v2
+## Verified current state — 30 October 2026, homepage v4
+
+- Live current is `release242-home-v4-4c795839`; it differs from release241 only in `index.html`. Releases 237–241 added hidden noindex previews (`home-v3.html`, `home-v4.html`) and the v4 assets (`assets/css/ds-v4.css`, `assets/css/home-v4.css`, `assets/js/home-v4.js`, `assets/fonts/v4/`, `assets/img/home-v4/`). Build future releases from release242. Rollback to homepage v2 is the static pointer to `release241-v4preview-c234028d`; never restore the DB for this UI change.
+- Homepage v4 introduces the `ds-v4` design system, scoped to `body.ds-v4`: Literata Display headings and Onest text as self-hosted woff2 (CSP allows fonts only from `'self'`), colour/radius/shadow tokens with a dark theme, buttons, chips, segmented controls and night scenes. The service worker serves `?v=` assets from cache, so bump `VER` on every CSS/JS change.
+- The home calculator is now its own (`home-v4.js`; `salon-home.js` and `salon-select.*` are no longer loaded on home): work chips with prices, scope and term segments with surcharges, add-ons with the defense bundle, a Telegram message prefilled with the estimate, and handoff to `configurator.html?composition=1`. The selection is saved to sessionStorage only after a user action.
+- Sources, the builder (reproduces the live index byte for byte), preview/screenshot tools, checks and open items: `scripts/salon-home-v4-20261030/README.md`; the design system: `DESIGN.md` there.
+- Not done: the header/menu (Manrope) and the Listik widget (Golos) keep the old fonts until other pages move to `ds-v4`; Metrika has no separate goals for `tg_click_calc` and `calc_order_click` (Telegram clicks still count in «Посещение Telegram»); conversion uplift is not measured.
+
+## Previous verified state — 30 October 2026, homepage v2
 
 - Live current is `release236-originality-dd7572ff`. Release235 switched `index.html` to homepage v2; release236 adds the originality promise to the agreements block and FAQ. Both differ from the previous release only in `index.html`. Build future releases from release236. Rollback to homepage v1 is the static pointer to `release234-preview4-9076ae65`; never restore the DB for this UI change.
 - Homepage v2: a stack of real anonymised pages (title page, contents, chapter) with lime highlights over what supervisors check; prices with what is included; Telegram to `t.me/academicsaloon` without registration; nine chat-screenshot reviews; steps; the unchanged site calculator; agreements before payment and what is not promised; samples; FAQ; final CTA; SEO catalogue links.
