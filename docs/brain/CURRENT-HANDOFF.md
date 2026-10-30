@@ -5,7 +5,8 @@
 - Live current is `release229-hometrust-21c068f6`: release228 plus 3 changed files (`index.html`, new `assets/css/home-trust.css`, new `assets/js/home-trust.js`). Build future releases from release229, never from release228 or stale root HTML. Baseline index came from the server disk; nginx `sub_filter` adds `/6let-ribbon.js` to served HTML, so served bytes differ from disk.
 - Home: Telegram CTA on the first screen, in the footer and in the mobile order dock (`t.me/academic_saloon_bot?start=web`; bot v2 relays any client text to the master). Six real review screenshots replace the «Листик» block right after the hero, and the «Выгода под твой план» perks block is removed from home (benefits page unchanged).
 - Bot v2: the 9:00 digest was firing daily because ~38 test orders stayed active. They are now `cancel` + `deleted=1` after a DB backup, and the scheduler skips trashed orders in all 7 queries. Details, order ids, patch and rollback are in `scripts/salon-home-trust-20261030/README.md`.
-- Not done: real unanswered leads (orders 250, 249, 241; contact-page lead 2) and stale July offers wait for the owner's decision. Conversion uplift is not measured.
+- Second cleanup on the owner's decision: 12 stale orders closed like the admin «close» action (July offers 202, 208–211, 218, 221–223; no-contact 236, 238; 183), live offers set to `canceled`, no client emails sent. Seven orders remain active.
+- Not done: real unanswered leads (orders 250, 249, 241; contact-page lead 2) have drafted replies that the owner sends himself. Orders 229 and 245 wait for the owner's decision. Conversion uplift is not measured.
 
 ## Previous verified state — 27 September 2026, intake form
 
