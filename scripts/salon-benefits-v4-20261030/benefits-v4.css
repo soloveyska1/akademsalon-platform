@@ -1,0 +1,366 @@
+/* «Выгоды» в дизайн-системе ds-v4: бонусный счёт на первом экране, вкладки Салон+ / Бонусы / Депозит /
+   Подарки с калькуляторами, как работают бонусы, вопросы. Токены и кнопки — в ds-v4.css, суммы считает
+   salon-benefits.js. Все правила начинаются с body.salon-rewards.ds-v4, чтобы перебить старые стили. */
+
+body.salon-rewards.ds-v4{background:var(--paper,#faf9f6)}
+body.salon-rewards.ds-v4 .bn-main{width:min(1320px,calc(100% - 64px));margin:16px auto 0;color:var(--ds-ink);font:400 16px/1.5 var(--sans)}
+body.salon-rewards.ds-v4 .bn-main :where(p,h2,h3,ul,ol,li,dl,dd,figure){margin:0}
+body.salon-rewards.ds-v4 .bn-main :where(ul,ol){padding:0;list-style:none}
+/* Старый сайт красит h1–h3 и p напрямую — здесь цвет наследуется от блока (кроме компонентов ds-) */
+body.salon-rewards.ds-v4 .bn-main :where(h2:not([class*="ds-"]),h3,p:not([class*="ds-"])){color:inherit}
+body.salon-rewards.ds-v4 .bn-main :where(button,input,output){font-family:var(--sans)}
+body.salon-rewards.ds-v4 .bn-main button{cursor:pointer}
+body.salon-rewards.ds-v4 .bn-main a{-webkit-tap-highlight-color:transparent}
+body.salon-rewards.ds-v4 .bn-head{max-width:720px;margin-bottom:clamp(24px,3vw,36px)}
+body.salon-rewards.ds-v4 .bn-head .ds-lead{margin-top:12px;max-width:38em}
+
+/* Первый экран: ночная сцена и бонусный счёт, который отвечает на выбор */
+body.salon-rewards.ds-v4 .bn-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:clamp(32px,5vw,80px);align-items:center;padding:clamp(40px,5vw,72px) clamp(28px,4.8vw,68px) clamp(78px,7vw,104px)}
+body.salon-rewards.ds-v4 .bn-hero .ds-display-1{font-size:clamp(42px,1.6rem + 2.8vw,72px);line-height:1.02;letter-spacing:-.025em}
+body.salon-rewards.ds-v4 .bn-hero .ds-lead{margin-top:20px;max-width:30em}
+body.salon-rewards.ds-v4 .bn-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+body.salon-rewards.ds-v4 .bn-hero-actions .ds-btn[aria-busy=true]{opacity:.8;cursor:progress}
+body.salon-rewards.ds-v4 .bn-hero-hint{max-width:32em;margin-top:14px;font:400 14px/1.5 var(--sans);color:var(--ds-on-night-3)}
+body.salon-rewards.ds-v4 .bn-hero-play{display:grid;gap:18px;justify-items:stretch}
+
+body.salon-rewards.ds-v4 .bn-card{position:relative;perspective:900px}
+body.salon-rewards.ds-v4 .bn-card-face{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;aspect-ratio:1.586;padding:24px 28px 22px;border-radius:24px;color:#fff;
+  background:radial-gradient(90% 80% at 100% 0%,rgba(214,246,166,.22),transparent 58%),radial-gradient(70% 90% at 0% 100%,rgba(168,96,255,.45),transparent 70%),linear-gradient(135deg,#5b3df0 0%,#4b30c8 42%,#2b1a80 100%);
+  box-shadow:0 2px 0 rgba(255,255,255,.18) inset,0 34px 60px -24px rgba(6,3,22,.95),0 0 0 1px rgba(255,255,255,.12) inset;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+body.salon-rewards.ds-v4 .bn-card-face::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:linear-gradient(115deg,#000 10%,transparent 70%);mask-image:linear-gradient(115deg,#000 10%,transparent 70%)}
+body.salon-rewards.ds-v4 .bn-card-face::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at var(--gx,24%) var(--gy,12%),rgba(255,255,255,.28),transparent 42%);mix-blend-mode:soft-light;pointer-events:none}
+body.salon-rewards.ds-v4 .bn-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;font:500 14px/1.2 var(--sans);color:rgba(255,255,255,.82)}
+body.salon-rewards.ds-v4 .bn-card-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--ds-lime);color:var(--ds-lime-ink);font:600 22px/1 var(--display)}
+body.salon-rewards.ds-v4 .bn-card-label{margin-top:auto;font:500 14px/1.3 var(--sans);color:rgba(255,255,255,.78)}
+body.salon-rewards.ds-v4 .bn-card-num{display:flex;align-items:baseline;gap:12px;margin-top:2px;font:500 clamp(54px,2.4rem + 2.6vw,84px)/1 var(--display);letter-spacing:-.03em;color:var(--ds-lime);font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-card-num small{font:500 18px/1.2 var(--sans);letter-spacing:0;color:#fff}
+body.salon-rewards.ds-v4 .bn-card-note{margin-top:10px;font:400 14.5px/1.4 var(--sans);color:rgba(255,255,255,.82)}
+body.salon-rewards.ds-v4 .bn-card-note b{font-weight:600;color:#fff}
+
+body.salon-rewards.ds-v4 .bn-hero-controls{display:grid;gap:10px}
+body.salon-rewards.ds-v4 .bn-hero-controls .bn-label{margin:6px 0 0;color:var(--ds-on-night-3)}
+body.salon-rewards.ds-v4 .bn-hero .bn-chip{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:#fff}
+body.salon-rewards.ds-v4 .bn-hero .bn-chip small{color:var(--ds-on-night-3)}
+body.salon-rewards.ds-v4 .bn-hero .bn-chip:hover{border-color:rgba(255,255,255,.4)}
+body.salon-rewards.ds-v4 .bn-hero .bn-chip[aria-pressed=true]{border-color:var(--ds-lime);background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-hero .bn-chip[aria-pressed=true] small{color:rgba(27,42,14,.7)}
+body.salon-rewards.ds-v4 .bn-seg-night{background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+body.salon-rewards.ds-v4 .bn-seg-night .ds-chip{color:var(--ds-on-night-2)}
+body.salon-rewards.ds-v4 .bn-seg-night .ds-choice input:checked + .ds-chip{background:#fff;color:var(--ds-ink);box-shadow:0 8px 18px -10px rgba(0,0,0,.6)}
+:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-seg-night .ds-choice input:checked + .ds-chip{background:#fff;color:#1b1531;box-shadow:none}
+
+/* Плашки выбора и поля */
+body.salon-rewards.ds-v4 .bn-chips{display:flex;flex-wrap:wrap;gap:8px}
+body.salon-rewards.ds-v4 .bn-chip{display:inline-flex;flex-direction:column;justify-content:center;gap:2px;min-height:52px;padding:8px 15px;border:1.5px solid var(--ds-line);border-radius:14px;background:var(--ds-card);color:var(--ds-ink);font:600 15px/1.2 var(--sans);text-align:left;transition:border-color .15s ease,background-color .15s ease,color .15s ease}
+body.salon-rewards.ds-v4 .bn-chip small{font:500 12.5px/1.2 var(--sans);color:var(--ds-muted);font-variant-numeric:tabular-nums}
+body.salon-rewards.ds-v4 .bn-chip:hover{border-color:var(--ds-line-2)}
+body.salon-rewards.ds-v4 .bn-chip[aria-pressed=true]{border-color:var(--ds-violet);background:var(--ds-violet);color:var(--ds-on-violet);box-shadow:0 10px 22px -12px rgba(75,48,200,.75)}
+body.salon-rewards.ds-v4 .bn-chip[aria-pressed=true] small{color:rgba(255,255,255,.78)}
+:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-chip[aria-pressed=true] small{color:rgba(27,21,49,.7)}
+body.salon-rewards.ds-v4 .bn-own{position:relative;display:inline-flex;flex-direction:column;justify-content:center;min-height:52px;padding:6px 34px 6px 15px;border:1.5px dashed var(--ds-line-2);border-radius:14px;background:var(--ds-paper)}
+body.salon-rewards.ds-v4 .bn-own:focus-within{border-style:solid;border-color:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-own>span{font:500 12.5px/1.2 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-own input{width:7.5ch;min-width:0;height:auto;min-height:0;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;color:var(--ds-ink);font:600 16px/1.3 var(--sans);font-variant-numeric:tabular-nums;outline:0;-moz-appearance:textfield;appearance:textfield}
+body.salon-rewards.ds-v4 .bn-own input::-webkit-inner-spin-button,body.salon-rewards.ds-v4 .bn-own input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+body.salon-rewards.ds-v4 .bn-own input[aria-invalid=true]{color:#c0392b}
+body.salon-rewards.ds-v4 .bn-own i{position:absolute;right:14px;bottom:9px;font:600 15px/1.3 var(--sans);font-style:normal;color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-own--wide{display:flex;width:min(100%,260px);margin-top:12px}
+body.salon-rewards.ds-v4 .bn-own--wide input{width:100%}
+body.salon-rewards.ds-v4 .bn-label{display:block;margin-bottom:10px;font:600 14px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-field{min-width:0}
+body.salon-rewards.ds-v4 .bn-range-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+body.salon-rewards.ds-v4 .bn-range-head output{font:600 20px/1.2 var(--sans);letter-spacing:-.01em;color:var(--ds-ink);font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:32px;min-height:0;margin:2px 0 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;cursor:pointer}
+body.salon-rewards.ds-v4 .bn-range::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--ds-violet) var(--fill,50%),var(--ds-mist-2) var(--fill,50%))}
+body.salon-rewards.ds-v4 .bn-range::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-10px;border:3px solid var(--ds-violet);border-radius:50%;background:#fff;box-shadow:0 4px 12px -4px rgba(48,24,140,.6);transition:transform .15s ease}
+body.salon-rewards.ds-v4 .bn-range:active::-webkit-slider-thumb{transform:scale(1.12)}
+body.salon-rewards.ds-v4 .bn-range::-moz-range-track{height:8px;border-radius:99px;background:var(--ds-mist-2)}
+body.salon-rewards.ds-v4 .bn-range::-moz-range-progress{height:8px;border-radius:99px;background:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-range::-moz-range-thumb{width:22px;height:22px;border:3px solid var(--ds-violet);border-radius:50%;background:#fff;box-shadow:0 4px 12px -4px rgba(48,24,140,.6)}
+body.salon-rewards.ds-v4 .bn-range:focus-visible{outline:3px solid var(--ds-violet);outline-offset:4px;border-radius:12px}
+body.salon-rewards.ds-v4 .bn-switch{position:relative;display:flex;align-items:center;gap:14px;cursor:pointer}
+body.salon-rewards.ds-v4 .bn-switch input{position:absolute;opacity:0;width:1px;height:1px}
+body.salon-rewards.ds-v4 .bn-switch::before{content:"";flex:none;width:46px;height:28px;border-radius:99px;background:var(--ds-line-2);box-shadow:inset 0 0 0 2px transparent;transition:background-color .2s ease}
+body.salon-rewards.ds-v4 .bn-switch::after{content:"";position:absolute;left:4px;top:50%;width:20px;height:20px;margin-top:-10px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(27,21,49,.3);transition:transform .2s ease}
+body.salon-rewards.ds-v4 .bn-switch:has(input:checked)::before{background:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-switch:has(input:checked)::after{transform:translateX(18px)}
+body.salon-rewards.ds-v4 .bn-switch:has(input:focus-visible)::before{outline:3px solid var(--ds-violet);outline-offset:3px}
+body.salon-rewards.ds-v4 .bn-switch b{display:block;font:600 15px/1.3 var(--sans);color:var(--ds-ink)}
+body.salon-rewards.ds-v4 .bn-switch small{display:block;margin-top:2px;font:400 13.5px/1.4 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-hint{font:400 13.5px/1.55 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-more summary{display:flex;align-items:center;gap:10px;min-height:44px;font:600 15px/1.3 var(--sans);color:var(--ds-violet);cursor:pointer;list-style:none}
+body.salon-rewards.ds-v4 .bn-more summary::-webkit-details-marker{display:none}
+body.salon-rewards.ds-v4 .bn-more summary::after{content:"+";display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ds-violet-soft);font:500 18px/1 var(--sans);transition:transform .2s ease}
+body.salon-rewards.ds-v4 .bn-more[open] summary::after{transform:rotate(45deg)}
+body.salon-rewards.ds-v4 .bn-more .bn-hint{margin-top:10px}
+
+/* Вкладки: прилипают под шапкой */
+body.salon-rewards.ds-v4 .bn-tabs{position:sticky;top:85px;z-index:20;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:-40px 24px 0;padding:6px;border:1px solid var(--ds-line);border-radius:22px;background:rgba(255,255,255,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 2px 4px rgba(27,21,49,.05),0 26px 50px -26px rgba(20,12,53,.55);scroll-margin-top:96px}
+:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-tabs{background:rgba(22,18,31,.9)}
+body.salon-rewards.ds-v4 .bn-tabs a{display:flex;align-items:center;gap:12px;min-height:66px;padding:10px 16px;border-radius:16px;color:var(--ds-ink);text-decoration:none;transition:background-color .15s ease,color .15s ease}
+body.salon-rewards.ds-v4 .bn-tabs svg{flex:none;width:26px;height:26px;color:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-tabs b{display:block;font:600 16.5px/1.2 var(--sans);letter-spacing:-.01em}
+body.salon-rewards.ds-v4 .bn-tabs small{display:block;margin-top:3px;font:500 13px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-tabs a:hover{background:var(--ds-mist)}
+body.salon-rewards.ds-v4 .bn-tabs a[aria-current]{background:var(--ds-violet);color:#fff;box-shadow:0 12px 24px -14px rgba(75,48,200,.85)}
+body.salon-rewards.ds-v4 .bn-tabs a[aria-current] :is(svg,small){color:rgba(255,255,255,.82)}
+:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-tabs a[aria-current],:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-tabs a[aria-current] :is(svg,small){color:#1b1531}
+
+body.salon-rewards.ds-v4 .bn-panel{padding-top:clamp(48px,6vw,80px);scroll-margin-top:180px}
+body.salon-rewards.ds-v4 .bn-toolbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:20px 28px;margin-bottom:24px;padding:22px 24px;border:1px solid var(--ds-line);border-radius:24px;background:var(--ds-paper)}
+body.salon-rewards.ds-v4 .bn-field--wide{flex:1 1 560px}
+body.salon-rewards.ds-v4 .bn-stepper{display:inline-flex;align-items:center;gap:4px;padding:4px;border-radius:16px;background:var(--ds-mist)}
+body.salon-rewards.ds-v4 .bn-stepper button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:12px;background:var(--ds-paper);color:var(--ds-violet);font:500 24px/1 var(--sans);box-shadow:0 1px 2px rgba(27,21,49,.08)}
+body.salon-rewards.ds-v4 .bn-stepper button:disabled{opacity:.35;cursor:not-allowed}
+body.salon-rewards.ds-v4 .bn-stepper output{min-width:48px;text-align:center;font:600 22px/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ds-ink)}
+body.salon-rewards.ds-v4 .bn-toolbar .ds-seg{min-width:220px}
+body.salon-rewards.ds-v4 .bn-error{margin:-8px 0 20px;font:500 14px/1.4 var(--sans);color:#c0392b}
+
+/* Абонементы — билеты с линией отрыва */
+body.salon-rewards.ds-v4 .bn-passes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+body.salon-rewards.ds-v4 .bn-pass{position:relative;display:flex;flex-direction:column;padding:26px 26px 24px;border:1px solid var(--ds-line);border-radius:26px;background:var(--ds-paper);overflow:hidden;transition:box-shadow .25s ease,transform .25s ease}
+body.salon-rewards.ds-v4 .bn-pass--session{background:var(--ds-mist)}
+body.salon-rewards.ds-v4 .bn-pass--pro{border-color:transparent;color:#fff;background:radial-gradient(80% 60% at 100% 0%,rgba(124,90,255,.55),transparent 70%),linear-gradient(160deg,#1d1250,#140c35 60%,#0e0926)}
+body.salon-rewards.ds-v4 .bn-pass.is-best{box-shadow:0 0 0 2px var(--ds-lime),0 30px 60px -30px rgba(48,24,140,.6)}
+body.salon-rewards.ds-v4 .bn-pass--plus.is-best{box-shadow:0 0 0 2px var(--ds-violet),0 30px 60px -30px rgba(48,24,140,.5)}
+body.salon-rewards.ds-v4 .bn-pass-badge{display:none;align-self:flex-start;margin-bottom:14px;padding:5px 11px;border-radius:99px;background:var(--ds-lime);color:var(--ds-lime-ink);font:600 12.5px/1.2 var(--sans)}
+body.salon-rewards.ds-v4 .bn-pass--plus .bn-pass-badge{background:var(--ds-violet);color:var(--ds-on-violet)}
+body.salon-rewards.ds-v4 .bn-pass.is-best .bn-pass-badge{display:inline-block}
+body.salon-rewards.ds-v4 .bn-pass-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+body.salon-rewards.ds-v4 .bn-pass-top h3{font:500 clamp(26px,1rem + .9vw,32px)/1.1 var(--display);letter-spacing:-.018em}
+body.salon-rewards.ds-v4 .bn-pass-price{text-align:right}
+body.salon-rewards.ds-v4 .bn-pass-price b{display:block;font:700 22px/1.15 var(--sans);letter-spacing:-.015em;font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-pass-price span{font:500 13px/1.3 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-pass-rule{margin-top:10px;font:600 15px/1.4 var(--sans);color:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-pass-calc{position:relative;display:grid;gap:10px;margin:22px -26px 0;padding:20px 26px;border-top:2px dashed var(--ds-line-2)}
+body.salon-rewards.ds-v4 .bn-pass-calc::before,body.salon-rewards.ds-v4 .bn-pass-calc::after{content:"";position:absolute;top:-13px;width:24px;height:24px;border-radius:50%;background:var(--paper,#faf9f6);box-shadow:inset 0 0 0 1px var(--ds-line)}
+body.salon-rewards.ds-v4 .bn-pass-calc::before{left:-13px}
+body.salon-rewards.ds-v4 .bn-pass-calc::after{right:-13px}
+body.salon-rewards.ds-v4 .bn-pass-calc>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+body.salon-rewards.ds-v4 .bn-pass-calc span{font:400 14.5px/1.4 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-pass-calc b{font:600 16px/1.3 var(--sans);white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-pass-net{margin-top:4px;padding-top:12px;border-top:1px solid var(--ds-line)}
+body.salon-rewards.ds-v4 .bn-pass-net b{font:700 22px/1.2 var(--sans);letter-spacing:-.01em;color:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-pass-net b.is-loss{color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-pass--session .bn-pass-net b{font-size:16px;color:var(--ds-ink)}
+body.salon-rewards.ds-v4 .bn-pass-list{display:grid;gap:9px;margin:4px 0 22px}
+body.salon-rewards.ds-v4 .bn-pass-list li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;font:400 14.5px/1.45 var(--sans);color:var(--ds-ink-2)}
+body.salon-rewards.ds-v4 .bn-pass-list svg{width:20px;height:20px;padding:3px;border-radius:50%;background:var(--ds-violet-soft);color:var(--ds-violet);stroke-width:3}
+body.salon-rewards.ds-v4 .bn-pass-cta{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:auto;border:1.5px solid var(--ds-line-2);border-radius:14px;background:var(--ds-paper);color:var(--ds-ink);font:600 15.5px/1.2 var(--sans);text-decoration:none;transition:border-color .15s ease,color .15s ease,background-color .15s ease}
+body.salon-rewards.ds-v4 .bn-pass-cta:hover{border-color:var(--ds-violet);color:var(--ds-violet)}
+/* Про — ночной билет */
+body.salon-rewards.ds-v4 .bn-pass--pro :is(.bn-pass-price span,.bn-pass-calc span){color:var(--ds-on-night-3)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-rule{color:var(--ds-lime)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-calc{border-top-color:rgba(255,255,255,.22)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-calc::before,body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-calc::after{box-shadow:none}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-net{border-top-color:rgba(255,255,255,.14)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-net b{color:var(--ds-lime)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-net b.is-loss{color:var(--ds-on-night-2)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-list li{color:var(--ds-on-night-2)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-list svg{background:rgba(214,246,166,.16);color:var(--ds-lime)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-cta{border-color:var(--ds-lime);background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-pass--pro .bn-pass-cta:hover{background:var(--ds-lime-hover);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-pass--pro :focus-visible{outline-color:var(--ds-lime)}
+:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-pass--pro{box-shadow:inset 0 0 0 1px var(--ds-line-2)}
+
+body.salon-rewards.ds-v4 .bn-verdict{display:flex;align-items:center;justify-content:space-between;gap:16px 28px;margin-top:18px;padding:18px 24px;border-radius:20px;background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-verdict p{max-width:46em;font:500 16px/1.5 var(--sans)}
+body.salon-rewards.ds-v4 .bn-verdict b{flex:none;font:500 clamp(26px,1rem + 1vw,34px)/1.1 var(--display);letter-spacing:-.02em;white-space:nowrap}
+body.salon-rewards.ds-v4 .bn-verdict.is-none{background:var(--ds-mist);color:var(--ds-ink)}
+body.salon-rewards.ds-v4 .bn-verdict.is-none b{font:600 17px/1.2 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-note{max-width:62em;margin-top:16px;font:400 13.5px/1.6 var(--sans);color:var(--ds-muted)}
+
+/* Лаборатории: настройки слева, результат справа */
+body.salon-rewards.ds-v4 .bn-lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:clamp(20px,3vw,36px);align-items:start}
+body.salon-rewards.ds-v4 .bn-controls{display:grid;gap:26px;padding:clamp(22px,2.6vw,32px);border:1px solid var(--ds-line);border-radius:26px;background:var(--ds-paper)}
+body.salon-rewards.ds-v4 .bn-stage{position:sticky;top:180px;display:grid;gap:14px}
+body.salon-rewards.ds-v4 .bn-stage-cta{width:100%}
+
+/* Чек с зубчатым краем */
+body.salon-rewards.ds-v4 .bn-receipt-shadow{filter:drop-shadow(0 1px 1px rgba(27,21,49,.08)) drop-shadow(0 24px 30px rgba(48,24,140,.22))}
+:root[data-theme=dark] body.salon-rewards.ds-v4 .bn-receipt-shadow{filter:drop-shadow(0 24px 30px rgba(0,0,0,.6))}
+body.salon-rewards.ds-v4 .bn-receipt{padding:26px 26px 34px;border-radius:20px 20px 0 0;background:#fff;color:#1b1531;
+  -webkit-mask:radial-gradient(9px at 50% 100%,#0000 97%,#000) 50% 100%/20px 100% repeat-x;mask:radial-gradient(9px at 50% 100%,#0000 97%,#000) 50% 100%/20px 100% repeat-x}
+body.salon-rewards.ds-v4 .bn-receipt-title{font:600 14px/1.3 var(--sans);color:#5c5670}
+body.salon-rewards.ds-v4 .bn-receipt dl{margin-top:12px}
+body.salon-rewards.ds-v4 .bn-receipt dl>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px dashed #d6cff0}
+body.salon-rewards.ds-v4 .bn-receipt dl>div[hidden]{display:none}
+body.salon-rewards.ds-v4 .bn-receipt dt{font:400 15px/1.4 var(--sans);color:#3a3350}
+body.salon-rewards.ds-v4 .bn-receipt dd{font:600 16px/1.3 var(--sans);white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-receipt dl>div.is-zero :is(dt,dd){color:#a29db3}
+body.salon-rewards.ds-v4 .bn-receipt-limit{margin-top:12px;padding:10px 12px;border-radius:12px;background:#fff6dd;color:#5b4400;font:500 13.5px/1.45 var(--sans)}
+body.salon-rewards.ds-v4 .bn-receipt-total{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px}
+body.salon-rewards.ds-v4 .bn-receipt-total span{font:600 15px/1.3 var(--sans);color:#3a3350}
+body.salon-rewards.ds-v4 .bn-receipt-total b{font:500 clamp(32px,1.2rem + 1.4vw,42px)/1 var(--display);letter-spacing:-.02em;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-back{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:20px;background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-back b{flex:none;font:500 34px/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-back span{font:500 14px/1.4 var(--sans)}
+
+/* Кошелёк депозита */
+body.salon-rewards.ds-v4 .bn-tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+body.salon-rewards.ds-v4 .bn-tiers button{display:grid;gap:2px;min-height:62px;padding:8px 6px;border:1.5px solid var(--ds-line);border-radius:14px;background:var(--ds-card);color:var(--ds-ink);text-align:center;transition:border-color .15s ease,background-color .15s ease}
+body.salon-rewards.ds-v4 .bn-tiers span{font:500 12.5px/1.2 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-tiers b{font:700 19px/1.1 var(--sans);font-variant-numeric:tabular-nums}
+body.salon-rewards.ds-v4 .bn-tiers button:hover{border-color:var(--ds-line-2)}
+body.salon-rewards.ds-v4 .bn-tiers button[aria-pressed=true]{border-color:var(--ds-violet);background:var(--ds-violet-soft)}
+body.salon-rewards.ds-v4 .bn-tiers button[aria-pressed=true] b{color:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-wallet{position:relative;isolation:isolate;overflow:hidden;padding:24px 26px 22px;border-radius:24px;color:#fff;background:radial-gradient(70% 80% at 100% 0%,rgba(124,90,255,.55),transparent 70%),linear-gradient(160deg,#1d1250,#140c35 60%,#0e0926);box-shadow:0 30px 60px -30px rgba(20,12,53,.9)}
+body.salon-rewards.ds-v4 .bn-wallet::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px;-webkit-mask-image:linear-gradient(200deg,#000,transparent 70%);mask-image:linear-gradient(200deg,#000,transparent 70%)}
+body.salon-rewards.ds-v4 .bn-wallet-top{display:flex;align-items:center;justify-content:space-between;font:500 14px/1.2 var(--sans);color:var(--ds-on-night-2)}
+body.salon-rewards.ds-v4 .bn-wallet-top b{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--ds-lime);color:var(--ds-lime-ink);font:600 21px/1 var(--display)}
+body.salon-rewards.ds-v4 .bn-wallet-label{margin-top:22px;font:500 14px/1.3 var(--sans);color:var(--ds-on-night-2)}
+body.salon-rewards.ds-v4 .bn-wallet-sum{margin-top:4px;font:500 clamp(40px,1.6rem + 1.6vw,54px)/1 var(--display);letter-spacing:-.025em;font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-meter{height:8px;margin-top:20px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden}
+body.salon-rewards.ds-v4 .bn-meter i{display:block;height:100%;border-radius:inherit;background:var(--ds-lime);transition:width .35s cubic-bezier(.2,.7,.2,1)}
+body.salon-rewards.ds-v4 .bn-wallet-foot{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font:400 13.5px/1.3 var(--sans);color:var(--ds-on-night-3)}
+body.salon-rewards.ds-v4 .bn-wallet-foot b{font-weight:600;color:#fff;white-space:nowrap}
+body.salon-rewards.ds-v4 .bn-ledger{display:grid;padding:6px 20px 16px;border:1px solid var(--ds-line);border-radius:20px;background:var(--ds-paper)}
+body.salon-rewards.ds-v4 .bn-ledger>div{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--ds-line)}
+body.salon-rewards.ds-v4 .bn-ledger>div span{font:500 15px/1.35 var(--sans)}
+body.salon-rewards.ds-v4 .bn-ledger small{display:block;margin-top:2px;font:400 13px/1.4 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-ledger>div b{flex:none;font:700 19px/1.2 var(--sans);font-variant-numeric:tabular-nums lining-nums}
+body.salon-rewards.ds-v4 .bn-ledger>div.is-extra b{padding:4px 10px;border-radius:10px;background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-ledger p{padding-top:12px;font:400 13.5px/1.55 var(--sans);color:var(--ds-muted)}
+
+/* Правила коротко */
+body.salon-rewards.ds-v4 .bn-rules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}
+body.salon-rewards.ds-v4 .bn-rules--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.salon-rewards.ds-v4 .bn-rules li{display:grid;gap:6px;padding:20px 20px 22px;border-radius:20px;background:var(--ds-mist)}
+body.salon-rewards.ds-v4 .bn-rules b{font:500 23px/1.15 var(--display);letter-spacing:-.015em;color:var(--ds-ink)}
+body.salon-rewards.ds-v4 .bn-rules span{font:400 14.5px/1.5 var(--sans);color:var(--ds-muted)}
+body.salon-rewards.ds-v4 .bn-more--rules{max-width:62em;margin-top:22px}
+body.salon-rewards.ds-v4 .bn-more--rules p{margin-top:10px;font:400 15px/1.6 var(--sans);color:var(--ds-ink-2)}
+
+/* Подарки */
+body.salon-rewards.ds-v4 .bn-gifts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+body.salon-rewards.ds-v4 .bn-gift{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;min-height:300px;padding:28px 30px 26px;border-radius:28px;color:var(--ds-ink);text-decoration:none;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s ease}
+body.salon-rewards.ds-v4 .bn-gift h3{margin-top:6px;font:500 clamp(24px,1rem + .8vw,30px)/1.12 var(--display);letter-spacing:-.018em}
+body.salon-rewards.ds-v4 .bn-gift p{max-width:30em;margin-top:10px;font:400 15.5px/1.55 var(--sans);color:inherit;opacity:.82}
+body.salon-rewards.ds-v4 .bn-gift-num{font:500 clamp(64px,2.4rem + 3vw,96px)/.9 var(--display);letter-spacing:-.04em;font-variant-numeric:lining-nums}
+body.salon-rewards.ds-v4 .bn-gift>svg{width:58px;height:58px;stroke-width:1.4}
+body.salon-rewards.ds-v4 .bn-gift-cta{display:inline-flex;align-items:center;gap:10px;margin-top:auto;padding-top:22px;font:600 15.5px/1.3 var(--sans);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:5px}
+body.salon-rewards.ds-v4 .bn-gift-cta svg{width:20px;height:20px}
+body.salon-rewards.ds-v4 .bn-gift:hover{transform:translateY(-3px);box-shadow:0 26px 50px -30px rgba(48,24,140,.6)}
+body.salon-rewards.ds-v4 .bn-gift--welcome{color:#fff;background:radial-gradient(70% 80% at 100% 0%,rgba(124,90,255,.55),transparent 70%),linear-gradient(160deg,#1d1250,#140c35 60%,#0e0926)}
+body.salon-rewards.ds-v4 .bn-gift--welcome .bn-gift-num{color:var(--ds-lime)}
+body.salon-rewards.ds-v4 .bn-gift--welcome .bn-gift-cta{min-height:52px;padding:0 22px;margin-top:auto;border-radius:14px;background:var(--ds-lime);color:var(--ds-lime-ink);text-decoration:none;box-shadow:0 14px 30px -16px rgba(160,220,90,.8)}
+body.salon-rewards.ds-v4 .bn-gift--welcome:focus-visible{outline-color:var(--ds-lime)}
+body.salon-rewards.ds-v4 .bn-gift--friend{background:var(--ds-violet-soft)}
+body.salon-rewards.ds-v4 .bn-gift--friend .bn-gift-num{color:var(--ds-violet)}
+body.salon-rewards.ds-v4 .bn-gift--cert{background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-gift--club{border:1px solid var(--ds-line);background:var(--ds-paper)}
+body.salon-rewards.ds-v4 .bn-gift-pair{display:flex}
+body.salon-rewards.ds-v4 .bn-gift-pair i{display:grid;place-items:center;width:56px;height:56px;border:3px solid var(--ds-paper);border-radius:50%;background:var(--ds-violet);color:#fff;font:600 24px/1 var(--display);font-style:normal}
+body.salon-rewards.ds-v4 .bn-gift-pair i+i{margin-left:-14px;background:var(--ds-lime);color:var(--ds-lime-ink)}
+body.salon-rewards.ds-v4 .bn-gift-pair~h3{margin-top:16px}
+
+/* Как работают бонусы */
+body.salon-rewards.ds-v4 .bn-section{padding-top:clamp(64px,8vw,112px)}
+body.salon-rewards.ds-v4 .bn-steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;counter-reset:bn-step}
+body.salon-rewards.ds-v4 .bn-steps li{position:relative;padding:22px 22px 24px;border:1px solid var(--ds-line);border-radius:22px;background:var(--ds-paper);counter-increment:bn-step}
+body.salon-rewards.ds-v4 .bn-steps li::before{content:counter(bn-step);display:grid;place-items:center;width:40px;height:40px;margin-bottom:18px;border-radius:50%;background:var(--ds-lime);color:var(--ds-lime-ink);font:700 17px/1 var(--sans)}
+body.salon-rewards.ds-v4 .bn-steps li:not(:last-child)::after{content:"";position:absolute;top:41px;left:72px;right:-19px;border-top:2px dashed var(--ds-line-2)}
+body.salon-rewards.ds-v4 .bn-steps h3{font:600 18px/1.3 var(--sans);letter-spacing:-.01em}
+body.salon-rewards.ds-v4 .bn-steps p{margin-top:8px;font:400 15px/1.55 var(--sans);color:var(--ds-muted)}
+
+/* Вопросы */
+body.salon-rewards.ds-v4 .bn-faq{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,5vw,72px);align-items:start}
+body.salon-rewards.ds-v4 .bn-faq .bn-head{position:sticky;top:120px;margin:0}
+body.salon-rewards.ds-v4 .bn-faq details{border-bottom:1px solid var(--ds-line)}
+body.salon-rewards.ds-v4 .bn-faq summary{position:relative;min-height:68px;padding:20px 52px 20px 0;font:600 17px/1.4 var(--sans);letter-spacing:-.005em;color:var(--ds-ink);cursor:pointer;list-style:none}
+body.salon-rewards.ds-v4 .bn-faq summary::-webkit-details-marker{display:none}
+body.salon-rewards.ds-v4 .bn-faq summary::after{content:"+";position:absolute;top:50%;right:0;display:grid;place-items:center;width:34px;height:34px;margin-top:-17px;border-radius:50%;background:var(--ds-violet-soft);color:var(--ds-violet);font:500 20px/1 var(--sans);transition:transform .2s ease}
+body.salon-rewards.ds-v4 .bn-faq details[open] summary::after{transform:rotate(45deg)}
+body.salon-rewards.ds-v4 .bn-faq details p{padding:0 52px 20px 0;font:400 15.5px/1.6 var(--sans);color:var(--ds-ink-2)}
+
+/* Финальный призыв */
+body.salon-rewards.ds-v4 .bn-final{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:32px;margin-block:clamp(64px,8vw,112px) clamp(32px,4vw,56px);padding:clamp(36px,5vw,72px)}
+body.salon-rewards.ds-v4 .bn-final .ds-display-2{max-width:14em}
+body.salon-rewards.ds-v4 .bn-final .ds-lead{margin-top:16px;max-width:32em}
+body.salon-rewards.ds-v4 .bn-final-actions{display:flex;flex-wrap:wrap;gap:12px}
+
+@media(max-width:1180px){
+  body.salon-rewards.ds-v4 .bn-main{width:calc(100% - 40px)}
+  body.salon-rewards.ds-v4 .bn-tabs a{gap:10px;padding:10px 12px}
+  body.salon-rewards.ds-v4 .bn-pass{padding:24px 22px 22px}
+  body.salon-rewards.ds-v4 .bn-pass-calc{margin-inline:-22px;padding-inline:22px}
+  body.salon-rewards.ds-v4 .bn-rules{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.salon-rewards.ds-v4 .bn-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.salon-rewards.ds-v4 .bn-steps li:nth-child(2)::after{content:none}
+}
+@media(max-width:1000px){
+  body.salon-rewards.ds-v4 .bn-hero{grid-template-columns:1fr;gap:36px}
+  body.salon-rewards.ds-v4 .bn-hero-play{max-width:520px}
+  body.salon-rewards.ds-v4 .bn-tabs small{display:none}
+  body.salon-rewards.ds-v4 .bn-passes{display:flex;gap:14px;margin-inline:-20px;padding:4px 20px 18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+  body.salon-rewards.ds-v4 .bn-passes::-webkit-scrollbar{display:none}
+  body.salon-rewards.ds-v4 .bn-pass{flex:0 0 min(360px,82%);scroll-snap-align:center}
+  body.salon-rewards.ds-v4 .bn-lab{grid-template-columns:1fr}
+  body.salon-rewards.ds-v4 .bn-stage{position:static;max-width:560px}
+  body.salon-rewards.ds-v4 .bn-faq{display:block}
+  body.salon-rewards.ds-v4 .bn-faq .bn-head{position:static;margin-bottom:20px}
+  body.salon-rewards.ds-v4 .bn-final{grid-template-columns:1fr}
+}
+@media(max-width:800px){
+  body.salon-rewards.ds-v4 .bn-tabs{top:73px}
+  body.salon-rewards.ds-v4 .bn-panel{scroll-margin-top:160px}
+}
+@media(max-width:640px){
+  body.salon-rewards.ds-v4 .bn-main{width:calc(100% - 24px);margin-top:12px}
+  body.salon-rewards.ds-v4 .bn-hero{padding:34px 22px 74px;border-radius:26px}
+  body.salon-rewards.ds-v4 .bn-hero .ds-display-1{font-size:42px}
+  body.salon-rewards.ds-v4 .bn-hero .ds-lead{margin-top:14px;font-size:16.5px}
+  body.salon-rewards.ds-v4 .bn-hero-actions{display:grid;margin-top:26px}
+  body.salon-rewards.ds-v4 .bn-card-face{padding:18px 20px 16px;border-radius:20px}
+  body.salon-rewards.ds-v4 .bn-card-mark{width:34px;height:34px;font-size:19px;border-radius:10px}
+  body.salon-rewards.ds-v4 .bn-hero .bn-chips{flex-wrap:nowrap;margin-inline:-22px;padding-inline:22px;overflow-x:auto;scrollbar-width:none}
+  body.salon-rewards.ds-v4 .bn-hero .bn-chips::-webkit-scrollbar{display:none}
+  body.salon-rewards.ds-v4 .bn-hero .bn-chip{flex:none}
+  body.salon-rewards.ds-v4 .bn-seg-night .ds-chip{font-size:13.5px;padding-inline:6px}
+  body.salon-rewards.ds-v4 .bn-tabs{margin:-38px 8px 0;padding:5px;gap:4px;border-radius:20px}
+  body.salon-rewards.ds-v4 .bn-tabs a{flex-direction:column;justify-content:center;gap:4px;min-height:60px;padding:8px 4px;border-radius:15px;text-align:center}
+  body.salon-rewards.ds-v4 .bn-tabs svg{width:22px;height:22px}
+  body.salon-rewards.ds-v4 .bn-tabs b{font-size:13.5px}
+  body.salon-rewards.ds-v4 .bn-panel{padding-top:40px}
+  body.salon-rewards.ds-v4 .bn-toolbar{gap:18px;padding:18px 16px;border-radius:22px}
+  body.salon-rewards.ds-v4 .bn-field--wide{flex-basis:100%}
+  body.salon-rewards.ds-v4 .bn-chips{gap:6px}
+  body.salon-rewards.ds-v4 :is(.bn-toolbar,.bn-controls) .bn-chips{flex-wrap:nowrap;margin-inline:-16px;padding:2px 16px 4px;overflow-x:auto;scrollbar-width:none}
+  body.salon-rewards.ds-v4 :is(.bn-toolbar,.bn-controls) .bn-chips::-webkit-scrollbar{display:none}
+  body.salon-rewards.ds-v4 :is(.bn-toolbar,.bn-controls) :is(.bn-chip,.bn-own){flex:none}
+  body.salon-rewards.ds-v4 .bn-chip,body.salon-rewards.ds-v4 .bn-own{min-height:50px;padding-inline:12px;font-size:14.5px}
+  body.salon-rewards.ds-v4 .bn-toolbar>.bn-field:not(.bn-field--wide){flex:1 1 140px}
+  body.salon-rewards.ds-v4 .bn-toolbar .ds-seg{min-width:0}
+  body.salon-rewards.ds-v4 .bn-toolbar .ds-seg .ds-chip{padding-inline:4px;font-size:14px;white-space:nowrap}
+  body.salon-rewards.ds-v4 .bn-passes{margin-inline:-12px;padding-inline:12px}
+  body.salon-rewards.ds-v4 .bn-pass{flex-basis:86%}
+  body.salon-rewards.ds-v4 .bn-verdict{flex-direction:column;align-items:flex-start;padding:16px 18px}
+  body.salon-rewards.ds-v4 .bn-controls{gap:22px;padding:20px 16px;border-radius:22px}
+  body.salon-rewards.ds-v4 .bn-receipt{padding:22px 20px 30px}
+  body.salon-rewards.ds-v4 .bn-tiers b{font-size:17px}
+  body.salon-rewards.ds-v4 .bn-rules,body.salon-rewards.ds-v4 .bn-rules--3{grid-template-columns:1fr;gap:10px}
+  body.salon-rewards.ds-v4 .bn-rules li{gap:4px;padding:16px 18px}
+  body.salon-rewards.ds-v4 .bn-rules b{font-size:21px}
+  body.salon-rewards.ds-v4 .bn-gifts{grid-template-columns:1fr;gap:12px}
+  body.salon-rewards.ds-v4 .bn-gift{min-height:0;padding:24px 22px 22px;border-radius:24px}
+  body.salon-rewards.ds-v4 .bn-steps{grid-template-columns:1fr;gap:10px}
+  body.salon-rewards.ds-v4 .bn-steps li{display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:14px;padding:18px 16px}
+  body.salon-rewards.ds-v4 .bn-steps li::before{grid-row:1/3;margin:0}
+  body.salon-rewards.ds-v4 .bn-steps li::after{content:none!important}
+  body.salon-rewards.ds-v4 .bn-steps h3{font-size:16.5px}
+  body.salon-rewards.ds-v4 .bn-steps p{margin-top:4px;font-size:14.5px}
+  body.salon-rewards.ds-v4 .bn-faq summary{font-size:16px}
+  body.salon-rewards.ds-v4 .bn-final{gap:24px;margin-top:56px;padding:34px 22px;border-radius:26px}
+  body.salon-rewards.ds-v4 .bn-final-actions{display:grid}
+  body.salon-rewards.ds-v4 .bn-section{padding-top:56px}
+}
+@media(max-width:359px){
+  body.salon-rewards.ds-v4 .bn-main{width:calc(100% - 16px)}
+  body.salon-rewards.ds-v4 .bn-hero .ds-display-1{font-size:36px}
+  body.salon-rewards.ds-v4 .bn-tabs b{font-size:12.5px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.salon-rewards.ds-v4 :is(.bn-card-face,.bn-chip,.bn-tabs a,.bn-pass,.bn-pass-cta,.bn-meter i,.bn-gift,.bn-faq summary::after,.bn-more summary::after,.bn-switch::before,.bn-switch::after,.bn-range::-webkit-slider-thumb){transition:none}
+  body.salon-rewards.ds-v4 .bn-gift:hover{transform:none}
+}

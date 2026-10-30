@@ -1,6 +1,12 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, samples page v4
+## Verified current state — 30 October 2026, benefits page v4
+
+- Live current is `release254-benefits-v4-505c8f85`: release253 with `benefits.html` switched to «Выгоды» v4 on `ds-v4`. Release253 (`release253-benefits-preview-c52e466e`) is release252 plus the hidden noindex preview `benefits-v4.html`, `assets/css/benefits-v4.css` and `assets/js/benefits-v4.js`. Rollback of the page: the static pointer to release253 (rollback of everything: release252). Never restore the DB for this UI change. Build future releases from the live current.
+- All amounts still come from `salon-benefits.js` (`window.SalonBenefitMath`, the published loyalty rules); `benefits-v4.js` replaces `salon-rewards.js` on this page and only handles input, output, the tabs (`#subscriptions`, `#bonuses`, `#deposit`, `#more`, old `#compare`) and the bonus card on the first screen. «Забрать 300 бонусов» uses `POST /api/welcome/token` like the Listik tour, with the static bot link as fallback. Texts follow `loyalty.html` (edition 1.11).
+- The old site colours `h1–h3` and `p` directly and styles every `input`, so `benefits-v4.css` resets them inside `.bn-main`. The subpages `plus.html`, `deposit.html`, `gift.html` and `referral.html` are unchanged. Details, builder and checks: `scripts/salon-benefits-v4-20261030/README.md`. Not measured: conversion uplift.
+
+## Previous verified state — 30 October 2026, samples page v4
 
 - Live current is `release252-samples-v4-37ea34de`: release251 with `samples.html` switched to «Примеры работ» v4 on `ds-v4`. Release251 (`release251-samples-preview-2d70327f`) is release250 plus the hidden noindex preview `samples-v4.html`, `assets/css/samples-v4.css`, `assets/js/samples-v4.js`, `assets/js/samples-v4-data.js`, `assets/img/samples-v4/` and a patched `assets/js/salon-portfolio.js`. Rollback of the page: the static pointer to release251 (rollback of everything: release250). Never restore the DB for this UI change. Build future releases from the live current.
 - The page shows all seven archive works at once (the course work full-width), an annotated contents of the master's thesis whose rows open the exact page, three section samples from `assets/samples/` in the same reader, and a final Telegram block (the footer heading is removed, as on home). Card chips, contents rows and samples open the pdf.js reader on a page; old `#pdf=<id>&page=<n>` links keep working; «Продолжить со стр. N» comes from `SalonReturn` bookmarks.
