@@ -1,6 +1,13 @@
 # Current handoff
 
-## Verified current state — 27 September 2026, intake form
+## Verified current state — 30 October 2026, home trust + bot quiet trash
+
+- Live current is `release229-hometrust-21c068f6`: release228 plus 3 changed files (`index.html`, new `assets/css/home-trust.css`, new `assets/js/home-trust.js`). Build future releases from release229, never from release228 or stale root HTML. Baseline index came from the server disk; nginx `sub_filter` adds `/6let-ribbon.js` to served HTML, so served bytes differ from disk.
+- Home: Telegram CTA on the first screen, in the footer and in the mobile order dock (`t.me/academic_saloon_bot?start=web`; bot v2 relays any client text to the master). Six real review screenshots replace the «Листик» block right after the hero, and the «Выгода под твой план» perks block is removed from home (benefits page unchanged).
+- Bot v2: the 9:00 digest was firing daily because ~38 test orders stayed active. They are now `cancel` + `deleted=1` after a DB backup, and the scheduler skips trashed orders in all 7 queries. Details, order ids, patch and rollback are in `scripts/salon-home-trust-20261030/README.md`.
+- Not done: real unanswered leads (orders 250, 249, 241; contact-page lead 2) and stale July offers wait for the owner's decision. Conversion uplift is not measured.
+
+## Previous verified state — 27 September 2026, intake form
 
 Sequential integration-owner update after the owner requested a more comfortable requirements/contact/optional fields/consents area.
 
