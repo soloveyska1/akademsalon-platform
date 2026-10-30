@@ -168,6 +168,49 @@ class CommerceTests(unittest.TestCase):
         self.store.confirm(p["id"], 1000)
         self.assertEqual(json.loads(self.store.get(p["id"])["snapshot"])["version"], "1")
 
+    def test_new_product_defaults_to_one_copy(self):
+        single = dict(self.product, sku="single-copy")
+        del single["licences"]
+        self.store.sync_catalog([self.product, single])
+        item = lambda: next(p for p in self.store.catalog() if p["sku"] == "single-copy")
+        self.assertEqual([item()[k] for k in ("licences", "available", "reserved", "sold")], [1, 1, 0, 0])
+        p = self.buy(1, "single-copy")
+        self.assertEqual([item()[k] for k in ("available", "reserved")], [0, 1])
+        self.store.confirm(p["id"], p["cash"])
+        self.assertEqual([item()[k] for k in ("available", "reserved", "sold")], [0, 0, 1])
+        with self.assertRaisesRegex(core.StoreError, "sold_out"):
+            self.buy(2, "single-copy")
+
+    def test_published_version_withdraws_unsold_copies_only(self):
+        self.store.sync_catalog([dict(self.product, licences=1)])
+        self.assertEqual([self.store.catalog()[0][k] for k in ("licences", "available", "reserved", "sold")], [1, 1, 0, 0])
+        with self.store.read() as c:
+            self.assertEqual(c.execute("SELECT count(*) FROM licences").fetchone()[0], 1)
+            self.assertEqual(c.execute("SELECT event FROM audit WHERE purchase_id IS NULL").fetchall()[0][0], "licences_withdrawn")
+        self.store.sync_catalog([dict(self.product, licences=1)])
+        for changed in (self.product, dict(self.product, licences=1, price=1200)):
+            with self.assertRaisesRegex(core.StoreError, "immutable_version_changed"):
+                self.store.sync_catalog([changed])
+        with self.assertRaisesRegex(core.StoreError, "terms_changed"):
+            self.store.checkout(1, "test-material", "old_terms_request_000001", 1000, terms="2026-09-10.v1")
+        p = self.buy()
+        self.store.confirm(p["id"], p["cash"])
+        self.assertEqual([self.store.catalog()[0][k] for k in ("available", "sold")], [0, 1])
+        with self.assertRaisesRegex(core.StoreError, "sold_out"):
+            self.buy(2)
+
+    def test_withdrawal_never_takes_a_held_copy(self):
+        spare = dict(self.product, sku="spare-material")
+        self.store.sync_catalog([self.product, spare])
+        self.buy(1)
+        self.buy(2)
+        with self.assertRaisesRegex(core.StoreError, "licence_in_use"):
+            self.store.sync_catalog([dict(spare, licences=1), dict(self.product, licences=1)])
+        counts = {p["sku"]: [p[k] for k in ("licences", "available", "reserved")] for p in self.store.catalog()}
+        self.assertEqual(counts, {"spare-material": [5, 5, 0], "test-material": [5, 3, 2]})
+        self.store.sync_catalog([spare, dict(self.product, licences=2)])
+        self.assertEqual([self.store.catalog()[1][k] for k in ("licences", "available", "reserved")], [2, 0, 2])
+
     def test_worker_recovers_after_commit_and_restart(self):
         p = self.buy()
         self.store.confirm(p["id"], 1000)

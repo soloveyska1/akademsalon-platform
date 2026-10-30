@@ -12,7 +12,9 @@ import time
 
 INV_OFFSET = 50_000_000
 HOLD_SECONDS = 15 * 60
-TERMS_VERSION = "2026-09-10.v1"
+TERMS_VERSION = "2026-10-30.v1"
+# Owner decision of 30 October 2026: each work is sold to one buyer.
+DEFAULT_LICENCES = 1
 
 
 class StoreError(ValueError):
@@ -108,6 +110,7 @@ class Store:
             for product in products:
                 p = dict(product)
                 published = bool(p.pop("published", False))
+                p.setdefault("licences", DEFAULT_LICENCES)
                 if not re.fullmatch(r"[a-z0-9-]{3,64}", p["sku"]):
                     raise StoreError("bad_catalogue")
                 if type(p["price"]) is not int or not 100 <= p["price"] <= 100_000:
@@ -118,13 +121,31 @@ class Store:
                 old = c.execute("SELECT payload FROM versions WHERE sku=? AND version=?",
                                 (p["sku"], p["version"])).fetchone()
                 if old and old["payload"] != raw:
-                    raise StoreError("immutable_version_changed")
+                    self._withdraw_licences(c, json.loads(old["payload"]), p, raw)
                 c.execute("INSERT INTO versions(sku,version,payload,published) VALUES(?,?,?,?) "
                           "ON CONFLICT(sku,version) DO UPDATE SET published=excluded.published",
                           (p["sku"], p["version"], raw, int(published)))
                 for n in range(1, p["licences"] + 1):
                     c.execute("INSERT OR IGNORE INTO licences(sku,version,ordinal) VALUES(?,?,?)",
                               (p["sku"], p["version"], n))
+
+    def _withdraw_licences(self, c, old, new, raw):
+        """A published version stays immutable except for fewer licences.
+
+        Withdrawing unsold copies never harms a buyer; restocking stays forbidden.
+        A copy that is held or sold is never withdrawn.
+        """
+        if (not new["licences"] < old.get("licences", 0)
+                or json.dumps(dict(old, licences=new["licences"]), ensure_ascii=False, sort_keys=True) != raw):
+            raise StoreError("immutable_version_changed")
+        key = (new["sku"], new["version"], new["licences"])
+        if c.execute("SELECT count(*) FROM licences WHERE sku=? AND version=? AND ordinal>? "
+                     "AND (state<>'available' OR purchase_id IS NOT NULL)", key).fetchone()[0]:
+            raise StoreError("licence_in_use")
+        c.execute("DELETE FROM licences WHERE sku=? AND version=? AND ordinal>?", key)
+        c.execute("UPDATE versions SET payload=? WHERE sku=? AND version=?", (raw, new["sku"], new["version"]))
+        self.log(c, None, "licences_withdrawn", {"sku": new["sku"], "version": new["version"],
+                                                 "from": old["licences"], "to": new["licences"]})
 
     def _product(self, c, sku):
         row = c.execute("SELECT * FROM versions WHERE sku=? AND published=1", (sku,)).fetchall()

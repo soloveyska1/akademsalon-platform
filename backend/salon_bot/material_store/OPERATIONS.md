@@ -65,9 +65,17 @@ endpoint. The command does not create a refund.
 
 ## Economics and inventory
 
-Five genuinely finite personal nonexclusive licences per immutable version. A sold
-licence is not restocked after a file has been delivered. Additional versions must
-be materially described; never create cosmetic versions to fake scarcity.
+Since 30 October 2026 each work is sold to one buyer (owner decision): every
+version has exactly one copy, and a catalogue entry without `licences` gets one.
+After payment the work leaves sale (`available: 0, sold: 1`). The licence stays a
+simple personal licence; never call it exclusive. A sold licence is not restocked
+after a file has been delivered. A published version may only lose unsold copies:
+`sync_catalog` withdraws available copies above a lower `licences`, refuses to
+withdraw a held or sold copy (`licence_in_use`) and still refuses every other
+change, restocking included. Additional versions must be materially described;
+never create cosmetic versions to fake scarcity.
+The switch from five copies, its backups and rollback:
+`scripts/shop-one-copy-20261030/README.md`.
 Prices: 1490 / 1190 / 790 / 690 RUB. Maximum monetary discount plus spent bonuses is
 10%; earned rewards are at most 5% of cash paid. Browsing and unpaid holds earn no
 rewards. The seasonal 5% code is repeatable through September 30, Moscow time.
