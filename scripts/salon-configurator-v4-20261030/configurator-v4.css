@@ -1,0 +1,250 @@
+/* Форма заявки v4 в дизайн-системе ds-v4. Разметку и логику дают слои формы (salon-order.js,
+   intake-studio, comfort, form-polish); этот файл подключается последним и меняет только вид.
+   Наверху — ночной «билет» заказа, ниже три шага карточками, справа сводка, после отправки — ночной
+   экран «Принято». Правила начинаются с body.salon-intake.ds-v4, чтобы перебить старые без !important. */
+
+body.salon-intake.ds-v4{--cf-ink:#1b1531;--cf-muted:#5c5670;--cf-line:#e6e1f3;--cf-line-2:#d6cff0;--cf-paper:#fff;--cf-mist:#f1edff;--cf-card:#fbfaff;--cf-violet:#4b30c8;--cf-violet-hover:#3b23a8;--cf-on-violet:#fff;--cf-lime:#d6f6a6;--cf-lime-hover:#c8f08c;--cf-lime-ink:#1b2a0e;--cf-error:#a1243f;--cf-error-bg:#fdecef;background:var(--paper,#f5f4ef);color:var(--cf-ink)}
+:root[data-theme=dark] body.salon-intake.ds-v4{--cf-ink:#f1eef8;--cf-muted:#b8b0c9;--cf-line:#352e4a;--cf-line-2:#463d60;--cf-paper:#1b1628;--cf-mist:#2a2245;--cf-card:#211b31;--cf-violet:#b6a4ff;--cf-violet-hover:#cbbdff;--cf-on-violet:#1b1531;--cf-error:#ffadb8;--cf-error-bg:#3a1a24}
+
+body.salon-intake.ds-v4 :is(.order-main,#direct-order,.order-summary,.order-success) :is(input,textarea,select,button,label,legend,summary,p,span,strong,small,b,a,li,h3){font-family:var(--sans)}
+/* Знак «а.» и заголовок сводки — антиквой, как в шапке и на главной */
+body.salon-intake.ds-v4 #direct-order .intake-choice-mark{font-family:var(--display)}
+body.salon-intake.ds-v4 .order-main{max-width:1180px;padding:24px 32px 80px}
+/* Полоса «Вы выбирали» дублирует билет заказа */
+body.salon-intake.ds-v4>.selection-trail{display:none}
+body.salon-intake.ds-v4 :is(.order-main,.order-summary) :focus-visible{outline:3px solid var(--cf-violet);outline-offset:3px}
+
+/* Заголовок */
+body.salon-intake.ds-v4 .order-heading{margin:0 0 28px;padding:0}
+body.salon-intake.ds-v4 .order-heading>.text-link{display:inline-flex;align-items:center;min-height:44px;margin:0 0 6px;font:500 15px/1.3 var(--sans);color:var(--cf-muted);text-decoration:none}
+body.salon-intake.ds-v4 .order-heading>.text-link:hover{color:var(--cf-violet)}
+body.salon-intake.ds-v4 .order-heading h1{margin:0 0 12px;font:500 clamp(40px,1.6rem + 2.6vw,64px)/1.03 var(--display);letter-spacing:-.025em;color:var(--cf-ink)}
+body.salon-intake.ds-v4 .order-heading h1 em{font-family:var(--display);font-style:italic;font-weight:400;color:var(--cf-violet)}
+body.salon-intake.ds-v4 .order-heading>p{max-width:560px;font:400 18px/1.55 var(--sans);color:var(--cf-muted)}
+
+body.salon-intake.ds-v4 .order-layout{grid-template-columns:minmax(0,1fr) 340px;gap:32px}
+
+/* Билет заказа: ночная полоса, внутри — настройки на белом */
+body.salon-intake.ds-v4 .intake-settings{border:0;border-radius:26px;background:var(--cf-paper);overflow:clip;box-shadow:0 2px 4px rgba(27,21,49,.05),0 26px 50px -30px rgba(20,12,53,.55)}
+body.salon-intake.ds-v4 .intake-settings>summary{position:relative;isolation:isolate;gap:16px;padding:20px 22px;color:#fff;background:radial-gradient(60% 120% at 92% 0%,rgba(124,90,255,.55),transparent 70%),linear-gradient(158deg,#1d1250 0%,#140c35 60%,#0e0926 100%)}
+body.salon-intake.ds-v4 .intake-settings>summary::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:26px 26px;-webkit-mask-image:linear-gradient(90deg,transparent 30%,#000);mask-image:linear-gradient(90deg,transparent 30%,#000)}
+body.salon-intake.ds-v4 .intake-choice-mark{width:46px;height:52px;border-radius:4px 14px 4px 4px;background:var(--cf-lime);color:var(--cf-lime-ink);font:500 29px/1 var(--display)}
+body.salon-intake.ds-v4 .intake-choice{gap:3px}
+body.salon-intake.ds-v4 .intake-choice small{font:500 13px/1.3 var(--sans);letter-spacing:0;color:#c3b9ea}
+body.salon-intake.ds-v4 .intake-choice strong{font:600 20px/1.25 var(--sans);letter-spacing:-.01em;color:#fff}
+body.salon-intake.ds-v4 .intake-choice>span{font:400 14px/1.35 var(--sans);color:#d2c9f2}
+body.salon-intake.ds-v4 .intake-choice-end{gap:8px;justify-items:end}
+body.salon-intake.ds-v4 .intake-choice-end>b{font:700 20px/1.2 var(--sans);font-variant-numeric:tabular-nums lining-nums;color:var(--cf-lime);white-space:nowrap}
+body.salon-intake.ds-v4 .intake-choice-end>span{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font:600 13.5px/1 var(--sans);color:#fff}
+body.salon-intake.ds-v4 .intake-settings>summary:hover .intake-choice-end>span{background:rgba(255,255,255,.18)}
+body.salon-intake.ds-v4 .intake-settings>summary:focus-visible{outline:3px solid var(--cf-lime);outline-offset:-3px}
+body.salon-intake.ds-v4 .intake-settings-body{padding:6px 22px 22px;border-top:0;background:var(--cf-paper)}
+body.salon-intake.ds-v4 .order-extra-details{border:1.5px solid var(--cf-line);border-radius:16px;background:var(--cf-card)}
+body.salon-intake.ds-v4 .order-extra-details>summary{min-height:48px;padding:12px 16px;font:600 14.5px/1.3 var(--sans)}
+body.salon-intake.ds-v4 .addon-option{padding:14px 16px;font-size:14.5px}
+body.salon-intake.ds-v4 .addon-option small{font-size:13px}
+body.salon-intake.ds-v4 .addon-option b{font-size:14px}
+body.salon-intake.ds-v4 .order-composition-lines{font-size:13.5px;color:var(--cf-muted)}
+
+/* Шаги: карточки с лаймовым номером */
+body.salon-intake.ds-v4 #direct-order fieldset.intake-brief,body.salon-intake.ds-v4 #direct-order fieldset.intake-contact{margin:20px 0 0;padding:30px 30px 28px;border:1px solid var(--cf-line);border-radius:28px;background:var(--cf-paper);box-shadow:0 1px 2px rgba(27,21,49,.04),0 22px 44px -34px rgba(48,24,140,.4)}
+body.salon-intake.ds-v4 #direct-order fieldset>legend{float:left;display:flex;align-items:center;gap:14px;width:100%;margin:0 0 18px;padding:0;font:500 clamp(24px,1.1rem + .7vw,30px)/1.15 var(--display);letter-spacing:-.015em;color:var(--cf-ink)}
+body.salon-intake.ds-v4 #direct-order fieldset>legend+*{clear:both}
+body.salon-intake.ds-v4 #direct-order fieldset>legend::before,body.salon-intake.ds-v4 #direct-order .ic-consent-heading::before{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:var(--cf-lime);color:var(--cf-lime-ink);font:700 16px/1 var(--sans)}
+body.salon-intake.ds-v4 #direct-order fieldset.intake-brief>legend::before{content:"1"}
+body.salon-intake.ds-v4 #direct-order fieldset.intake-contact>legend::before{content:"2"}
+body.salon-intake.ds-v4 #direct-order .ic-consent-heading{display:flex;align-items:center;gap:14px;margin:30px 0 16px;padding-top:28px;border-top:1px solid var(--cf-line);font:500 clamp(24px,1.1rem + .7vw,30px)/1.15 var(--display);letter-spacing:-.015em;color:var(--cf-ink)}
+body.salon-intake.ds-v4 #direct-order .ic-consent-heading::before{content:"3"}
+
+/* Поля */
+body.salon-intake.ds-v4 #direct-order label:not(.check-row):not(.upload-box):not(.addon-option){margin:18px 0 8px;font:600 14px/1.35 var(--sans);color:var(--cf-ink)}
+body.salon-intake.ds-v4 #direct-order .required{color:var(--cf-violet)}
+body.salon-intake.ds-v4 #direct-order .ic-optional{display:inline;margin-left:6px;font:400 13px/1.3 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 #direct-order input:not([type=checkbox]):not([type=file]):not([type=radio]),body.salon-intake.ds-v4 #direct-order textarea{min-height:54px;padding:13px 16px;border:1.5px solid var(--cf-line);border-radius:14px;background:var(--cf-paper);color:var(--cf-ink);font:400 16px/1.5 var(--sans);transition:border-color .15s ease,box-shadow .15s ease}
+body.salon-intake.ds-v4 #direct-order input:not([type=checkbox]):not([type=file]):not([type=radio]):hover,body.salon-intake.ds-v4 #direct-order textarea:hover{border-color:var(--cf-line-2)}
+body.salon-intake.ds-v4 #direct-order input:not([type=checkbox]):not([type=file]):not([type=radio]):focus,body.salon-intake.ds-v4 #direct-order textarea:focus{border-color:var(--cf-violet);box-shadow:0 0 0 4px color-mix(in srgb,var(--cf-violet) 14%,transparent);outline:0}
+body.salon-intake.ds-v4 #direct-order #topic{min-height:58px;font-size:17px}
+body.salon-intake.ds-v4 #direct-order ::placeholder{color:color-mix(in srgb,var(--cf-muted) 75%,transparent)}
+body.salon-intake.ds-v4 #direct-order .salon-select-trigger{min-height:54px;padding-inline:16px;border:1.5px solid var(--cf-line);border-radius:14px;background:var(--cf-paper);color:var(--cf-ink);font:500 15.5px/1.3 var(--sans);box-shadow:none}
+body.salon-intake.ds-v4 #direct-order .salon-select-trigger:hover{border-color:var(--cf-line-2)}
+body.salon-intake.ds-v4 #direct-order .form-two{gap:14px}
+body.salon-intake.ds-v4 .field-note,body.salon-intake.ds-v4 #direct-order .polish-contact-hint,body.salon-intake.ds-v4 #direct-order .ic-name-hint{font:400 13px/1.5 var(--sans);color:var(--cf-muted);min-height:0}
+body.salon-intake.ds-v4 #direct-order .polish-text-count{font-size:12px}
+
+body.salon-intake.ds-v4 .intake-shortcuts{gap:10px;margin:10px 0 14px;font:400 14px/1.4 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .intake-shortcuts button{min-height:40px;padding:0 14px;border-radius:999px;background:var(--cf-mist);color:var(--cf-violet);font:600 14px/1 var(--sans);text-decoration:none}
+body.salon-intake.ds-v4 .intake-shortcuts button:hover{background:color-mix(in srgb,var(--cf-violet) 14%,var(--cf-mist))}
+body.salon-intake.ds-v4 .intake-suggestion{font:600 14px/1.4 var(--sans);color:var(--cf-violet)}
+
+body.salon-intake.ds-v4 #direct-order .upload-box{grid-template-columns:48px 1fr;gap:3px 14px;align-items:center;padding:18px 20px;border:1.5px dashed var(--cf-line-2);border-radius:18px;background:var(--cf-card)}
+body.salon-intake.ds-v4 #direct-order .upload-box:hover,body.salon-intake.ds-v4 #direct-order .upload-box.is-dragging{border-color:var(--cf-violet);background:var(--cf-mist)}
+body.salon-intake.ds-v4 .upload-box .upload-icon{width:48px;height:48px;border-radius:15px;background:var(--cf-mist);color:var(--cf-violet);font-size:26px}
+body.salon-intake.ds-v4 .upload-box strong{font:600 15.5px/1.35 var(--sans);color:var(--cf-ink)}
+body.salon-intake.ds-v4 .upload-box>span:last-of-type{font:400 13.5px/1.4 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .comfort-file{border:1.5px solid var(--cf-line);border-radius:16px;background:var(--cf-paper)}
+body.salon-intake.ds-v4 .comfort-file-name{font-size:14.5px}
+body.salon-intake.ds-v4 .comfort-file-meta{font-size:12.5px}
+body.salon-intake.ds-v4 .comfort-file-notice,body.salon-intake.ds-v4 .comfort-file-undo{font-size:13.5px}
+
+body.salon-intake.ds-v4 #direct-order .sc-date-trigger{min-height:54px;border:1.5px solid var(--cf-line);border-radius:14px;background:var(--cf-paper);font:500 15.5px/1.3 var(--sans);color:var(--cf-ink)}
+body.salon-intake.ds-v4 .comfort-dates{gap:8px;margin:12px 0 0}
+body.salon-intake.ds-v4 .comfort-dates button{min-height:40px;padding:0 16px;border:1.5px solid var(--cf-line);border-radius:999px;background:var(--cf-paper);color:var(--cf-ink);font:500 14px/1 var(--sans)}
+body.salon-intake.ds-v4 .comfort-dates button:hover:not(:disabled){border-color:var(--cf-violet);color:var(--cf-violet)}
+body.salon-intake.ds-v4 .comfort-dates button[aria-pressed=true]{border-color:var(--cf-violet);background:var(--cf-violet);color:var(--cf-on-violet)}
+body.salon-intake.ds-v4 .comfort-dates .comfort-date-clear{border-color:transparent;background:transparent;color:var(--cf-muted)}
+body.salon-intake.ds-v4 .comfort-date-label{font-size:13.5px;color:var(--cf-violet)}
+body.salon-intake.ds-v4 #express-clock-row{border-radius:16px;background:var(--cf-mist)}
+body.salon-intake.ds-v4 #direct-order .cfg4-extra{margin-top:4px}
+body.salon-intake.ds-v4 #direct-order .cfg4-extra-note{margin:8px 0 0}
+
+body.salon-intake.ds-v4 #direct-order #intake-task-details{margin-top:24px;border:1.5px solid var(--cf-line);border-radius:20px;background:var(--cf-card)}
+body.salon-intake.ds-v4 #intake-task-details>summary{min-height:58px;padding:16px 18px;font:600 16px/1.3 var(--sans);color:var(--cf-ink)}
+body.salon-intake.ds-v4 #intake-task-details>summary small{font:400 13px/1.3 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .intake-disclosure>summary::after{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--cf-mist);color:var(--cf-violet);font-size:16px}
+body.salon-intake.ds-v4 #direct-order #intake-task-details label{margin:0 0 10px}
+body.salon-intake.ds-v4 .ic-editor{border:1.5px solid var(--cf-line);border-radius:16px;background:var(--cf-paper)}
+body.salon-intake.ds-v4 .ic-editor:focus-within{border-color:var(--cf-violet);box-shadow:0 0 0 4px color-mix(in srgb,var(--cf-violet) 14%,transparent)}
+body.salon-intake.ds-v4 #direct-order .ic-editor textarea{border:0;border-radius:14px 14px 0 0;box-shadow:none;font-size:16px;line-height:1.6}
+body.salon-intake.ds-v4 .ic-brief-tools{border-top:1px solid var(--cf-line);background:var(--cf-card)}
+body.salon-intake.ds-v4 .ic-brief-tools>.ic-tools-caption{font:600 14px/1.3 var(--sans);color:var(--cf-violet)}
+body.salon-intake.ds-v4 .ic-brief-chip{min-height:38px;padding:0 14px;border:0;border-radius:999px;background:var(--cf-mist);color:var(--cf-violet);font:600 13.5px/1 var(--sans)}
+body.salon-intake.ds-v4 .ic-brief-chip:hover:not(:disabled){background:color-mix(in srgb,var(--cf-violet) 14%,var(--cf-mist))}
+body.salon-intake.ds-v4 .ic-brief-chip[hidden]{display:none}
+body.salon-intake.ds-v4 #intake-task-details .field-note{font-size:13.5px}
+
+/* Шаг 2: связь */
+body.salon-intake.ds-v4 .ic-section-note{margin:0 0 16px;font:400 15.5px/1.55 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 #direct-order .polish-contact-modes{gap:8px;margin:0 0 20px;border:0}
+body.salon-intake.ds-v4 #direct-order .polish-contact-modes button{min-height:58px;padding:10px 14px;gap:10px;border:1.5px solid var(--cf-line);border-radius:16px;background:var(--cf-card);color:var(--cf-ink);font:600 15px/1.2 var(--sans);box-shadow:none}
+body.salon-intake.ds-v4 #direct-order .polish-contact-modes button:hover:not(:disabled){border-color:var(--cf-line-2);background:var(--cf-card);color:var(--cf-ink)}
+body.salon-intake.ds-v4 #direct-order .polish-contact-modes button[aria-pressed=true]{border-color:var(--cf-violet);border-radius:16px;background:var(--cf-violet);color:var(--cf-on-violet);box-shadow:0 10px 22px -12px rgba(75,48,200,.75)}
+body.salon-intake.ds-v4 #direct-order .polish-contact-modes button::after{content:none}
+body.salon-intake.ds-v4 .ic-channel-check{top:7px;right:9px;font-size:11px}
+body.salon-intake.ds-v4 #direct-order .ic-contact-line label{min-height:0;margin:0 0 8px}
+body.salon-intake.ds-v4 .ic-contact-format{font-size:13px;color:var(--cf-violet)}
+body.salon-intake.ds-v4 #direct-order .intake-personal{margin-top:18px;border:1.5px solid var(--cf-line);border-radius:18px;background:var(--cf-card)}
+body.salon-intake.ds-v4 .intake-personal>summary{flex-wrap:nowrap;min-height:56px;padding:14px 18px;font:600 15px/1.3 var(--sans)}
+body.salon-intake.ds-v4 .intake-personal>summary small{margin-left:auto}
+body.salon-intake.ds-v4 .intake-personal>summary small{font:400 13px/1.3 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .intake-personal>div{padding:0 18px 18px}
+body.salon-intake.ds-v4 .intake-personal[open] .ic-code-note{padding:0 18px 4px;font-size:13.5px}
+
+/* Шаг 3: согласия и отправка */
+body.salon-intake.ds-v4 .intake-consents{gap:10px}
+body.salon-intake.ds-v4 #direct-order .check-row{min-height:0;padding:16px 18px;gap:14px;border:1.5px solid var(--cf-line);border-radius:18px;background:var(--cf-card)}
+body.salon-intake.ds-v4 #direct-order .check-row:hover{border-color:var(--cf-line-2)}
+body.salon-intake.ds-v4 #direct-order .check-row:has(input:checked){border-color:var(--cf-violet);background:var(--cf-mist)}
+body.salon-intake.ds-v4 #direct-order .check-row input{width:22px;height:22px;min-width:22px;accent-color:var(--cf-violet)}
+body.salon-intake.ds-v4 .ic-consent-title{font:600 15px/1.4 var(--sans);color:var(--cf-ink)}
+body.salon-intake.ds-v4 .ic-consent-text{font:400 14px/1.55 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .ic-consent-text a{color:var(--cf-violet);text-decoration:underline;text-underline-offset:3px}
+body.salon-intake.ds-v4 #form-message{margin:16px 0 0;padding:14px 16px;border-radius:14px;background:var(--cf-error-bg);color:var(--cf-error);font:500 15px/1.5 var(--sans)}
+body.salon-intake.ds-v4 #direct-order .polish-field-error{margin:10px 0 6px;padding-left:12px;border-left:3px solid var(--cf-error);font:500 13.5px/1.5 var(--sans);color:var(--cf-error)}
+body.salon-intake.ds-v4 #direct-order [aria-invalid=true]:not([type=checkbox]){border-color:var(--cf-error);box-shadow:0 0 0 3px color-mix(in srgb,var(--cf-error) 16%,transparent)}
+body.salon-intake.ds-v4 #direct-order #send-order{justify-content:center;min-height:62px;margin-top:20px;border:0;border-radius:18px;background:var(--cf-violet);color:var(--cf-on-violet);font:600 17.5px/1.2 var(--sans);letter-spacing:-.005em;box-shadow:0 16px 34px -16px rgba(75,48,200,.85);transition:background-color .15s ease,transform .15s ease}
+body.salon-intake.ds-v4 #direct-order #send-order:hover:not(:disabled){background:var(--cf-violet-hover);transform:translateY(-1px)}
+body.salon-intake.ds-v4 #direct-order #send-order:disabled{opacity:.6;cursor:progress;transform:none}
+body.salon-intake.ds-v4 .intake-contact>.micro{margin:12px 0 0;font:400 13.5px/1.5 var(--sans);color:var(--cf-muted)}
+
+/* Сводка справа */
+body.salon-intake.ds-v4 .order-summary{top:96px;padding:26px;border:1px solid var(--cf-line);border-radius:28px;background:var(--cf-paper);box-shadow:0 2px 4px rgba(27,21,49,.04),0 26px 50px -34px rgba(48,24,140,.45)}
+body.salon-intake.ds-v4 .order-summary>.small-label,body.salon-intake.ds-v4 .summary-delivery .small-label{font:600 13.5px/1.3 var(--sans);letter-spacing:0;color:var(--cf-muted)}
+body.salon-intake.ds-v4 .order-summary h2{margin:6px 0 4px;font:500 30px/1.12 var(--display);letter-spacing:-.02em;color:var(--cf-ink)}
+body.salon-intake.ds-v4 #summary-scope{margin:0 0 18px;font:400 15px/1.45 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .summary-price{padding:16px 18px;border:0;border-radius:18px;background:var(--cf-mist)}
+body.salon-intake.ds-v4 .summary-price>span{font:500 13px/1.4 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .summary-price strong{margin:6px 0 4px;font:700 25px/1.15 var(--sans);white-space:nowrap;letter-spacing:-.015em;font-variant-numeric:tabular-nums lining-nums;color:var(--cf-ink)}
+body.salon-intake.ds-v4 .summary-timing{padding:16px 0;border-bottom:1px solid var(--cf-line)}
+body.salon-intake.ds-v4 .summary-timing>span{font:500 13px/1.4 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .summary-timing strong{margin:4px 0;font:600 19px/1.3 var(--sans)}
+body.salon-intake.ds-v4 :is(.summary-timing p,.summary-delivery p){font:400 14px/1.5 var(--sans);color:var(--cf-muted)}
+/* Что получишь — уже в пояснении к цене, второй раз не повторяем */
+body.salon-intake.ds-v4 .summary-delivery{display:none}
+body.salon-intake.ds-v4 .summary-timing{border-bottom:0}
+body.salon-intake.ds-v4 .summary-delivery p{margin-top:4px}
+body.salon-intake.ds-v4 .summary-trust{display:grid;gap:8px;margin:8px 0 0;padding:0;list-style:none}
+body.salon-intake.ds-v4 .summary-trust li{display:flex;align-items:center;gap:10px;font:500 14.5px/1.35 var(--sans);color:var(--cf-ink)}
+body.salon-intake.ds-v4 .summary-trust li::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;background:var(--cf-lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b2a0e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/13px no-repeat}
+body.salon-intake.ds-v4 .cfg4-help{margin-top:20px;padding-top:18px;border-top:1px solid var(--cf-line)}
+body.salon-intake.ds-v4 .cfg4-help p{margin:0 0 12px;font:400 14px/1.5 var(--sans);color:var(--cf-muted)}
+body.salon-intake.ds-v4 .cfg4-tg{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 20px;border-radius:15px;background:var(--cf-lime);color:var(--cf-lime-ink);font:600 15.5px/1.2 var(--sans);text-decoration:none;box-shadow:inset 0 -2px 0 rgba(27,42,14,.12)}
+body.salon-intake.ds-v4 .cfg4-tg:hover{background:var(--cf-lime-hover);color:var(--cf-lime-ink)}
+body.salon-intake.ds-v4 .cfg4-tg svg{width:19px;height:19px;flex:none}
+body.salon-intake.ds-v4 .cfg4-help .text-link{display:inline-flex;align-items:center;min-height:44px;margin-top:4px;font:500 14px/1.3 var(--sans);color:var(--cf-violet);text-decoration:underline;text-underline-offset:4px}
+
+/* После отправки: ночной экран «Принято» */
+body.salon-intake.ds-v4 .order-success{position:relative;isolation:isolate;overflow:clip;max-width:none;margin:8px 0 0;padding:56px 56px 52px;border-radius:32px;color:#fff;
+  background:radial-gradient(55% 75% at 85% 15%,rgba(124,90,255,.55),transparent 70%),radial-gradient(40% 60% at 0% 100%,rgba(168,96,255,.3),transparent 72%),linear-gradient(158deg,#1d1250 0%,#140c35 54%,#0e0926 100%)}
+body.salon-intake.ds-v4 .order-success::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px;-webkit-mask-image:radial-gradient(ellipse 70% 80% at 75% 30%,#000 25%,transparent 78%);mask-image:radial-gradient(ellipse 70% 80% at 75% 30%,#000 25%,transparent 78%)}
+body.salon-intake.ds-v4 .order-success>*{max-width:620px}
+body.salon-intake.ds-v4 .order-success>h1{max-width:820px}
+body.salon-intake.ds-v4 .order-success h1{margin:0 0 16px;font:500 clamp(44px,1.6rem + 3vw,72px)/1.02 var(--display);letter-spacing:-.025em;color:#fff}
+body.salon-intake.ds-v4 .order-success h1 em{font-family:var(--display);font-style:italic;font-weight:400;color:var(--cf-lime)}
+body.salon-intake.ds-v4 .order-success>p{font:400 18px/1.55 var(--sans);color:#d2c9f2}
+body.salon-intake.ds-v4 #success-id{color:var(--cf-lime);font-variant-numeric:tabular-nums}
+body.salon-intake.ds-v4 .cfg4-next{display:grid;gap:14px;margin:28px 0 30px;padding:0;list-style:none;counter-reset:cfg4}
+body.salon-intake.ds-v4 .cfg4-next li{display:grid;grid-template-columns:36px minmax(0,1fr);column-gap:14px;counter-increment:cfg4}
+body.salon-intake.ds-v4 .cfg4-next li::before{content:counter(cfg4);grid-row:span 2;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--cf-lime);color:var(--cf-lime-ink);font:700 16px/1 var(--sans)}
+body.salon-intake.ds-v4 .cfg4-next b{font:600 17.5px/1.3 var(--sans);color:#fff}
+body.salon-intake.ds-v4 .cfg4-next span{font:400 15px/1.45 var(--sans);color:#c3b9ea}
+body.salon-intake.ds-v4 #upload-results{display:grid;gap:8px;margin:0 0 20px}
+body.salon-intake.ds-v4 #upload-results .file-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.08);font:500 14px/1.4 var(--sans);color:#fff}
+body.salon-intake.ds-v4 #upload-results .file-row button{min-height:40px;padding:0 14px;border:0;border-radius:12px;background:var(--cf-lime);color:var(--cf-lime-ink);font:600 13.5px/1 var(--sans)}
+body.salon-intake.ds-v4 .cfg4-success-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+body.salon-intake.ds-v4 .cfg4-success-actions>a{height:56px;min-height:56px;margin:0;padding-block:0;box-sizing:border-box}
+body.salon-intake.ds-v4 #success-cabinet{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 24px;border:0;border-radius:16px;background:#fff;color:#1b1531;font:600 16px/1.2 var(--sans);text-decoration:none}
+body.salon-intake.ds-v4 #success-cabinet:hover{background:#ece6ff}
+body.salon-intake.ds-v4 .cfg4-success-actions .cfg4-tg{min-height:56px;padding:0 24px;border-radius:16px;font-size:16px}
+body.salon-intake.ds-v4 .order-success>p.micro{margin-top:18px;text-align:left;font:400 14px/1.5 var(--sans);color:#a99fd2}
+body.salon-intake.ds-v4 .order-success>p:not(.micro):not(:first-of-type){font-size:15px}
+body.salon-intake.ds-v4 .cfg4-listik{position:absolute;z-index:-1;right:clamp(16px,6vw,90px);bottom:-18px;width:clamp(170px,18vw,240px);max-width:none;height:auto;filter:drop-shadow(0 24px 32px rgba(6,3,22,.6));pointer-events:none}
+
+@media(max-width:1100px){
+  body.salon-intake.ds-v4 .order-layout{grid-template-columns:minmax(0,1fr) 300px;gap:24px}
+}
+@media(max-width:850px){
+  body.salon-intake.ds-v4 .order-main{max-width:720px;padding:16px 20px 56px}
+  body.salon-intake.ds-v4 .order-layout{grid-template-columns:1fr}
+  /* Цена и срок уже в билете наверху: в сводке остаются гарантии и помощь */
+  body.salon-intake.ds-v4 .order-summary{position:static;display:block;margin-top:20px;padding:22px}
+  body.salon-intake.ds-v4 .order-summary>:is(.small-label,h2,#summary-scope,.summary-price,.summary-timing,.summary-delivery){display:none}
+  body.salon-intake.ds-v4 .summary-trust{margin:0}
+  body.salon-intake.ds-v4 .order-success{padding:40px 28px 200px}
+  body.salon-intake.ds-v4 .cfg4-listik{width:150px;right:20px;bottom:-14px}
+}
+@media(max-width:600px){
+  body.salon-intake.ds-v4 .order-main{padding:12px 12px 48px}
+  body.salon-intake.ds-v4 .order-heading{margin-bottom:20px;padding:0 6px}
+  body.salon-intake.ds-v4 .order-heading h1{font-size:40px}
+  body.salon-intake.ds-v4 .order-heading>p{font-size:16.5px}
+  body.salon-intake.ds-v4 .intake-settings{border-radius:22px}
+  body.salon-intake.ds-v4 .intake-settings>summary{gap:12px;padding:16px}
+  body.salon-intake.ds-v4 .intake-choice strong{font-size:17px}
+  body.salon-intake.ds-v4 .intake-choice>span{font-size:13px}
+  body.salon-intake.ds-v4 .intake-choice-end>b{font-size:16px}
+  body.salon-intake.ds-v4 .intake-choice-end>span{min-height:30px;padding:0 10px;font-size:12.5px}
+  body.salon-intake.ds-v4 .intake-settings-body{padding:4px 16px 18px}
+  body.salon-intake.ds-v4 #direct-order fieldset.intake-brief,body.salon-intake.ds-v4 #direct-order fieldset.intake-contact{margin-top:14px;padding:22px 16px 20px;border-radius:24px}
+  body.salon-intake.ds-v4 #direct-order fieldset>legend,body.salon-intake.ds-v4 #direct-order .ic-consent-heading{gap:12px;font-size:25px}
+  body.salon-intake.ds-v4 #direct-order fieldset>legend::before,body.salon-intake.ds-v4 #direct-order .ic-consent-heading::before{width:32px;height:32px;font-size:15px}
+  body.salon-intake.ds-v4 #direct-order .form-two{grid-template-columns:1fr;gap:0}
+  body.salon-intake.ds-v4 #direct-order .upload-box{padding:16px}
+  body.salon-intake.ds-v4 #direct-order .polish-contact-modes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.salon-intake.ds-v4 #direct-order .check-row{padding:14px}
+  body.salon-intake.ds-v4 .order-success{padding:34px 22px 190px;border-radius:26px}
+  body.salon-intake.ds-v4 .order-success h1{font-size:44px}
+  body.salon-intake.ds-v4 .order-success>p{font-size:16.5px}
+  body.salon-intake.ds-v4 .cfg4-success-actions>*{flex:1 1 100%}
+  /* Дата и объём рядом, чтобы быстрые даты стояли сразу под датой */
+  body.salon-intake.ds-v4 #direct-order .form-two.intake-dates{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+  body.salon-intake.ds-v4 #intake-task-details>summary small{white-space:nowrap}
+  /* Пузырь Листика на телефоне — только маскот, на экране «Принято» не нужен */
+  body.salon-intake.ds-v4 .sa-launch{width:56px!important;height:56px!important;min-width:0!important;padding:0!important;gap:0!important;border-radius:50%!important;justify-content:center!important;overflow:hidden}
+  body.salon-intake.ds-v4 .sa-launch>span:not(.sa-mascot),body.salon-intake.ds-v4 .sa-launch>i{display:none!important}
+  body.salon-intake.ds-v4 .sa-launch .sa-mascot{margin:0!important}
+  body.salon-intake.ds-v4.is-success .sa-launch{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  body.salon-intake.ds-v4 #direct-order #send-order,body.salon-intake.ds-v4 #direct-order :is(input,textarea){transition:none}
+  body.salon-intake.ds-v4 #direct-order #send-order:hover:not(:disabled){transform:none}
+}

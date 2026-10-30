@@ -1,0 +1,11 @@
+--- a/app/texts.py
++++ b/app/texts.py
+@@ -973,7 +973,7 @@
+             d += f" (≈ {o['deadline_date'][8:10]}.{o['deadline_date'][5:7]})"
+         lines.append(d)
+     if o["details"]:
+-        lines.append(f"📋 Требования: {esc(o['details'][:400])}")
++        lines.append(f"📋 Требования: {esc(o['details'][:1200])}")
+     if o["quote_low"]:
+         lines.append(f"🧮 Смета сайта: {fmt_money(o['quote_low'])} – {fmt_money(o['quote_high'])} ₽")
+     if _row_get(o, "promo_code") and not o["price"]:
