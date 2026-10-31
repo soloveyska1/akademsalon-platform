@@ -1,0 +1,54 @@
+/* kladovaya-pay:20261031-v1 — страница оплаты услуги Кладовой на каркасе oplaceno.html (p15-operations). */
+.p15-operations.kp-page { align-content: start; gap: 22px; }
+.p15-operations.kp-page .system-card { width: min(100%, 680px); place-items: stretch; text-align: left; }
+.p15-operations.kp-page .system-card h1 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.08; }
+.p15-operations.kp-page .system-card h1:focus { outline: none; }
+.p15-operations.kp-page .system-card > p:not(.eyebrow) { max-width: none; font-size: 15px; line-height: 1.55; }
+.p15-operations.kp-page .system-card__facts small { font-size: 11px; }
+.p15-operations.kp-page .system-card__facts strong { font-size: 14px; line-height: 1.35; }
+.kp-form { display: grid; gap: 10px; margin-top: 26px; }
+.kp-form label[for] { color: var(--op-ink); font-size: 14px; font-weight: 600; }
+.kp-form input[type="email"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 11px 14px;
+  color: var(--op-ink);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-muted); /* граница поля — не тоньше 3:1 к фону и в тёмной теме */
+  border-radius: 6px;
+  font: inherit;
+  font-size: 16px;
+}
+.kp-form input[aria-invalid="true"] { border-color: var(--op-wax-text, var(--op-wax)); border-width: 2px; }
+.kp-form input[type="email"]:focus-visible,
+.kp-check input:focus-visible { outline: 2px solid var(--op-wax-text, var(--op-wax)); outline-offset: 2px; }
+.kp-check { display: flex; gap: 12px; align-items: flex-start; margin-top: 6px; color: var(--op-ink); font-size: 14px; line-height: 1.5; cursor: pointer; }
+.kp-check input { flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--op-wax-text, var(--op-wax)); }
+.kp-hint { margin: 0; color: var(--op-muted); font-size: 13px; line-height: 1.5; }
+.kp-error { margin: 0; color: var(--op-wax-text, var(--op-wax)); font-size: 14px; font-weight: 600; }
+.kp-error:empty { margin-top: -10px; } /* пустой не занимает места, но остаётся в дереве для дикторов */
+.kp-form .button { width: 100%; min-height: 50px; justify-content: center; margin-top: 6px; font-size: 16px; }
+.kp-form .button[disabled] { opacity: .7; cursor: progress; }
+.kp-actions { flex-wrap: wrap; }
+.kp-spec {
+  width: min(100%, 680px);
+  padding: clamp(24px, 4vw, 44px);
+  color: var(--op-ink);
+  background: var(--op-sheet);
+  border: 1px solid var(--op-line);
+}
+.kp-spec h2 { margin: 0; font-size: 24px; }
+.kp-edition { margin: 10px 0 0; color: var(--op-muted); font-size: 13px; line-height: 1.55; }
+.kp-spec dl { display: grid; grid-template-columns: minmax(130px, 190px) 1fr; gap: 12px 20px; margin: 20px 0 0; }
+.kp-spec dt { color: var(--op-ink); font-size: 14px; font-weight: 600; line-height: 1.5; }
+.kp-spec dd { margin: 0; color: var(--op-muted); font-size: 14px; line-height: 1.55; }
+.kp-card a, .kp-spec a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+@media (max-width: 640px) {
+  .kp-spec dl { grid-template-columns: 1fr; gap: 4px; }
+  .kp-spec dd + dt { margin-top: 10px; }
+}
+/* печать и «Сохранить как PDF» — сохраняемая Спецификация (п. 3.3 Оферты): заказ, тариф, срок и условия */
+@media print {
+  .site-header, .site-footer, .kp-form, .kp-actions { display: none !important; }
+  .kp-card, .kp-spec { border: 0; box-shadow: none; padding: 0; }
+}
