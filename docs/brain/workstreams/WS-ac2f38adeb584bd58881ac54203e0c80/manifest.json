@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-ac2f38adeb584bd58881ac54203e0c80",
   "slug": "kladovaya-pay",
-  "status": "active",
+  "status": "submitted",
   "branch": "claude/kladovaya-pay-20261031",
   "base_sha": "8713d467ac6afcc8ed57f6d845674aa14689a681",
-  "result_sha": null,
+  "result_sha": "7ebfe5d6211d9f447f1a110e2abe4f6c21bf86c4",
   "outcome_ids": [
     "OUT-004"
   ],
@@ -74,6 +74,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "99d1ae584d2842bd06dde412bab35cb52251247e249df4b7b47263b4b2cae7a0"
 }
