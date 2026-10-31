@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-ac2f38adeb584bd58881ac54203e0c80",
+  "slug": "kladovaya-pay",
+  "status": "submitted",
+  "branch": "claude/kladovaya-pay-20261031",
+  "base_sha": "8713d467ac6afcc8ed57f6d845674aa14689a681",
+  "result_sha": "7ebfe5d6211d9f447f1a110e2abe4f6c21bf86c4",
+  "outcome_ids": [
+    "OUT-004"
+  ],
+  "write_owner": "claude-kladovaya-pay",
+  "scope": {
+    "write": [
+      {
+        "path": "backend/salon_bot/install_kladovaya_pay.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/kladovaya_pay.py",
+        "match": "exact"
+      },
+      {
+        "path": "backend/salon_bot/tests/test_kladovaya_pay.py",
+        "match": "exact"
+      },
+      {
+        "path": "docs/brain/workstreams/WS-ac2f38adeb584bd58881ac54203e0c80/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "kladovaya-oplata.html",
+        "match": "exact"
+      },
+      {
+        "path": "oplaceno.html",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/kladovaya-pay-20261031",
+        "match": "tree"
+      }
+    ],
+    "read": [
+      {
+        "path": "backend/salon_bot/zero_campaign.py",
+        "match": "exact"
+      }
+    ]
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "api-route:GET:/api/kladovaya/pay/quote"
+    },
+    {
+      "access": "write",
+      "key": "api-route:GET:/api/kladovaya/pay/return/{result}/{order}"
+    },
+    {
+      "access": "write",
+      "key": "api-route:POST:/api/kladovaya/pay/checkout"
+    },
+    {
+      "access": "write",
+      "key": "contract:kladovaya-pay-v1"
+    },
+    {
+      "access": "read",
+      "key": "api-route:POST:/api/pay/robokassa"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 2,
+  "base_manifest_hash": "99d1ae584d2842bd06dde412bab35cb52251247e249df4b7b47263b4b2cae7a0"
+}
