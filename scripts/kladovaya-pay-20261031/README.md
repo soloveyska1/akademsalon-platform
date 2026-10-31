@@ -123,10 +123,11 @@ workstream `WS-ac2f38adeb584bd58881ac54203e0c80`.
 поэтому Салон ставится первым. nginx Кладовой нужен до первых оплат: без него уведомления копятся в
 повторах (сутки), а потом приходит сообщение админам.
 
-1. Файлы на сервер (Git Bash, из репозитория; `<sha>` — коммит ветки):
+1. Файлы на сервер (Git Bash, из репозитория; `<sha>` — коммит ветки). `-c core.autocrlf=false` обязателен на
+   Windows: иначе `git archive` отдаёт файлы с CRLF.
 
    ```bash
-   git archive <sha> backend/salon_bot/kladovaya_pay.py backend/salon_bot/install_kladovaya_pay.py backend/salon_bot/tests/test_kladovaya_pay.py scripts/kladovaya-pay-20261031 | ssh SaloonBot 'mkdir -p /root/salon_bot/release-artifacts/kladovaya-pay-<sha> && tar -x -C /root/salon_bot/release-artifacts/kladovaya-pay-<sha>'
+   git -c core.autocrlf=false archive <sha> backend/salon_bot/kladovaya_pay.py backend/salon_bot/install_kladovaya_pay.py backend/salon_bot/tests/test_kladovaya_pay.py scripts/kladovaya-pay-20261031 | ssh SaloonBot 'mkdir -p /root/salon_bot/release-artifacts/kladovaya-pay-<sha> && tar -x -C /root/salon_bot/release-artifacts/kladovaya-pay-<sha>'
    ```
 
 2. Тесты и проверка на Python сервиса (3.10):
@@ -259,8 +260,15 @@ cd /root/salon_bot && venv/bin/python -m app.services.kladovaya_pay requeue <з�
   - на оплате 502, отказ кассы и обрыв сети дают сообщение под кнопкой, форма и почта остаются;
   - страница без параметров;
   - 375 px без горизонтальной прокрутки, ошибок CSP нет.
+- Прод, 31.10.2026, выкатка коммита `7ebfe5d6`:
+  - 41/41 тест на Python 3.10.12 и aiohttp 3.12.15 сервера;
+  - установка: health 200, подписанная пробная ссылка 200;
+  - статика `release262-kladovaya-pay-7ebfe5d6` от `release261-docs-v4-064ed622`, в diff только две страницы;
+  - smoke: `quote` 200, неоплаченный счёт `InvId 40000001` (заказ `ksmoke00001`) — страница Robokassa на 290 ₽,
+    возвраты 302 в бота, OpStateExt отвечает, запись в `payment_receipts` без почты;
+  - страница на проде: 375 px без прокрутки вбок, консоль чистая;
+  - откат вхолостую: обратная правка живого `webapp.py` даёт хеш до установки, он совпадает с бэкапом.
 - Не проверено:
-  - тесты на Python 3.10 сервера (шаг 2 выкатки);
   - настоящая оплата Robokassa и чек НПД;
   - отдаёт ли OpStateExt в `OutSum` сумму за вычетом комиссии (на этот случай сверка смотрит и `IncSum`);
     смотреть на первой настоящей оплате;

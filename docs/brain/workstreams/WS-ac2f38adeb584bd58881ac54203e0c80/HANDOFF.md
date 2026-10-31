@@ -43,16 +43,39 @@
   `quote` с повтором, 502, отказ кассы и обрыв сети на оплате без потери формы, 375 px без
   прокрутки вбок. Остальной набор `backend/salon_bot/tests` даёт те же 3 провала и 11 ошибок
   на Windows с новым файлом и без него.
-- Unverified: тесты на Python 3.10 сервера (шаг 2 выкатки); настоящая оплата Robokassa и чек
-  НПД; какую сумму OpStateExt отдаёт в `OutSum` (сверка смотрит и `IncSum`); сторона бота
-  Кладовой (приём уведомления, nginx `/salon/paid`, секрет).
+- Production (31.10.2026, по «выкатывай» владельца, коммит `7ebfe5d6`):
+  - артефакты — `/root/salon_bot/release-artifacts/kladovaya-pay-7ebfe5d6` (LF;
+    первая заливка `git archive` с `core.autocrlf=true` дала CRLF — перезалито);
+  - 41/41 тест на Python 3.10.12 / aiohttp 3.12.15 сервера; `--check` чистый
+    (`webapp.py` `ecf371e7…`);
+  - `--apply --derive-secret --restart` в 10:09 МСК: `webapp.py` → `e51926d5…`, модуль `61623e9c…`,
+    секрет `/etc/kladovaya-pay/secret` (root 600) выведен из `zero_campaign_hmac`, drop-in
+    `kladovaya-pay.conf`, бэкап `/root/salon_bot/backups/kladovaya-pay-20261031T070931821354Z`;
+    health 200, подписанная проба 200, в журнале ошибок нет;
+  - статика: `current` → `release262-kladovaya-pay-7ebfe5d6` (была `release261-docs-v4-064ed622`),
+    diff — только `oplaceno.html` и новая `kladovaya-oplata.html`;
+  - smoke (сервер, GET/POST без оплаты): `quote` 200 `format_fix 1.0`; checkout →
+    неоплаченный счёт `InvId 40000001`, заказ `ksmoke00001`, страница Robokassa 200 с 290 ₽; возвраты
+    302 → `t.me/kladovoygipsrbot?start=paid_ksmoke00001` / `payfail_…`; OpStateExt ответил
+    `not_found`; `payment_receipts` — `scope=kladovaya`, без `buyer_email`. Счёт закроется сам
+    через 10 мин после конца ссылки;
+  - Chromium на проде (375 px, светлая тема, счёт открыт): форма, факты и 15 строк спецификации,
+    шрифты загружены, прокрутки вбок нет, консоль пустая;
+  - откат вхолостую: `unpatched(живой webapp.py)` → `ecf371e7…` = бэкап; прежний релиз статики на месте.
+- Unverified: настоящая оплата Robokassa (ResultURL → уведомление боту) и чек НПД; какую сумму
+  OpStateExt отдаёт в `OutSum` (сверка смотрит и `IncSum`); сторона бота Кладовой (приём
+  уведомления, nginx `/salon/paid`, секрет на её сервере). Evidence-запись (E-номер) не заведена:
+  `docs/brain/evidence` вне scope этого workstream — данные для неё выше.
 - Risks/rollback: аддитивный модуль, два хука в `webapp.py` с хешем до правки,
-  своя SQLite; откат статики — симлинк `current`, бэкенда до первой оплаты —
-  `install_kladovaya_pay.py --rollback`, после — `ACADEMIC_SALON_KLADOVAYA_PAY_CHECKOUT=0`;
+  своя SQLite; откат статики — `current` обратно на `release261-docs-v4-064ed622`, бэкенда до
+  первой оплаты — `install_kladovaya_pay.py --rollback /root/salon_bot/backups/kladovaya-pay-20261031T070931821354Z --restart`
+  (откажет из-за смоук-счёта — `--force`, он не оплачен), после — `ACADEMIC_SALON_KLADOVAYA_PAY_CHECKOUT=0`;
   базу не восстанавливать поверх оплат. Редакцию оферты не менять: `consent_doc`
   зашит в формах сайта (урок 26.07).
 - Contract: отступления (адрес уведомления `https://studkladovaya.ru/salon/paid` — серверы разные;
   секрет из общего `zero_campaign_hmac`; возврат через сервер Салона) приняты стороной Кладовой
   31.10, её ветка `claude/listik-autoformat`. Бот перед предложением оплаты пробует `quote` с
   `kprobe00000` с 94.241.143.29; отпечаток ключа — sha256(ключа)[:12].
-- Next: «выкатывай» владельца → выкатка по `scripts/kladovaya-pay-20261031/README.md`.
+- Next: сторона Кладовой — `bot-deploy.yml` и nginx `/salon/paid`, сверка отпечатка ключа,
+  подписанный `kping000000` с сервера Салона (ждём 404), затем первая настоящая оплата 290 ₽
+  по ссылке из бота (README, шаги 6–7).
