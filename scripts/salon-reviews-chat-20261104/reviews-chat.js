@@ -161,7 +161,17 @@
     });
   }
 
+  /* цель «отзыв открыт с главной» (раньше её слал просмотрщик главной). Ссылки reviews.html#review-NN
+     есть только у карточек главной, referrer сайт не передаёт (meta no-referrer) — поэтому цель
+     ставится, когда страницу открыли по такой ссылке; перезагрузка и «назад» не считаются */
+  function freshVisit() {
+    try { return performance.getEntriesByType('navigation')[0].type === 'navigate'; } catch (e) { return false; }
+  }
+
   render();
   reveal();
+  if (/^#review-\d+$/.test(location.hash) && freshVisit()) {
+    try { if (window.Salon && Salon.metrika && typeof Salon.metrika.goal === 'function') Salon.metrika.goal('review_open_home'); } catch (e) {}
+  }
   window.addEventListener('hashchange', reveal);
 })();
