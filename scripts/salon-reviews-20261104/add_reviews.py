@@ -6,7 +6,12 @@ python add_reviews.py <папка с HTML релиза> <папка с карт�
 миниатюра 420 px, подпись — слова клиента. Применять к HTML release250 и новее."""
 import sys
 from pathlib import Path
-from PIL import Image
+
+try:
+    from PIL import Image
+except ImportError:  # на сервере Pillow может не быть: размеры миниатюр из img/thumbs/
+    Image = None
+THUMB_SIZES = {58: (420, 154), 59: (420, 116)}
 
 root, imgs = Path(sys.argv[1]), Path(sys.argv[2])
 NEW = [  # номер, тема фильтра, подпись
@@ -17,7 +22,8 @@ OLD_TOTAL, NEW_TOTAL = 54, 54 + len(NEW)
 
 
 def card(no, topic, cap):
-    w, h = Image.open(imgs / "thumbs" / f"review-{no}.webp").size
+    thumb = imgs / "thumbs" / f"review-{no}.webp"
+    w, h = Image.open(thumb).size if Image else THUMB_SIZES[no]
     assert w == 420
     return (f'<a class="rv-card" data-topic="{topic}" href="assets/img/reviews/review-{no}.webp" '
             f'aria-label="Открыть отзыв: {cap}"><span class="rv-card-top">Сообщение клиента '
