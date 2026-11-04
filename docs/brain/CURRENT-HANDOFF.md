@@ -1,6 +1,10 @@
 # Current handoff
 
-## Verified current state — 30 October 2026, documents v4
+## Verified current state — 4 November 2026, two reviews
+
+- Live current is `release263-reviews-0a069c8c`: the live `release262-kladovaya-pay-7ebfe5d6` (Kladovaya pay, 31 October; its record is on branch `claude/kladovaya-pay-20261031`, not in main) plus two client reviews (`review-58`, `review-59`) first on `reviews.html` and the homepage count 54 → 56 (`index.html`, `home-v4.html`). 656 → 660 files, everything else byte for byte as release262. Rollback: the static pointer to release262 (tested on prod). Build future releases from the live current. Details: `scripts/salon-reviews-20261104/README.md`.
+
+## Previous verified state — 30 October 2026, documents v4
 
 - Live current is `release261-docs-v4-064ed622`: release260 with the twelve document pages (`requisites`, `oferta`, `terms`, `privacy`, `loyalty`, `refunds`, `academic-integrity` and the five `consent*` pages) switched to «Документы Салона» v4 on `ds-v4`; their previews `*-v4.html` are removed. Release260 (`release260-docs-preview-5a106c7e`) is release259 (library v4, below) plus those noindex previews, `assets/css/docs-v4.css` and `assets/js/docs-v4.js`. Rollback of the section: the static pointer to release260 if nothing was released after it, otherwise a release from the live current with the twelve pages from `src/`. Never restore the DB for this UI change. Build future releases from the live current.
 - Legal texts are unchanged character for character: the builder and `check_docs_v4.py` compare the article text, links and every old id. All anchors stay (`oferta#p1`–`#p16`, `#p14a`, `refunds#advances`, `academic-integrity#integrityNextTitle`, the `loyalty` slugs, `doc-section-N` for sections without an id, `privacy#cookies` inside its section).
