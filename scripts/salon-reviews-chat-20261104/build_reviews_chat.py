@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from transcripts import parse  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-VER = "rc-20261104-2"
+VER = "rc-20261104-3"
 TOPIC = {"result": "После сдачи", "speed": "О сроках", "care": "О работе вместе"}
 # главная: отзыв, какие сообщения показать (номера в расшифровке), подпись под карточкой
 HOME = [

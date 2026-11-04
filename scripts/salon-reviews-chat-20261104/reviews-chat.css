@@ -4,6 +4,7 @@
 .ds-v4 .rc-scope{--rc-ink:var(--ds-ink,#1b1531);--rc-muted:var(--ds-muted,#5c5670);--rc-line:var(--ds-line,#e6e1f3);--rc-in:var(--ds-paper,#fff);--rc-canvas:var(--ds-mist,#f3efff);--rc-accent:var(--ds-violet,#4b30c8);--rc-out:color-mix(in srgb,var(--rc-accent) 20%,var(--rc-in))}
 [data-theme=dark] .rc-scope{--rc-out:color-mix(in srgb,var(--rc-accent) 34%,var(--rc-in));--rc-shadow:none}
 [data-theme=dark] .rv-main .rc-scope{--rc-canvas:var(--paper,#181917)}
+[data-theme=dark] .rc-msg.rc-out .rc-time{color:color-mix(in srgb,var(--rc-ink) 76%,transparent)}
 
 /* сетка карточек: без JS — ровные ряды, с JS — плотная раскладка без дыр */
 .rc-wall{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
