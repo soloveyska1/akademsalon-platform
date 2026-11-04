@@ -4,7 +4,7 @@ python build_reviews_chat.py <папка с HTML релиза> <out> [--preview]
 
 Берёт из релиза reviews.html, index.html, home-v4.html и пишет в <out> их новые версии:
 - reviews.html — все отзывы из transcripts.txt карточками-переписками (порядок, тема и подпись —
-  из заголовков блоков), под каждой «Скриншот оригинала» открывает скриншот в том же просмотрщике;
+  из заголовков блоков), под каждой «Скриншот переписки» с миниатюрой открывает скриншот в том же просмотрщике;
   reviews-chat.js вместо salon-reviews.js, reviews-chat.css поверх salon-reviews.css;
 - index.html и home-v4.html — блок «Что пишут после сдачи»: отзывы из HOME коротким фрагментом
   переписки, карточка ведёт на отзыв на странице отзывов; число сообщений и ссылка «N отзывов»
@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from transcripts import parse  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-VER = "rc-20261104-1"
+VER = "rc-20261104-2"
 TOPIC = {"result": "После сдачи", "speed": "О сроках", "care": "О работе вместе"}
 # главная: отзыв, какие сообщения показать (номера в расшифровке), подпись под карточкой
 HOME = [
@@ -65,7 +65,6 @@ def svg(kind):
 def rich(text):
     t = html.escape(text, quote=False)
     t = t.replace("{скрыто}", '<span class="rc-hide" title="Скрыто ради приватности">скрыто</span>')
-    t = re.sub(r"==(.+?)==", r"<mark>\1</mark>", t)
     assert "==" not in t and "{" not in t, text
     return t.replace("||", "<br><br>").replace("|", "<br>")
 
@@ -125,11 +124,13 @@ def card(rv):
                 f'<p class="rc-ext-text">{rich(items[0]["text"])}</p></div>')
     else:
         body = chat(items)
-    shot = "Скриншот отзыва" if ext else "Скриншот оригинала"
+    shot = "Скриншот отзыва" if ext else "Скриншот переписки"
     foot = (f'<footer class="rc-foot"><a class="rc-proof" href="assets/img/reviews/review-{no:02d}.webp" '
-            f'data-caption="{html.escape(plain)}">{shot} <span aria-hidden="true">↗</span></a></footer>')
-    return (f'<article class="rc-card rc-scope" id="review-{no:02d}" data-topic="{rv["topic"]}" '
-            f'aria-label="Отзыв: {html.escape(plain.strip("«»"))}">{head}{body}{foot}</article>')
+            f'data-caption="{html.escape(plain)}"><img class="rc-thumb" src="assets/img/reviews/thumbs/review-{no:02d}.webp" '
+            f'width="40" height="40" alt="" loading="lazy" decoding="async"><span>{shot} <span aria-hidden="true">↗</span></span></a></footer>')
+    title = f'<h2 class="rc-title">{caption}</h2>'
+    return (f'<article class="rc-card rc-scope" id="review-{no:02d}" data-topic="{rv["topic"]}">'
+            f'{head}{title}{body}{foot}</article>')
 
 
 def home_card(rv, picks, caption):
