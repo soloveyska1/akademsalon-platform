@@ -26,3 +26,6 @@ content/telegram/carousel/
 content/telegram/__pycache__/
 dist/
 .brain/
+
+# байт-код Python
+__pycache__/
