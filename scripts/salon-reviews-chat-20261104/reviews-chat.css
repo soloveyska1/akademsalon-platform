@@ -78,9 +78,9 @@
 }
 
 /* главная: те же сообщения на карточках «доски» */
-.ds-v4 .hv-voice.rc-pin{padding:8px 8px 14px}
-.ds-v4 .rc-pin>a{display:block;color:inherit;text-decoration:none;border-radius:12px}
-.ds-v4 .rc-pin>a:focus-visible{outline:2px solid var(--ds-violet,#4b30c8);outline-offset:3px}
+.ds-v4 a.hv-voice.rc-pin{display:block;color:inherit;text-decoration:none}
+.ds-v4 a.hv-voice.rc-pin:focus-visible{outline:2px solid var(--ds-violet,#4b30c8);outline-offset:3px}
+.ds-v4 .rc-pin-cap{display:block;padding:12px 8px 0;font:italic 400 17px/1.4 var(--serif,Literata,Georgia,serif);color:var(--ds-ink)}
 .ds-v4 .rc-pin .rc-chat{padding:12px 10px;border-radius:12px}
 .ds-v4 .rc-pin .rc-msg{max-width:92%;font-size:14.5px;line-height:1.4}
 .ds-v4 .rc-pin .rc-doc{font-size:14px}

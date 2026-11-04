@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from transcripts import parse  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-VER = "rc-20261104-3"
+VER = "rc-20261104-4"
 TOPIC = {"result": "После сдачи", "speed": "О сроках", "care": "О работе вместе"}
 # главная: отзыв, какие сообщения показать (номера в расшифровке), подпись под карточкой
 HOME = [
@@ -142,9 +142,21 @@ def home_card(rv, picks, caption):
             if it["att"] and it["att"]["kind"] == "doc":  # из письма на главной — только сама похвала
                 it["text"] = "…" + re.sub(r"^\{скрыто\},\s*", "", it["text"]).split(" …")[0]
         items.append(it)
-    return (f'<figure class="hv-voice rc-pin"><a class="rc-scope" href="reviews.html#review-{rv["id"]:02d}" '
-            f'aria-label="Открыть отзыв: {html.escape(html.unescape(caption))}">{chat(items, "rc-chat rc-compact")}</a>'
-            f'<figcaption>{caption}</figcaption></figure>')
+    # карточка — сама ссылка, без вложенного <a>: home-v4.js вешает свой просмотрщик скриншота
+    # на «.hv-voice a» и открыл бы вместо отзыва пустое окно
+    return (f'<a class="hv-voice rc-pin rc-scope" href="reviews.html#review-{rv["id"]:02d}" '
+            f'aria-label="Открыть отзыв: {html.escape(html.unescape(caption))}">{chat(items, "rc-chat rc-compact")}'
+            f'<span class="rc-pin-cap">{caption}</span></a>')
+
+
+def close_div(page, start):
+    """Позиция сразу за </div>, который закрывает <div> в start (вложенные div учитываются)."""
+    depth = 0
+    for m in re.finditer(r"<div\b|</div>", page[start:]):
+        depth += -1 if m.group() == "</div>" else 1
+        if depth == 0:
+            return start + m.end()
+    raise ValueError("не закрыт <div> на главной")
 
 
 def one(pattern, page, what):
@@ -188,8 +200,8 @@ def build_reviews(page, reviews):
 
 def build_home(page, reviews):
     a = page.index('<div class="hv-voices-wall">')
-    end = page.index("</section>", a)
-    b = page.index("</div>", page.rindex("</figure>", a, end)) + len("</div>")
+    b = close_div(page, a)
+    assert b < page.index("</section>", a), "стена отзывов вылезла за секцию"
     wall = "\n".join("    " + home_card(reviews[no], picks, cap) for no, picks, cap in HOME)
     page = page[:a] + f'<div class="hv-voices-wall">\n{wall}\n  </div>' + page[b:]
     n = len(reviews)
