@@ -1,6 +1,12 @@
 # Current handoff
 
-## Verified current state — 4 November 2026, two reviews
+## Verified current state — 4 November 2026, reviews as text
+
+- Live current is `release266-reviews-chat-3f63bd3c`. On the owner's complaint that reviews looked cheap and were hard to read, all 56 review screenshots were transcribed into real chat cards: `reviews.html` is a dense wall of cards (headline in Literata italic, the chat as written, a thumb and «Скриншот переписки ↗» opening the original in the old viewer), and the homepage block «Что пишут после сдачи» shows the same nine reviews as short chat excerpts linking to `reviews.html#review-NN`. Screenshots 05 (supervisor's name) and 47 (work-topic file name) were pixelated like the rest. New assets `assets/css/reviews-chat.css` and `assets/js/reviews-chat.js` (`?v=rc-20261104-3`, bump on any change: the service worker caches by `?v=`); `salon-reviews.js` is no longer used by `reviews.html`.
+- Chain: release264 (v1, `9b8fa389`) → release265 (v2 after an independent design review, `235f5a5c`) → release266 (dark-theme timestamp contrast). Rollback: the static pointer to release265/264, or to `release263-reviews-0a069c8c` for the old screenshot cards (tested). Never restore the DB for this UI change.
+- To add a review now: screenshot as before, a block at the top of `scripts/salon-reviews-chat-20261104/transcripts.txt`, then `build_reviews_chat.py <live HTML> <out>` (idempotent, recounts «N отзывов» on the homepage). The homepage = `salon-home-v4-20261030` pipeline plus this script. Details and checks: `scripts/salon-reviews-chat-20261104/README.md`. Not checked: Safari, real phones, screen readers.
+
+## Previous verified state — 4 November 2026, two reviews
 
 - Live current is `release263-reviews-0a069c8c`: the live `release262-kladovaya-pay-7ebfe5d6` (Kladovaya pay, 31 October; its record is on branch `claude/kladovaya-pay-20261031`, not in main) plus two client reviews (`review-58`, `review-59`) first on `reviews.html` and the homepage count 54 → 56 (`index.html`, `home-v4.html`). 656 → 660 files, everything else byte for byte as release262. Rollback: the static pointer to release262 (tested on prod). Build future releases from the live current. Details: `scripts/salon-reviews-20261104/README.md`.
 
