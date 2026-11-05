@@ -8,6 +8,7 @@
 - Proof: `PYTHONPATH=../listik-test-deps python3 scripts/listik-payments-20261105/test_patch.py`:43 tests PASS, local fake provider only. Two independent internal read-only reviews billing_review/billing_product_review: no remaining P0/P1; both confirmed old-link pause and rollback compatibility. Exact scope conflicts--strict CLEAR after fetching full history.
 - Changed: verified-baseline backend/static patch, product-specific archived specification/hash/receipt/return; fail-closed availability probe; scoped deploy/rollback script. Implementation owner Codex; reviewers did not write.
 - Environment: brain context passed; doctor limited by unavailable macOS memory_pressure; council doctor found no provider CLI. No customer data sent to external council.
-- Unverified: browser scenarios and production deployment still pending; no real payment performed.
+- Verified production: release-listik-payments-20261105T022226; health200; compatible rollback exercised then forward restored. Backup /root/listik-payments-backup-20261105T022226. Five browser widths passed without overflow/new JS errors; screenshot390 visually inspected. Brain39/39 tests and validate passed. PR22 merged as7d7b53a9.
+- Unverified: no real payment performed; callbacks covered by local HTTPintegration tests.
 - Risks/rollback: restore old static pointer plus rollback-compatible.py; it retains processing of Listik invoices but closes new sales. Never restore payment SQLite. deploy.py exercises rollback and forward switch with healthcheck.
-- Next: finish browser checks; commit, deploy scoped patch, verify live quote and health; update this evidence.
+- Next: normal operation; new Listik checkout remains fail-closed until Kladovaya's shared-quota API is available. Reconcile real cashier settlements with ledger before any refund/revoke.

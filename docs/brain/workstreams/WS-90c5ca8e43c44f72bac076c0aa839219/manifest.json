@@ -2,7 +2,7 @@
   "schema_version": 2,
   "workstream_id": "WS-90c5ca8e43c44f72bac076c0aa839219",
   "slug": "listik-payments",
-  "status": "submitted",
+  "status": "integrated",
   "branch": "codex/listik-payments",
   "base_sha": "dba7440c7855164b1276c3d4972d0cec051f3605",
   "result_sha": "852d79ba8ceff7b6e8a609464246b1c81047df51",
@@ -33,6 +33,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "1e671cb8d3629761b71625e62a024bac4cbb36bb97bb8e0d04bec59e5baa403a"
+  "manifest_revision": 3,
+  "base_manifest_hash": "653e6e9c7e4797d4af2e48b5427fbe6609aa441317e5885249eabacd6c356912"
 }
