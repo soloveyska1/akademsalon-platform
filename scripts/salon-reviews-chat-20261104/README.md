@@ -68,6 +68,11 @@
   (в 264–266 клик по ней открывал просмотрщик главной с битой картинкой вместо отзыва), цель
   `review_open_home` — из `reviews-chat.js`, `?v=rc-20261104-4`. Запись: `deployments/release267-reviews-chat-af83c628.json`.
 
+- `release268-review60-029a45f5` (05.11.2026, текущий) — живой `release-listik-payments-20261105T022226`
+  + отзыв 60 («о работе вместе», первым), счётчики на главной 56 → 57; изменены `reviews.html`,
+  `index.html`, `home-v4.html` и две картинки `review-60.webp` (скриншот и миниатюра в `img/`).
+  Запись: `deployments/release268-review60-029a45f5.json`. Откат — на release-listik-payments (проверен: 56 → 57).
+
 Откат (только статика): на предыдущий шаг — указатель на release266, 265 или 264, на старые
 отзывы-скриншоты — на release263:
 
