@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-90c5ca8e43c44f72bac076c0aa839219",
+  "slug": "listik-payments",
+  "status": "submitted",
+  "branch": "codex/listik-payments",
+  "base_sha": "dba7440c7855164b1276c3d4972d0cec051f3605",
+  "result_sha": "852d79ba8ceff7b6e8a609464246b1c81047df51",
+  "outcome_ids": [
+    "OUT-004"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/workstreams/WS-90c5ca8e43c44f72bac076c0aa839219/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/listik-payments-20261105",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "contract:listik-packages"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 2,
+  "base_manifest_hash": "1e671cb8d3629761b71625e62a024bac4cbb36bb97bb8e0d04bec59e5baa403a"
+}
