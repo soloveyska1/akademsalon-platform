@@ -1,0 +1,13 @@
+[Unit]
+Description=Salon gift subscriptions: grant on first Telegram login (backend/salon_bot/gift_watch.py)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root/salon_bot
+EnvironmentFile=/root/salon_bot/.env
+Environment=SALON_DB_PATH=/root/salon_bot/salon.db
+ExecStart=/usr/bin/python3 /root/salon_bot/ops/gift_watch.py run
+Nice=10
+TimeoutStartSec=90
