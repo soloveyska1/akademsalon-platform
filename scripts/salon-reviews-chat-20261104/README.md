@@ -73,9 +73,13 @@
   `index.html`, `home-v4.html` и две картинки `review-60.webp` (скриншот и миниатюра в `img/`).
   Запись: `deployments/release268-review60-029a45f5.json`. Откат — на release-listik-payments (проверен: 56 → 57).
 
-- `release269-review61-a8b74d7a` (05.11.2026, текущий) — release268 + отзыв 61 («о сроках», первым,
+- `release269-review61-a8b74d7a` (05.11.2026) — release268 + отзыв 61 («о сроках», первым,
   аватарка в реакции запикселена), счётчики 57 → 58. Запись: `deployments/release269-review61-a8b74d7a.json`.
   Откат — на release268 (проверен: 57 → 58).
+
+- `release270-review62-63-a8c5d9c0` (07.11.2026, текущий) — release269 + отзывы 62 («о работе вместе») и 63
+  («о сроках», аватарка в реакции запикселена) первыми, счётчики 58 → 60. Скриншоты — `salon-reviews-20261107/prepare_reviews.py`.
+  Запись: `deployments/release270-review62-63-a8c5d9c0.json`. Откат — на release269.
 
 Откат (только статика): на предыдущий шаг — указатель на release266, 265 или 264, на старые
 отзывы-скриншоты — на release263:
