@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-bf460baed4bf45cba8cadbd2af695c3b",
   "slug": "reviews-gallery-filters",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/reviews-gallery-filters",
   "base_sha": "bd726ba1c95f56dbbc8c33e2c2050400196c1441",
-  "result_sha": null,
+  "result_sha": "9b67cbe9f63401a60dfbca049d4381197c8aefb7",
   "outcome_ids": [
     "OUT-003"
   ],
@@ -33,6 +33,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "396bbd906db3acb60a00a75dee95badde8c3f33c3e76f81231a4323bf4d3d6f3"
 }
