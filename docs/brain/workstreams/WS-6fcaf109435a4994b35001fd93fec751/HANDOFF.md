@@ -1,5 +1,7 @@
 # Workstream handoff
 
+The owner requested a second pass on the header link. Match the normal, hover, focus and current-section treatments of the existing section navigation. Keep the visible mobile link and use the campaign header's own typography on zero-classes. Build over the verified release280 review gallery. Accept after computed-style comparisons and desktop/mobile checks on samples and reviews, with the gallery and all non-stylesheet page content preserved.
+
 - Branch: `codex/reviews-in-header`
 - Outcomes: `OUT-003`
 - Give visitors a direct, labelled link to the reviews gallery in every public navigation header.

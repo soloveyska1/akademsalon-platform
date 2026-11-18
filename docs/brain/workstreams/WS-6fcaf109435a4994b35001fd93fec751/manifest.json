@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-6fcaf109435a4994b35001fd93fec751",
   "slug": "reviews-in-header",
-  "status": "submitted",
+  "status": "active",
   "branch": "codex/reviews-in-header",
   "base_sha": "bd726ba1c95f56dbbc8c33e2c2050400196c1441",
-  "result_sha": "aae8abfc147180a5f6b9f1d7286e53246dd3c833",
+  "result_sha": null,
   "outcome_ids": [
     "OUT-003"
   ],
@@ -41,6 +41,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 2,
-  "base_manifest_hash": "a3a435e731de9343270e8d067b24d223473ea5d471be404149cc5f577f862b73"
+  "manifest_revision": 3,
+  "base_manifest_hash": "90aeaa68613e8b8260fdc7eb58a5fbd21fbb51931eae4bd965ae7c37f2617115"
 }
