@@ -4,6 +4,13 @@ from pathlib import Path
 
 HEAD = re.compile(r"^== (\d+) (result|speed|care) \| (.+)$")
 MSG = re.compile(r"^> ([cm])(?: (\d{1,2}:\d{2}))?(?: (.*))?$")
+WORK_TYPES = {
+    "thesis": "ВКР / дипломная",
+    "coursework": "Курсовая работа",
+    "practice": "Отчёт по практике",
+    "research": "Научно-практическая работа",
+    "independent": "Самостоятельная работа",
+}
 
 
 def parse(path):
@@ -17,14 +24,20 @@ def parse(path):
             assert att is None and quote is None, f"строка {n}: вложение без сообщения"
             m = HEAD.match(line)
             assert m, f"строка {n}: заголовок «== NN тема | подпись»"
-            cur = {"id": int(m[1]), "topic": m[2], "caption": m[3], "items": [], "ext": None}
+            cur = {"id": int(m[1]), "topic": m[2], "caption": m[3], "items": [], "ext": None, "work_types": []}
             assert cur["id"] not in reviews, f"строка {n}: отзыв {cur['id']} уже есть"
             reviews[cur["id"]] = cur
             continue
         assert cur is not None, f"строка {n}: нет заголовка отзыва"
         if line.startswith(("@ ", "! ")):
             assert att is None and quote is None, f"строка {n}: вложение без сообщения"
-        if line.startswith("~ "):
+        if line.startswith("+ "):
+            kinds = line[2:].split()
+            if (cur["items"] or cur["ext"] or cur["work_types"] or att or quote or not kinds
+                    or len(set(kinds)) != len(kinds) or not set(kinds) <= WORK_TYPES.keys()):
+                raise ValueError(f"строка {n}: неверная метка вида работы")
+            cur["work_types"] = kinds
+        elif line.startswith("~ "):
             assert not cur["items"] and "summary" not in cur, f"строка {n}: итог должен следовать за заголовком"
             cur["summary"] = line[2:]
         elif line.startswith("@ "):

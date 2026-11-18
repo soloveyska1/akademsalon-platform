@@ -7,15 +7,30 @@
   var more = document.querySelector('.rv-more');
   var count = document.querySelector('#rv-count');
   var filters = Array.prototype.slice.call(document.querySelectorAll('[data-review-filter]'));
+  var workType = document.querySelector('#rc-work-type');
+  var reset = document.querySelector('.rc-reset');
   var dialog = document.querySelector('.rv-viewer');
   var canvas = dialog && dialog.querySelector('.rv-canvas');
   var image = canvas && canvas.querySelector('img');
   var zoom = dialog && dialog.querySelector('[data-rv-zoom]');
   var STEP = 9, MAX = 400, GAP = 18;
   var current = 'all', limit = STEP, index = 0, opener = null, queued = false;
+  var pendingTarget = null;
+
+  function matchesTopic(card, topic) {
+    return topic === 'all' || card.dataset.topic === topic;
+  }
+
+  function matchesWork(card, kind) {
+    return kind === 'all' || (card.dataset.workTypes || '').split(' ').indexOf(kind) !== -1;
+  }
+
+  function selectedWork() { return workType ? workType.value : 'all'; }
 
   function filtered() {
-    return cards.filter(function (c) { return current === 'all' || c.dataset.topic === current; });
+    return cards.filter(function (card) {
+      return matchesTopic(card, current) && matchesWork(card, selectedWork());
+    });
   }
 
   function clamp(card) {
@@ -35,7 +50,7 @@
       b.textContent = open ? 'Свернуть ↑' : 'Вся переписка ↓';
       if (!open && card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: 'start' });
     });
-    card.querySelector('.rc-foot').appendChild(b);
+    chat.insertAdjacentElement('afterend', b);
   }
 
   function layout() {
@@ -47,6 +62,7 @@
       if (!on || c.hidden) { c.style.gridRowEnd = ''; return; }
       c.style.gridRowEnd = 'span ' + Math.ceil(c.getBoundingClientRect().height + GAP);
     });
+    if (pendingTarget) pendingTarget.scrollIntoView({ block: 'start', behavior: 'instant' });
   }
 
   function relayout() {
@@ -62,14 +78,44 @@
       c.hidden = i < 0 || i >= limit;
     });
     cards.forEach(clamp);
-    if (count) count.textContent = Math.min(set.length, limit) + ' из ' + set.length + ' сообщений';
+    count.textContent = set.length ? 'Показано ' + Math.min(set.length, limit) + ' из ' + set.length
+      : 'Для этой темы и вида работы пока нет отзывов.';
     if (more) more.hidden = set.length <= limit;
-    filters.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.reviewFilter === current)); });
+    if (reset) reset.hidden = current === 'all' && selectedWork() === 'all';
+    filters.forEach(function (button) {
+      var topic = button.dataset.reviewFilter;
+      var badge = button.querySelector('.rc-total');
+      if (badge) badge.textContent = cards.filter(function (card) {
+        return matchesTopic(card, topic) && matchesWork(card, selectedWork());
+      }).length;
+      button.setAttribute('aria-pressed', String(topic === current));
+    });
+    if (workType) Array.prototype.forEach.call(workType.options, function (option) {
+      var total = cards.filter(function (card) { return matchesTopic(card, current) && matchesWork(card, option.value); }).length;
+      option.textContent = option.dataset.label + ' · ' + total;
+    });
     layout();
   }
 
+  function applyFilters() {
+    pendingTarget = null;
+    limit = STEP;
+    render();
+    var target = document.getElementById(location.hash.slice(1));
+    if (target && cards.indexOf(target) !== -1 && target.hidden) {
+      history.replaceState(history.state, '', location.pathname + location.search);
+    }
+  }
+
   filters.forEach(function (b) {
-    b.addEventListener('click', function () { current = b.dataset.reviewFilter; limit = STEP; render(); });
+    b.addEventListener('click', function () { current = b.dataset.reviewFilter; applyFilters(); });
+  });
+  if (workType) workType.addEventListener('change', applyFilters);
+  if (reset) reset.addEventListener('click', function () {
+    current = 'all';
+    workType.value = 'all';
+    applyFilters();
+    filters[0].focus({ preventScroll: true });
   });
   if (more) more.addEventListener('click', function () {
     var first = filtered()[limit];
@@ -85,6 +131,69 @@
     window.addEventListener('resize', relayout);
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+
+  var notice = document.createElement('span');
+  notice.className = 'rc-sr';
+  notice.setAttribute('role', 'status');
+  wall.insertAdjacentElement('afterend', notice);
+  var canonical = document.querySelector('link[rel="canonical"]');
+  cards.forEach(function (card) {
+    var link = card.querySelector('.rc-permalink');
+    if (!link) return;
+    var address = new URL(link.getAttribute('href'), canonical ? canonical.href : document.baseURI).href;
+    var button = document.createElement('button');
+    var manual, timer, pending = false;
+    button.type = 'button';
+    button.className = 'rc-copy';
+    button.setAttribute('aria-describedby', link.getAttribute('aria-describedby'));
+    button.textContent = 'Скопировать ссылку';
+    link.replaceWith(button);
+
+    function selectAddress() {
+      if (!manual) {
+        manual = document.createElement('label');
+        manual.className = 'rc-manual';
+        manual.textContent = 'Скопируйте выделенную ссылку';
+        var field = document.createElement('input');
+        field.type = 'url';
+        field.readOnly = true;
+        field.value = address;
+        manual.appendChild(field);
+        button.insertAdjacentElement('afterend', manual);
+      }
+      var input = manual.querySelector('input');
+      input.focus({ preventScroll: true });
+      input.select();
+      input.setSelectionRange(0, input.value.length);
+      try { return document.execCommand('copy'); } catch (e) { return false; }
+    }
+
+    button.addEventListener('click', async function () {
+      if (pending) return;
+      pending = true;
+      clearTimeout(timer);
+      button.textContent = 'Скопировать ссылку';
+      notice.textContent = '';
+      var copied = false;
+      try {
+        await navigator.clipboard.writeText(address);
+        copied = true;
+      } catch (e) {
+        if (!card.hidden) copied = selectAddress();
+      } finally {
+        pending = false;
+      }
+      if (!copied) return;
+      if (manual) {
+        if (manual.contains(document.activeElement)) button.focus({ preventScroll: true });
+        manual.remove();
+        manual = null;
+      }
+      button.textContent = 'Скопировано';
+      notice.textContent = 'Ссылка на отзыв скопирована';
+      timer = setTimeout(function () { button.textContent = 'Скопировать ссылку'; }, 2400);
+    });
+  });
 
   /* просмотр скриншота оригинала */
   function show() {
@@ -147,31 +256,43 @@
     });
   }
 
-  /* переход с главной: #review-05 — показать карточку и подсветить её */
+  /* Прямая ссылка открывает карточку в том числе за первой страницей. */
   function reveal() {
     var m = /^#review-\d+$/.test(location.hash) && document.getElementById(location.hash.slice(1));
+    pendingTarget = null;
     if (!m || cards.indexOf(m) < 0) return;
     current = 'all';
+    if (workType) workType.value = 'all';
     limit = Math.max(STEP, Math.ceil((cards.indexOf(m) + 1) / STEP) * STEP);
+    pendingTarget = m;
     render();
-    requestAnimationFrame(function () {
-      m.scrollIntoView({ block: 'center' });
-      m.classList.add('is-target');
-      setTimeout(function () { m.classList.remove('is-target'); }, 2600);
-    });
+    m.tabIndex = -1;
+    m.focus({ preventScroll: true });
+    m.classList.add('is-target');
+    setTimeout(function () {
+      m.classList.remove('is-target');
+      if (pendingTarget === m) pendingTarget = null;
+    }, 2600);
   }
+  ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(function (event) {
+    window.addEventListener(event, function () { pendingTarget = null; }, { passive: true, capture: true });
+  });
 
-  /* цель «отзыв открыт с главной» (раньше её слал просмотрщик главной). Ссылки reviews.html#review-NN
-     есть только у карточек главной, referrer сайт не передаёт (meta no-referrer) — поэтому цель
-     ставится, когда страницу открыли по такой ссылке; перезагрузка и «назад» не считаются */
+  /* Ссылки с главной помечены явно. Обычной ссылкой на отзыв можно поделиться. */
   function freshVisit() {
     try { return performance.getEntriesByType('navigation')[0].type === 'navigate'; } catch (e) { return false; }
   }
 
+  document.querySelector('.rv-toolbar').hidden = false;
   render();
   reveal();
-  if (/^#review-\d+$/.test(location.hash) && freshVisit()) {
+  if (new URLSearchParams(location.search).get('from') === 'home' &&
+      cards.indexOf(document.getElementById(location.hash.slice(1))) !== -1 && freshVisit()) {
     try { if (window.Salon && Salon.metrika && typeof Salon.metrika.goal === 'function') Salon.metrika.goal('review_open_home'); } catch (e) {}
   }
   window.addEventListener('hashchange', reveal);
+  window.addEventListener('pageshow', function (e) {
+    var target = document.getElementById(location.hash.slice(1));
+    if (e.persisted && target && target.hidden) reveal();
+  });
 })();

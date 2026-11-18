@@ -6,6 +6,34 @@
 [data-theme=dark] .rv-main .rc-scope{--rc-canvas:var(--paper,#181917)}
 [data-theme=dark] .rc-msg.rc-out .rc-time{color:color-mix(in srgb,var(--rc-ink) 76%,transparent)}
 
+/* Две независимые стороны выбора, общий итог под ними. */
+.rv-main .rv-toolbar{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:18px 0 10px}
+.rv-main .rv-toolbar[hidden],.rv-toolbar [hidden]{display:none}
+.rc-facets{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,290px);align-items:end;gap:18px 32px}
+.rc-work-filter,.rc-topic-filter{min-width:0}
+.rc-filter-label{display:block;margin:0 0 7px;font-size:13px;line-height:1.4;font-weight:600;color:var(--ink)}
+.rv-toolbar .rw-pills{display:flex;flex-wrap:wrap;gap:6px}
+.rv-main .rv-toolbar .rw-pills button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;font-size:13px;line-height:1.25}
+.rc-total{min-width:1.5em;padding:2px 4px;border-radius:5px;background:color-mix(in srgb,currentColor 8%,transparent);font-size:12px;line-height:1.2;font-variant-numeric:tabular-nums}
+.rc-work-filter select{width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--sheet);color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
+.rc-filter-result{display:flex;align-items:center;flex-wrap:wrap;gap:0 18px;min-height:44px}
+.rv-main .rc-filter-result .rw-note{margin:0;color:var(--muted);font-size:13px;line-height:1.45;white-space:normal}
+.rv-main .rc-filter-result #rc-kind-note{margin-left:auto}
+.rc-filter-result .rc-reset{min-height:44px;padding:0 2px;border:0;background:none;color:var(--accent);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:800px){
+  .rc-facets{grid-template-columns:minmax(0,1fr);gap:14px}
+  .rc-work-filter{width:min(100%,320px)}
+}
+@media(max-width:620px){
+  .rv-main .rv-toolbar{gap:4px}
+  .rv-toolbar .rw-pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rv-main .rv-toolbar .rw-pills button{justify-content:space-between;padding:8px 10px}
+  .rc-work-filter{width:100%}
+  .rc-work-filter select{font-size:16px}
+  .rc-filter-result{justify-content:space-between}
+  .rv-main .rc-filter-result #rc-kind-note{width:100%;margin:0 0 4px}
+}
+
 /* сетка карточек: без JS — ровные ряды, с JS — плотная раскладка без дыр */
 .rc-wall{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
 .rc-wall.is-masonry{grid-auto-rows:1px;row-gap:0}
@@ -14,12 +42,13 @@
 .rc-card[hidden]{display:none}
 .rc-card:hover{box-shadow:0 16px 36px -22px rgba(39,29,65,.32)}
 .rc-card.is-target{border-color:var(--rc-accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--rc-accent) 18%,transparent)}
-.rc-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 2px;font-size:12.5px;line-height:1.3;color:var(--rc-muted)}
+.rc-head{display:flex;align-items:center;flex-wrap:wrap;gap:5px 10px;padding:0 2px;font-size:12.5px;line-height:1.3;color:var(--rc-muted)}
+.rc-kind{padding-left:9px;border-left:1px solid var(--rc-line);color:var(--rc-muted)}
 .rc-tag{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--rc-ink)}
 .rc-tag::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--rc-dot,var(--rc-accent))}
 .rc-card[data-topic=result]{--rc-dot:#4f9d34}
 .rc-card[data-topic=speed]{--rc-dot:#d9921a}
-.rc-date{text-align:right;font-variant-numeric:tabular-nums}
+.rc-date{margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
 .rc-summary{margin-left:auto;color:var(--rc-muted);font-size:.8125rem}
 .rc-card .rc-title{margin:-2px 2px 0;font-family:Literata,Georgia,serif;font-style:italic;font-weight:400;font-size:17.5px;line-height:1.38;letter-spacing:-.005em;color:var(--rc-ink);text-wrap:pretty}
 .rc-card:has(.rc-summary) .rc-title{margin-block:0 .12em;font-size:clamp(1.45rem,2.1vw,1.8rem);line-height:1.19;letter-spacing:-.025em;text-wrap:balance}
@@ -52,11 +81,14 @@
 .rc-sticker{padding:0 4px;font-size:12.5px;font-style:italic;line-height:1.5;color:var(--rc-muted)}
 
 /* низ карточки: скриншот оригинала — доказательство, что текст настоящий */
-.rc-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px}
+.rc-foot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:4px 10px;padding:5px 2px 0;border-top:1px solid var(--rc-line)}
+.rc-foot .rc-copy,.rc-permalink{display:inline-flex;align-items:center;justify-content:flex-end;min-height:44px;margin:0;padding:3px 0;border:0;background:none;color:var(--rc-accent);font:inherit;font-size:13px;line-height:1.35;text-decoration:none;cursor:pointer}
+.rc-foot .rc-copy:hover,.rc-permalink:hover{text-decoration:underline;text-underline-offset:3px}
+.rc-manual{display:grid;grid-column:1/-1;gap:5px;padding:4px 0 8px;font-size:13px;color:var(--rc-muted)}
 .rc-proof{display:inline-flex;align-items:center;gap:10px;min-height:48px;font-size:13px;font-weight:500;color:var(--rc-accent);text-decoration:none}
 .rc-proof:hover>span{text-decoration:underline;text-underline-offset:3px}
 .rc-thumb{flex:none;width:40px;height:40px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--rc-line);background:var(--rc-canvas)}
-.rc-toggle{min-height:44px;margin-left:auto;padding:0 2px;border:0;background:none;font:inherit;font-size:13px;color:var(--rc-muted);cursor:pointer}
+.rc-card .rc-toggle{align-self:flex-start;min-height:44px;margin:-8px 0;padding:0 4px;border:0;background:none;font:inherit;font-size:13px;color:var(--rc-muted);cursor:pointer}
 .rc-toggle:hover{color:var(--rc-ink)}
 .rc-card.is-clamped .rc-chat{max-height:400px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 96px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 96px),transparent)}
 .rc-card.is-clamped.is-open .rc-chat{max-height:none;-webkit-mask-image:none;mask-image:none}
@@ -77,6 +109,8 @@
   .rc-card{padding:12px 10px 4px;border-radius:18px}
   .rc-card .rc-title{margin-inline:4px;font-size:18px}
   .rc-head,.rc-foot{padding-inline:4px}
+  .rc-foot .rc-proof{gap:6px}
+  .rc-foot .rc-thumb{width:32px;height:36px}
   .rc-chat{padding:8px}
   .rc-msg{max-width:90%;font-size:16px}
 }

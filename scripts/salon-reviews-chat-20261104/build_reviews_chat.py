@@ -21,11 +21,11 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from transcripts import parse  # noqa: E402
+from transcripts import WORK_TYPES, parse  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-VER = "rc-20261104-4"
-CSS_VER = "rc-20261119-1"
+VER = "rc-gallery-20261119-3"
+CSS_VER = "rc-gallery-20261119-3"
 TOPIC = {"result": "После сдачи", "speed": "О сроках", "care": "О работе вместе"}
 # главная: отзыв, какие сообщения показать (номера в расшифровке), подпись под карточкой
 HOME = [
@@ -123,7 +123,8 @@ def card(rv):
     if not ext and items and items[0]["kind"] == "day":
         date = items.pop(0)["text"]
     plain = html.unescape(re.sub(r"<[^>]+>", "", caption))
-    head = (f'<header class="rc-head"><span class="rc-tag">{TOPIC[rv["topic"]]}</span>'
+    work_labels = "".join(f'<span class="rc-kind">{WORK_TYPES[kind]}</span>' for kind in rv["work_types"])
+    head = (f'<header class="rc-head"><span class="rc-tag">{TOPIC[rv["topic"]]}</span>{work_labels}'
             + (f'<span class="rc-summary">{html.escape(rv["summary"])}</span>' if rv.get("summary") else "")
             + (f'<span class="rc-date">{html.escape(date)}</span>' if date else "") + "</header>")
     if ext:
@@ -135,9 +136,11 @@ def card(rv):
     shot = "Скриншот отзыва" if ext else "Скриншот переписки"
     foot = (f'<footer class="rc-foot"><a class="rc-proof" href="assets/img/reviews/review-{no:02d}.webp" '
             f'data-caption="{html.escape(plain)}"><img class="rc-thumb" src="assets/img/reviews/thumbs/review-{no:02d}.webp" '
-            f'width="40" height="40" alt="" loading="lazy" decoding="async"><span>{shot} <span aria-hidden="true">↗</span></span></a></footer>')
-    title = f'<h2 class="rc-title">{caption}</h2>'
-    return (f'<article class="rc-card rc-scope" id="review-{no:02d}" data-topic="{rv["topic"]}">'
+            f'width="40" height="40" alt="" loading="lazy" decoding="async"><span>{shot} <span aria-hidden="true">↗</span></span></a>'
+            f'<a class="rc-permalink" aria-describedby="rc-title-{no:02d}" href="reviews.html#review-{no:02d}">Ссылка на отзыв</a></footer>')
+    title = f'<h2 class="rc-title" id="rc-title-{no:02d}">{caption}</h2>'
+    kinds = " ".join(rv["work_types"])
+    return (f'<article class="rc-card rc-scope" id="review-{no:02d}" data-topic="{rv["topic"]}" data-work-types="{kinds}">'
             f'{head}{title}{body}{foot}</article>')
 
 
@@ -152,7 +155,7 @@ def home_card(rv, picks, caption):
         items.append(it)
     # карточка — сама ссылка, без вложенного <a>: home-v4.js вешает свой просмотрщик скриншота
     # на «.hv-voice a» и открыл бы вместо отзыва пустое окно
-    return (f'<a class="hv-voice rc-pin rc-scope" href="reviews.html#review-{rv["id"]:02d}" '
+    return (f'<a class="hv-voice rc-pin rc-scope" href="reviews.html?from=home#review-{rv["id"]:02d}" '
             f'aria-label="Открыть отзыв: {html.escape(html.unescape(caption))}">{chat(items, "rc-chat rc-compact")}'
             f'<span class="rc-pin-cap">{caption}</span></a>')
 
@@ -188,7 +191,34 @@ def noindex(page):
     return page.replace('<meta charset="utf-8">', '<meta charset="utf-8"><meta name="robots" content="noindex,nofollow">', 1)
 
 
+def toolbar(reviews):
+    buttons, options = [], []
+    tagged = sum(bool(rv["work_types"]) for rv in reviews.values())
+    total_reviews = len(reviews)
+    note = f'Вид работы указан в {tagged} из {total_reviews} {plural(total_reviews, "отзыва", "отзывов", "отзывов")}.'
+    for key, label in {"all": "Все темы", **TOPIC}.items():
+        total = sum(key == "all" or rv["topic"] == key for rv in reviews.values())
+        pressed = "true" if key == "all" else "false"
+        buttons.append(f'<button type="button" data-review-filter="{key}" aria-pressed="{pressed}">'
+                       f'{label} <span class="rc-total">{total}</span></button>')
+    for key, label in {"all": "Все виды работ", **WORK_TYPES}.items():
+        total = sum(key == "all" or key in rv["work_types"] for rv in reviews.values())
+        disabled = " disabled" if not total and key != "all" else ""
+        options.append(f'<option value="{key}" data-label="{label}"{disabled}>{label} · {total}</option>')
+    return ('<div class="rv-toolbar" hidden><div class="rc-facets"><div class="rc-topic-filter">'
+            '<span class="rc-filter-label" id="rc-topic-label">Тема отзыва</span>'
+            f'<div class="rw-pills" role="group" aria-labelledby="rc-topic-label">{"".join(buttons)}</div></div>'
+            '<div class="rc-work-filter"><label class="rc-filter-label" for="rc-work-type">Вид работы</label>'
+            f'<select id="rc-work-type" aria-describedby="rc-kind-note">{"".join(options)}</select></div></div>'
+            '<div class="rc-filter-result"><span class="rw-note" id="rv-count" role="status" aria-atomic="true"></span>'
+            '<button class="rc-reset" type="button" hidden>Сбросить фильтры</button>'
+            f'<span class="rw-note" id="rc-kind-note">{note}</span></div></div>')
+
+
 def build_reviews(page, reviews):
+    old_toolbar = one(r'<div class="rv-toolbar"(?: hidden)?>', page, "toolbar")
+    pos = page.index(old_toolbar)
+    page = page[:pos] + toolbar(reviews) + page[close_div(page, pos):]
     start = one(r'<section class="(?:rv-grid|rc-wall)" aria-label="Отзывы клиентов">', page, "wall")
     a = page.index(start)
     b = page.index("</section>", a) + len("</section>")
