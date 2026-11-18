@@ -2,6 +2,10 @@
 
 The owner requested a second pass on the header link. Match the normal, hover, focus and current-section treatments of the existing section navigation. Keep the visible mobile link and use the campaign header's own typography on zero-classes. Build over the verified release280 review gallery. Accept after computed-style comparisons and desktop/mobile checks on samples and reviews, with the gallery and all non-stylesheet page content preserved.
 
+Published and confirmed `release281-header-style-24a3f88f` from `24a3f88f783f2d5f7ddad6f1f47051ad0d13e9e1`. The CSS is shared with the sibling items in the primary header and with the adjacent action on the separate campaign page. Remote staging rehearsed the atomic rollback to `release280-reviews-gallery-74f8e017`.
+
+All 132 affected HTML pages differed only in their stylesheet URLs. The second build was unchanged. Production checks passed for eight public pages, both stylesheet hashes and API health. The published gallery retains both filters and 67 share links. Computed normal styling matched the benefits link in light and dark themes. The current reviews link matched the current samples link, including the marker. Keyboard focus and Enter worked. Checks at widths from 320 to 1440px found no overlapping header controls, and the reviews target remained 44px high. On the campaign page both actions matched and were inside the header at 320px. Physical devices were not used. Integration owner can reconcile the submitted overlay with main.
+
 - Branch: `codex/reviews-in-header`
 - Outcomes: `OUT-003`
 - Give visitors a direct, labelled link to the reviews gallery in every public navigation header.
