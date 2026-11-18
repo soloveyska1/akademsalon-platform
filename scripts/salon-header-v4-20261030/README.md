@@ -45,6 +45,7 @@
 | `release244-header-preview-6fcbc61c` | скрытые превью `home-v4.html` и `services-v4.html` с новой шапкой |
 | `release245-shop-one-copy-e5bc8212` | параллельный релиз магазина (`shop.html`, `shop-terms.html`, `material-store.js`), собран поверх 244 |
 | `release246-header-services-3008b54d` | **live**: новая шапка на 93 страницах (на двух превью она уже была) и «Работы и цены» v4 |
+| `release279-reviews-nav-6031ed4a` | Прямая ссылка на отзывы в 131 общей шапке и на отдельной странице нулевых пар. Предыдущая версия — `release278-review70-7fa58d36`. |
 
 Release246 собран из HTML release245: `apply_header_v4.py` по всем страницам, затем
 `scripts/salon-services-v4-20261030/build_services_v4.py` для `services.html`. Ассеты уже лежали в
