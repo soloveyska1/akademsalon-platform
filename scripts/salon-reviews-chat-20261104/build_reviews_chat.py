@@ -25,6 +25,7 @@ from transcripts import parse  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 VER = "rc-20261104-4"
+CSS_VER = "rc-20261119-1"
 TOPIC = {"result": "После сдачи", "speed": "О сроках", "care": "О работе вместе"}
 # главная: отзыв, какие сообщения показать (номера в расшифровке), подпись под карточкой
 HOME = [
@@ -84,6 +85,12 @@ def message(it):
         if att["kind"] == "file":
             name, _, size = att["label"].partition(" · ")
             parts.append(f'<span class="rc-att">{svg("file")}<span><b>{rich(name)}</b><small>{html.escape(size)}</small></span></span>')
+        elif att["kind"] == "image":
+            filename, separator, description = att["label"].partition(" · ")
+            if not re.fullmatch(r"review-\d+-photo\.webp", filename) or not separator or not description:
+                raise ValueError("Вложенному фото нужны имя WebP и описание")
+            parts.append(f'<img class="rc-chat-photo" src="assets/img/reviews/{filename}" '
+                         f'width="280" height="280" alt="{html.escape(description)}" loading="lazy" decoding="async">')
         elif att["kind"] == "voice":
             parts.append(f'<span class="rc-att">{svg("voice")}<span><b>Голосовое · {html.escape(att["label"])}</b><small>расшифровка</small></span></span>')
         else:
@@ -191,7 +198,7 @@ def build_reviews(page, reviews):
     assert page.count(INTRO) == 1, "intro"
     page = link_after(page, r'<link rel="stylesheet" href="assets/css/salon-reviews\.css[^"]*">',
                       r'<link rel="stylesheet" href="assets/css/reviews-chat\.css[^"]*">',
-                      f'<link rel="stylesheet" href="assets/css/reviews-chat.css?v={VER}">')
+                      f'<link rel="stylesheet" href="assets/css/reviews-chat.css?v={CSS_VER}">')
     js = f'<script src="assets/js/reviews-chat.js?v={VER}"></script>'
     page = re.sub(r'<script src="assets/js/(?:salon-reviews|reviews-chat)\.js[^"]*"></script>', js, page)
     assert page.count(js) == 1 and "salon-reviews.js" not in page, "js"
@@ -214,7 +221,7 @@ def build_home(page, reviews):
                   f'<a href="reviews.html">{n} {plural(n, "отзыв", "отзыва", "отзывов")}</a>', page, count=1)
     return link_after(page, r'<link rel="stylesheet" href="assets/css/home-v4\.css[^"]*">',
                       r'<link rel="stylesheet" href="assets/css/reviews-chat\.css[^"]*">',
-                      f'<link rel="stylesheet" href="assets/css/reviews-chat.css?v={VER}">')
+                      f'<link rel="stylesheet" href="assets/css/reviews-chat.css?v={CSS_VER}">')
 
 
 def main():

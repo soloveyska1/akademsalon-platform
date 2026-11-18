@@ -31,7 +31,7 @@ def parse(path):
             cur["ext"] = {"rating": float(rating), "who": who, "date": date, "service": service}
         elif line.startswith("% "):
             kind, _, label = line[2:].partition(" ")
-            assert kind in {"file", "voice", "doc", "photo", "sticker"}, f"строка {n}: {kind}"
+            assert kind in {"file", "voice", "doc", "photo", "image", "sticker"}, f"строка {n}: {kind}"
             att = {"kind": kind, "label": label}
         elif line.startswith("^ "):
             quote = line[2:]
