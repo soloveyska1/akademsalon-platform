@@ -30,9 +30,11 @@
 .zero-brand span { display: grid; line-height: 1.15; }
 .zero-brand strong { font-family: var(--serif); font-size: 18px; font-weight: 550; }
 .zero-brand small { color: var(--ink-soft); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
-.zero-header > a:last-child { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
-.zero-header__reviews { display: inline-flex; flex: none; align-items: center; min-height: 44px; margin-inline: auto clamp(12px, 2vw, 24px); padding-inline: 12px; border: 1px solid currentColor; border-radius: 999px; color: inherit; font-weight: 600; text-decoration: none; }
-.zero-header__reviews:hover { text-decoration: underline; text-underline-offset: 4px; }
+.zero-header__reviews,
+.zero-header__action { display: inline-flex; flex: none; align-items: center; min-height: 44px; color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.zero-header__reviews { margin-inline: auto clamp(12px, 2vw, 24px); }
+.zero-header__reviews:hover,
+.zero-header__action:hover { text-decoration-thickness: 2px; }
 .zero-header__action span:last-child { display: none; }
 
 .zero-hero {
@@ -171,8 +173,6 @@
 
 @media (max-width: 600px) {
   .zero-header { padding: 16px 18px; }
-  .zero-header__reviews { padding-inline: 9px; font-size: 14px; }
-  .zero-header__action { flex: none; }
   .zero-header__action span:first-child { display: none; }
   .zero-header__action span:last-child { display: inline; }
   .zero-hero { margin: 14px 14px 0; }

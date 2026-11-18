@@ -9,8 +9,8 @@ import re
 import sys
 from pathlib import Path
 
-VER = "ds-header-20261119-reviews2"
-ZERO_VER = "zero-20261119-reviews"
+VER = "ds-header-20261119-nav3"
+ZERO_VER = "zero-20261119-nav2"
 TG = "https://t.me/academicsaloon"
 PLANE = ('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.2 2.9 10.4c-1.3.5-1.3 1.2-.2 '
          '1.6l4.8 1.5 1.8 5.6c.2.6.4.8.8.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.3-1.5z'
