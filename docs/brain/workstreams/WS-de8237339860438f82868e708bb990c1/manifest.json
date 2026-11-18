@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-de8237339860438f82868e708bb990c1",
+  "slug": "review-70",
+  "status": "active",
+  "branch": "codex/review-70",
+  "base_sha": "bd726ba1c95f56dbbc8c33e2c2050400196c1441",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/workstreams/WS-de8237339860438f82868e708bb990c1/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-reviews-20261119",
+        "match": "tree"
+      },
+      {
+        "path": "scripts/salon-reviews-chat-20261104",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:public-reviews-gallery"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
