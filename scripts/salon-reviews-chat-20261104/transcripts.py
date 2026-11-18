@@ -24,14 +24,17 @@ def parse(path):
         assert cur is not None, f"строка {n}: нет заголовка отзыва"
         if line.startswith(("@ ", "! ")):
             assert att is None and quote is None, f"строка {n}: вложение без сообщения"
-        if line.startswith("@ "):
+        if line.startswith("~ "):
+            assert not cur["items"] and "summary" not in cur, f"строка {n}: итог должен следовать за заголовком"
+            cur["summary"] = line[2:]
+        elif line.startswith("@ "):
             cur["items"].append({"kind": "day", "text": line[2:]})
         elif line.startswith("! "):
             rating, who, date, service = [p.strip() for p in line[2:].split(" · ")]
             cur["ext"] = {"rating": float(rating), "who": who, "date": date, "service": service}
         elif line.startswith("% "):
             kind, _, label = line[2:].partition(" ")
-            assert kind in {"file", "voice", "doc", "photo", "sticker"}, f"строка {n}: {kind}"
+            assert kind in {"file", "voice", "doc", "photo", "image", "sticker"}, f"строка {n}: {kind}"
             att = {"kind": kind, "label": label}
         elif line.startswith("^ "):
             quote = line[2:]
