@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "workstream_id": "WS-bf460baed4bf45cba8cadbd2af695c3b",
+  "slug": "reviews-gallery-filters",
+  "status": "active",
+  "branch": "codex/reviews-gallery-filters",
+  "base_sha": "bd726ba1c95f56dbbc8c33e2c2050400196c1441",
+  "result_sha": null,
+  "outcome_ids": [
+    "OUT-003"
+  ],
+  "write_owner": "codex",
+  "scope": {
+    "write": [
+      {
+        "path": "docs/brain/workstreams/WS-bf460baed4bf45cba8cadbd2af695c3b/HANDOFF.md",
+        "match": "exact"
+      },
+      {
+        "path": "scripts/salon-reviews-chat-20261104",
+        "match": "tree"
+      }
+    ],
+    "read": []
+  },
+  "semantic_scope": [
+    {
+      "access": "write",
+      "key": "journey:review-filter-and-share"
+    }
+  ],
+  "proof_command_ids": [
+    "brain:test",
+    "brain:validate"
+  ],
+  "manifest_revision": 1,
+  "base_manifest_hash": null
+}
