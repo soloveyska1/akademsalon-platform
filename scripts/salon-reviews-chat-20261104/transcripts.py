@@ -24,7 +24,10 @@ def parse(path):
         assert cur is not None, f"строка {n}: нет заголовка отзыва"
         if line.startswith(("@ ", "! ")):
             assert att is None and quote is None, f"строка {n}: вложение без сообщения"
-        if line.startswith("@ "):
+        if line.startswith("~ "):
+            assert not cur["items"] and "summary" not in cur, f"строка {n}: итог должен следовать за заголовком"
+            cur["summary"] = line[2:]
+        elif line.startswith("@ "):
             cur["items"].append({"kind": "day", "text": line[2:]})
         elif line.startswith("! "):
             rating, who, date, service = [p.strip() for p in line[2:].split(" · ")]

@@ -20,7 +20,9 @@
 .rc-card[data-topic=result]{--rc-dot:#4f9d34}
 .rc-card[data-topic=speed]{--rc-dot:#d9921a}
 .rc-date{text-align:right;font-variant-numeric:tabular-nums}
+.rc-summary{margin-left:auto;color:var(--rc-muted);font-size:.8125rem}
 .rc-card .rc-title{margin:-2px 2px 0;font-family:Literata,Georgia,serif;font-style:italic;font-weight:400;font-size:17.5px;line-height:1.38;letter-spacing:-.005em;color:var(--rc-ink);text-wrap:pretty}
+.rc-card:has(.rc-summary) .rc-title{margin-block:0 .12em;font-size:clamp(1.45rem,2.1vw,1.8rem);line-height:1.19;letter-spacing:-.025em;text-wrap:balance}
 
 /* переписка */
 .rc-chat{display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:14px;background:var(--rc-canvas)}

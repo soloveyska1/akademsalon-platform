@@ -124,6 +124,7 @@ def card(rv):
         date = items.pop(0)["text"]
     plain = html.unescape(re.sub(r"<[^>]+>", "", caption))
     head = (f'<header class="rc-head"><span class="rc-tag">{TOPIC[rv["topic"]]}</span>'
+            + (f'<span class="rc-summary">{html.escape(rv["summary"])}</span>' if rv.get("summary") else "")
             + (f'<span class="rc-date">{html.escape(date)}</span>' if date else "") + "</header>")
     if ext:
         body = (f'<div class="rc-ext">{stars(ext["rating"])}<p class="rc-ext-who"><b>{html.escape(ext["who"])}</b>'
