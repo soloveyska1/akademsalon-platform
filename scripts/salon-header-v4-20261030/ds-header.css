@@ -26,6 +26,10 @@ html .salon-header .sh-nav a:hover{color:var(--sh-ink);background:none}
 html .salon-header .sh-nav a:hover::after{transform:scaleX(1)}
 html .salon-header .sh-nav a[aria-current]{color:var(--sh-ink);background:none;font-weight:600}
 html .salon-header .sh-nav a[aria-current]::after{transform:scaleX(1);opacity:1}
+html .salon-header .sh-nav .sh-reviews{min-height:44px;padding:0 13px;border:1px solid var(--sh-line);border-radius:999px;color:var(--sh-accent);background:var(--sh-sheet);font-weight:600}
+html .salon-header .sh-nav .sh-reviews::after{content:none}
+html .salon-header .sh-nav .sh-reviews:hover,html .salon-header .sh-nav .sh-reviews[aria-current]{border-color:currentColor;color:var(--sh-accent);background:var(--sh-soft)}
+html .salon-header .sh-nav .sh-reviews:focus-visible{outline:2px solid var(--sh-accent);outline-offset:2px}
 
 /* Действия: поиск, кабинет, Telegram, заказ, меню */
 html .salon-header .sh-actions{gap:8px}
@@ -109,7 +113,12 @@ html .sh-panel .sh-panel-bottom>a{color:#fff;font-size:14px}
 html .sh-panel .sh-panel-bottom small{font-size:12px;color:#a99fd2}
 html .sh-panel .sh-family-mark{border-color:rgba(255,255,255,.22);color:#d6f6a6}
 
-/* Ноутбук и планшет: разделы уезжают в меню */
+/* В компактной шапке ссылка на отзывы остаётся рядом с логотипом. */
+@media(max-width:1280px){
+  html .salon-header .sh-nav{display:flex;flex:none;margin-left:auto}
+  html .salon-header .sh-nav a:not(.sh-reviews){display:none}
+  html .salon-header .sh-actions{margin-left:0}
+}
 @media(max-width:1190px){
   html .salon-header .sh-account span{display:none}
   html .salon-header .sh-account{width:44px;padding:0;justify-content:center;border:1px solid var(--sh-line);border-radius:50%}
@@ -147,11 +156,25 @@ html .sh-panel .sh-family-mark{border-color:rgba(255,255,255,.22);color:#d6f6a6}
   html .sh-panel .sh-start-tg{min-height:50px;margin-top:4px;border-radius:14px;background:#1b1531;color:#fff;text-decoration:none}
   html .sh-panel .sh-start-tg:hover{background:#4b30c8}
 }
+@media(max-width:430px){
+  html .salon-header .sh-inner{width:calc(100% - 24px);gap:6px}
+  html .salon-header .sh-brand{gap:6px}
+  html .salon-header .sh-nav .sh-reviews{padding-inline:9px;font-size:14px}
+  html .salon-header .sh-actions{gap:4px}
+  html .salon-header .sh-menu-trigger{min-width:44px}
+}
 @media(max-width:360px){
-  html .salon-header .sh-inner{width:calc(100% - 24px)}
-  html .salon-header .sh-actions{gap:5px}
+  html .salon-header .sh-inner{width:calc(100% - 20px);gap:5px}
+  html .salon-header .sh-actions{gap:3px}
   html .salon-header .sh-wordmark strong{font-size:21px}
-  html .salon-header .sh-quick-search,html .salon-header .sh-tg,html .salon-header .sh-menu-trigger{width:42px;height:42px;min-height:42px}
+  html .salon-header .sh-quick-search,html .salon-header .sh-tg,html .salon-header .sh-menu-trigger{width:44px;height:44px;min-height:44px}
+}
+@media(min-width:340px) and (max-width:374px){
+  html .salon-header .sh-brand svg.sh-emblem{display:none}
+}
+@media(max-width:339px){
+  html .salon-header .sh-wordmark{display:none}
+  html .salon-header .sh-brand{min-width:44px;justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){
   html .salon-header .sh-nav a::after,html .salon-header .sh-actions .sh-order{transition:none}
