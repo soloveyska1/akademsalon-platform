@@ -2,10 +2,10 @@
   "schema_version": 2,
   "workstream_id": "WS-de8237339860438f82868e708bb990c1",
   "slug": "review-70",
-  "status": "active",
+  "status": "submitted",
   "branch": "codex/review-70",
   "base_sha": "bd726ba1c95f56dbbc8c33e2c2050400196c1441",
-  "result_sha": null,
+  "result_sha": "0eccc09f832065466d46842a4030bae6a090f1d0",
   "outcome_ids": [
     "OUT-003"
   ],
@@ -37,6 +37,6 @@
     "brain:test",
     "brain:validate"
   ],
-  "manifest_revision": 1,
-  "base_manifest_hash": null
+  "manifest_revision": 2,
+  "base_manifest_hash": "8b4108b525cd9f67eccffdc269f71aaa3d19907d652ebd45af46c67eb6df8357"
 }
